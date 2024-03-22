@@ -82,8 +82,8 @@ public final class Lookup {
         final IRow row = cell.getRow();
         final ICol col = cell.getCol();
 
-        final int rowSize = row.getCells().size();
-        final int colSize = col.getCells().size();
+        final int rowSize = row.size();
+        final int colSize = col.size();
 
         Range rowRange = new Range(0, rowSize - 1);
         Range colRange = new Range(0, colSize - 1);
@@ -155,9 +155,9 @@ public final class Lookup {
         final int to = range1.to();
         final IRow[] sub = Arrays.copyOfRange(rows, from, to + 1);
 
-        List<ICell> allCells = new ArrayList<>();
+        final List<ICell> allCells = new ArrayList<>();
         for (IRow row : sub) {
-            final ICell[] cells = row.getCells().toArray(new ICell[0]);
+            final ICell[] cells = row.copyCells();
             List<ICell> collectedCells = collectCells(cells, range2);
             allCells.addAll(collectedCells);
         }
@@ -169,9 +169,9 @@ public final class Lookup {
         final int to = range1.to();
         final ICol[] sub = Arrays.copyOfRange(cols, from, to + 1);
 
-        List<ICell> allCells = new ArrayList<>();
+        final List<ICell> allCells = new ArrayList<>();
         for (ICol col : sub) {
-            final ICell[] cells = col.getCells().toArray(new ICell[0]);
+            final ICell[] cells = col.copyCells();
             List<ICell> collectedCells = collectCells(cells, range2);
             allCells.addAll(collectedCells);
         }

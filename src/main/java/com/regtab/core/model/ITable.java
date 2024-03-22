@@ -42,17 +42,17 @@ public final class ITable {
     @Getter
     private final Recordset recordset = new Recordset();
 
-    public ITable(int numOfRows, int numOfCols) {
+    public ITable(final int numOfRows, final int numOfCols) {
         this.numOfRows = numOfRows;
         rows = new IRow[numOfRows];
         for (int i = 0; i < numOfRows; i++) {
-            rows[i] = new IRow(i);
+            rows[i] = new IRow(i, numOfCols);
         }
 
         this.numOfCols = numOfCols;
         cols = new ICol[numOfCols];
         for (int i = 0; i < numOfCols; i++) {
-            cols[i] = new ICol(i);
+            cols[i] = new ICol(i, numOfRows);
         }
 
         cells = new ICell[numOfRows * numOfCols];
@@ -60,8 +60,8 @@ public final class ITable {
         for (int i = 0; i < numOfRows; i++) {
             for (int j = 0; j < numOfCols; j++) {
                 ICell cell = new ICell(this, rows[i], cols[j]);
-                rows[i].getCells().add(cell);
-                cols[j].getCells().add(cell);
+                rows[i].cells[j] = cell;
+                cols[j].cells[i] = cell;
                 cells[count] = cell;
                 count++;
             }
@@ -75,23 +75,8 @@ public final class ITable {
         if (rowIndex < 0 || rowIndex >= rows.length)
             return null; // Col index is out of bounds
 
-        return rows[rowIndex].getCells().get(colIndex);
+        return rows[rowIndex].cells[colIndex];
     }
-
-//    public ICell createCell(final int rowIndex, final int colIndex, @NonNull String text) {
-//        if (rowIndex < 0 || rowIndex >= rows.length)
-//            throw new IllegalArgumentException("Row index is out of bounds");
-//
-//        if (rowIndex < 0 || rowIndex >= rows.length)
-//            throw new IllegalArgumentException("Col index is out of bounds");
-//
-//        final IRow row = rows[rowIndex];
-//        final ICell cell = row.getCells().get(colIndex);
-//        if (text.length() > 0 && text.isBlank()) text = "";
-//        cell.setText(text);
-//
-//        return cell;
-//    }
 
     public void performActions() {
         for (ICell cell: cells)

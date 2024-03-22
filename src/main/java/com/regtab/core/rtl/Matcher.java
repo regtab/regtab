@@ -235,7 +235,7 @@ public class Matcher {
     private RowMap match(@NonNull IRow row, RowPattern tmpl) {
         final RowMap rowMap = new RowMap();
 
-        final Queue<ICell> cells = new LinkedList<>(row.getCells());
+        final Queue<ICell> cells = new LinkedList<>(row.cellsAsList());
         final List<SubrowPattern> subrowTemplates = tmpl.getSubrowTemplates();
         for (SubrowPattern subrowTemplate : subrowTemplates) {
             int repetitionCount = 0;
