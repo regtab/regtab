@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -127,8 +126,8 @@ public final class Lookup {
         List<Element> elements = new ArrayList<>();
 
         final ITable table = cell.getTable();
-        final IRow[] rows = table.rows().toArray(new IRow[0]);
-        final ICol[] cols = table.cols().toArray(new ICol[0]);
+        final IRow[] rows = table.copyRows();
+        final ICol[] cols = table.copyCols();
 
         List<ICell> cells = switch (direction) {
             case IN_ROW -> collectCells(rows, rRange, rowRange);

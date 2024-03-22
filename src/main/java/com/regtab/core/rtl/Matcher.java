@@ -33,7 +33,7 @@ public class Matcher {
     private TableMap match(ITable table, TablePattern tmpl) {
         final TableMap tableMap = new TableMap();
 
-        final Queue<IRow> rows = new LinkedList<>(table.rows());
+        final Queue<IRow> rows = new LinkedList<>(table.rowsAsList());
 
         final List<SubtablePattern> subtableTemplates = tmpl.getSubtableTemplates();
         for (SubtablePattern subtableTemplate : subtableTemplates) {
