@@ -6,15 +6,16 @@ import com.regtab.core.rtl.interpreter.pattern.CellPattern;
 import com.regtab.core.rtl.interpreter.pattern.StructPattern;
 import com.regtab.core.rtl.interpreter.pattern.ChoicePattern;
 import com.regtab.core.rtl.interpreter.pattern.ElementPattern;
+import com.regtab.core.rtl.parser.RTLBaseVisitor;
 import lombok.extern.java.Log;
-import com.regtab.core.rtl.parser.TTLBaseVisitor;
-import com.regtab.core.rtl.parser.TTLParser.*;
 
 import java.util.HashMap;
 import java.util.List;
 
+import com.regtab.core.rtl.parser.RTLParser.*;
+
 @Log
-final class CellVisitor extends TTLBaseVisitor<CellPattern> {
+final class CellVisitor extends RTLBaseVisitor<CellPattern> {
     private static final ElementVisitor elementVisitor = new ElementVisitor();
     private static final StructVisitor structVisitor = new StructVisitor();
     private static final ChoiceVisitor choiceVisitor = new ChoiceVisitor();

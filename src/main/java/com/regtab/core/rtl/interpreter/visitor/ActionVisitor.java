@@ -2,16 +2,14 @@ package com.regtab.core.rtl.interpreter.visitor;
 
 import com.regtab.core.model.Action;
 import com.regtab.core.model.Lookup;
+import com.regtab.core.rtl.parser.RTLBaseVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import com.regtab.core.rtl.parser.TTLBaseVisitor;
-import com.regtab.core.rtl.parser.TTLParser.ActionBodyContext;
-import com.regtab.core.rtl.parser.TTLParser.ActionContext;
-import com.regtab.core.rtl.parser.TTLParser.ActionTypeContext;
-import com.regtab.core.rtl.parser.TTLParser.LookupContext;
+
+import com.regtab.core.rtl.parser.RTLParser.*;
 
 import java.util.List;
 
-final class ActionVisitor extends TTLBaseVisitor<Action>  {
+final class ActionVisitor extends RTLBaseVisitor<Action> {
     private static final LookupVisitor lookupVisitor = new LookupVisitor();
 
     @Override

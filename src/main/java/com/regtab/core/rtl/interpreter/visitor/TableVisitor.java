@@ -2,12 +2,13 @@ package com.regtab.core.rtl.interpreter.visitor;
 
 import com.regtab.core.rtl.interpreter.pattern.SubtablePattern;
 import com.regtab.core.rtl.interpreter.pattern.TablePattern;
-import com.regtab.core.rtl.parser.TTLBaseVisitor;
-import com.regtab.core.rtl.parser.TTLParser.*;
 
 import java.util.List;
 
-final class TableVisitor extends TTLBaseVisitor<TablePattern> {
+import com.regtab.core.rtl.parser.RTLBaseVisitor;
+import com.regtab.core.rtl.parser.RTLParser.*;
+
+final class TableVisitor extends RTLBaseVisitor<TablePattern> {
     private static final SubtableVisitor subtableVisitor = new SubtableVisitor();
 
     @Override

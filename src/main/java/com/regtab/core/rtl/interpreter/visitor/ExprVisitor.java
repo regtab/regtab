@@ -3,12 +3,13 @@ package com.regtab.core.rtl.interpreter.visitor;
 import com.regtab.core.model.Expr;
 import com.regtab.core.model.Func;
 import com.regtab.core.model.Prop;
-import com.regtab.core.rtl.parser.TTLBaseVisitor;
-import com.regtab.core.rtl.parser.TTLParser.*;
 
 import java.util.List;
 
-final class ExprVisitor extends TTLBaseVisitor<Expr> {
+import com.regtab.core.rtl.parser.RTLBaseVisitor;
+import com.regtab.core.rtl.parser.RTLParser.*;
+
+final class ExprVisitor extends RTLBaseVisitor<Expr> {
     @Override
     public Expr visitIntLiteral(IntLiteralContext ctx) {
         String str = ctx.INT().getText();

@@ -7,10 +7,11 @@ import com.regtab.core.model.ICell;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import com.regtab.core.rtl.parser.TTLParser.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.regtab.core.rtl.parser.RTLParser.*;
 
 public final class ElementPattern extends ElementsPattern {
     public ElementPattern(ElementContext context) {

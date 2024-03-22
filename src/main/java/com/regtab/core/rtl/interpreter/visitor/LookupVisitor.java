@@ -3,13 +3,14 @@ package com.regtab.core.rtl.interpreter.visitor;
 import com.regtab.core.model.Condition;
 import com.regtab.core.model.Lookup;
 import com.regtab.core.model.RangeDesc;
+import com.regtab.core.rtl.parser.RTLBaseVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import com.regtab.core.rtl.parser.TTLBaseVisitor;
-import com.regtab.core.rtl.parser.TTLParser.*;
 
 import java.util.List;
 
-final class LookupVisitor extends TTLBaseVisitor<Lookup> {
+import com.regtab.core.rtl.parser.RTLParser.*;
+
+final class LookupVisitor extends RTLBaseVisitor<Lookup> {
     private static final CondVisitor condVisitor = new CondVisitor();
 
     @Override

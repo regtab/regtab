@@ -4,7 +4,8 @@ import com.regtab.core.model.Action;
 import com.regtab.core.model.Condition;
 import com.regtab.core.model.ICell;
 import lombok.NonNull;
-import com.regtab.core.rtl.parser.TTLParser.*;
+
+import com.regtab.core.rtl.parser.RTLParser.*;
 
 public final class ChoicePattern extends ElementsPattern {
     public ChoicePattern(ChoiceContext context) {

@@ -1,13 +1,16 @@
-// Generated from D:/yd/code/tabbyetl/src/main/antlr4/TTL.g4 by ANTLR 4.13.1
+// Generated from D:/yd/code/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
 package com.regtab.core.rtl.parser;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
 import org.antlr.v4.runtime.tree.*;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
-public class TTLParser extends Parser {
+public class RTLParser extends Parser {
 	static { RuntimeMetaData.checkVersion("4.13.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -106,7 +109,7 @@ public class TTLParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "TTL.g4"; }
+	public String getGrammarFileName() { return "RTL.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -117,7 +120,7 @@ public class TTLParser extends Parser {
 	@Override
 	public ATN getATN() { return _ATN; }
 
-	public TTLParser(TokenStream input) {
+	public RTLParser(TokenStream input) {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
@@ -136,15 +139,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_table; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterTable(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterTable(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitTable(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitTable(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitTable(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitTable(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -200,15 +203,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_subtable; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterSubtable(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterSubtable(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitSubtable(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitSubtable(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitSubtable(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitSubtable(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -273,19 +276,19 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class RowsContext extends ParserRuleContext {
-		public TerminalNode LCURLY() { return getToken(TTLParser.LCURLY, 0); }
-		public TerminalNode RCURLY() { return getToken(TTLParser.RCURLY, 0); }
+		public TerminalNode LCURLY() { return getToken(RTLParser.LCURLY, 0); }
+		public TerminalNode RCURLY() { return getToken(RTLParser.RCURLY, 0); }
 		public List<RowContext> row() {
 			return getRuleContexts(RowContext.class);
 		}
 		public RowContext row(int i) {
 			return getRuleContext(RowContext.class,i);
 		}
-		public TerminalNode ARROW() { return getToken(TTLParser.ARROW, 0); }
+		public TerminalNode ARROW() { return getToken(RTLParser.ARROW, 0); }
 		public ActionsContext actions() {
 			return getRuleContext(ActionsContext.class,0);
 		}
-		public TerminalNode COLON() { return getToken(TTLParser.COLON, 0); }
+		public TerminalNode COLON() { return getToken(RTLParser.COLON, 0); }
 		public CondContext cond() {
 			return getRuleContext(CondContext.class,0);
 		}
@@ -298,15 +301,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_rows; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterRows(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterRows(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitRows(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitRows(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitRows(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitRows(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -385,22 +388,22 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class LabelContext extends ParserRuleContext {
-		public TerminalNode TAG() { return getToken(TTLParser.TAG, 0); }
+		public TerminalNode TAG() { return getToken(RTLParser.TAG, 0); }
 		public LabelContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_label; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterLabel(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterLabel(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitLabel(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitLabel(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitLabel(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitLabel(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -428,22 +431,22 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ReplacementContext extends ParserRuleContext {
-		public TerminalNode TAG() { return getToken(TTLParser.TAG, 0); }
+		public TerminalNode TAG() { return getToken(RTLParser.TAG, 0); }
 		public ReplacementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_replacement; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterReplacement(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterReplacement(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitReplacement(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitReplacement(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitReplacement(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitReplacement(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -489,15 +492,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_quantifier; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterQuantifier(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterQuantifier(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitQuantifier(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitQuantifier(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitQuantifier(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitQuantifier(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -554,22 +557,22 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ZeroOrOneContext extends ParserRuleContext {
-		public TerminalNode QUESTION() { return getToken(TTLParser.QUESTION, 0); }
+		public TerminalNode QUESTION() { return getToken(RTLParser.QUESTION, 0); }
 		public ZeroOrOneContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_zeroOrOne; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterZeroOrOne(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterZeroOrOne(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitZeroOrOne(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitZeroOrOne(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitZeroOrOne(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitZeroOrOne(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -597,22 +600,22 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ZeroOrMoreContext extends ParserRuleContext {
-		public TerminalNode MULT() { return getToken(TTLParser.MULT, 0); }
+		public TerminalNode MULT() { return getToken(RTLParser.MULT, 0); }
 		public ZeroOrMoreContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_zeroOrMore; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterZeroOrMore(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterZeroOrMore(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitZeroOrMore(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitZeroOrMore(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitZeroOrMore(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitZeroOrMore(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -640,22 +643,22 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class OneOrMoreContext extends ParserRuleContext {
-		public TerminalNode PLUS() { return getToken(TTLParser.PLUS, 0); }
+		public TerminalNode PLUS() { return getToken(RTLParser.PLUS, 0); }
 		public OneOrMoreContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_oneOrMore; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterOneOrMore(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterOneOrMore(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitOneOrMore(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitOneOrMore(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitOneOrMore(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitOneOrMore(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -683,24 +686,24 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ExactlyContext extends ParserRuleContext {
-		public TerminalNode LCURLY() { return getToken(TTLParser.LCURLY, 0); }
-		public TerminalNode INT() { return getToken(TTLParser.INT, 0); }
-		public TerminalNode RCURLY() { return getToken(TTLParser.RCURLY, 0); }
+		public TerminalNode LCURLY() { return getToken(RTLParser.LCURLY, 0); }
+		public TerminalNode INT() { return getToken(RTLParser.INT, 0); }
+		public TerminalNode RCURLY() { return getToken(RTLParser.RCURLY, 0); }
 		public ExactlyContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_exactly; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterExactly(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterExactly(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitExactly(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitExactly(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitExactly(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitExactly(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -732,8 +735,8 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class RowContext extends ParserRuleContext {
-		public TerminalNode LSQUARE() { return getToken(TTLParser.LSQUARE, 0); }
-		public TerminalNode RSQUARE() { return getToken(TTLParser.RSQUARE, 0); }
+		public TerminalNode LSQUARE() { return getToken(RTLParser.LSQUARE, 0); }
+		public TerminalNode RSQUARE() { return getToken(RTLParser.RSQUARE, 0); }
 		public SubrowsContext subrows() {
 			return getRuleContext(SubrowsContext.class,0);
 		}
@@ -752,15 +755,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_row; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterRow(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterRow(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitRow(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitRow(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitRow(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitRow(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -833,11 +836,11 @@ public class TTLParser extends Parser {
 		public SubrowContext subrow(int i) {
 			return getRuleContext(SubrowContext.class,i);
 		}
-		public TerminalNode ARROW() { return getToken(TTLParser.ARROW, 0); }
+		public TerminalNode ARROW() { return getToken(RTLParser.ARROW, 0); }
 		public ActionsContext actions() {
 			return getRuleContext(ActionsContext.class,0);
 		}
-		public TerminalNode COLON() { return getToken(TTLParser.COLON, 0); }
+		public TerminalNode COLON() { return getToken(RTLParser.COLON, 0); }
 		public CondContext cond() {
 			return getRuleContext(CondContext.class,0);
 		}
@@ -847,15 +850,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_subrows; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterSubrows(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterSubrows(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitSubrows(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitSubrows(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitSubrows(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitSubrows(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -935,15 +938,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_subrow; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterSubrow(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterSubrow(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitSubrow(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitSubrow(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitSubrow(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitSubrow(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1008,19 +1011,19 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class CellsContext extends ParserRuleContext {
-		public TerminalNode LCURLY() { return getToken(TTLParser.LCURLY, 0); }
-		public TerminalNode RCURLY() { return getToken(TTLParser.RCURLY, 0); }
+		public TerminalNode LCURLY() { return getToken(RTLParser.LCURLY, 0); }
+		public TerminalNode RCURLY() { return getToken(RTLParser.RCURLY, 0); }
 		public List<CellContext> cell() {
 			return getRuleContexts(CellContext.class);
 		}
 		public CellContext cell(int i) {
 			return getRuleContext(CellContext.class,i);
 		}
-		public TerminalNode ARROW() { return getToken(TTLParser.ARROW, 0); }
+		public TerminalNode ARROW() { return getToken(RTLParser.ARROW, 0); }
 		public ActionsContext actions() {
 			return getRuleContext(ActionsContext.class,0);
 		}
-		public TerminalNode COLON() { return getToken(TTLParser.COLON, 0); }
+		public TerminalNode COLON() { return getToken(RTLParser.COLON, 0); }
 		public CondContext cond() {
 			return getRuleContext(CondContext.class,0);
 		}
@@ -1033,15 +1036,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_cells; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterCells(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterCells(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitCells(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitCells(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitCells(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitCells(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1120,8 +1123,8 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class CellContext extends ParserRuleContext {
-		public TerminalNode LSQUARE() { return getToken(TTLParser.LSQUARE, 0); }
-		public TerminalNode RSQUARE() { return getToken(TTLParser.RSQUARE, 0); }
+		public TerminalNode LSQUARE() { return getToken(RTLParser.LSQUARE, 0); }
+		public TerminalNode RSQUARE() { return getToken(RTLParser.RSQUARE, 0); }
 		public ElementsContext elements() {
 			return getRuleContext(ElementsContext.class,0);
 		}
@@ -1140,15 +1143,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_cell; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterCell(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterCell(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitCell(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitCell(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitCell(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitCell(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1229,11 +1232,11 @@ public class TTLParser extends Parser {
 		public ChoiceContext choice() {
 			return getRuleContext(ChoiceContext.class,0);
 		}
-		public TerminalNode ARROW() { return getToken(TTLParser.ARROW, 0); }
+		public TerminalNode ARROW() { return getToken(RTLParser.ARROW, 0); }
 		public ActionsContext actions() {
 			return getRuleContext(ActionsContext.class,0);
 		}
-		public TerminalNode COLON() { return getToken(TTLParser.COLON, 0); }
+		public TerminalNode COLON() { return getToken(RTLParser.COLON, 0); }
 		public CondContext cond() {
 			return getRuleContext(CondContext.class,0);
 		}
@@ -1243,15 +1246,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_elements; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterElements(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterElements(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitElements(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitElements(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitElements(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitElements(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1333,7 +1336,7 @@ public class TTLParser extends Parser {
 		public TagsContext tags() {
 			return getRuleContext(TagsContext.class,0);
 		}
-		public TerminalNode ARROW() { return getToken(TTLParser.ARROW, 0); }
+		public TerminalNode ARROW() { return getToken(RTLParser.ARROW, 0); }
 		public ActionsContext actions() {
 			return getRuleContext(ActionsContext.class,0);
 		}
@@ -1343,15 +1346,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_element; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterElement(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterElement(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitElement(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitElement(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitElement(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitElement(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1414,24 +1417,24 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ElementTypeContext extends ParserRuleContext {
-		public TerminalNode ATTRIBUTE() { return getToken(TTLParser.ATTRIBUTE, 0); }
-		public TerminalNode VALUE() { return getToken(TTLParser.VALUE, 0); }
-		public TerminalNode SKIPPED() { return getToken(TTLParser.SKIPPED, 0); }
+		public TerminalNode ATTRIBUTE() { return getToken(RTLParser.ATTRIBUTE, 0); }
+		public TerminalNode VALUE() { return getToken(RTLParser.VALUE, 0); }
+		public TerminalNode SKIPPED() { return getToken(RTLParser.SKIPPED, 0); }
 		public ElementTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_elementType; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterElementType(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterElementType(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitElementType(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitElementType(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitElementType(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitElementType(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1468,9 +1471,9 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class TagsContext extends ParserRuleContext {
-		public List<TerminalNode> TAG() { return getTokens(TTLParser.TAG); }
+		public List<TerminalNode> TAG() { return getTokens(RTLParser.TAG); }
 		public TerminalNode TAG(int i) {
-			return getToken(TTLParser.TAG, i);
+			return getToken(RTLParser.TAG, i);
 		}
 		public TagsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1478,15 +1481,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_tags; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterTags(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterTags(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitTags(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitTags(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitTags(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitTags(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1533,9 +1536,9 @@ public class TTLParser extends Parser {
 		public ActionContext action(int i) {
 			return getRuleContext(ActionContext.class,i);
 		}
-		public List<TerminalNode> SEMICOLON() { return getTokens(TTLParser.SEMICOLON); }
+		public List<TerminalNode> SEMICOLON() { return getTokens(RTLParser.SEMICOLON); }
 		public TerminalNode SEMICOLON(int i) {
-			return getToken(TTLParser.SEMICOLON, i);
+			return getToken(RTLParser.SEMICOLON, i);
 		}
 		public ActionsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1543,15 +1546,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_actions; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterActions(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterActions(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitActions(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitActions(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitActions(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitActions(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1599,17 +1602,17 @@ public class TTLParser extends Parser {
 		public ActionTypeContext actionType() {
 			return getRuleContext(ActionTypeContext.class,0);
 		}
-		public TerminalNode LPAREN() { return getToken(TTLParser.LPAREN, 0); }
+		public TerminalNode LPAREN() { return getToken(RTLParser.LPAREN, 0); }
 		public List<ActionBodyContext> actionBody() {
 			return getRuleContexts(ActionBodyContext.class);
 		}
 		public ActionBodyContext actionBody(int i) {
 			return getRuleContext(ActionBodyContext.class,i);
 		}
-		public TerminalNode RPAREN() { return getToken(TTLParser.RPAREN, 0); }
-		public List<TerminalNode> SEMICOLON() { return getTokens(TTLParser.SEMICOLON); }
+		public TerminalNode RPAREN() { return getToken(RTLParser.RPAREN, 0); }
+		public List<TerminalNode> SEMICOLON() { return getTokens(RTLParser.SEMICOLON); }
 		public TerminalNode SEMICOLON(int i) {
-			return getToken(TTLParser.SEMICOLON, i);
+			return getToken(RTLParser.SEMICOLON, i);
 		}
 		public ActionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1617,15 +1620,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_action; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterAction(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterAction(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitAction(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitAction(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitAction(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitAction(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1676,26 +1679,26 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ActionTypeContext extends ParserRuleContext {
-		public TerminalNode FACTOR() { return getToken(TTLParser.FACTOR, 0); }
-		public TerminalNode CONCAT() { return getToken(TTLParser.CONCAT, 0); }
-		public TerminalNode RECORD() { return getToken(TTLParser.RECORD, 0); }
-		public TerminalNode GROUP() { return getToken(TTLParser.GROUP, 0); }
-		public TerminalNode SCHEMA() { return getToken(TTLParser.SCHEMA, 0); }
+		public TerminalNode FACTOR() { return getToken(RTLParser.FACTOR, 0); }
+		public TerminalNode CONCAT() { return getToken(RTLParser.CONCAT, 0); }
+		public TerminalNode RECORD() { return getToken(RTLParser.RECORD, 0); }
+		public TerminalNode GROUP() { return getToken(RTLParser.GROUP, 0); }
+		public TerminalNode SCHEMA() { return getToken(RTLParser.SCHEMA, 0); }
 		public ActionTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_actionType; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterActionType(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterActionType(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitActionType(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitActionType(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitActionType(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitActionType(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1732,7 +1735,7 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ActionBodyContext extends ParserRuleContext {
-		public TerminalNode STRING() { return getToken(TTLParser.STRING, 0); }
+		public TerminalNode STRING() { return getToken(RTLParser.STRING, 0); }
 		public LookupContext lookup() {
 			return getRuleContext(LookupContext.class,0);
 		}
@@ -1742,15 +1745,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_actionBody; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterActionBody(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterActionBody(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitActionBody(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitActionBody(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitActionBody(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitActionBody(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1800,26 +1803,26 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class StructContext extends ParserRuleContext {
-		public TerminalNode LPAREN() { return getToken(TTLParser.LPAREN, 0); }
+		public TerminalNode LPAREN() { return getToken(RTLParser.LPAREN, 0); }
 		public LineContext line() {
 			return getRuleContext(LineContext.class,0);
 		}
-		public TerminalNode RPAREN() { return getToken(TTLParser.RPAREN, 0); }
+		public TerminalNode RPAREN() { return getToken(RTLParser.RPAREN, 0); }
 		public StructContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_struct; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterStruct(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterStruct(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitStruct(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitStruct(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitStruct(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitStruct(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1875,15 +1878,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_line; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterLine(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterLine(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitLine(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitLine(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitLine(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitLine(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1951,22 +1954,22 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class StartTextContext extends ParserRuleContext {
-		public TerminalNode STRING() { return getToken(TTLParser.STRING, 0); }
+		public TerminalNode STRING() { return getToken(RTLParser.STRING, 0); }
 		public StartTextContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_startText; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterStartText(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterStartText(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitStartText(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitStartText(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitStartText(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitStartText(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1994,22 +1997,22 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class SeparatorContext extends ParserRuleContext {
-		public TerminalNode STRING() { return getToken(TTLParser.STRING, 0); }
+		public TerminalNode STRING() { return getToken(RTLParser.STRING, 0); }
 		public SeparatorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_separator; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterSeparator(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterSeparator(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitSeparator(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitSeparator(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitSeparator(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitSeparator(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2037,22 +2040,22 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class EndTextContext extends ParserRuleContext {
-		public TerminalNode STRING() { return getToken(TTLParser.STRING, 0); }
+		public TerminalNode STRING() { return getToken(RTLParser.STRING, 0); }
 		public EndTextContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_endText; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterEndText(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterEndText(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitEndText(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitEndText(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitEndText(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitEndText(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2080,7 +2083,7 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ChoiceContext extends ParserRuleContext {
-		public TerminalNode QUESTION() { return getToken(TTLParser.QUESTION, 0); }
+		public TerminalNode QUESTION() { return getToken(RTLParser.QUESTION, 0); }
 		public CondContext cond() {
 			return getRuleContext(CondContext.class,0);
 		}
@@ -2090,22 +2093,22 @@ public class TTLParser extends Parser {
 		public ChoiceBodyContext choiceBody(int i) {
 			return getRuleContext(ChoiceBodyContext.class,i);
 		}
-		public TerminalNode OR() { return getToken(TTLParser.OR, 0); }
+		public TerminalNode OR() { return getToken(RTLParser.OR, 0); }
 		public ChoiceContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_choice; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterChoice(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterChoice(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitChoice(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitChoice(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitChoice(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitChoice(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2155,15 +2158,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_choiceBody; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterChoiceBody(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterChoiceBody(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitChoiceBody(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitChoiceBody(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitChoiceBody(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitChoiceBody(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2214,9 +2217,9 @@ public class TTLParser extends Parser {
 		public ConstrContext constr(int i) {
 			return getRuleContext(ConstrContext.class,i);
 		}
-		public List<TerminalNode> SEMICOLON() { return getTokens(TTLParser.SEMICOLON); }
+		public List<TerminalNode> SEMICOLON() { return getTokens(RTLParser.SEMICOLON); }
 		public TerminalNode SEMICOLON(int i) {
-			return getToken(TTLParser.SEMICOLON, i);
+			return getToken(RTLParser.SEMICOLON, i);
 		}
 		public CondContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2224,15 +2227,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_cond; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterCond(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterCond(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitCond(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitCond(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitCond(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitCond(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2288,15 +2291,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_constr; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterConstr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterConstr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitConstr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitConstr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitConstr(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitConstr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2330,7 +2333,7 @@ public class TTLParser extends Parser {
 		public AllContext all() {
 			return getRuleContext(AllContext.class,0);
 		}
-		public TerminalNode COLON() { return getToken(TTLParser.COLON, 0); }
+		public TerminalNode COLON() { return getToken(RTLParser.COLON, 0); }
 		public WhereContext where() {
 			return getRuleContext(WhereContext.class,0);
 		}
@@ -2343,15 +2346,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_lookup; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterLookup(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterLookup(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitLookup(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitLookup(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitLookup(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitLookup(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2440,22 +2443,22 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class AllContext extends ParserRuleContext {
-		public TerminalNode MULT() { return getToken(TTLParser.MULT, 0); }
+		public TerminalNode MULT() { return getToken(RTLParser.MULT, 0); }
 		public AllContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_all; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterAll(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterAll(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitAll(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitAll(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitAll(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitAll(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2483,28 +2486,28 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class DirectionContext extends ParserRuleContext {
-		public TerminalNode LEFT() { return getToken(TTLParser.LEFT, 0); }
-		public TerminalNode RIGHT() { return getToken(TTLParser.RIGHT, 0); }
-		public TerminalNode UP() { return getToken(TTLParser.UP, 0); }
-		public TerminalNode DOWN() { return getToken(TTLParser.DOWN, 0); }
-		public TerminalNode INROW() { return getToken(TTLParser.INROW, 0); }
-		public TerminalNode INCOL() { return getToken(TTLParser.INCOL, 0); }
-		public TerminalNode INCELL() { return getToken(TTLParser.INCELL, 0); }
+		public TerminalNode LEFT() { return getToken(RTLParser.LEFT, 0); }
+		public TerminalNode RIGHT() { return getToken(RTLParser.RIGHT, 0); }
+		public TerminalNode UP() { return getToken(RTLParser.UP, 0); }
+		public TerminalNode DOWN() { return getToken(RTLParser.DOWN, 0); }
+		public TerminalNode INROW() { return getToken(RTLParser.INROW, 0); }
+		public TerminalNode INCOL() { return getToken(RTLParser.INCOL, 0); }
+		public TerminalNode INCELL() { return getToken(RTLParser.INCELL, 0); }
 		public DirectionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_direction; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterDirection(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterDirection(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitDirection(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitDirection(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitDirection(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitDirection(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2556,15 +2559,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_where; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterWhere(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterWhere(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitWhere(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitWhere(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitWhere(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitWhere(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2754,15 +2757,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_range; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterRange(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterRange(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitRange(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitRange(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitRange(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitRange(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2821,7 +2824,7 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class RowRangeContext extends ParserRuleContext {
-		public TerminalNode ROW() { return getToken(TTLParser.ROW, 0); }
+		public TerminalNode ROW() { return getToken(RTLParser.ROW, 0); }
 		public RangeBodyContext rangeBody() {
 			return getRuleContext(RangeBodyContext.class,0);
 		}
@@ -2831,15 +2834,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_rowRange; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterRowRange(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterRowRange(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitRowRange(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitRowRange(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitRowRange(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitRowRange(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2869,7 +2872,7 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ColRangeContext extends ParserRuleContext {
-		public TerminalNode COL() { return getToken(TTLParser.COL, 0); }
+		public TerminalNode COL() { return getToken(RTLParser.COL, 0); }
 		public RangeBodyContext rangeBody() {
 			return getRuleContext(RangeBodyContext.class,0);
 		}
@@ -2879,15 +2882,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_colRange; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterColRange(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterColRange(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitColRange(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitColRange(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitColRange(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitColRange(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2917,14 +2920,14 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class RangeBodyContext extends ParserRuleContext {
-		public TerminalNode INT() { return getToken(TTLParser.INT, 0); }
+		public TerminalNode INT() { return getToken(RTLParser.INT, 0); }
 		public RelativeContext relative() {
 			return getRuleContext(RelativeContext.class,0);
 		}
 		public StartContext start() {
 			return getRuleContext(StartContext.class,0);
 		}
-		public TerminalNode DOTS() { return getToken(TTLParser.DOTS, 0); }
+		public TerminalNode DOTS() { return getToken(RTLParser.DOTS, 0); }
 		public EndContext end() {
 			return getRuleContext(EndContext.class,0);
 		}
@@ -2934,15 +2937,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_rangeBody; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterRangeBody(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterRangeBody(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitRangeBody(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitRangeBody(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitRangeBody(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitRangeBody(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3002,7 +3005,7 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class StartContext extends ParserRuleContext {
-		public TerminalNode INT() { return getToken(TTLParser.INT, 0); }
+		public TerminalNode INT() { return getToken(RTLParser.INT, 0); }
 		public RelativeContext relative() {
 			return getRuleContext(RelativeContext.class,0);
 		}
@@ -3012,15 +3015,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_start; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterStart(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterStart(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitStart(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitStart(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitStart(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitStart(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3059,7 +3062,7 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class EndContext extends ParserRuleContext {
-		public TerminalNode INT() { return getToken(TTLParser.INT, 0); }
+		public TerminalNode INT() { return getToken(RTLParser.INT, 0); }
 		public RelativeContext relative() {
 			return getRuleContext(RelativeContext.class,0);
 		}
@@ -3069,15 +3072,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_end; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterEnd(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterEnd(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitEnd(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitEnd(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitEnd(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitEnd(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3116,23 +3119,23 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class RelativeContext extends ParserRuleContext {
-		public TerminalNode PLUS() { return getToken(TTLParser.PLUS, 0); }
-		public TerminalNode MINUS() { return getToken(TTLParser.MINUS, 0); }
+		public TerminalNode PLUS() { return getToken(RTLParser.PLUS, 0); }
+		public TerminalNode MINUS() { return getToken(RTLParser.MINUS, 0); }
 		public RelativeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_relative; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterRelative(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterRelative(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitRelative(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitRelative(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitRelative(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitRelative(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3169,22 +3172,22 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class IndexContext extends ParserRuleContext {
-		public TerminalNode INT() { return getToken(TTLParser.INT, 0); }
+		public TerminalNode INT() { return getToken(RTLParser.INT, 0); }
 		public IndexContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_index; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterIndex(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterIndex(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitIndex(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitIndex(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitIndex(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitIndex(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3226,19 +3229,19 @@ public class TTLParser extends Parser {
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class StrLiteralContext extends ExprContext {
-		public TerminalNode STRING() { return getToken(TTLParser.STRING, 0); }
+		public TerminalNode STRING() { return getToken(RTLParser.STRING, 0); }
 		public StrLiteralContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterStrLiteral(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterStrLiteral(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitStrLiteral(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitStrLiteral(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitStrLiteral(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitStrLiteral(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3259,21 +3262,21 @@ public class TTLParser extends Parser {
 		public StrExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterStrExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterStrExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitStrExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitStrExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitStrExpr(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitStrExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ThisExprContext extends ExprContext {
-		public TerminalNode THIS() { return getToken(TTLParser.THIS, 0); }
+		public TerminalNode THIS() { return getToken(RTLParser.THIS, 0); }
 		public PropContext prop() {
 			return getRuleContext(PropContext.class,0);
 		}
@@ -3283,15 +3286,15 @@ public class TTLParser extends Parser {
 		public ThisExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterThisExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterThisExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitThisExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitThisExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitThisExpr(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitThisExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3312,36 +3315,36 @@ public class TTLParser extends Parser {
 		public ArithmExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterArithmExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterArithmExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitArithmExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitArithmExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitArithmExpr(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitArithmExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class NotExprContext extends ExprContext {
-		public TerminalNode NOT() { return getToken(TTLParser.NOT, 0); }
+		public TerminalNode NOT() { return getToken(RTLParser.NOT, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public NotExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterNotExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterNotExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitNotExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitNotExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitNotExpr(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitNotExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3353,15 +3356,15 @@ public class TTLParser extends Parser {
 		public FuncExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterFuncExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterFuncExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitFuncExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitFuncExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitFuncExpr(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitFuncExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3373,15 +3376,15 @@ public class TTLParser extends Parser {
 		public PropExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterPropExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterPropExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitPropExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitPropExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitPropExpr(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitPropExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3402,33 +3405,33 @@ public class TTLParser extends Parser {
 		public CompExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterCompExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterCompExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitCompExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitCompExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitCompExpr(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitCompExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class IntLiteralContext extends ExprContext {
-		public TerminalNode INT() { return getToken(TTLParser.INT, 0); }
+		public TerminalNode INT() { return getToken(RTLParser.INT, 0); }
 		public IntLiteralContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterIntLiteral(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterIntLiteral(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitIntLiteral(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitIntLiteral(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitIntLiteral(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitIntLiteral(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3449,15 +3452,15 @@ public class TTLParser extends Parser {
 		public BinaryExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterBinaryExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterBinaryExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitBinaryExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitBinaryExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitBinaryExpr(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitBinaryExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3469,37 +3472,37 @@ public class TTLParser extends Parser {
 		public BoolLiteralContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterBoolLiteral(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterBoolLiteral(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitBoolLiteral(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitBoolLiteral(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitBoolLiteral(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitBoolLiteral(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ParenExprContext extends ExprContext {
-		public TerminalNode LPAREN() { return getToken(TTLParser.LPAREN, 0); }
+		public TerminalNode LPAREN() { return getToken(RTLParser.LPAREN, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
-		public TerminalNode RPAREN() { return getToken(TTLParser.RPAREN, 0); }
+		public TerminalNode RPAREN() { return getToken(RTLParser.RPAREN, 0); }
 		public ParenExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterParenExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterParenExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitParenExpr(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitParenExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitParenExpr(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitParenExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3704,29 +3707,29 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class CompOpContext extends ParserRuleContext {
-		public TerminalNode GT() { return getToken(TTLParser.GT, 0); }
-		public TerminalNode GE() { return getToken(TTLParser.GE, 0); }
-		public TerminalNode LT() { return getToken(TTLParser.LT, 0); }
-		public TerminalNode LE() { return getToken(TTLParser.LE, 0); }
-		public TerminalNode EQ() { return getToken(TTLParser.EQ, 0); }
-		public TerminalNode NEQ() { return getToken(TTLParser.NEQ, 0); }
-		public TerminalNode CONTAINS() { return getToken(TTLParser.CONTAINS, 0); }
-		public TerminalNode MATCHES() { return getToken(TTLParser.MATCHES, 0); }
+		public TerminalNode GT() { return getToken(RTLParser.GT, 0); }
+		public TerminalNode GE() { return getToken(RTLParser.GE, 0); }
+		public TerminalNode LT() { return getToken(RTLParser.LT, 0); }
+		public TerminalNode LE() { return getToken(RTLParser.LE, 0); }
+		public TerminalNode EQ() { return getToken(RTLParser.EQ, 0); }
+		public TerminalNode NEQ() { return getToken(RTLParser.NEQ, 0); }
+		public TerminalNode CONTAINS() { return getToken(RTLParser.CONTAINS, 0); }
+		public TerminalNode MATCHES() { return getToken(RTLParser.MATCHES, 0); }
 		public CompOpContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_compOp; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterCompOp(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterCompOp(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitCompOp(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitCompOp(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitCompOp(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitCompOp(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3763,23 +3766,23 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class BinaryOpContext extends ParserRuleContext {
-		public TerminalNode AND() { return getToken(TTLParser.AND, 0); }
-		public TerminalNode OR() { return getToken(TTLParser.OR, 0); }
+		public TerminalNode AND() { return getToken(RTLParser.AND, 0); }
+		public TerminalNode OR() { return getToken(RTLParser.OR, 0); }
 		public BinaryOpContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_binaryOp; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterBinaryOp(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterBinaryOp(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitBinaryOp(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitBinaryOp(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitBinaryOp(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitBinaryOp(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3816,18 +3819,18 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class FuncContext extends ParserRuleContext {
-		public TerminalNode ID() { return getToken(TTLParser.ID, 0); }
-		public TerminalNode LPAREN() { return getToken(TTLParser.LPAREN, 0); }
-		public TerminalNode RPAREN() { return getToken(TTLParser.RPAREN, 0); }
+		public TerminalNode ID() { return getToken(RTLParser.ID, 0); }
+		public TerminalNode LPAREN() { return getToken(RTLParser.LPAREN, 0); }
+		public TerminalNode RPAREN() { return getToken(RTLParser.RPAREN, 0); }
 		public List<ArgContext> arg() {
 			return getRuleContexts(ArgContext.class);
 		}
 		public ArgContext arg(int i) {
 			return getRuleContext(ArgContext.class,i);
 		}
-		public List<TerminalNode> COMMA() { return getTokens(TTLParser.COMMA); }
+		public List<TerminalNode> COMMA() { return getTokens(RTLParser.COMMA); }
 		public TerminalNode COMMA(int i) {
-			return getToken(TTLParser.COMMA, i);
+			return getToken(RTLParser.COMMA, i);
 		}
 		public FuncContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -3835,15 +3838,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_func; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterFunc(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterFunc(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitFunc(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitFunc(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitFunc(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitFunc(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3902,8 +3905,8 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ArgContext extends ParserRuleContext {
-		public TerminalNode STRING() { return getToken(TTLParser.STRING, 0); }
-		public TerminalNode INT() { return getToken(TTLParser.INT, 0); }
+		public TerminalNode STRING() { return getToken(RTLParser.STRING, 0); }
+		public TerminalNode INT() { return getToken(RTLParser.INT, 0); }
 		public PropContext prop() {
 			return getRuleContext(PropContext.class,0);
 		}
@@ -3913,15 +3916,15 @@ public class TTLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_arg; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterArg(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterArg(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitArg(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitArg(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitArg(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitArg(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3971,22 +3974,22 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class PropContext extends ParserRuleContext {
-		public TerminalNode ID() { return getToken(TTLParser.ID, 0); }
+		public TerminalNode ID() { return getToken(RTLParser.ID, 0); }
 		public PropContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_prop; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterProp(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterProp(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitProp(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitProp(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitProp(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitProp(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -4014,23 +4017,23 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class BoolContext extends ParserRuleContext {
-		public TerminalNode TRUE() { return getToken(TTLParser.TRUE, 0); }
-		public TerminalNode FALSE() { return getToken(TTLParser.FALSE, 0); }
+		public TerminalNode TRUE() { return getToken(RTLParser.TRUE, 0); }
+		public TerminalNode FALSE() { return getToken(RTLParser.FALSE, 0); }
 		public BoolContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_bool; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterBool(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterBool(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitBool(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitBool(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitBool(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitBool(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -4067,25 +4070,25 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ArithmOpContext extends ParserRuleContext {
-		public TerminalNode PLUS() { return getToken(TTLParser.PLUS, 0); }
-		public TerminalNode MINUS() { return getToken(TTLParser.MINUS, 0); }
-		public TerminalNode MULT() { return getToken(TTLParser.MULT, 0); }
-		public TerminalNode MOD() { return getToken(TTLParser.MOD, 0); }
+		public TerminalNode PLUS() { return getToken(RTLParser.PLUS, 0); }
+		public TerminalNode MINUS() { return getToken(RTLParser.MINUS, 0); }
+		public TerminalNode MULT() { return getToken(RTLParser.MULT, 0); }
+		public TerminalNode MOD() { return getToken(RTLParser.MOD, 0); }
 		public ArithmOpContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_arithmOp; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterArithmOp(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterArithmOp(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitArithmOp(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitArithmOp(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitArithmOp(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitArithmOp(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -4122,22 +4125,22 @@ public class TTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class StrOpContext extends ParserRuleContext {
-		public TerminalNode PLUS() { return getToken(TTLParser.PLUS, 0); }
+		public TerminalNode PLUS() { return getToken(RTLParser.PLUS, 0); }
 		public StrOpContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_strOp; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).enterStrOp(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterStrOp(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TTLListener ) ((TTLListener)listener).exitStrOp(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitStrOp(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TTLVisitor ) return ((TTLVisitor<? extends T>)visitor).visitStrOp(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitStrOp(this);
 			else return visitor.visitChildren(this);
 		}
 	}

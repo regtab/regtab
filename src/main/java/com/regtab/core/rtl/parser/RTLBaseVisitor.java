@@ -1,9 +1,9 @@
-// Generated from D:/yd/code/tabbyetl/src/main/antlr4/TTL.g4 by ANTLR 4.13.1
+// Generated from D:/yd/code/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
 package com.regtab.core.rtl.parser;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
- * This class provides an empty implementation of {@link TTLVisitor},
+ * This class provides an empty implementation of {@link RTLVisitor},
  * which can be extended to create a visitor which only needs to handle a subset
  * of the available methods.
  *
@@ -11,453 +11,453 @@ import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
  * operations with no return type.
  */
 @SuppressWarnings("CheckReturnValue")
-public class TTLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements TTLVisitor<T> {
+public class RTLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements RTLVisitor<T> {
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitTable(TTLParser.TableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitTable(RTLParser.TableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSubtable(TTLParser.SubtableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSubtable(RTLParser.SubtableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRows(TTLParser.RowsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRows(RTLParser.RowsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLabel(TTLParser.LabelContext ctx) { return visitChildren(ctx); }
+	@Override public T visitLabel(RTLParser.LabelContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitReplacement(TTLParser.ReplacementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitReplacement(RTLParser.ReplacementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitQuantifier(TTLParser.QuantifierContext ctx) { return visitChildren(ctx); }
+	@Override public T visitQuantifier(RTLParser.QuantifierContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitZeroOrOne(TTLParser.ZeroOrOneContext ctx) { return visitChildren(ctx); }
+	@Override public T visitZeroOrOne(RTLParser.ZeroOrOneContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitZeroOrMore(TTLParser.ZeroOrMoreContext ctx) { return visitChildren(ctx); }
+	@Override public T visitZeroOrMore(RTLParser.ZeroOrMoreContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitOneOrMore(TTLParser.OneOrMoreContext ctx) { return visitChildren(ctx); }
+	@Override public T visitOneOrMore(RTLParser.OneOrMoreContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExactly(TTLParser.ExactlyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitExactly(RTLParser.ExactlyContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRow(TTLParser.RowContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRow(RTLParser.RowContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSubrows(TTLParser.SubrowsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSubrows(RTLParser.SubrowsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSubrow(TTLParser.SubrowContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSubrow(RTLParser.SubrowContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCells(TTLParser.CellsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCells(RTLParser.CellsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCell(TTLParser.CellContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCell(RTLParser.CellContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitElements(TTLParser.ElementsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitElements(RTLParser.ElementsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitElement(TTLParser.ElementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitElement(RTLParser.ElementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitElementType(TTLParser.ElementTypeContext ctx) { return visitChildren(ctx); }
+	@Override public T visitElementType(RTLParser.ElementTypeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitTags(TTLParser.TagsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitTags(RTLParser.TagsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitActions(TTLParser.ActionsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitActions(RTLParser.ActionsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAction(TTLParser.ActionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAction(RTLParser.ActionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitActionType(TTLParser.ActionTypeContext ctx) { return visitChildren(ctx); }
+	@Override public T visitActionType(RTLParser.ActionTypeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitActionBody(TTLParser.ActionBodyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitActionBody(RTLParser.ActionBodyContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStruct(TTLParser.StructContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStruct(RTLParser.StructContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLine(TTLParser.LineContext ctx) { return visitChildren(ctx); }
+	@Override public T visitLine(RTLParser.LineContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStartText(TTLParser.StartTextContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStartText(RTLParser.StartTextContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSeparator(TTLParser.SeparatorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSeparator(RTLParser.SeparatorContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitEndText(TTLParser.EndTextContext ctx) { return visitChildren(ctx); }
+	@Override public T visitEndText(RTLParser.EndTextContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitChoice(TTLParser.ChoiceContext ctx) { return visitChildren(ctx); }
+	@Override public T visitChoice(RTLParser.ChoiceContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitChoiceBody(TTLParser.ChoiceBodyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitChoiceBody(RTLParser.ChoiceBodyContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCond(TTLParser.CondContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCond(RTLParser.CondContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitConstr(TTLParser.ConstrContext ctx) { return visitChildren(ctx); }
+	@Override public T visitConstr(RTLParser.ConstrContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLookup(TTLParser.LookupContext ctx) { return visitChildren(ctx); }
+	@Override public T visitLookup(RTLParser.LookupContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAll(TTLParser.AllContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAll(RTLParser.AllContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDirection(TTLParser.DirectionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDirection(RTLParser.DirectionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitWhere(TTLParser.WhereContext ctx) { return visitChildren(ctx); }
+	@Override public T visitWhere(RTLParser.WhereContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRange(TTLParser.RangeContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRange(RTLParser.RangeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRowRange(TTLParser.RowRangeContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRowRange(RTLParser.RowRangeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitColRange(TTLParser.ColRangeContext ctx) { return visitChildren(ctx); }
+	@Override public T visitColRange(RTLParser.ColRangeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRangeBody(TTLParser.RangeBodyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRangeBody(RTLParser.RangeBodyContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStart(TTLParser.StartContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStart(RTLParser.StartContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitEnd(TTLParser.EndContext ctx) { return visitChildren(ctx); }
+	@Override public T visitEnd(RTLParser.EndContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRelative(TTLParser.RelativeContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRelative(RTLParser.RelativeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIndex(TTLParser.IndexContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIndex(RTLParser.IndexContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStrLiteral(TTLParser.StrLiteralContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStrLiteral(RTLParser.StrLiteralContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStrExpr(TTLParser.StrExprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStrExpr(RTLParser.StrExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitThisExpr(TTLParser.ThisExprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitThisExpr(RTLParser.ThisExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArithmExpr(TTLParser.ArithmExprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitArithmExpr(RTLParser.ArithmExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNotExpr(TTLParser.NotExprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNotExpr(RTLParser.NotExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFuncExpr(TTLParser.FuncExprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFuncExpr(RTLParser.FuncExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPropExpr(TTLParser.PropExprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPropExpr(RTLParser.PropExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCompExpr(TTLParser.CompExprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCompExpr(RTLParser.CompExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIntLiteral(TTLParser.IntLiteralContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIntLiteral(RTLParser.IntLiteralContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBinaryExpr(TTLParser.BinaryExprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBinaryExpr(RTLParser.BinaryExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBoolLiteral(TTLParser.BoolLiteralContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBoolLiteral(RTLParser.BoolLiteralContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitParenExpr(TTLParser.ParenExprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitParenExpr(RTLParser.ParenExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCompOp(TTLParser.CompOpContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCompOp(RTLParser.CompOpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBinaryOp(TTLParser.BinaryOpContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBinaryOp(RTLParser.BinaryOpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunc(TTLParser.FuncContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFunc(RTLParser.FuncContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArg(TTLParser.ArgContext ctx) { return visitChildren(ctx); }
+	@Override public T visitArg(RTLParser.ArgContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitProp(TTLParser.PropContext ctx) { return visitChildren(ctx); }
+	@Override public T visitProp(RTLParser.PropContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBool(TTLParser.BoolContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBool(RTLParser.BoolContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArithmOp(TTLParser.ArithmOpContext ctx) { return visitChildren(ctx); }
+	@Override public T visitArithmOp(RTLParser.ArithmOpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStrOp(TTLParser.StrOpContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStrOp(RTLParser.StrOpContext ctx) { return visitChildren(ctx); }
 }

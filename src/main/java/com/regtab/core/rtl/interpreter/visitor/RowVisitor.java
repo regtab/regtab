@@ -4,15 +4,16 @@ import com.regtab.core.model.Action;
 import com.regtab.core.model.Condition;
 import com.regtab.core.rtl.interpreter.pattern.RowPattern;
 import com.regtab.core.rtl.interpreter.pattern.SubrowPattern;
+import com.regtab.core.rtl.parser.RTLBaseVisitor;
 import lombok.extern.java.Log;
-import com.regtab.core.rtl.parser.TTLBaseVisitor;
-import com.regtab.core.rtl.parser.TTLParser.*;
 
 import java.util.HashMap;
 import java.util.List;
 
+import com.regtab.core.rtl.parser.RTLParser.*;
+
 @Log
-final class RowVisitor extends TTLBaseVisitor<RowPattern> {
+final class RowVisitor extends RTLBaseVisitor<RowPattern> {
     private static final SubrowVisitor subrowVisitor = new SubrowVisitor();
     private static final CondVisitor condVisitor = new CondVisitor();
     private static final QuantifierVisitor quantifierVisitor = new QuantifierVisitor();

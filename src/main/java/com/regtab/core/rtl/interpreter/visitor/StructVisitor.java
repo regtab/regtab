@@ -2,13 +2,14 @@ package com.regtab.core.rtl.interpreter.visitor;
 
 import com.regtab.core.rtl.interpreter.pattern.ElementPattern;
 import com.regtab.core.rtl.interpreter.pattern.StructPattern;
-import com.regtab.core.rtl.parser.TTLBaseVisitor;
-import com.regtab.core.rtl.parser.TTLParser.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-final class StructVisitor extends TTLBaseVisitor<StructPattern> {
+import com.regtab.core.rtl.parser.RTLBaseVisitor;
+import com.regtab.core.rtl.parser.RTLParser.*;
+
+final class StructVisitor extends RTLBaseVisitor<StructPattern> {
     private static final ElementVisitor elementVisitor = new ElementVisitor();
 
     @Override

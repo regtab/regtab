@@ -6,7 +6,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import com.regtab.core.rtl.parser.TTLParser.*;
+
+import com.regtab.core.rtl.parser.RTLParser.*;
 
 import java.util.ArrayList;
 import java.util.List;

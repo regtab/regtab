@@ -3,14 +3,13 @@ package com.regtab.core.rtl.interpreter.visitor;
 import com.regtab.core.model.Condition;
 import com.regtab.core.model.Constraint;
 import com.regtab.core.model.Expr;
-import com.regtab.core.rtl.parser.TTLBaseVisitor;
-import com.regtab.core.rtl.parser.TTLParser.CondContext;
-import com.regtab.core.rtl.parser.TTLParser.ConstrContext;
-import com.regtab.core.rtl.parser.TTLParser.ExprContext;
 
 import java.util.List;
 
-final class CondVisitor extends TTLBaseVisitor<Condition>  {
+import com.regtab.core.rtl.parser.RTLBaseVisitor;
+import com.regtab.core.rtl.parser.RTLParser.*;
+
+final class CondVisitor extends RTLBaseVisitor<Condition> {
 
     private static ExprVisitor exprVisitor = new ExprVisitor();
 

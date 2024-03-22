@@ -4,12 +4,13 @@ import com.regtab.core.model.Action;
 import com.regtab.core.model.Condition;
 import com.regtab.core.rtl.interpreter.pattern.RowPattern;
 import com.regtab.core.rtl.interpreter.pattern.SubtablePattern;
-import com.regtab.core.rtl.parser.TTLBaseVisitor;
-import com.regtab.core.rtl.parser.TTLParser.*;
 
 import java.util.List;
 
-final class SubtableVisitor extends TTLBaseVisitor<SubtablePattern> {
+import com.regtab.core.rtl.parser.RTLBaseVisitor;
+import com.regtab.core.rtl.parser.RTLParser.*;
+
+final class SubtableVisitor extends RTLBaseVisitor<SubtablePattern> {
     private static final RowVisitor rowVisitor = new RowVisitor();
     private static final CondVisitor condVisitor = new CondVisitor();
     private static final QuantifierVisitor quantifierVisitor = new QuantifierVisitor();

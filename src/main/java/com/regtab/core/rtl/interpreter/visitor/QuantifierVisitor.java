@@ -1,11 +1,10 @@
 package com.regtab.core.rtl.interpreter.visitor;
 
+import com.regtab.core.rtl.parser.RTLBaseVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import com.regtab.core.rtl.parser.TTLBaseVisitor;
-import com.regtab.core.rtl.parser.TTLParser.ExactlyContext;
-import com.regtab.core.rtl.parser.TTLParser.QuantifierContext;
+import com.regtab.core.rtl.parser.RTLParser.*;
 
-final class QuantifierVisitor extends TTLBaseVisitor<Quantifier> {
+final class QuantifierVisitor extends RTLBaseVisitor<Quantifier> {
     public Quantifier visit(QuantifierContext ctx) {
         return visitQuantifier(ctx);
     }

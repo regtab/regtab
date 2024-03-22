@@ -2,6 +2,8 @@ package com.regtab.core.rtl.interpreter;
 
 import com.regtab.core.model.ITable;
 import com.regtab.core.rtl.interpreter.pattern.TablePattern;
+import com.regtab.core.rtl.parser.RTLLexer;
+import com.regtab.core.rtl.parser.RTLParser;
 import lombok.extern.java.Log;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -12,8 +14,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import com.regtab.core.rtl.interpreter.visitor.Interpreter;
-import com.regtab.core.rtl.parser.TTLLexer;
-import com.regtab.core.rtl.parser.TTLParser;
 
 @Log
 public class Pattern {
@@ -30,9 +30,9 @@ public class Pattern {
             throw new IllegalArgumentException("ttl is empty");
         }
 
-        final TTLLexer lexer = new TTLLexer(CharStreams.fromString(ttl));
+        final RTLLexer lexer = new RTLLexer(CharStreams.fromString(ttl));
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        final TTLParser parser = new TTLParser(tokens);
+        final RTLParser parser = new RTLParser(tokens);
         final ParseTree tree = parser.table();
         final TablePattern tableTemplate = Interpreter.compile(tree);
 

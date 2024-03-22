@@ -3,14 +3,15 @@ package com.regtab.core.rtl.interpreter.visitor;
 import com.regtab.core.model.Action;
 import com.regtab.core.model.Element;
 import com.regtab.core.model.Expr;
+import com.regtab.core.rtl.parser.RTLBaseVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import com.regtab.core.rtl.interpreter.pattern.ElementPattern;
-import com.regtab.core.rtl.parser.TTLBaseVisitor;
-import com.regtab.core.rtl.parser.TTLParser.*;
 
 import java.util.List;
 
-final class ElementVisitor extends TTLBaseVisitor<ElementPattern> {
+import com.regtab.core.rtl.parser.RTLParser.*;
+
+final class ElementVisitor extends RTLBaseVisitor<ElementPattern> {
     private static final ExprVisitor exprVisitor = new ExprVisitor();
     private static final ActionVisitor actionVisitor = new ActionVisitor();
 

@@ -7,10 +7,10 @@ import lombok.NonNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.regtab.core.rtl.parser.TTLParser.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.regtab.core.rtl.parser.RTLParser.*;
 
 public final class SubrowPattern extends RepeatablePattern {
     public SubrowPattern(SubrowContext context) {

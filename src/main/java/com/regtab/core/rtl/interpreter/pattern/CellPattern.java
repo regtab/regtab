@@ -3,12 +3,13 @@ package com.regtab.core.rtl.interpreter.pattern;
 import com.regtab.core.model.Action;
 import com.regtab.core.model.Condition;
 import com.regtab.core.model.ICell;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-import com.regtab.core.rtl.parser.TTLParser.*;
+import com.regtab.core.rtl.parser.RTLParser.*;
 
 public final class CellPattern extends RepeatablePattern {
     public ElementsContext elementsContext;

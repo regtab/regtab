@@ -1,5 +1,5 @@
-/** TTL -- аббр. от "Table Template Language" */
-grammar TTL ;
+/** RTL -- аббр. от "Regular Table Language" */
+grammar RTL ;
 
 options { caseInsensitive = true ; }
 

@@ -6,11 +6,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import com.regtab.core.rtl.parser.TTLParser.RowsContext;
-import com.regtab.core.rtl.parser.TTLParser.SubtableContext;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.regtab.core.rtl.parser.RTLParser.*;
 
 public final class SubtablePattern extends RepeatablePattern {
     public SubtablePattern(SubtableContext context) {
