@@ -1,0 +1,105 @@
+package com.regtab.core.rtl.interpreter.visitor;
+
+import com.regtab.core.model.Action;
+import com.regtab.core.model.Condition;
+import com.regtab.core.rtl.interpreter.pattern.CellPattern;
+import com.regtab.core.rtl.interpreter.pattern.SubrowPattern;
+import com.regtab.core.rtl.parser.TTLBaseVisitor;
+import com.regtab.core.rtl.parser.TTLParser.*;
+
+import java.util.List;
+
+final class SubrowVisitor extends TTLBaseVisitor<SubrowPattern> {
+    private static final CellVisitor cellVisitor = new CellVisitor();
+    private static final CondVisitor condVisitor = new CondVisitor();
+    private static final QuantifierVisitor quantifierVisitor = new QuantifierVisitor();
+    private static final ActionVisitor actionVisitor = new ActionVisitor();
+
+    @Override
+    public SubrowPattern visitSubrow(SubrowContext ctx) {
+        final SubrowPattern subrowTemplate = new SubrowPattern(ctx);
+
+        final List<CellContext> cellContexts = ctx.cell();
+        if (cellContexts != null && !cellContexts.isEmpty()) {
+            boolean result = apply(cellContexts, subrowTemplate);
+            if (!result)
+                return null; // TODO test
+            return subrowTemplate;
+        }
+
+        final CellsContext cellsContext = ctx.cells();
+        if (cellsContext != null) {
+            boolean result = apply(cellsContext, subrowTemplate);
+            if (!result)
+                return null; // TODO test
+            return subrowTemplate;
+        }
+
+        return null; // Impossible
+    }
+
+    private boolean apply(List<CellContext> cellContexts, SubrowPattern tmpl) {
+        for (CellContext ctx : cellContexts) {
+            CellPattern cellTemplate = cellVisitor.visit(ctx);
+            if (cellTemplate == null)
+                return false; // TODO log
+
+            tmpl.add(cellTemplate);
+        }
+
+        final Quantifier quantifier = new Quantifier(Quantifier.Times.EXACTLY, 1);
+        tmpl.setQuantifier(quantifier);
+
+        return true;
+    }
+
+    private boolean apply(CellsContext cellsContext, SubrowPattern tmpl) {
+        tmpl.cellsContext = cellsContext;
+
+        // Instruction order matter
+        final List<CellContext> cellContexts = cellsContext.cell();
+        for (CellContext ctx : cellContexts) {
+            CellPattern cellTemplate = cellVisitor.visit(ctx);
+            if (cellTemplate == null)
+                return false; // TODO log
+
+            tmpl.add(cellTemplate);
+        }
+
+        final CondContext condContext = cellsContext.cond();
+        if (condContext != null) {
+            final Condition condition = condVisitor.visit(condContext);
+            if (condition == null)
+                return false; // TODO log
+
+            tmpl.setCondition(condition);
+        }
+
+        final Quantifier quantifier;
+        final QuantifierContext quantifierContext = cellsContext.quantifier();
+        if (quantifierContext == null) {
+            quantifier = new Quantifier(Quantifier.Times.EXACTLY, 1);
+        } else {
+            quantifier = quantifierVisitor.visit(quantifierContext);
+            if (quantifier == null)
+                return false; // TODO log
+        }
+        tmpl.setQuantifier(quantifier);
+
+        final ActionsContext actionsCtx = cellsContext.actions();
+        if (actionsCtx != null) {
+            List<ActionContext> actionCtxList = actionsCtx.action();
+            if (actionCtxList != null) {
+                for (ActionContext actionCtx : actionCtxList) {
+                    Action action = actionVisitor.visit(actionCtx);
+                    if (action == null)
+                        return false; // TODO test
+                    tmpl.add(action);
+                }
+            }
+        }
+
+        return true;
+    }
+
+}

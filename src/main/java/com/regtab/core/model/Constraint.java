@@ -1,0 +1,16 @@
+package com.regtab.core.model;
+
+import lombok.*;
+
+@RequiredArgsConstructor
+public final class Constraint {
+    private final Expr boolExpr;
+
+    public boolean eval(@NonNull ICell caller, @NonNull ICell candidate) {
+        Object result = boolExpr.eval(caller, candidate);
+        if (result instanceof Boolean)
+            return (Boolean) result;
+        else
+            throw new IllegalStateException("Выражение не является логическим");
+    }
+}
