@@ -1,4 +1,4 @@
-package com.regtab.core.model;
+package com.regtab.core.model.format;
 
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,8 +1,8 @@
 package com.regtab.core.rtl.interpreter.visitor;
 
-import com.regtab.core.model.Expr;
-import com.regtab.core.model.Func;
-import com.regtab.core.model.Prop;
+import com.regtab.core.model.semantics.Expr;
+import com.regtab.core.model.semantics.Func;
+import com.regtab.core.model.semantics.Prop;
 
 import java.util.List;
 

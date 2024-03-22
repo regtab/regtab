@@ -1,7 +1,7 @@
 package com.regtab.core.rtl.interpreter.visitor;
 
-import com.regtab.core.model.Action;
-import com.regtab.core.model.Condition;
+import com.regtab.core.model.semantics.Action;
+import com.regtab.core.model.semantics.Condition;
 import com.regtab.core.rtl.interpreter.pattern.CellPattern;
 import com.regtab.core.rtl.interpreter.pattern.SubrowPattern;
 

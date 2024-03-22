@@ -1,4 +1,4 @@
-package com.regtab.core.model;
+package com.regtab.core.model.recordset;
 
 import lombok.NonNull;
 
@@ -22,7 +22,7 @@ public class Group {
         group.values.clear();
     }
 
-    void fillAttribute(@NonNull Attribute attr) {
+    public void fillAttribute(@NonNull Attribute attr) {
         for (Value value : values)
             attr.addValue(value);
     }

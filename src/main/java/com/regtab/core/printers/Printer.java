@@ -2,10 +2,10 @@ package com.regtab.core.printers;
 
 import dnl.utils.text.table.TextTable;
 import lombok.NonNull;
-import com.regtab.core.model.Attribute;
-import com.regtab.core.model.Record;
-import com.regtab.core.model.Recordset;
-import com.regtab.core.model.Value;
+import com.regtab.core.model.recordset.Attribute;
+import com.regtab.core.model.recordset.Record;
+import com.regtab.core.model.recordset.Recordset;
+import com.regtab.core.model.recordset.Value;
 
 import java.util.List;
 

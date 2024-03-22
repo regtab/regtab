@@ -1,6 +1,6 @@
 package com.regtab.core.rtl.interpreter.pattern;
 
-import com.regtab.core.model.Action;
+import com.regtab.core.model.semantics.Action;
 import com.regtab.core.model.ICell;
 import lombok.Getter;
 import lombok.NonNull;

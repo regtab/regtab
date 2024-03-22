@@ -1,9 +1,9 @@
-package com.regtab.core.model;
+package com.regtab.core.model.style;
 
 import lombok.Getter;
 import lombok.Setter;
 
-public class CCellStyle {
+public class Style {
     @Getter
     @Setter
     private CFont font;

@@ -1,5 +1,6 @@
-package com.regtab.core.model;
+package com.regtab.core.model.recordset;
 
+import com.regtab.core.model.semantics.Element;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;

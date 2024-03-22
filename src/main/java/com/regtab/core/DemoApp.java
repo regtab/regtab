@@ -1,13 +1,13 @@
 package com.regtab.core;
 
 import com.regtab.core.model.ITable;
-import com.regtab.core.model.Recordset;
+import com.regtab.core.model.recordset.Recordset;
 import com.regtab.core.printers.Printer;
 import com.regtab.core.readers.XlReader;
-import com.regtab.core.rtl.interpreter.Matcher;
-import com.regtab.core.rtl.interpreter.TableMap;
-import com.regtab.core.rtl.interpreter.Pattern;
-import org.apache.log4j.BasicConfigurator;
+import com.regtab.core.rtl.Matcher;
+import com.regtab.core.rtl.TableMap;
+import com.regtab.core.rtl.Pattern;
+//import org.apache.log4j.BasicConfigurator;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +45,7 @@ public class DemoApp {
 
     public static void main(String[] args) throws IOException {
         // Применить базовую конфигурацию системы журналирования log4j
-        BasicConfigurator.configure();
+        //BasicConfigurator.configure();
 
         File xlFile = new File("../../data/ttl/example1.xlsx");
         File xlFile2 = new File("../../data/ttl/example2.xlsx");

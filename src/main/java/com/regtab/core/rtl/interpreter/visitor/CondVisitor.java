@@ -1,8 +1,8 @@
 package com.regtab.core.rtl.interpreter.visitor;
 
-import com.regtab.core.model.Condition;
-import com.regtab.core.model.Constraint;
-import com.regtab.core.model.Expr;
+import com.regtab.core.model.semantics.Condition;
+import com.regtab.core.model.semantics.Constraint;
+import com.regtab.core.model.semantics.Expr;
 
 import java.util.List;
 

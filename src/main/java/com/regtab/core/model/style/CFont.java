@@ -1,4 +1,4 @@
-package com.regtab.core.model;
+package com.regtab.core.model.style;
 
 import lombok.Getter;
 import lombok.Setter;

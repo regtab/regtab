@@ -1,5 +1,6 @@
-package com.regtab.core.rtl.interpreter;
+package com.regtab.core.rtl;
 
+import com.regtab.core.model.semantics.Condition;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 
@@ -7,7 +8,7 @@ import com.regtab.core.model.*;
 import com.regtab.core.rtl.interpreter.pattern.*;
 import com.regtab.core.rtl.interpreter.visitor.Quantifier;
 
-import static com.regtab.core.rtl.interpreter.TableMap.*;
+import static com.regtab.core.rtl.TableMap.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -234,7 +235,7 @@ public class Matcher {
     private RowMap match(@NonNull IRow row, RowPattern tmpl) {
         final RowMap rowMap = new RowMap();
 
-        final Queue<ICell> cells = new LinkedList<>(row.cells());
+        final Queue<ICell> cells = new LinkedList<>(row.getCells());
         final List<SubrowPattern> subrowTemplates = tmpl.getSubrowTemplates();
         for (SubrowPattern subrowTemplate : subrowTemplates) {
             int repetitionCount = 0;

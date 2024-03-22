@@ -1,5 +1,10 @@
 package com.regtab.core.model;
 
+import com.regtab.core.model.format.HtmlTag;
+import com.regtab.core.model.format.SSDatatype;
+import com.regtab.core.model.semantics.Action;
+import com.regtab.core.model.semantics.Element;
+import com.regtab.core.model.style.Style;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -19,11 +24,11 @@ public final class ICell {
     @Getter
     private final ICol col;
 
-    int r() {
+    public int r() {
         return row.getPosition();
     }
 
-    int c() {
+    public int c() {
         return col.getPosition();
     }
 
@@ -81,7 +86,7 @@ public final class ICell {
 
     @Getter
     @Setter
-    private CCellStyle cellStyle;
+    private Style style;
 
     @Getter
     @Setter

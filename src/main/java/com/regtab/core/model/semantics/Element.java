@@ -1,5 +1,7 @@
-package com.regtab.core.model;
+package com.regtab.core.model.semantics;
 
+import com.regtab.core.model.ICell;
+import com.regtab.core.model.recordset.Provenance;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +28,7 @@ public final class Element implements Provenance {
         this.data = String.join(SEPARATOR, data, this.data);
     }
 
-    Element(ICell cell, Type type, String data) {
+    public Element(ICell cell, Type type, String data) {
         this.cell = cell;
         this.type = type;
         this.data = data;

@@ -1,6 +1,8 @@
 package com.regtab.core.readers;
 
 import com.regtab.core.model.*;
+import com.regtab.core.model.format.SSDatatype;
+import com.regtab.core.model.style.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -91,7 +93,7 @@ public final class XlReader {
             for (int j = cl; j <= cr; j++) {
                 String text = "";
                 CellStyle xlCellStyle;
-                CCellStyle cellStyle = null;
+                Style cellStyle = null;
                 CellType xlCellType;
                 SSDatatype datatype = null;
 
@@ -108,7 +110,7 @@ public final class XlReader {
                 }
 
                 ICell cell = table.createCell(i, j, text);
-                cell.setCellStyle(cellStyle);
+                cell.setStyle(cellStyle);
                 cell.setDatatype(datatype);
             }
         }
@@ -213,10 +215,10 @@ public final class XlReader {
         return new CColor(hexRGB);
     }
 
-    private CCellStyle createCellStyle(CellStyle xlCellStyle) {
+    private Style createCellStyle(CellStyle xlCellStyle) {
         if (xlCellStyle == null) return null;
 
-        CCellStyle cellStyle = new CCellStyle();
+        Style cellStyle = new Style();
 
         Font xlFont = workbook.getFontAt(xlCellStyle.getFontIndex());
         CFont font = createFont(xlFont);

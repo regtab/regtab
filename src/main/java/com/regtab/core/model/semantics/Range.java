@@ -1,4 +1,4 @@
-package com.regtab.core.model;
+package com.regtab.core.model.semantics;
 
 public record Range(int from, int to) {
     public static Range intersection(Range range1, Range range2) {

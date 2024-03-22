@@ -1,7 +1,7 @@
 package com.regtab.core.rtl.interpreter.pattern;
 
-import com.regtab.core.model.Action;
-import com.regtab.core.model.Condition;
+import com.regtab.core.model.semantics.Action;
+import com.regtab.core.model.semantics.Condition;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -47,27 +47,5 @@ public final class RowPattern extends RepeatablePattern {
             subrowTemplate.add(action);
         }
     }
-
-//    public boolean apply(@NonNull CRow row) {
-//        final Queue<CCell> cells = new LinkedList<>(row.cells());
-//
-//        for (SubrowTemplate subrowTemplate : subrowTemplates) {
-//            int repetitionCount0 = subrowTemplate.getRepetitionCount();
-//            for (int i = 0; i < repetitionCount0; i++) {
-//                List<CellTemplate> cellTemplates = subrowTemplate.getCellTemplates();
-//                for (CellTemplate cellTemplate : cellTemplates) {
-//                    int repetitionCount = cellTemplate.getRepetitionCount();
-//                    for (int j = 0; j < repetitionCount; j++) {
-//                        CCell cell = cells.poll();
-//                        boolean result = cellTemplate.getElementsTemplate().apply(cell);
-//                        if (!result)
-//                            return false;
-//                    }
-//                }
-//            }
-//        }
-//
-//        return true;
-//    }
 
 }

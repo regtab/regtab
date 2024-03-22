@@ -1,4 +1,4 @@
-package com.regtab.core.rtl.interpreter;
+package com.regtab.core.rtl;
 
 import com.regtab.core.model.ITable;
 import com.regtab.core.rtl.interpreter.pattern.TablePattern;

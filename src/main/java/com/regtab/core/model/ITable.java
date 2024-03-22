@@ -1,5 +1,7 @@
 package com.regtab.core.model;
 
+import com.regtab.core.model.recordset.Recordset;
+import com.regtab.core.model.semantics.Action;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -54,8 +56,8 @@ public final class ITable {
         IRow row = rows.get(r);
         ICol col = cols.get(c);
         ICell cell = new ICell(this, row, col, text);
-        row.addCell(cell);
-        col.addCell(cell);
+        row.getCells().add(cell);
+        col.getCells().add(cell);
         cells.add(cell);
 
         return cell;

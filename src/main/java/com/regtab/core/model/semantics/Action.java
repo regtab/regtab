@@ -1,5 +1,8 @@
-package com.regtab.core.model;
+package com.regtab.core.model.semantics;
 
+import com.regtab.core.model.recordset.Provenance;
+import com.regtab.core.model.recordset.Record;
+import com.regtab.core.model.recordset.Recordset;
 import lombok.Getter;
 
 import lombok.RequiredArgsConstructor;

@@ -14,23 +14,24 @@ public abstract class CellRange {
     @Getter
     private final int position;
 
+    @Getter
     private final List<ICell> cells = new ArrayList<>();
 
-    public void addCell(@NonNull ICell cell) {
-        cells.add(cell);
-    }
-
-    public List<ICell> cells() {
-        return new ArrayList<>(cells);
-    }
-
-    public int size() {
-        return cells.size();
-    }
-
-    public boolean isEmpty() {
-        return cells.isEmpty();
-    }
+//    public void addCell(@NonNull ICell cell) {
+//        cells.add(cell);
+//    }
+//
+//    public List<ICell> cells() {
+//        return new ArrayList<>(cells);
+//    }
+//
+//    public int size() {
+//        return cells.size();
+//    }
+//
+//    public boolean isEmpty() {
+//        return cells.isEmpty();
+//    }
 
     CellRange(int position) {
         this.position = position;

@@ -1,4 +1,4 @@
-package com.regtab.core.model;
+package com.regtab.core.model.style;
 
 public final class CColor {
     private final int r;
@@ -37,7 +37,7 @@ public final class CColor {
         }
     }
 
-    String toHexRGBString() {
+    public String toHexRGBString() {
         String hexR = Integer.toHexString(r);
         String hexG = Integer.toHexString(g);
         String hexB = Integer.toHexString(b);

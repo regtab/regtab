@@ -1,8 +1,8 @@
 package com.regtab.core.rtl.interpreter.visitor;
 
-import com.regtab.core.model.Action;
-import com.regtab.core.model.Element;
-import com.regtab.core.model.Expr;
+import com.regtab.core.model.semantics.Action;
+import com.regtab.core.model.semantics.Element;
+import com.regtab.core.model.semantics.Expr;
 import com.regtab.core.rtl.parser.RTLBaseVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import com.regtab.core.rtl.interpreter.pattern.ElementPattern;

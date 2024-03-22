@@ -1,5 +1,6 @@
-package com.regtab.core.model;
+package com.regtab.core.model.semantics;
 
+import com.regtab.core.model.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -84,8 +85,8 @@ public final class Lookup {
         final List<IRow> rows = table.rows();
         final List<ICol> cols = table.cols();
 
-        final int rowSize = row.size();
-        final int colSize = col.size();
+        final int rowSize = row.getCells().size();
+        final int colSize = col.getCells().size();
 
         Range rowRange = new Range(0, rowSize - 1);
         Range colRange = new Range(0, colSize - 1);
@@ -167,7 +168,7 @@ public final class Lookup {
     }
 
     private List<ICell> collectCells(CellRange cellRange, Range range) {
-        List<ICell> cells = cellRange.cells();
+        List<ICell> cells = cellRange.getCells();
 
         int from = range.from();
         int to = range.to();

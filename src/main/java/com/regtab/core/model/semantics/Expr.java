@@ -1,5 +1,6 @@
-package com.regtab.core.model;
+package com.regtab.core.model.semantics;
 
+import com.regtab.core.model.ICell;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;

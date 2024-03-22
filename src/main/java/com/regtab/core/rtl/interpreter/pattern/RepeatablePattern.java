@@ -1,6 +1,6 @@
 package com.regtab.core.rtl.interpreter.pattern;
 
-import com.regtab.core.model.Condition;
+import com.regtab.core.model.semantics.Condition;
 import lombok.NonNull;
 import lombok.Getter;
 import lombok.Setter;

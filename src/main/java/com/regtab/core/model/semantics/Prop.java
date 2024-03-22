@@ -1,5 +1,9 @@
-package com.regtab.core.model;
+package com.regtab.core.model.semantics;
 
+import com.regtab.core.model.format.HtmlTag;
+import com.regtab.core.model.ICell;
+import com.regtab.core.model.format.SSDatatype;
+import com.regtab.core.model.style.*;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +26,7 @@ public final class Prop {
     }
 
     private static final Evaluator fontName = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         CFont font = cellStyle.getFont();
         if (font == null) return null;
@@ -33,7 +37,7 @@ public final class Prop {
     };
 
     private static final Evaluator fontBold = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         CFont font = cellStyle.getFont();
         if (font == null) return null;
@@ -42,7 +46,7 @@ public final class Prop {
     };
 
     private static final Evaluator fontItalic = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         CFont font = cellStyle.getFont();
         if (font == null) return null;
@@ -51,7 +55,7 @@ public final class Prop {
     };
 
     private static final Evaluator fontStrikeout = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         CFont font = cellStyle.getFont();
         if (font == null) return null;
@@ -60,7 +64,7 @@ public final class Prop {
     };
 
     private static final Evaluator fontUnderline = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         CFont font = cellStyle.getFont();
         if (font == null) return null;
@@ -69,7 +73,7 @@ public final class Prop {
     };
 
     private static final Evaluator fontDoubleUnderline = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         CFont font = cellStyle.getFont();
         if (font == null) return null;
@@ -78,7 +82,7 @@ public final class Prop {
     };
 
     private static final Evaluator fontSize = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         CFont font = cellStyle.getFont();
         if (font == null) return null;
@@ -87,7 +91,7 @@ public final class Prop {
     };
 
     private static final Evaluator hLeft = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         HAlignment hAlignment = cellStyle.getHAlignment();
         if (hAlignment == null) return null;
@@ -96,7 +100,7 @@ public final class Prop {
     };
 
     private static final Evaluator hCenter = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         HAlignment hAlignment = cellStyle.getHAlignment();
         if (hAlignment == null) return null;
@@ -105,7 +109,7 @@ public final class Prop {
     };
 
     private static final Evaluator hRight = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         HAlignment hAlignment = cellStyle.getHAlignment();
         if (hAlignment == null) return null;
@@ -114,7 +118,7 @@ public final class Prop {
     };
 
     private static final Evaluator hJustify = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         HAlignment hAlignment = cellStyle.getHAlignment();
         if (hAlignment == null) return null;
@@ -123,7 +127,7 @@ public final class Prop {
     };
 
     private static final Evaluator vTop = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         VAlignment vAlignment = cellStyle.getVAlignment();
         if (vAlignment == null) return null;
@@ -132,7 +136,7 @@ public final class Prop {
     };
 
     private static final Evaluator vCenter = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         VAlignment vAlignment = cellStyle.getVAlignment();
         if (vAlignment == null) return null;
@@ -141,7 +145,7 @@ public final class Prop {
     };
 
     private static final Evaluator vBottom = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         VAlignment vAlignment = cellStyle.getVAlignment();
         if (vAlignment == null) return null;
@@ -150,7 +154,7 @@ public final class Prop {
     };
 
     private static final Evaluator vJustify = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         VAlignment vAlignment = cellStyle.getVAlignment();
         if (vAlignment == null) return null;
@@ -159,7 +163,7 @@ public final class Prop {
     };
 
     private static final Evaluator bgColor = cell -> {
-        CCellStyle cellStyle = cell.getCellStyle();
+        Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         CColor bgColor = cellStyle.getBgColor();
         if (bgColor == null) return null;
