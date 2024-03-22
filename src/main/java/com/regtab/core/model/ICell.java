@@ -5,6 +5,7 @@ import com.regtab.core.model.format.SSDatatype;
 import com.regtab.core.model.semantics.Action;
 import com.regtab.core.model.semantics.Element;
 import com.regtab.core.model.style.Style;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -33,7 +34,19 @@ public final class ICell {
     }
 
     @Getter
-    private final String text;
+    private String text;
+
+    public void setText(String text) {
+        if (text == null || text.isBlank()) {
+            this.text = "";
+            this.blank = true;
+            this.indent = 0;
+        } else {
+            this.text = text;
+            this.blank = false;
+            this.indent = getIndent(text);
+        }
+    }
 
     @Getter
     private final List<Element> elements = new ArrayList<>();
@@ -51,13 +64,10 @@ public final class ICell {
             element.perform(type);
     }
 
-    ICell(ITable table, IRow row, ICol col, String text) {
+    ICell(ITable table, IRow row, ICol col) {
         this.table = table;
         this.row = row;
         this.col = col;
-        this.text = text;
-        this.blank = text.isBlank();
-        this.indent = getIndent(text);
     }
 
     private int getIndent(String text) {
@@ -89,11 +99,9 @@ public final class ICell {
     private Style style;
 
     @Getter
-    @Setter
     private int indent;
 
     @Getter
-    @Setter
     private boolean blank;
 
     @Getter

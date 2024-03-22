@@ -48,7 +48,7 @@ final class SubrowVisitor extends RTLBaseVisitor<SubrowPattern> {
             tmpl.add(cellTemplate);
         }
 
-        final Quantifier quantifier = new Quantifier(Quantifier.Times.EXACTLY, 1);
+        final Quantifier quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
         tmpl.setQuantifier(quantifier);
 
         return true;
@@ -79,7 +79,7 @@ final class SubrowVisitor extends RTLBaseVisitor<SubrowPattern> {
         final Quantifier quantifier;
         final QuantifierContext quantifierContext = cellsContext.quantifier();
         if (quantifierContext == null) {
-            quantifier = new Quantifier(Quantifier.Times.EXACTLY, 1);
+            quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
         } else {
             quantifier = quantifierVisitor.visit(quantifierContext);
             if (quantifier == null)

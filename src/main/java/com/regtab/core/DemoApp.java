@@ -21,34 +21,39 @@ public class DemoApp {
 
         final ITable table = reader.readTable(sheetIdx);
         final Pattern pattern = Pattern.compile(ttl);
+        if (pattern == null) {
+            System.err.println("Не удалось разобрать паттерн");
+            System.exit(0);
+        }
 
         final Matcher matcher = pattern.matcher();
         final TableMap map = matcher.match(table);
-
-        final boolean result = map.apply();
-
-
-        if (!result) {
-            System.err.println("Таблица не соответствует шаблону");
+        if (map == null) {
+            System.err.println("Не удалось сопоставить таблицу с паттерном");
             System.exit(0);
-        } else {
-            System.out.println("Таблица соответствует шаблону");
-
-            table.performActions();
-            Recordset recordset = table.getRecordset();
-
-            printer.print(recordset);
-            System.out.println();
         }
 
+        final boolean result = map.apply();
+        if (!result) {
+            System.err.println("Не удалось применить карту таблицы");
+            System.exit(0);
+        }
+
+        // Карта таблицы успешно применена
+
+        table.performActions();
+        Recordset recordset = table.getRecordset();
+
+        printer.print(recordset);
+        System.out.println();
     }
 
     public static void main(String[] args) throws IOException {
         // Применить базовую конфигурацию системы журналирования log4j
         //BasicConfigurator.configure();
 
-        File xlFile = new File("../../data/ttl/example1.xlsx");
-        File xlFile2 = new File("../../data/ttl/example2.xlsx");
+        File xlFile = new File("../../data/rtl/example1.xlsx");
+        File xlFile2 = new File("../../data/rtl/example2.xlsx");
 
         if (true) {
             System.out.printf("TTL = %s: SHEET = %d%n", "0", 0);

@@ -66,7 +66,7 @@ final class CellVisitor extends RTLBaseVisitor<CellPattern> {
         if (quantifierContext != null)
             quantifier = quantifierVisitor.visit(quantifierContext);
         else
-            quantifier = new Quantifier(Quantifier.Times.EXACTLY, 1);
+            quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
 
         cellTemplate.setQuantifier(quantifier);
 

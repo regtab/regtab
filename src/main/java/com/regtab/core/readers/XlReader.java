@@ -109,7 +109,8 @@ public final class XlReader {
                     }
                 }
 
-                ICell cell = table.createCell(i, j, text);
+                final ICell cell = table.findCell(i, j);
+                cell.setText(text);
                 cell.setStyle(cellStyle);
                 cell.setDatatype(datatype);
             }

@@ -65,7 +65,7 @@ final class RowVisitor extends RTLBaseVisitor<RowPattern> {
         if (quantifierContext != null)
             quantifier = quantifierVisitor.visit(quantifierContext);
         else
-            quantifier = new Quantifier(Quantifier.Times.EXACTLY, 1);
+            quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
 
         rowTemplate.setQuantifier(quantifier);
 
