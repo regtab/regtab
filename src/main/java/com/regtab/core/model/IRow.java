@@ -1,7 +1,16 @@
 package com.regtab.core.model;
 
-public final class IRow extends CellRange {
-    IRow(int position) {
-        super(position);
-    }
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RequiredArgsConstructor
+public final class IRow {
+    @Getter
+    private final int position;
+
+    @Getter
+    private final List<ICell> cells = new ArrayList<>();
 }

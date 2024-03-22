@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,10 +83,6 @@ public final class Lookup {
         final IRow row = cell.getRow();
         final ICol col = cell.getCol();
 
-        final ITable table = cell.getTable();
-        final List<IRow> rows = table.rows();
-        final List<ICol> cols = table.cols();
-
         final int rowSize = row.getCells().size();
         final int colSize = col.getCells().size();
 
@@ -98,15 +96,13 @@ public final class Lookup {
         Range cellRRange = new Range(cell.r(), cell.r());
         Range cellCRange = new Range(cell.c(), cell.c());
 
-        //Range rRange = getRRange();
-        //Range cRange = getCRange();
         Range rRange = null;
         if (rowRangeDesc != null)
-            rRange = rowRangeDesc.createRange(cell); //createRange(rowRangeDesc, caller.getCell().r());
+            rRange = rowRangeDesc.createRange(cell);
 
         Range cRange = null;
         if (colRangeDesc != null)
-            cRange = colRangeDesc.createRange(cell); //createRange(colRangeDesc, caller.getCell().c());
+            cRange = colRangeDesc.createRange(cell);
 
         if (cRange != null) {
             rowRange = Range.intersection(cRange, rowRange);
@@ -130,6 +126,10 @@ public final class Lookup {
 
         List<Element> elements = new ArrayList<>();
 
+        final ITable table = cell.getTable();
+        final IRow[] rows = table.rows().toArray(new IRow[0]);
+        final ICol[] cols = table.cols().toArray(new ICol[0]);
+
         List<ICell> cells = switch (direction) {
             case IN_ROW -> collectCells(rows, rRange, rowRange);
             case IN_COL -> collectCells(cols, cRange, colRange);
@@ -151,24 +151,36 @@ public final class Lookup {
         return elements.isEmpty() ? null : elements;
     }
 
-    private List<ICell> collectCells(List<? extends CellRange> cellRanges, Range range1, Range range2) {
+    private List<ICell> collectCells(IRow[] rows, Range range1, Range range2) {
         final int from = range1.from();
         final int to = range1.to();
-        final List<? extends CellRange> subList = cellRanges.subList(from, to + 1);
-        return collectCells(subList, range2);
-    }
+        final IRow[] sub = Arrays.copyOfRange(rows, from, to + 1);
 
-    private List<ICell> collectCells(List<? extends CellRange> cellRanges, Range range) {
         List<ICell> allCells = new ArrayList<>();
-        for (CellRange cellRange : cellRanges) {
-            List<ICell> cells = collectCells(cellRange, range);
-            allCells.addAll(cells);
+        for (IRow row : sub) {
+            final ICell[] cells = row.getCells().toArray(new ICell[0]);
+            List<ICell> collectedCells = collectCells(cells, range2);
+            allCells.addAll(collectedCells);
         }
         return allCells;
     }
 
-    private List<ICell> collectCells(CellRange cellRange, Range range) {
-        List<ICell> cells = cellRange.getCells();
+    private List<ICell> collectCells(ICol[] cols, Range range1, Range range2) {
+        final int from = range1.from();
+        final int to = range1.to();
+        final ICol[] sub = Arrays.copyOfRange(cols, from, to + 1);
+
+        List<ICell> allCells = new ArrayList<>();
+        for (ICol col : sub) {
+            final ICell[] cells = col.getCells().toArray(new ICell[0]);
+            List<ICell> collectedCells = collectCells(cells, range2);
+            allCells.addAll(collectedCells);
+        }
+        return allCells;
+    }
+
+    private List<ICell> collectCells(final ICell[] cells, final Range range) {
+        //List<ICell> cells = cellRange.getCells();
 
         int from = range.from();
         int to = range.to();
@@ -176,7 +188,7 @@ public final class Lookup {
         List<ICell> subList = new ArrayList<>(to - from + 1);
 
         for (int i = from; i <= to; i++) {
-            ICell cell = cells.get(i);
+            ICell cell = cells[i];
             subList.add(cell);
         }
 
@@ -228,26 +240,5 @@ public final class Lookup {
             }
         }
     }
-
-//    private Range createRange(RangeDesc rangeDesc, int relatively) {
-//        final int from, to;
-//
-//        if (rangeDesc.getStartRelatively() == RangeDesc.Relatively.PLUS)
-//            from = relatively + rangeDesc.getStart();
-//        else if (rangeDesc.getStartRelatively() == RangeDesc.Relatively.MINUS)
-//            from = relatively - rangeDesc.getStart();
-//        else
-//            from = rangeDesc.getStart();
-//
-//
-//        if (rangeDesc.getEndRelatively() == RangeDesc.Relatively.PLUS)
-//            to = relatively + rangeDesc.getEnd();
-//        else if (rangeDesc.getEndRelatively() == RangeDesc.Relatively.MINUS)
-//            to = relatively - rangeDesc.getEnd();
-//        else
-//            to = rangeDesc.getEnd();
-//
-//        return new Range(from, to);
-//    }
 
 }
