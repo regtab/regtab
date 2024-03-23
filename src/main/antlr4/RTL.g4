@@ -75,15 +75,17 @@ SCHEMA : DOLLAR ('s' | 'schema') ;
 actionBody : STRING | lookup ;
 
 // Cтруктура (structured) включает шаблон строки текста (line),
-struct : LPAREN line RPAREN ; // struct : LPAREN line (SEMICOLON line)* RPAREN;
-line : startText? element (separator element)* endText? ; //TODO либо избавиться от line, либо реализовать его (спецификатор L)
+//struct : (line quantifier?)+;
+struct : line ; // struct : LPAREN line (SEMICOLON line)* RPAREN;
+line : LPAREN startText? element (separator element)* endText? RPAREN; //TODO либо избавиться от line, либо реализовать его (спецификатор L)
 startText : STRING ;
 separator : STRING ;
 endText   : STRING ;
 
 // Выбор (choice) из двух тел (choiceBody) по условию (cond):
 // если условие (cond) истино, то выбирается левое тело, иначе --- правое.
-choice : (choiceBody OR choiceBody) QUESTION cond ;
+choice : (choiceBody OR choiceBody) QUESTION cond ; // TODO м.б. добавить LPAREN и RPAREN?
+//choice : LPAREN (choiceBody OR choiceBody) QUESTION cond RPAREN ;
 choiceBody : element | struct ;
 
 // Условие (cond) включает одно или несколько ограничений (constr).
@@ -142,8 +144,12 @@ relative   : PLUS | MINUS ;
 ROW : 'r';
 COL : 'c';
 
+// Индекс линии внутри ячейки.
+//index : 'L' INT ;
+
 // Индекс элемента внутри ячейки.
 index : '!' INT ;
+//index : 'E' INT ;
 
 expr
  : LPAREN expr RPAREN                                 #parenExpr
