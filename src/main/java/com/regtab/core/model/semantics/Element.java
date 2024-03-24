@@ -1,6 +1,7 @@
 package com.regtab.core.model.semantics;
 
 import com.regtab.core.model.ICell;
+import com.regtab.core.model.ILine;
 import com.regtab.core.model.recordset.Provenance;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,9 @@ public final class Element implements Provenance {
     private final ICell cell;
 
     @Getter
+    private final ILine line;
+
+    @Getter
     @Setter
     private String data;
 
@@ -28,11 +32,31 @@ public final class Element implements Provenance {
         this.data = String.join(SEPARATOR, data, this.data);
     }
 
-    public Element(ICell cell, Type type, String data) {
-        this.cell = cell;
+//    public Element(ICell cell, Type type, String data) {
+//        this.cell = cell;
+//        this.type = type;
+//        this.data = data;
+//    }
+
+    public Element(ILine line, Type type, String data) {
+        this.line = line;
+        this.cell = line.getCell();
         this.type = type;
         this.data = data;
     }
+
+
+//    private Element(Type type, ICell cell, int lineIndex, int indexInLine, String data) {
+//        this.type = type;
+//        this.cell = cell;
+//        this.lineIndex = lineIndex;
+//        this.indexInLine = indexInLine;
+//        this.data = data;
+//    }
+//
+//    public Element createAttributeElement(ICell cell, int lineIndex, int indexInLine, String data) {
+//        return new Element(Type.ATTRIBUTE, cell, lineIndex, indexInLine, data);
+//    }
 
     private final List<String> tags = new ArrayList<>();
 

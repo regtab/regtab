@@ -23,12 +23,12 @@ final class RowVisitor extends RTLBaseVisitor<RowPattern> {
 
     @Override
     public RowPattern visitRow(RowContext ctx) {
-        final RowPattern rowTemplate = new RowPattern(ctx);
+        final RowPattern rowPattern = new RowPattern(ctx);
 
         final SubrowsContext subrowsContext;
-        final ReplacementContext replacementContext = ctx.replacement();
-        if (replacementContext != null) {
-            String label = replacementContext.TAG().getText();
+        final CopyContext copyContext = ctx.copy();
+        if (copyContext != null) {
+            String label = copyContext.TAG().getText();
             subrowsContext = store.get(label);
             if (subrowsContext == null) {
                 final String message = String.format("No a such label [%s]", label);
@@ -45,19 +45,19 @@ final class RowVisitor extends RTLBaseVisitor<RowPattern> {
             store.put(label, subrowsContext);
         }
 
-        rowTemplate.subrowsContext = subrowsContext;
+        rowPattern.subrowsContext = subrowsContext;
 
         // Instruction order matter
         final List<SubrowContext> subrowContexts = subrowsContext.subrow();
         for (SubrowContext subrowContext : subrowContexts) {
-            final SubrowPattern subrowTemplate = subrowVisitor.visit(subrowContext);
-           rowTemplate.add(subrowTemplate);
+            final SubrowPattern subrowPattern = subrowVisitor.visit(subrowContext);
+           rowPattern.add(subrowPattern);
         }
 
         final CondContext condContext = subrowsContext.cond();
         if (condContext != null) {
             final Condition condition = condVisitor.visit(condContext);
-            rowTemplate.setCondition(condition);
+            rowPattern.setCondition(condition);
         }
 
         final QuantifierContext quantifierContext = ctx.quantifier();
@@ -67,7 +67,7 @@ final class RowVisitor extends RTLBaseVisitor<RowPattern> {
         else
             quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
 
-        rowTemplate.setQuantifier(quantifier);
+        rowPattern.setQuantifier(quantifier);
 
         final ActionsContext actionsCtx = subrowsContext.actions();
         if (actionsCtx != null) {
@@ -77,12 +77,12 @@ final class RowVisitor extends RTLBaseVisitor<RowPattern> {
                     Action action = actionVisitor.visit(actionCtx);
                     if (action == null)
                         return null; // TODO test
-                    rowTemplate.add(action);
+                    rowPattern.add(action);
                 }
             }
         }
 
-        return rowTemplate;
+        return rowPattern;
     }
 
 }

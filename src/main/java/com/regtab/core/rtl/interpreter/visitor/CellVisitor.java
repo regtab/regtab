@@ -27,16 +27,16 @@ final class CellVisitor extends RTLBaseVisitor<CellPattern> {
 
     @Override
     public CellPattern visitCell(CellContext ctx) {
-        final CellPattern cellTemplate = new CellPattern(ctx);
+        final CellPattern cellPattern = new CellPattern(ctx);
 
         final ElementsContext elementsContext;
-        final ReplacementContext replacementContext = ctx.replacement();
-        if (replacementContext != null) {
-            String label = replacementContext.TAG().getText();
+        final CopyContext copyContext = ctx.copy();
+        if (copyContext != null) {
+            String label = copyContext.TAG().getText();
             elementsContext = store.get(label);
             if (elementsContext == null) {
                 final String message = String.format("No a such label [%s]", label);
-                //throw new TemplateException(message); //TODO подумать, как лучше сделать?
+                //throw new PatternException(message); //TODO подумать, как лучше сделать?
                 log.warning(message);
                 return null;
             }
@@ -50,15 +50,15 @@ final class CellVisitor extends RTLBaseVisitor<CellPattern> {
             store.put(label, elementsContext);
         }
 
-        cellTemplate.elementsContext = elementsContext;
-        boolean result = apply(cellTemplate, elementsContext);
+        cellPattern.elementsContext = elementsContext;
+        boolean result = apply(cellPattern, elementsContext);
         if (!result)
             return null; // TODO test
 
         final CondContext condContext = elementsContext.cond();
         if (condContext != null) {
             final Condition condition = condVisitor.visit(condContext);
-            cellTemplate.setCondition(condition);
+            cellPattern.setCondition(condition);
         }
 
         final QuantifierContext quantifierContext = ctx.quantifier();
@@ -68,7 +68,7 @@ final class CellVisitor extends RTLBaseVisitor<CellPattern> {
         else
             quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
 
-        cellTemplate.setQuantifier(quantifier);
+        cellPattern.setQuantifier(quantifier);
 
         final ActionsContext actionsCtx = elementsContext.actions();
         if (actionsCtx != null) {
@@ -78,42 +78,42 @@ final class CellVisitor extends RTLBaseVisitor<CellPattern> {
                     Action action = actionVisitor.visit(actionCtx);
                     if (action == null)
                         return null; // TODO test
-                    cellTemplate.add(action);
+                    cellPattern.add(action);
                 }
             }
         }
 
-        return cellTemplate;
+        return cellPattern;
     }
 
     private boolean apply(CellPattern tmpl, ElementsContext ctx) {
         final ElementContext elementContext = ctx.element();
         if (elementContext != null) {
-            final ElementPattern elementTemplate = elementVisitor.visit(elementContext);
-            if (elementTemplate == null)
+            final ElementPattern elementPattern = elementVisitor.visit(elementContext);
+            if (elementPattern == null)
                 return false; // TODO log
 
-            tmpl.setElementsTemplate(elementTemplate);
+            tmpl.setElementsPattern(elementPattern);
             return true;
         }
 
         final StructContext structuredContext = ctx.struct();
         if (structuredContext != null) {
-            final StructPattern structTemplate = structVisitor.visit(structuredContext);
-            if (structTemplate == null)
+            final StructPattern structPattern = structVisitor.visit(structuredContext);
+            if (structPattern == null)
                 return false; // TODO log
 
-            tmpl.setElementsTemplate(structTemplate);
+            tmpl.setElementsPattern(structPattern);
             return true;
         }
 
         final ChoiceContext choiceContext = ctx.choice();
         if (choiceContext != null) {
-            final ChoicePattern choiceTemplate = choiceVisitor.visit(choiceContext);
-            if (choiceTemplate == null)
+            final ChoicePattern choicePattern = choiceVisitor.visit(choiceContext);
+            if (choicePattern == null)
                 return false; // TODO log
 
-            tmpl.setElementsTemplate(choiceTemplate);
+            tmpl.setElementsPattern(choicePattern);
         }
 
         return true;

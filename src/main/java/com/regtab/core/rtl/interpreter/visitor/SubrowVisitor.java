@@ -18,22 +18,22 @@ final class SubrowVisitor extends RTLBaseVisitor<SubrowPattern> {
 
     @Override
     public SubrowPattern visitSubrow(SubrowContext ctx) {
-        final SubrowPattern subrowTemplate = new SubrowPattern(ctx);
+        final SubrowPattern subrowPattern = new SubrowPattern(ctx);
 
         final List<CellContext> cellContexts = ctx.cell();
         if (cellContexts != null && !cellContexts.isEmpty()) {
-            boolean result = apply(cellContexts, subrowTemplate);
+            boolean result = apply(cellContexts, subrowPattern);
             if (!result)
                 return null; // TODO test
-            return subrowTemplate;
+            return subrowPattern;
         }
 
         final CellsContext cellsContext = ctx.cells();
         if (cellsContext != null) {
-            boolean result = apply(cellsContext, subrowTemplate);
+            boolean result = apply(cellsContext, subrowPattern);
             if (!result)
                 return null; // TODO test
-            return subrowTemplate;
+            return subrowPattern;
         }
 
         return null; // Impossible
@@ -41,11 +41,11 @@ final class SubrowVisitor extends RTLBaseVisitor<SubrowPattern> {
 
     private boolean apply(List<CellContext> cellContexts, SubrowPattern tmpl) {
         for (CellContext ctx : cellContexts) {
-            CellPattern cellTemplate = cellVisitor.visit(ctx);
-            if (cellTemplate == null)
+            CellPattern cellPattern = cellVisitor.visit(ctx);
+            if (cellPattern == null)
                 return false; // TODO log
 
-            tmpl.add(cellTemplate);
+            tmpl.add(cellPattern);
         }
 
         final Quantifier quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
@@ -60,11 +60,11 @@ final class SubrowVisitor extends RTLBaseVisitor<SubrowPattern> {
         // Instruction order matter
         final List<CellContext> cellContexts = cellsContext.cell();
         for (CellContext ctx : cellContexts) {
-            CellPattern cellTemplate = cellVisitor.visit(ctx);
-            if (cellTemplate == null)
+            CellPattern cellPattern = cellVisitor.visit(ctx);
+            if (cellPattern == null)
                 return false; // TODO log
 
-            tmpl.add(cellTemplate);
+            tmpl.add(cellPattern);
         }
 
         final CondContext condContext = cellsContext.cond();

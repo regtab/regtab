@@ -23,28 +23,28 @@ public final class SubtablePattern extends RepeatablePattern {
     public void setCondition(@NonNull Condition condition) {
         super.setCondition(condition);
 
-        for (RowPattern rowTemplate : rowTemplates) {
-            rowTemplate.setCondition(condition);
+        for (RowPattern rowPattern : rowPatterns) {
+            rowPattern.setCondition(condition);
         }
     }
 
     @Getter
     @Setter(AccessLevel.PACKAGE)
-    private TablePattern tableTemplate;
+    private TablePattern tablePattern;
 
     @Getter
-    private final List<RowPattern> rowTemplates = new ArrayList<>();
+    private final List<RowPattern> rowPatterns = new ArrayList<>();
 
     public void add(RowPattern tmpl) {
-        tmpl.setSubtableTemplate(this);
-        rowTemplates.add(tmpl);
+        tmpl.setSubtablePattern(this);
+        rowPatterns.add(tmpl);
     }
 
     public void add(@NonNull Action action) {
         getActions().add(action);
 
-        for (RowPattern rowTemplate : rowTemplates) {
-            rowTemplate.add(action);
+        for (RowPattern rowPattern : rowPatterns) {
+            rowPattern.add(action);
         }
     }
 

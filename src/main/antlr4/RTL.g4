@@ -3,39 +3,41 @@ grammar RTL ;
 
 options { caseInsensitive = true ; }
 
-// Шаблон таблицы (table) включает однин или несколько шаблонов подтаблиц (subtable).
+// Паттерн таблицы (table) включает однин или несколько паттернов подтаблиц (subtable).
 table : subtable+ ;
 
-// Шаблон подтаблицы включает либо однин или несколько шаблонов строк (row), либо шаблона группы строк (rows).
+// Паттерн подтаблицы включает либо однин или несколько паттернов строк (row),
+// либо одного паттерна группы строк (rows).
 subtable : (row+) | rows ;
 rows : LCURLY row+ (ARROW actions)? (COLON cond)? RCURLY quantifier? ;
 
 label : TAG ;
-replacement : TAG ;
+copy : TAG ;
 quantifier : zeroOrOne | zeroOrMore | oneOrMore | exactly ;
 zeroOrOne : QUESTION ;
 zeroOrMore : MULT ;
 oneOrMore : PLUS ;
 exactly : LCURLY INT RCURLY ;
 
-// Шаблон строки (row) включает либо шаблон группы подстрок (subrows), либо замену (replacement).
-row : label? LSQUARE ( subrows | replacement) RSQUARE quantifier? ;
+// Паттерн строки (row) включает либо паттерн группы подстрок (subrows), либо копию (copy).
+row : label? LSQUARE ( subrows | copy) RSQUARE quantifier? ;
 
-// Шаблон группы подстрок (subrows) включает однин или несколько шаблонов подстрок (subrow).
+// Паттерн группы подстрок (subrows) включает однин или несколько паттернов подстрок (subrow).
 // Может дополняться набором действий (actions) и условий (cond).
 subrows : subrow+ (ARROW actions)? (COLON cond)? ;
 
-// Шаблон подстроки (subrow) включает либо однин или несколько шаблонов ячеек (cell), либо шаблон группы ячеек (cells).
+// Паттерн подстроки (subrow) включает либо однин или несколько паттернов ячеек (cell),
+// либо паттерн группы ячеек (cells).
 subrow : (cell+) | cells ;
 
-// Шаблон группы ячеек (cells) включает однин или несколько шаблонов ячеек (cell).
+// Паттерн группы ячеек (cells) включает однин или несколько паттернов ячеек (cell).
 // Может дополняться набором действий (actions) и условий (cond).
 cells : LCURLY cell+ (ARROW actions)? (COLON cond)? RCURLY quantifier? ;
 
-// Шаблон ячейки (cell) включает либо шаблон группы элементов (elements), либо замену (replacement).
-cell : label? LSQUARE (elements | replacement) RSQUARE quantifier? ;
+// Паттерн ячейки (cell) включает либо паттерн группы элементов (elements), либо замену (replacement).
+cell : label? LSQUARE (elements | copy) RSQUARE quantifier? ;
 
-// Шаблон группы элементов (elements) включает элемент (element), структуру (structured) или выбор (choice).
+// Паттерн группы элементов (elements) включает элемент (element), структуру (structured) или выбор (choice).
 // Может дополняться набором условий (cond).
 elements : (element | struct | choice) (ARROW actions)? (COLON cond)? ;
 
@@ -74,8 +76,7 @@ SCHEMA : DOLLAR ('s' | 'schema') ;
 
 actionBody : STRING | lookup ;
 
-// Cтруктура (structured) включает шаблон строки текста (line),
-//struct : (line quantifier?)+;
+// Cтруктура (structured) включает паттерн строки текста (line),
 struct : line ; // struct : LPAREN line (SEMICOLON line)* RPAREN;
 line : LPAREN startText? element (separator element)* endText? RPAREN; //TODO либо избавиться от line, либо реализовать его (спецификатор L)
 startText : STRING ;
@@ -107,11 +108,12 @@ direction
     | INROW
     | INCOL
     | INCELL
+    | INLINE
     ;
 
 // UP -- вверх, DOWN -- вниз, LEFT -- влево, RIGHT -- вправо (по данным направлениям от ячейки);
 // INROW -- по строкам слева направо, INCOL -- по столбцам сверху вниз;
-// INCELL -- по ячейкам.
+// INCELL -- по ячейкам, INLINE -- в строке текста.
 
 LEFT   : 'left' ;
 RIGHT  : 'right' ;
@@ -120,6 +122,7 @@ DOWN   : 'down' ;
 INROW  : 'row' ;
 INCOL  : 'col' ;
 INCELL : 'cell' ;
+INLINE : 'line' ;
 
 // Область поиска (where).
 where
@@ -144,12 +147,9 @@ relative   : PLUS | MINUS ;
 ROW : 'r';
 COL : 'c';
 
-// Индекс линии внутри ячейки.
-//index : 'L' INT ;
-
-// Индекс элемента внутри ячейки.
-index : '!' INT ;
-//index : 'E' INT ;
+index : (elementIndex? lineIndex) | (elementIndex lineIndex?) ;
+elementIndex : 'E' INT ; // Индекс элемента внутри ячейки.
+lineIndex : 'L' INT ; // Индекс линии внутри ячейки.
 
 expr
  : LPAREN expr RPAREN                                 #parenExpr

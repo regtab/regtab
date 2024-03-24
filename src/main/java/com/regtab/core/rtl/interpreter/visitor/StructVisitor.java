@@ -14,27 +14,27 @@ final class StructVisitor extends RTLBaseVisitor<StructPattern> {
 
     @Override
     public StructPattern visitStruct(StructContext ctx) {
-        final StructPattern structTemplate = new StructPattern(ctx);
+        final StructPattern structPattern = new StructPattern(ctx);
 
         final List<ElementContext> elementContexts = ctx.line().element();
         for (ElementContext elemCtx : elementContexts) {
-            final ElementPattern elementTemplate = elementVisitor.visit(elemCtx);
-            if (elementTemplate == null)
+            final ElementPattern elementPattern = elementVisitor.visit(elemCtx);
+            if (elementPattern == null)
                 return null; // TODO test
 
-            structTemplate.add(elementTemplate);
+            structPattern.add(elementPattern);
         }
 
         final StartTextContext stCtx = ctx.line().startText();
         if (stCtx != null) {
             final String startText = stCtx.STRING().getText();
-            structTemplate.setStartText(startText);
+            structPattern.setStartText(startText);
         }
 
         final EndTextContext etCtx = ctx.line().endText();
         if (etCtx != null) {
             final String endText = etCtx.STRING().getText();
-            structTemplate.setEndText(endText);
+            structPattern.setEndText(endText);
         }
 
         final List<SeparatorContext> separatorContexts = ctx.line().separator();
@@ -44,10 +44,10 @@ final class StructVisitor extends RTLBaseVisitor<StructPattern> {
                 String separator = separatorContext.STRING().getText();
                 separators.add(separator);
             }
-            structTemplate.setSeparators(separators);
+            structPattern.setSeparators(separators);
         }
 
-        return structTemplate;
+        return structPattern;
     }
 
 }

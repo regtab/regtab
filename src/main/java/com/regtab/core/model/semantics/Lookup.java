@@ -33,7 +33,11 @@ public final class Lookup {
 
     @Getter
     @Setter
-    private int index = -1; // TODO Почему index = -1, может быть сделать null
+    private Integer elementIndex; // TODO Почему index = -1, может быть сделать null
+
+    @Getter
+    @Setter
+    private Integer lineIndex;
 
     private final List<String> tags = new ArrayList<>();
 
@@ -56,7 +60,8 @@ public final class Lookup {
         DOWN(false),
         IN_ROW(false),
         IN_COL(false),
-        IN_CELL(false);
+        IN_CELL(false),
+        IN_LINE(false);
 
         public final boolean reversed;
 
@@ -123,8 +128,6 @@ public final class Lookup {
             rRange = new Range(pos, pos);
         }
 
-        List<Element> elements = new ArrayList<>();
-
         final ITable table = cell.getTable();
         final IRow[] rows = table.copyRows();
         final ICol[] cols = table.copyCols();
@@ -136,8 +139,11 @@ public final class Lookup {
             case RIGHT -> collectCells(rows, rRange, rightRange);
             case UP -> collectCells(cols, cRange, upRange);
             case DOWN -> collectCells(cols, cRange, downRange);
-            case IN_CELL -> collectCells(cols, cellCRange, cellRRange);
+            case IN_CELL -> collectCells(cols, cellCRange, cellRRange); // или rows?
+            case IN_LINE -> null;
         };
+
+        List<Element> elements = new ArrayList<>();
 
         if (cells != null) {
             if (direction != Direction.IN_CELL)
@@ -145,6 +151,17 @@ public final class Lookup {
             collectElements(cells, type, elements);
             if (direction == Direction.IN_CELL)
                 elements.remove(caller);
+        }
+
+        if (cells == null) {
+            if (direction == Direction.IN_LINE) {
+                final ILine line = caller.getLine();
+                final List<Element> elementsOfLine = List.copyOf(line.getElements());
+                elementsOfLine.remove(caller);
+                if (!elementsOfLine.isEmpty()) {
+                    collectElementsInLine(elementsOfLine, type, elements);
+                }
+            }
         }
 
         return elements.isEmpty() ? null : elements;
@@ -225,11 +242,50 @@ public final class Lookup {
     }
 
     private void collectElements(ICell cell, Element.Type type, List<Element> result) {
-        List<Element> elements = cell.elements();
+        final List<ILine> lines = cell.getLines();
+
+        if (lineIndex == null) {
+            for (ILine line : lines) {
+                final List<Element> elements = line.getElements();
+                collectElementsInLine(elements, type, result);
+//                if (elements != null) {
+//                    //int elementIndex = getIndex();
+//                    if (elementIndex != null && elementIndex < elements.size()) {
+//                        Element elem = elements.get(elementIndex);
+//                        collectElement(elem, type, result);
+//                    } else {
+//                        for (Element elem : elements) {
+//                            collectElement(elem, type, result);
+//                            if (!all && !result.isEmpty()) return;
+//                        }
+//                    }
+//                }
+            }
+            return;
+        }
+
+        if (lineIndex != null && lineIndex < lines.size()) {
+            ILine line = lines.get(lineIndex);
+            final List<Element> elements = line.getElements();
+            collectElementsInLine(elements, type, result);
+//            if (elements != null) {
+//                if (elementIndex != null && elementIndex < elements.size()) {
+//                    Element elem = elements.get(elementIndex);
+//                    collectElement(elem, type, result);
+//                } else {
+//                    for (Element elem : elements) {
+//                        collectElement(elem, type, result);
+//                        if (!all && !result.isEmpty()) return;
+//                    }
+//                }
+//            }
+        }
+    }
+
+    private void collectElementsInLine(List<Element> elements, Element.Type type, List<Element> result) {
         if (elements != null) {
-            int index = getIndex();
-            if (index > -1 && index < elements.size()) {
-                Element elem = elements.get(index);
+            if (elementIndex != null && elementIndex < elements.size()) {
+                Element elem = elements.get(elementIndex);
                 collectElement(elem, type, result);
             } else {
                 for (Element elem : elements) {

@@ -46,7 +46,7 @@ public class RTLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements RT
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitReplacement(RTLParser.ReplacementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCopy(RTLParser.CopyContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -320,6 +320,20 @@ public class RTLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements RT
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitIndex(RTLParser.IndexContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitElementIndex(RTLParser.ElementIndexContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitLineIndex(RTLParser.LineIndexContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

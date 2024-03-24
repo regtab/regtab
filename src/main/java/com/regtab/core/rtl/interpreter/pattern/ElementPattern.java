@@ -1,5 +1,6 @@
 package com.regtab.core.rtl.interpreter.pattern;
 
+import com.regtab.core.model.ILine;
 import com.regtab.core.model.semantics.Action;
 import com.regtab.core.model.semantics.Element;
 import com.regtab.core.model.semantics.Expr;
@@ -40,18 +41,44 @@ public final class ElementPattern extends ElementsPattern {
 
     @Override
     public boolean apply(@NonNull ICell cell) {
-        return apply(cell, cell.getText());
+        final ILine first = cell.getLines().getFirst();
+        final String val = first.getText();
+        //return apply(cell, cell.getText());
+        return apply(first, val);
     }
 
     boolean apply(@NonNull ICell cell, @NonNull String val) {
+        final ILine first = cell.getLines().getFirst();
+        return apply(first, val);
+//        if (expr != null) {
+//            final Object result = expr.evalThis(cell);
+//            if (result == null)
+//                return false; // TODO log
+//            val = result.toString();
+//        }
+//
+//        final Element element = cell.createElement(elementType, val);
+//
+//        for (String tag : tags)
+//            element.addTag(tag);
+//
+//        final List<Action> actions = getActions();
+//        for (Action action : actions)
+//            element.addAction(action);
+//
+//        return true;
+    }
+
+    boolean apply(@NonNull ILine line, @NonNull String val) {
+        final ICell cell = line.getCell();
         if (expr != null) {
-            final Object result = expr.evalThis(cell);
+            final Object result = expr.evalThis(cell); // TODO м.б. нужна оценка выражения в line?
             if (result == null)
                 return false; // TODO log
             val = result.toString();
         }
 
-        final Element element = cell.createElement(elementType, val);
+        final Element element = line.createElement(elementType, val);
 
         for (String tag : tags)
             element.addTag(tag);

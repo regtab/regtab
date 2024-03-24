@@ -23,28 +23,28 @@ public final class RowPattern extends RepeatablePattern {
     public void setCondition(@NonNull Condition condition) {
         super.setCondition(condition);
 
-        for (SubrowPattern subrowTemplate : subrowTemplates) {
-            subrowTemplate.setCondition(condition);
+        for (SubrowPattern subrowPattern : subrowPatterns) {
+            subrowPattern.setCondition(condition);
         }
     }
 
     @Getter
     @Setter(AccessLevel.PACKAGE)
-    private SubtablePattern subtableTemplate;
+    private SubtablePattern subtablePattern;
 
     @Getter
-    private final List<SubrowPattern> subrowTemplates = new ArrayList<>(1);
+    private final List<SubrowPattern> subrowPatterns = new ArrayList<>(1);
 
     public void add(SubrowPattern tmpl) {
-        tmpl.setRowTemplate(this);
-        subrowTemplates.add(tmpl);
+        tmpl.setRowPattern(this);
+        subrowPatterns.add(tmpl);
     }
 
     public void add(@NonNull Action action) {
         getActions().add(action);
 
-        for (SubrowPattern subrowTemplate : subrowTemplates) {
-            subrowTemplate.add(action);
+        for (SubrowPattern subrowPattern : subrowPatterns) {
+            subrowPattern.add(action);
         }
     }
 

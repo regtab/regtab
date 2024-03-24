@@ -26,8 +26,8 @@ public class Matcher {
     //private TableMap tableMap = new TableMap()
 
     public TableMap match(@NonNull ITable table) {
-        final TablePattern tableTemplate = pattern.getTableTemplate();
-        return match(table, tableTemplate);
+        final TablePattern tablePattern = pattern.getTablePattern();
+        return match(table, tablePattern);
     }
 
     private TableMap match(ITable table, TablePattern tmpl) {
@@ -35,29 +35,29 @@ public class Matcher {
 
         final Queue<IRow> rows = new LinkedList<>(table.rowsAsList());
 
-        final List<SubtablePattern> subtableTemplates = tmpl.getSubtableTemplates();
-        for (SubtablePattern subtableTemplate : subtableTemplates) {
+        final List<SubtablePattern> subtablePatterns = tmpl.getSubtablePatterns();
+        for (SubtablePattern subtablePattern : subtablePatterns) {
             int repetitionCount = 0;
 
-            final Quantifier quantifier = subtableTemplate.getQuantifier();
+            final Quantifier quantifier = subtablePattern.getQuantifier();
             final Quantifier.Times times = quantifier.times();
 
             if (times == Quantifier.Times.UNDEFINED) {
-                SubtableMap map = match(rows, subtableTemplate);
+                SubtableMap map = match(rows, subtablePattern);
                 if (map == null)
                     return null;
 
                 tableMap.add(map);
                 repetitionCount++;
 
-                subtableTemplate.setRepetitionCount(repetitionCount);
+                subtablePattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
             if (times == Quantifier.Times.EXACTLY) {
                 final int exactly = quantifier.exactly();
                 for (int i = 0; i < exactly; i++) {
-                    SubtableMap map = match(rows, subtableTemplate);
+                    SubtableMap map = match(rows, subtablePattern);
                     if (map == null)
                         return null;
 
@@ -65,24 +65,24 @@ public class Matcher {
                     repetitionCount++;
                 }
 
-                subtableTemplate.setRepetitionCount(repetitionCount);
+                subtablePattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
             if (times == Quantifier.Times.ZERO_OR_ONE) {
-                SubtableMap map = match(rows, subtableTemplate);
+                SubtableMap map = match(rows, subtablePattern);
                 if (map != null) {
                     tableMap.add(map);
                     repetitionCount++;
                 }
 
-                subtableTemplate.setRepetitionCount(repetitionCount);
+                subtablePattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
             if (times == Quantifier.Times.ZERO_OR_MORE) {
                 while (true) {
-                    SubtableMap map = match(rows, subtableTemplate);
+                    SubtableMap map = match(rows, subtablePattern);
                     if (map == null)
                         break;
 
@@ -90,12 +90,12 @@ public class Matcher {
                     repetitionCount++;
                 }
 
-                subtableTemplate.setRepetitionCount(repetitionCount);
+                subtablePattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
             if (quantifier.times() == Quantifier.Times.ONE_OR_MORE) {
-                SubtableMap map = match(rows, subtableTemplate);
+                SubtableMap map = match(rows, subtablePattern);
                 if (map == null)
                     return null;
 
@@ -103,7 +103,7 @@ public class Matcher {
                 repetitionCount++;
 
                 while (true) {
-                    map = match(rows, subtableTemplate);
+                    map = match(rows, subtablePattern);
                     if (map == null)
                         break;
 
@@ -111,7 +111,7 @@ public class Matcher {
                     repetitionCount++;
                 }
 
-                subtableTemplate.setRepetitionCount(repetitionCount);
+                subtablePattern.setRepetitionCount(repetitionCount);
             }
         }
 
@@ -124,11 +124,11 @@ public class Matcher {
 
         final SubtableMap subtableMap = new SubtableMap();
 
-        final List<RowPattern> rowTemplates = tmpl.getRowTemplates();
-        for (RowPattern rowTemplate : rowTemplates) {
+        final List<RowPattern> rowPatterns = tmpl.getRowPatterns();
+        for (RowPattern rowPattern : rowPatterns) {
             int repetitionCount = 0;
 
-            final Quantifier quantifier = rowTemplate.getQuantifier();
+            final Quantifier quantifier = rowPattern.getQuantifier();
             final Quantifier.Times times = quantifier.times();
 
             if (times == Quantifier.Times.UNDEFINED) {
@@ -136,14 +136,14 @@ public class Matcher {
                 if (row == null)
                     return null; // Impossible
 
-                RowMap map = match(row, rowTemplate);
+                RowMap map = match(row, rowPattern);
                 if (map == null)
                     return null;
 
                 subtableMap.add(map);
                 repetitionCount++;
 
-                rowTemplate.setRepetitionCount(repetitionCount);
+                rowPattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
@@ -153,7 +153,7 @@ public class Matcher {
                     if (rows.isEmpty())
                         return null;
                     IRow row = rows.peek();
-                    RowMap map = match(row, rowTemplate);
+                    RowMap map = match(row, rowPattern);
                     if (map == null)
                         return null;
 
@@ -162,14 +162,14 @@ public class Matcher {
                     repetitionCount++;
                 }
 
-                rowTemplate.setRepetitionCount(repetitionCount);
+                rowPattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
             if (times == Quantifier.Times.ZERO_OR_ONE) {
                 if (!rows.isEmpty()) {
                     final IRow row = rows.peek();
-                    RowMap map = match(row, rowTemplate);
+                    RowMap map = match(row, rowPattern);
                     if (map != null) {
                         rows.poll();
                         subtableMap.add(map);
@@ -177,7 +177,7 @@ public class Matcher {
                     }
                 }
 
-                rowTemplate.setRepetitionCount(repetitionCount);
+                rowPattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
@@ -186,7 +186,7 @@ public class Matcher {
                     if (rows.isEmpty())
                         break;
                     IRow row = rows.peek();
-                    RowMap map = match(row, rowTemplate);
+                    RowMap map = match(row, rowPattern);
                     if (map == null)
                         break;
 
@@ -195,7 +195,7 @@ public class Matcher {
                     repetitionCount++;
                 }
 
-                rowTemplate.setRepetitionCount(repetitionCount);
+                rowPattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
@@ -204,7 +204,7 @@ public class Matcher {
                     return null;
 
                 IRow row = rows.peek();
-                RowMap map = match(row, rowTemplate);
+                RowMap map = match(row, rowPattern);
                 if (map == null)
                     return null;
 
@@ -216,7 +216,7 @@ public class Matcher {
                     if (rows.isEmpty())
                         break;
                     row = rows.peek();
-                    map = match(row, rowTemplate);
+                    map = match(row, rowPattern);
                     if (map == null)
                         break;
 
@@ -225,7 +225,7 @@ public class Matcher {
                     repetitionCount++;
                 }
 
-                rowTemplate.setRepetitionCount(repetitionCount);
+                rowPattern.setRepetitionCount(repetitionCount);
             }
         }
 
@@ -236,29 +236,29 @@ public class Matcher {
         final RowMap rowMap = new RowMap();
 
         final Queue<ICell> cells = new LinkedList<>(row.cellsAsList());
-        final List<SubrowPattern> subrowTemplates = tmpl.getSubrowTemplates();
-        for (SubrowPattern subrowTemplate : subrowTemplates) {
+        final List<SubrowPattern> subrowPatterns = tmpl.getSubrowPatterns();
+        for (SubrowPattern subrowPattern : subrowPatterns) {
             int repetitionCount = 0;
 
-            final Quantifier quantifier = subrowTemplate.getQuantifier();
+            final Quantifier quantifier = subrowPattern.getQuantifier();
             final Quantifier.Times times = quantifier.times();
 
             if (times == Quantifier.Times.UNDEFINED) {
-                SubrowMap map = match(cells, subrowTemplate);
+                SubrowMap map = match(cells, subrowPattern);
                 if (map == null)
                     return null;
 
                 rowMap.add(map);
                 repetitionCount++;
 
-                subrowTemplate.setRepetitionCount(repetitionCount);
+                subrowPattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
             if (times == Quantifier.Times.EXACTLY) {
                 final int exactly = quantifier.exactly();
                 for (int i = 0; i < exactly; i++) {
-                    SubrowMap map = match(cells, subrowTemplate);
+                    SubrowMap map = match(cells, subrowPattern);
                     if (map == null)
                         return null;
 
@@ -266,24 +266,24 @@ public class Matcher {
                     repetitionCount++;
                 }
 
-                subrowTemplate.setRepetitionCount(repetitionCount);
+                subrowPattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
             if (times == Quantifier.Times.ZERO_OR_ONE) {
-                SubrowMap map = match(cells, subrowTemplate);
+                SubrowMap map = match(cells, subrowPattern);
                 if (map != null) {
                     rowMap.add(map);
                     repetitionCount++;
                 }
 
-                subrowTemplate.setRepetitionCount(repetitionCount);
+                subrowPattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
             if (times == Quantifier.Times.ZERO_OR_MORE) {
                 while (true) {
-                    SubrowMap map = match(cells, subrowTemplate);
+                    SubrowMap map = match(cells, subrowPattern);
                     if (map == null)
                         break;
 
@@ -291,12 +291,12 @@ public class Matcher {
                     repetitionCount++;
                 }
 
-                subrowTemplate.setRepetitionCount(repetitionCount);
+                subrowPattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
             if (quantifier.times() == Quantifier.Times.ONE_OR_MORE) {
-                SubrowMap map = match(cells, subrowTemplate);
+                SubrowMap map = match(cells, subrowPattern);
                 if (map == null)
                     return null;
 
@@ -304,7 +304,7 @@ public class Matcher {
                 repetitionCount++;
 
                 while (true) {
-                    map = match(cells, subrowTemplate);
+                    map = match(cells, subrowPattern);
                     if (map == null)
                         break;
 
@@ -312,7 +312,7 @@ public class Matcher {
                     repetitionCount++;
                 }
 
-                subrowTemplate.setRepetitionCount(repetitionCount);
+                subrowPattern.setRepetitionCount(repetitionCount);
             }
         }
 
@@ -328,11 +328,11 @@ public class Matcher {
 
         final SubrowMap subrowMap = new SubrowMap();
 
-        final List<CellPattern> cellTemplates = tmpl.getCellTemplates();
-        for (CellPattern cellTemplate : cellTemplates) {
+        final List<CellPattern> cellPatterns = tmpl.getCellPatterns();
+        for (CellPattern cellPattern : cellPatterns) {
             int repetitionCount = 0;
 
-            final Quantifier quantifier = cellTemplate.getQuantifier();
+            final Quantifier quantifier = cellPattern.getQuantifier();
             final Quantifier.Times times = quantifier.times();
 
             if (times == Quantifier.Times.UNDEFINED) {
@@ -340,14 +340,14 @@ public class Matcher {
                 if (cell == null)
                     return null; // Impossible
 
-                CellMap map = match(cell, cellTemplate);
+                CellMap map = match(cell, cellPattern);
                 if (map == null)
                     return null;
 
                 subrowMap.add(map);
                 repetitionCount++;
 
-                cellTemplate.setRepetitionCount(repetitionCount);
+                cellPattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
@@ -357,7 +357,7 @@ public class Matcher {
                     if (cells.isEmpty())
                         return null;
                     ICell cell = cells.peek();
-                    CellMap map = match(cell, cellTemplate);
+                    CellMap map = match(cell, cellPattern);
                     if (map == null)
                         return null;
 
@@ -366,7 +366,7 @@ public class Matcher {
                     repetitionCount++;
                 }
 
-                cellTemplate.setRepetitionCount(repetitionCount);
+                cellPattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
@@ -374,14 +374,14 @@ public class Matcher {
                 if (cells.isEmpty())
                     continue;
                 final ICell cell = cells.peek();
-                CellMap map = match(cell, cellTemplate);
+                CellMap map = match(cell, cellPattern);
                 if (map != null) {
                     cells.poll();
                     subrowMap.add(map);
                     repetitionCount = 1;
                 }
 
-                cellTemplate.setRepetitionCount(repetitionCount);
+                cellPattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
@@ -390,7 +390,7 @@ public class Matcher {
                     if (cells.isEmpty())
                         break;
                     ICell cell = cells.peek();
-                    CellMap map = match(cell, cellTemplate);
+                    CellMap map = match(cell, cellPattern);
                     if (map == null)
                         break;
                     cells.poll();
@@ -398,7 +398,7 @@ public class Matcher {
                     repetitionCount++;
                 }
 
-                cellTemplate.setRepetitionCount(repetitionCount);
+                cellPattern.setRepetitionCount(repetitionCount);
                 continue;
             }
 
@@ -407,7 +407,7 @@ public class Matcher {
                     return null;
 
                 ICell cell = cells.peek();
-                CellMap map = match(cell, cellTemplate);
+                CellMap map = match(cell, cellPattern);
                 if (map == null)
                     return null;
 
@@ -419,7 +419,7 @@ public class Matcher {
                     if (cells.isEmpty())
                         break;
                     cell = cells.peek();
-                    map = match(cell, cellTemplate);
+                    map = match(cell, cellPattern);
                     if (map == null)
                         break;
 
@@ -428,7 +428,7 @@ public class Matcher {
                     repetitionCount++;
                 }
 
-                cellTemplate.setRepetitionCount(repetitionCount);
+                cellPattern.setRepetitionCount(repetitionCount);
             }
         }
 
@@ -440,7 +440,7 @@ public class Matcher {
         if (condition != null) {
             final boolean result = condition.check(cell, cell); //TODO переделать на один аргумент
             if (!result) {
-                // final String msg = String.format("cell {%s} does not match to template %s", cell, tmpl);
+                // final String msg = String.format("cell {%s} does not match to pattern %s", cell, tmpl);
                 // log.warning(msg);
                 return null; // TODO log
             }

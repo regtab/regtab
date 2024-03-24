@@ -29,15 +29,15 @@ final class ElementVisitor extends RTLBaseVisitor<ElementPattern> {
         else
             elementType = null; // Impossible
 
-        final ElementPattern elementTemplate = new ElementPattern(ctx);
-        elementTemplate.setElementType(elementType);
+        final ElementPattern elementPattern = new ElementPattern(ctx);
+        elementPattern.setElementType(elementType);
 
         final ExprContext exprContext = ctx.expr();
         if (exprContext != null) {
             final Expr expr = exprVisitor.visit(exprContext);
             if (expr == null)
                 return null; // TODO test
-            elementTemplate.setExpr(expr);
+            elementPattern.setExpr(expr);
         }
 
         final TagsContext tagsCtx = ctx.tags();
@@ -45,7 +45,7 @@ final class ElementVisitor extends RTLBaseVisitor<ElementPattern> {
             List<TerminalNode> tns = tagsCtx.TAG();
             for (TerminalNode tn : tns) {
                 String tag = tn.getText();
-                elementTemplate.add(tag);
+                elementPattern.add(tag);
             }
         }
 
@@ -57,12 +57,12 @@ final class ElementVisitor extends RTLBaseVisitor<ElementPattern> {
                     Action action = actionVisitor.visit(actionCtx);
                     if (action == null)
                         return null; // TODO test
-                    elementTemplate.add(action);
+                    elementPattern.add(action);
                 }
             }
         }
 
-        return elementTemplate;
+        return elementPattern;
 
     }
 }

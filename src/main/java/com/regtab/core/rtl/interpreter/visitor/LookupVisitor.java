@@ -25,6 +25,7 @@ final class LookupVisitor extends RTLBaseVisitor<Lookup> {
         if (directionCtx.INROW() != null) direction = Lookup.Direction.IN_ROW;
         if (directionCtx.INCOL() != null) direction = Lookup.Direction.IN_COL;
         if (directionCtx.INCELL() != null) direction = Lookup.Direction.IN_CELL;
+        if (directionCtx.INLINE() != null) direction = Lookup.Direction.IN_LINE;
 
         final Lookup lookup = new Lookup(direction);
 
@@ -54,11 +55,21 @@ final class LookupVisitor extends RTLBaseVisitor<Lookup> {
                 }
             }
 
-            IndexContext idxCtx = whereCtx.index();
+            final IndexContext idxCtx = whereCtx.index();
             if (idxCtx != null) {
-                TerminalNode tn = idxCtx.INT();
-                int index = Integer.parseInt(tn.getText());
-                lookup.setIndex(index);
+                final LineIndexContext lineIndexContext = idxCtx.lineIndex();
+                if (lineIndexContext != null) {
+                    final TerminalNode tn = lineIndexContext.INT();
+                    final int lineIndex = Integer.parseInt(tn.getText());
+                    lookup.setLineIndex(lineIndex);
+                }
+
+                final ElementIndexContext elementIndexContext = idxCtx.elementIndex();
+                if (elementIndexContext != null) {
+                    final TerminalNode tn = elementIndexContext.INT();
+                    final int elementIndex = Integer.parseInt(tn.getText());
+                    lookup.setElementIndex(elementIndex);
+                }
             }
 
             TagsContext tagsCtx = whereCtx.tags();

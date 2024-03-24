@@ -33,9 +33,9 @@ public final class TableMap {
         private final ICell cell;
         @NonNull
         @Getter
-        private final CellPattern template;
+        private final CellPattern pattern;
         public boolean apply() {
-            return template.apply(cell);
+            return pattern.apply(cell);
         }
     }
 

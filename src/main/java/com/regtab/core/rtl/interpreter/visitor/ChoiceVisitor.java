@@ -15,41 +15,40 @@ final class ChoiceVisitor extends RTLBaseVisitor<ChoicePattern> {
 
     @Override
     public ChoicePattern visitChoice(ChoiceContext ctx) {
-        final ChoicePattern choiceTemplate = new ChoicePattern(ctx);
+        final ChoicePattern choicePattern = new ChoicePattern(ctx);
 
         ChoiceBodyContext choiceBodyContext;
         choiceBodyContext = ctx.choiceBody(0);
 
-        final ElementContext elementContext = choiceBodyContext.element();
-        choiceTemplate.left = createVariant(choiceBodyContext);
+        choicePattern.left = createVariant(choiceBodyContext);
         choiceBodyContext = ctx.choiceBody(1);
-        choiceTemplate.right = createVariant(choiceBodyContext);
+        choicePattern.right = createVariant(choiceBodyContext);
 
         final CondContext condContext = ctx.cond();
         if (condContext != null) {
-            choiceTemplate.condition = condVisitor.visit(condContext);
+            choicePattern.condition = condVisitor.visit(condContext);
         }
 
-        return choiceTemplate;
+        return choicePattern;
     }
 
     private ElementsPattern createVariant(ChoiceBodyContext ctx) {
         final ElementContext elementContext = ctx.element();
         if (elementContext != null) {
-            final ElementPattern elementTemplate = elementVisitor.visit(elementContext);
-            if (elementTemplate == null)
+            final ElementPattern elementPattern = elementVisitor.visit(elementContext);
+            if (elementPattern == null)
                 return null; // TODO test
 
-            return elementTemplate;
+            return elementPattern;
         }
 
         final StructContext structuredContext = ctx.struct();
         if (structuredContext != null) {
-            final StructPattern structTemplate = structVisitor.visit(structuredContext);
-            if (structTemplate == null)
+            final StructPattern structPattern = structVisitor.visit(structuredContext);
+            if (structPattern == null)
                 return null; // TODO test
 
-            return structTemplate;
+            return structPattern;
         }
 
         return null; // Impossible

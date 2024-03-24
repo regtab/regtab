@@ -20,12 +20,12 @@ final class TableVisitor extends RTLBaseVisitor<TablePattern> {
 
         final TablePattern tmpl = new TablePattern(ctx);
         for (SubtableContext subtableCtx : subtableCtxList) {
-            final SubtablePattern subtableTemplate = subtableVisitor.visit(subtableCtx);
-            if (subtableTemplate == null)
+            final SubtablePattern subtablePattern = subtableVisitor.visit(subtableCtx);
+            if (subtablePattern == null)
                 return null;
-            tmpl.add(subtableTemplate);
+            tmpl.add(subtablePattern);
         }
-        final List<SubtablePattern> subtableTemplates = tmpl.getSubtableTemplates();
-        return subtableTemplates.isEmpty() ? null : tmpl;
+        final List<SubtablePattern> subtablePatterns = tmpl.getSubtablePatterns();
+        return subtablePatterns.isEmpty() ? null : tmpl;
     }
 }

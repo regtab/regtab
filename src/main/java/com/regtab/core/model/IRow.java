@@ -12,7 +12,21 @@ public final class IRow {
     @Getter
     private final int position;
 
-    final ICell[] cells;
+    private final ICell[] cells;
+
+    private int last;
+
+    boolean add(final ICell cell) {
+        if (last == cells.length)
+            return false;
+        cells[last] = cell;
+        last++;
+        return true;
+    }
+
+    ICell get(int index) {
+        return cells[index];
+    }
 
     public ICell[] copyCells() {
         return Arrays.copyOf(cells, cells.length);

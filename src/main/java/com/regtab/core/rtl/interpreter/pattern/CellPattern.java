@@ -20,7 +20,7 @@ public final class CellPattern extends RepeatablePattern {
     @NonNull
     @Getter
     @Setter
-    private ElementsPattern elementsTemplate; //TODO перевести в final
+    private ElementsPattern elementsPattern; //TODO перевести в final
 
     @Override
     public void setCondition(@NonNull Condition condition) {
@@ -29,15 +29,15 @@ public final class CellPattern extends RepeatablePattern {
 
     @Getter
     @Setter(AccessLevel.PACKAGE)
-    private SubrowPattern subrowTemplate;
+    private SubrowPattern subrowPattern;
 
     public void add(@NonNull Action action) {
         getActions().add(action);
-        if (elementsTemplate != null) //TODO убрать, после перевода elementsTemplate в final
-            elementsTemplate.add(action);
+        if (elementsPattern != null) //TODO убрать, после перевода elementsPattern в final
+            elementsPattern.add(action);
     }
 
     public boolean apply(@NonNull ICell cell) {
-        return elementsTemplate.apply(cell);
+        return elementsPattern.apply(cell);
     }
 }

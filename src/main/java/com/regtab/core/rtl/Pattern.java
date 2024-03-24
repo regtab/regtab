@@ -18,10 +18,10 @@ import com.regtab.core.rtl.interpreter.visitor.Interpreter;
 @Log
 public class Pattern {
     @Getter(AccessLevel.PACKAGE)
-    private final TablePattern tableTemplate;
+    private final TablePattern tablePattern;
 
-    private Pattern(TablePattern tableTemplate) {
-        this.tableTemplate = tableTemplate;
+    private Pattern(TablePattern tablePattern) {
+        this.tablePattern = tablePattern;
     }
 
     @NonNull
@@ -34,9 +34,9 @@ public class Pattern {
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         final RTLParser parser = new RTLParser(tokens);
         final ParseTree tree = parser.table();
-        final TablePattern tableTemplate = Interpreter.compile(tree);
+        final TablePattern tablePattern = Interpreter.compile(tree);
 
-        return tableTemplate == null ? null : new Pattern(tableTemplate);
+        return tablePattern == null ? null : new Pattern(tablePattern);
     }
 
     public Matcher matcher() {

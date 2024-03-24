@@ -18,24 +18,24 @@ final class SubtableVisitor extends RTLBaseVisitor<SubtablePattern> {
 
     @Override
     public SubtablePattern visitSubtable(SubtableContext ctx) {
-        final SubtablePattern subtableTemplate = new SubtablePattern(ctx);
+        final SubtablePattern subtablePattern = new SubtablePattern(ctx);
 
         final List<RowContext> rowContexts = ctx.row();
         if (rowContexts != null && !rowContexts.isEmpty()) {
-            boolean result = apply(rowContexts, subtableTemplate);
+            boolean result = apply(rowContexts, subtablePattern);
             if (!result)
                 return null; // TODO test
 
-            return subtableTemplate;
+            return subtablePattern;
         }
 
         final RowsContext rowsContext = ctx.rows();
         if (rowsContext != null) {
-            boolean result = apply(rowsContext, subtableTemplate);
+            boolean result = apply(rowsContext, subtablePattern);
             if (!result)
                 return null; // TODO test
 
-            return subtableTemplate;
+            return subtablePattern;
         }
 
         return null; // Impossible
@@ -43,11 +43,11 @@ final class SubtableVisitor extends RTLBaseVisitor<SubtablePattern> {
 
     private boolean apply(List<RowContext> rowContexts, SubtablePattern tmpl) {
         for (RowContext ctx : rowContexts) {
-            RowPattern rowTemplate = rowVisitor.visit(ctx);
-            if (rowTemplate == null)
+            RowPattern rowPattern = rowVisitor.visit(ctx);
+            if (rowPattern == null)
                 return false; // TODO log
 
-            tmpl.add(rowTemplate);
+            tmpl.add(rowPattern);
         }
 
         //tmpl.quantifier = new Quantifier(EXACTLY, 1);
@@ -63,10 +63,10 @@ final class SubtableVisitor extends RTLBaseVisitor<SubtablePattern> {
         // Instruction order matter
         List<RowContext> rowContexts = rowsContext.row();
         for (RowContext ctx : rowContexts) {
-            RowPattern rowTemplate = rowVisitor.visit(ctx);
-            if (rowTemplate == null)
+            RowPattern rowPattern = rowVisitor.visit(ctx);
+            if (rowPattern == null)
                 return false; // TODO log
-            tmpl.add(rowTemplate);
+            tmpl.add(rowPattern);
         }
 
         final CondContext condContext = rowsContext.cond();

@@ -13,10 +13,10 @@ public final class TablePattern extends BasePattern {
     }
 
     @Getter
-    private final List<SubtablePattern> subtableTemplates = new ArrayList<>(1);
+    private final List<SubtablePattern> subtablePatterns = new ArrayList<>(1);
 
     public void add(SubtablePattern tmpl) {
-        tmpl.setTableTemplate(this);
-        subtableTemplates.add(tmpl);
+        tmpl.setTablePattern(this);
+        subtablePatterns.add(tmpl);
     }
 }

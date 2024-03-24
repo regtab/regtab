@@ -48,15 +48,15 @@ public interface RTLListener extends ParseTreeListener {
 	 */
 	void exitLabel(RTLParser.LabelContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link RTLParser#replacement}.
+	 * Enter a parse tree produced by {@link RTLParser#copy}.
 	 * @param ctx the parse tree
 	 */
-	void enterReplacement(RTLParser.ReplacementContext ctx);
+	void enterCopy(RTLParser.CopyContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link RTLParser#replacement}.
+	 * Exit a parse tree produced by {@link RTLParser#copy}.
 	 * @param ctx the parse tree
 	 */
-	void exitReplacement(RTLParser.ReplacementContext ctx);
+	void exitCopy(RTLParser.CopyContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link RTLParser#quantifier}.
 	 * @param ctx the parse tree
@@ -447,6 +447,26 @@ public interface RTLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIndex(RTLParser.IndexContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RTLParser#elementIndex}.
+	 * @param ctx the parse tree
+	 */
+	void enterElementIndex(RTLParser.ElementIndexContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RTLParser#elementIndex}.
+	 * @param ctx the parse tree
+	 */
+	void exitElementIndex(RTLParser.ElementIndexContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RTLParser#lineIndex}.
+	 * @param ctx the parse tree
+	 */
+	void enterLineIndex(RTLParser.LineIndexContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RTLParser#lineIndex}.
+	 * @param ctx the parse tree
+	 */
+	void exitLineIndex(RTLParser.LineIndexContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code strLiteral}
 	 * labeled alternative in {@link RTLParser#expr}.

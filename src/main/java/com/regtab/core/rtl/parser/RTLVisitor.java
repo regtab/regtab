@@ -35,11 +35,11 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLabel(RTLParser.LabelContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link RTLParser#replacement}.
+	 * Visit a parse tree produced by {@link RTLParser#copy}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitReplacement(RTLParser.ReplacementContext ctx);
+	T visitCopy(RTLParser.CopyContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RTLParser#quantifier}.
 	 * @param ctx the parse tree
@@ -274,6 +274,18 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIndex(RTLParser.IndexContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RTLParser#elementIndex}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitElementIndex(RTLParser.ElementIndexContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RTLParser#lineIndex}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLineIndex(RTLParser.LineIndexContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code strLiteral}
 	 * labeled alternative in {@link RTLParser#expr}.

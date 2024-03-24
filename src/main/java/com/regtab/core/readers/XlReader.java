@@ -15,6 +15,10 @@ import org.apache.poi.xssf.usermodel.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 @Log
 public final class XlReader {
@@ -109,14 +113,33 @@ public final class XlReader {
                     }
                 }
 
-                final ICell cell = table.findCell(i, j);
-                cell.setText(text);
+                final ICell cell = table.createCell(i, j, text, true);
+
+                if (text == null || text.isBlank()) {
+                    cell.setBlank(true);
+                } else {
+                    final int indent = getIndent(text);
+                    cell.setIndent(indent);
+                }
+
                 cell.setStyle(cellStyle);
                 cell.setDatatype(datatype);
             }
         }
 
+        table.complete();
+
         return table;
+    }
+
+    private int getIndent(String text) {
+        if (!text.isBlank()) {
+            for (int i = 0; i < text.length(); i++) {
+                char c = text.charAt(i);
+                if (c != 32) return i;
+            }
+        }
+        return 0;
     }
 
     private SSDatatype getDataType(CellType xlCellType) {

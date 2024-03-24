@@ -3,7 +3,6 @@ package com.regtab.core.model;
 import com.regtab.core.model.recordset.Recordset;
 import com.regtab.core.model.semantics.Action;
 import lombok.Getter;
-import lombok.NonNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,51 +33,67 @@ public final class ITable {
     }
 
     @Getter
-    private final int numOfRows;
-
-    @Getter
-    private final int numOfCols;
-
-    @Getter
     private final Recordset recordset = new Recordset();
 
     public ITable(final int numOfRows, final int numOfCols) {
-        this.numOfRows = numOfRows;
+        if (numOfRows < 1)
+            throw new IllegalArgumentException("Number of rows is less 1");
+
+        if (numOfCols < 1)
+            throw new IllegalArgumentException("Number of columns is less 1");
+
         rows = new IRow[numOfRows];
         for (int i = 0; i < numOfRows; i++) {
             rows[i] = new IRow(i, numOfCols);
         }
 
-        this.numOfCols = numOfCols;
         cols = new ICol[numOfCols];
         for (int i = 0; i < numOfCols; i++) {
             cols[i] = new ICol(i, numOfRows);
         }
 
         cells = new ICell[numOfRows * numOfCols];
-        int count = 0;
-        for (int i = 0; i < numOfRows; i++) {
-            for (int j = 0; j < numOfCols; j++) {
-                ICell cell = new ICell(this, rows[i], cols[j]);
-                rows[i].cells[j] = cell;
-                cols[j].cells[i] = cell;
-                cells[count] = cell;
-                count++;
+    }
+
+    private int last;
+
+    private boolean add(final ICell cell) {
+        if (last == cells.length)
+            return false;
+        cells[last] = cell;
+        last++;
+        return true;
+    }
+
+    public void complete() {
+        for (int i = 0; i < rows.length; i++) {
+            for (int j = 0; j < cols.length; j++) {
+                final ICell cell = rows[i].get(j);
+                if (cell == null)
+                    createCell(i, j, "", false);
             }
         }
     }
 
-    public ICell findCell(final int rowIndex, final int colIndex) {
+    public ICell createCell(final int rowIndex, final int colIndex, final String text, final boolean multiline) {
         if (rowIndex < 0 || rowIndex >= rows.length)
-            return null; // Row index is out of bounds
+            throw new IllegalArgumentException("Row index is out of bounds");
 
-        if (rowIndex < 0 || rowIndex >= rows.length)
-            return null; // Col index is out of bounds
+        if (colIndex < 0 || colIndex >= cols.length)
+            throw new IllegalArgumentException("Col index is out of bounds");
 
-        return rows[rowIndex].cells[colIndex];
+        final IRow row = rows[rowIndex];
+        final ICol col = cols[colIndex];
+        final ICell cell = new ICell(this, row, col, text, multiline);
+
+        row.add(cell);
+        col.add(cell);
+        add(cell);
+
+        return cell;
     }
 
-    public void performActions() {
+    public Recordset performActions() {
         for (ICell cell: cells)
             cell.perform(Action.Type.FACTOR);
 
@@ -96,5 +111,7 @@ public final class ITable {
 
         recordset.genAttributes();
         recordset.excludeNulls();
+
+        return recordset;
     }
 }
