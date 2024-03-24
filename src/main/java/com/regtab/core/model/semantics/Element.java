@@ -1,9 +1,10 @@
 package com.regtab.core.model.semantics;
 
 import com.regtab.core.model.ICell;
-import com.regtab.core.model.ILine;
 import com.regtab.core.model.recordset.Provenance;
+
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -18,9 +19,6 @@ public final class Element implements Provenance {
 
     @Getter
     private final ICell cell;
-
-    @Getter
-    private final ILine line;
 
     @Getter
     @Setter
@@ -38,9 +36,9 @@ public final class Element implements Provenance {
 //        this.data = data;
 //    }
 
-    public Element(ILine line, Type type, String data) {
-        this.line = line;
-        this.cell = line.getCell();
+    @NonNull
+    public Element(ICell cell, Type type, String data) {
+        this.cell = cell;
         this.type = type;
         this.data = data;
     }

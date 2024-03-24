@@ -96,6 +96,9 @@ public final class XlReader {
 
             for (int j = cl; j <= cr; j++) {
                 String text = "";
+                boolean blank = true;
+                int indent = 0;
+
                 CellStyle xlCellStyle;
                 Style cellStyle = null;
                 CellType xlCellType;
@@ -106,6 +109,12 @@ public final class XlReader {
 
                     if (xlCell != null) {
                         text = getText(xlCell);
+                        if (text == null || text.isBlank())
+                            text = "";
+                        else {
+                            blank = false;
+                            indent = getIndent(text);
+                        }
                         xlCellStyle = xlCell.getCellStyle();
                         cellStyle = createCellStyle(xlCellStyle);
                         xlCellType = xlCell.getCellType();
@@ -113,21 +122,23 @@ public final class XlReader {
                     }
                 }
 
-                final ICell cell = table.createCell(i, j, text, true);
+                final ICell cell = table.createCell(i, j, text);
+                cell.setBlank(blank);
+                cell.setIndent(indent);
 
-                if (text == null || text.isBlank()) {
-                    cell.setBlank(true);
-                } else {
-                    final int indent = getIndent(text);
-                    cell.setIndent(indent);
-                }
+//                if (text == null || text.isBlank()) {
+//                    cell.setBlank(true);
+//                } else {
+//                    final int indent = getIndent(text);
+//                    cell.setIndent(indent);
+//                }
 
                 cell.setStyle(cellStyle);
                 cell.setDatatype(datatype);
             }
         }
 
-        table.complete();
+//        table.complete();
 
         return table;
     }

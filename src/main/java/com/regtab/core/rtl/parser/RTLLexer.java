@@ -50,7 +50,7 @@ public class RTLLexer extends Lexer {
 		return new String[] {
 			null, "'='", "'E'", "'L'", "'a'", "'v'", "'s'", null, null, null, null, 
 			null, "'left'", "'right'", "'up'", "'down'", "'row'", "'col'", "'cell'", 
-			"'line'", "'r'", "'c'", "'this'", "'&'", "'|'", "'~'", "'TRUE'", "'FALSE'", 
+			"'line'", "'R'", "'C'", "'this'", "'&'", "'|'", "'~'", "'TRUE'", "'FALSE'", 
 			"'>'", "'>='", "'<'", "'<='", "'=='", "'!='", "'contains'", "'matches'", 
 			"'+'", "'-'", "'*'", "'%'", "'('", "')'", "'{'", "'}'", "'['", "']'", 
 			"'->'", "':'", "';'", "','", "'$'", "'?'", "'..'"

@@ -144,8 +144,10 @@ start      : relative? INT ;
 end        : relative? INT ;
 relative   : PLUS | MINUS ;
 
-ROW : 'r';
-COL : 'c';
+ROW : 'R';
+COL : 'C';
+
+//index : 'E' INT ; // Индекс элемента внутри структурированной ячейки.
 
 index : (elementIndex? lineIndex) | (elementIndex lineIndex?) ;
 elementIndex : 'E' INT ; // Индекс элемента внутри ячейки.

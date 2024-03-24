@@ -25,7 +25,6 @@ final class LookupVisitor extends RTLBaseVisitor<Lookup> {
         if (directionCtx.INROW() != null) direction = Lookup.Direction.IN_ROW;
         if (directionCtx.INCOL() != null) direction = Lookup.Direction.IN_COL;
         if (directionCtx.INCELL() != null) direction = Lookup.Direction.IN_CELL;
-        if (directionCtx.INLINE() != null) direction = Lookup.Direction.IN_LINE;
 
         final Lookup lookup = new Lookup(direction);
 

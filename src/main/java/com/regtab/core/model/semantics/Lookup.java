@@ -60,8 +60,7 @@ public final class Lookup {
         DOWN(false),
         IN_ROW(false),
         IN_COL(false),
-        IN_CELL(false),
-        IN_LINE(false);
+        IN_CELL(false);
 
         public final boolean reversed;
 
@@ -139,8 +138,7 @@ public final class Lookup {
             case RIGHT -> collectCells(rows, rRange, rightRange);
             case UP -> collectCells(cols, cRange, upRange);
             case DOWN -> collectCells(cols, cRange, downRange);
-            case IN_CELL -> collectCells(cols, cellCRange, cellRRange); // или rows?
-            case IN_LINE -> null;
+            case IN_CELL -> collectCells(cols, cellCRange, cellRRange); // TODO или rows?
         };
 
         List<Element> elements = new ArrayList<>();
@@ -151,17 +149,6 @@ public final class Lookup {
             collectElements(cells, type, elements);
             if (direction == Direction.IN_CELL)
                 elements.remove(caller);
-        }
-
-        if (cells == null) {
-            if (direction == Direction.IN_LINE) {
-                final ILine line = caller.getLine();
-                final List<Element> elementsOfLine = List.copyOf(line.getElements());
-                elementsOfLine.remove(caller);
-                if (!elementsOfLine.isEmpty()) {
-                    collectElementsInLine(elementsOfLine, type, elements);
-                }
-            }
         }
 
         return elements.isEmpty() ? null : elements;
@@ -196,8 +183,6 @@ public final class Lookup {
     }
 
     private List<ICell> collectCells(final ICell[] cells, final Range range) {
-        //List<ICell> cells = cellRange.getCells();
-
         int from = range.from();
         int to = range.to();
 
@@ -242,47 +227,7 @@ public final class Lookup {
     }
 
     private void collectElements(ICell cell, Element.Type type, List<Element> result) {
-        final List<ILine> lines = cell.getLines();
-
-        if (lineIndex == null) {
-            for (ILine line : lines) {
-                final List<Element> elements = line.getElements();
-                collectElementsInLine(elements, type, result);
-//                if (elements != null) {
-//                    //int elementIndex = getIndex();
-//                    if (elementIndex != null && elementIndex < elements.size()) {
-//                        Element elem = elements.get(elementIndex);
-//                        collectElement(elem, type, result);
-//                    } else {
-//                        for (Element elem : elements) {
-//                            collectElement(elem, type, result);
-//                            if (!all && !result.isEmpty()) return;
-//                        }
-//                    }
-//                }
-            }
-            return;
-        }
-
-        if (lineIndex != null && lineIndex < lines.size()) {
-            ILine line = lines.get(lineIndex);
-            final List<Element> elements = line.getElements();
-            collectElementsInLine(elements, type, result);
-//            if (elements != null) {
-//                if (elementIndex != null && elementIndex < elements.size()) {
-//                    Element elem = elements.get(elementIndex);
-//                    collectElement(elem, type, result);
-//                } else {
-//                    for (Element elem : elements) {
-//                        collectElement(elem, type, result);
-//                        if (!all && !result.isEmpty()) return;
-//                    }
-//                }
-//            }
-        }
-    }
-
-    private void collectElementsInLine(List<Element> elements, Element.Type type, List<Element> result) {
+        final List<Element> elements = cell.getElements();
         if (elements != null) {
             if (elementIndex != null && elementIndex < elements.size()) {
                 Element elem = elements.get(elementIndex);

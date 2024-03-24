@@ -65,17 +65,17 @@ public final class ITable {
         return true;
     }
 
-    public void complete() {
-        for (int i = 0; i < rows.length; i++) {
-            for (int j = 0; j < cols.length; j++) {
-                final ICell cell = rows[i].get(j);
-                if (cell == null)
-                    createCell(i, j, "", false);
-            }
-        }
-    }
+//    public void complete() {
+//        for (int i = 0; i < rows.length; i++) {
+//            for (int j = 0; j < cols.length; j++) {
+//                final ICell cell = rows[i].get(j);
+//                if (cell == null)
+//                    createCell(i, j, "");
+//            }
+//        }
+//    }
 
-    public ICell createCell(final int rowIndex, final int colIndex, final String text, final boolean multiline) {
+    public ICell createCell(final int rowIndex, final int colIndex, final String text) {
         if (rowIndex < 0 || rowIndex >= rows.length)
             throw new IllegalArgumentException("Row index is out of bounds");
 
@@ -84,7 +84,7 @@ public final class ITable {
 
         final IRow row = rows[rowIndex];
         final ICol col = cols[colIndex];
-        final ICell cell = new ICell(this, row, col, text, multiline);
+        final ICell cell = new ICell(this, row, col, text);
 
         row.add(cell);
         col.add(cell);
