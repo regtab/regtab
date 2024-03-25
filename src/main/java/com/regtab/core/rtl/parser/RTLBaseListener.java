@@ -521,18 +521,6 @@ public class RTLBaseListener implements RTLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIndex(RTLParser.IndexContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIndex(RTLParser.IndexContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterElementIndex(RTLParser.ElementIndexContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -540,18 +528,6 @@ public class RTLBaseListener implements RTLListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitElementIndex(RTLParser.ElementIndexContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterLineIndex(RTLParser.LineIndexContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitLineIndex(RTLParser.LineIndexContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

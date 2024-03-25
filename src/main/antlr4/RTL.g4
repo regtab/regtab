@@ -125,12 +125,12 @@ INLINE : 'line' ;
 
 // Область поиска (where).
 where
-: (range index? tags?)
-| (range index tags?)
-| (range index? tags)
-| (range? index tags?)
-| (range? index tags)
-| (range? index? tags)
+: (range elementIndex? tags?)
+| (range elementIndex tags?)
+| (range elementIndex? tags)
+| (range? elementIndex tags?)
+| (range? elementIndex tags)
+| (range? elementIndex? tags)
 ;
 
 // Диапазон ячеек.
@@ -146,11 +146,7 @@ relative   : PLUS | MINUS ;
 ROW : 'R';
 COL : 'C';
 
-//index : 'E' INT ; // Индекс элемента внутри структурированной ячейки.
-
-index : (elementIndex? lineIndex) | (elementIndex lineIndex?) ;
-elementIndex : 'E' INT ; // Индекс элемента внутри ячейки.
-lineIndex : 'L' INT ; // Индекс линии внутри ячейки.
+elementIndex : 'E' INT ; // Индекс элемента внутри структурированной ячейки.
 
 expr
  : LPAREN expr RPAREN                                 #parenExpr

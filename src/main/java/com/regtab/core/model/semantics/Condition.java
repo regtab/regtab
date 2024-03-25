@@ -1,13 +1,14 @@
 package com.regtab.core.model.semantics;
 
-import com.regtab.core.model.ICell;
 import lombok.NonNull;
+
+import com.regtab.core.model.ICell;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class Condition {
-    private final List<Constraint> constraints = new ArrayList<>();
+    private final List<Constraint> constraints = new ArrayList<>(1);
 
     public void addConstraint(@NonNull Constraint constraint) {
         constraints.add(constraint);

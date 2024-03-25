@@ -428,16 +428,6 @@ public interface RTLListener extends ParseTreeListener {
 	 */
 	void exitRelative(RTLParser.RelativeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link RTLParser#index}.
-	 * @param ctx the parse tree
-	 */
-	void enterIndex(RTLParser.IndexContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link RTLParser#index}.
-	 * @param ctx the parse tree
-	 */
-	void exitIndex(RTLParser.IndexContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link RTLParser#elementIndex}.
 	 * @param ctx the parse tree
 	 */
@@ -447,16 +437,6 @@ public interface RTLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitElementIndex(RTLParser.ElementIndexContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link RTLParser#lineIndex}.
-	 * @param ctx the parse tree
-	 */
-	void enterLineIndex(RTLParser.LineIndexContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link RTLParser#lineIndex}.
-	 * @param ctx the parse tree
-	 */
-	void exitLineIndex(RTLParser.LineIndexContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code strLiteral}
 	 * labeled alternative in {@link RTLParser#expr}.

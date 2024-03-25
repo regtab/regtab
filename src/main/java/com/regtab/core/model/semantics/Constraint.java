@@ -8,7 +8,7 @@ public final class Constraint {
     private final Expr boolExpr;
 
     public boolean eval(@NonNull ICell caller, @NonNull ICell candidate) {
-        Object result = boolExpr.eval(caller, candidate);
+        final Object result = boolExpr.eval(caller, candidate);
         if (result instanceof Boolean)
             return (Boolean) result;
         else

@@ -34,11 +34,11 @@ public final class Lookup {
 
     @Getter
     @Setter
-    private Integer elementIndex; // TODO Почему index = -1, может быть сделать null
+    private Integer elementIndex;
 
-    @Getter
-    @Setter
-    private Integer lineIndex;
+//    @Getter
+//    @Setter
+//    private Integer lineIndex;
 
     private final List<String> tags = new ArrayList<>();
 

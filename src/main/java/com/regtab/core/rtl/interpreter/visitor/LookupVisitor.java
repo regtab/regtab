@@ -54,21 +54,11 @@ final class LookupVisitor extends RTLBaseVisitor<Lookup> {
                 }
             }
 
-            final IndexContext idxCtx = whereCtx.index();
-            if (idxCtx != null) {
-                final LineIndexContext lineIndexContext = idxCtx.lineIndex();
-                if (lineIndexContext != null) {
-                    final TerminalNode tn = lineIndexContext.INT();
-                    final int lineIndex = Integer.parseInt(tn.getText());
-                    lookup.setLineIndex(lineIndex);
-                }
-
-                final ElementIndexContext elementIndexContext = idxCtx.elementIndex();
-                if (elementIndexContext != null) {
-                    final TerminalNode tn = elementIndexContext.INT();
-                    final int elementIndex = Integer.parseInt(tn.getText());
-                    lookup.setElementIndex(elementIndex);
-                }
+            final ElementIndexContext elementIndexContext = whereCtx.elementIndex();
+            if (elementIndexContext != null) {
+                final TerminalNode tn = elementIndexContext.INT();
+                final int index = Integer.parseInt(tn.getText());
+                lookup.setElementIndex(index);
             }
 
             TagsContext tagsCtx = whereCtx.tags();

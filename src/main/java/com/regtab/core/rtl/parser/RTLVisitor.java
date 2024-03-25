@@ -263,23 +263,11 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRelative(RTLParser.RelativeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link RTLParser#index}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIndex(RTLParser.IndexContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link RTLParser#elementIndex}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitElementIndex(RTLParser.ElementIndexContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link RTLParser#lineIndex}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLineIndex(RTLParser.LineIndexContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code strLiteral}
 	 * labeled alternative in {@link RTLParser#expr}.
