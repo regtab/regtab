@@ -2,7 +2,6 @@ package com.regtab.core.model.semantics;
 
 import lombok.NonNull;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import com.regtab.core.model.recordset.Record;
 import com.regtab.core.model.recordset.Recordset;
@@ -12,131 +11,138 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
 public final class Action {
     @Getter
     private final Action.Type type;
 
-    private final List<Body> bodies = new ArrayList<>();
+    public Action(@NonNull Type type) {
+        this.type = type;
+        if (type == Type.RECORD || type == Type.GROUP) {
+            lookups = new ArrayList<>(1);
+            strings = new ArrayList<>(1);
+        }
+    }
 
-    public void addBody(@NonNull Body body) {
-        bodies.add(body);
+    private Lookup lookup;
+    private String string;
+
+    private List<Lookup> lookups;
+    private List<String> strings;
+
+    public void addLookup(@NonNull Lookup lookup) {
+        if (type == Type.RECORD || type == Type.GROUP)
+            lookups.add(lookup);
+        else
+            this.lookup = lookup;
+    }
+
+    public void addString(@NonNull String string) {
+        if (type == Type.RECORD || type == Type.GROUP)
+            strings.add(string);
+        else
+            this.string = string;
     }
 
     private void performFactor(Element element) {
-        for (Body body : bodies) {
-            Lookup lookup = body.lookup;
-            if (lookup != null) {
-                Element foundElem = lookup.findElement(element);
-                if (foundElem != null) {
-                    String text = foundElem.getText();
-                    element.setText(text);
-                }
-                return;
+        if (lookup != null) {
+            Element foundElem = lookup.findElement(element);
+            if (foundElem != null) {
+                String text = foundElem.getText();
+                element.setText(text);
             }
-            String str = body.string;
-            if (str != null)
-                element.setText(str);
+            return;
         }
+        if (string != null)
+            element.setText(string);
+
     }
 
-    private static final String SEPARATOR = "/";
+    private static final String SEPARATOR = "/"; //TODO настройки
 
     private void performContact(Element element) {
-        for (Body body : bodies) {
-            Lookup lookup = body.lookup;
-            if (lookup != null) {
-                Element foundElem = lookup.findElement(element);
-                if (foundElem != null) {
-                    String prefix = foundElem.getText();
-                    if (!prefix.isEmpty()) {
-                        String text = element.getText();
-                        text = prefix + SEPARATOR + text;
-                        element.setText(text);
-                    }
+        if (lookup != null) {
+            Element foundElem = lookup.findElement(element);
+            if (foundElem != null) {
+                String prefix = foundElem.getText();
+                if (!prefix.isEmpty()) {
+                    String text = element.getText();
+                    text = prefix + SEPARATOR + text;
+                    element.setText(text);
                 }
-                return;
             }
-            String str = body.string;
-            if (str != null)
-                element.setText(str);
+            return;
         }
+        if (string != null)
+            element.setText(string);
     }
 
     private void performRecord(Element element) {
-        if (bodies.isEmpty()) return;
+        if (lookups.isEmpty() && strings.isEmpty()) return;
 
-        Recordset recordset = element.getCell().getTable().getRecordset();
-
+        final Recordset recordset = element.getCell().getTable().getRecordset();
         final Record record = recordset.createRecord(element);
 
-        for (Body body : bodies) {
-            Lookup lookup = body.lookup;
-            if (lookup != null) {
-                List<Element> elements = lookup.findElements(Element.Type.VALUE, element);
-                if (elements != null) {
-                    for (Element elem : elements)
-                        recordset.updateRecord(record, elem);
-                }
+        for (Lookup lookup : lookups) {
+            final List<Element> elements = lookup.findElements(Element.Type.VALUE, element);
+            if (elements != null) {
+                for (Element elem : elements)
+                    recordset.updateRecord(record, elem);
+            }
+        }
+
+        for (String string : strings) {
+            String attrName;
+            String valStr;
+            int sepPos = string.indexOf(':'); // TODO настройки
+
+            if (sepPos > -1) {
+                attrName = string.substring(0, sepPos);
+                valStr = string.substring(sepPos + 1, string.length());
+
+                if (attrName.isBlank() || valStr.isBlank())
+                    throw new IllegalStateException(
+                            "Недопустимое значение параметра STRING действия RECORD"
+                    );
+
+                recordset.updateRecord(record, attrName, valStr);
             } else {
-                String str = body.string;
-                if (str == null) return;
+                valStr = string;
 
-                String attrName;
-                String valStr;
-                int sepPos = str.indexOf(':');
+                if (valStr.isBlank())
+                    throw new IllegalStateException(
+                            "Недопустимое значение параметра STRING действия RECORD"
+                    );
 
-                if (sepPos > -1) {
-                    attrName = str.substring(0, sepPos);
-                    valStr = str.substring(sepPos + 1, str.length());
-
-                    if (attrName.isBlank() || valStr.isBlank())
-                        throw new IllegalStateException(
-                                "Недопустимое значение параметра STRING действия RECORD"
-                        );
-
-                    recordset.updateRecord(record, attrName, valStr);
-                } else {
-                    valStr = str;
-
-                    if (valStr.isBlank())
-                        throw new IllegalStateException(
-                                "Недопустимое значение параметра STRING действия RECORD"
-                        );
-
-                    recordset.updateRecord(record, valStr);
-                }
+                recordset.updateRecord(record, valStr);
             }
         }
     }
 
     private void performGroup(Element element) {
-        Recordset recordset = element.getCell().getTable().getRecordset();
-        for (Body body : bodies) {
-            Lookup lookup = body.lookup;
-            if (lookup != null) {
-                List<Element> elements = lookup.findElements(Element.Type.VALUE, element);
-                if (elements != null) {
-                    for (Element e : elements)
-                        recordset.updateGroup(element, e);
-                }
+        if (lookups.isEmpty()) return;
+
+        final Recordset recordset = element.getCell().getTable().getRecordset();
+        for (Lookup lookup : lookups) {
+            final List<Element> elements = lookup.findElements(Element.Type.VALUE, element);
+            if (elements != null) {
+                for (Element e : elements)
+                    recordset.updateGroup(element, e);
             }
         }
     }
 
     private void performSchema(Element element) {
-        Recordset recordset = element.getCell().getTable().getRecordset();
-        for (Body body : bodies) {
-            Lookup lookup = body.lookup;
-            if (lookup != null) {
-                Element e = lookup.findElement(Element.Type.ATTRIBUTE, element);
-                if (e != null)
-                    recordset.updateSchema(element, e);
-            } else {
-                String str = body.string;
-                if (str != null)
-                    recordset.updateSchema(element, str);
+        if (lookup != null) {
+            final Element e = lookup.findElement(Element.Type.ATTRIBUTE, element);
+            if (e != null) {
+                final Recordset recordset = element.getCell().getTable().getRecordset();
+                recordset.updateSchema(element, e);
             }
+            return;
+        }
+        if (string != null) {
+            final Recordset recordset = element.getCell().getTable().getRecordset();
+            recordset.updateSchema(element, string);
         }
     }
 
@@ -164,6 +170,4 @@ public final class Action {
                 .toString();
     }
 
-    public record Body(Lookup lookup, String string) {
-    }
 }

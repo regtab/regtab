@@ -41,16 +41,14 @@ final class ActionVisitor extends RTLBaseVisitor<Action> {
             TerminalNode tn = actionBodyCtx.STRING();
 
             if (tn != null) {
-                String str = tn.getText();
-                Action.Body body = new Action.Body(null, str);
-                action.addBody(body);
+                final String string = tn.getText();
+                action.addString(string);
             } else {
                 LookupContext lookupCtx = actionBodyCtx.lookup();
                 Lookup lookup = lookupVisitor.visit(lookupCtx);
                 if (lookup == null)
                     return null;
-                Action.Body body = new Action.Body(lookup, null);
-                action.addBody(body);
+                action.addLookup(lookup);
             }
         }
 
