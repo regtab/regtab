@@ -1,4 +1,4 @@
-// Generated start C:/Users/shiga/YandexDisk/code/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
+// Generated from D:/yd/code/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
 package com.regtab.core.rtl.parser;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -247,16 +247,6 @@ public interface RTLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStruct(RTLParser.StructContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link RTLParser#line}.
-	 * @param ctx the parse tree
-	 */
-	void enterLine(RTLParser.LineContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link RTLParser#line}.
-	 * @param ctx the parse tree
-	 */
-	void exitLine(RTLParser.LineContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link RTLParser#startText}.
 	 * @param ctx the parse tree

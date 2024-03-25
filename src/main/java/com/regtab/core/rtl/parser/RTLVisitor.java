@@ -1,4 +1,4 @@
-// Generated start C:/Users/shiga/YandexDisk/code/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
+// Generated from D:/yd/code/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
 package com.regtab.core.rtl.parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -154,12 +154,6 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStruct(RTLParser.StructContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link RTLParser#line}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLine(RTLParser.LineContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RTLParser#startText}.
 	 * @param ctx the parse tree

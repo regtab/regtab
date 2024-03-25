@@ -1,10 +1,10 @@
-// Generated start C:/Users/shiga/YandexDisk/code/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
+// Generated from D:/yd/code/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
 package com.regtab.core.rtl.parser;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
  * This class provides an empty implementation of {@link RTLVisitor},
- * which can be extended end create a visitor which only needs end handle a subset
+ * which can be extended to create a visitor which only needs to handle a subset
  * of the available methods.
  *
  * @param <T> The return type of the visit operation. Use {@link Void} for
@@ -180,13 +180,6 @@ public class RTLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements RT
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitStruct(RTLParser.StructContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitLine(RTLParser.LineContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

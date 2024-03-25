@@ -16,7 +16,7 @@ final class StructVisitor extends RTLBaseVisitor<StructPattern> {
     public StructPattern visitStruct(StructContext ctx) {
         final StructPattern structPattern = new StructPattern(ctx);
 
-        final List<ElementContext> elementContexts = ctx.line().element();
+        final List<ElementContext> elementContexts = ctx.element();
         for (ElementContext elemCtx : elementContexts) {
             final ElementPattern elementPattern = elementVisitor.visit(elemCtx);
             if (elementPattern == null)
@@ -25,19 +25,19 @@ final class StructVisitor extends RTLBaseVisitor<StructPattern> {
             structPattern.add(elementPattern);
         }
 
-        final StartTextContext stCtx = ctx.line().startText();
+        final StartTextContext stCtx = ctx.startText();
         if (stCtx != null) {
             final String startText = stCtx.STRING().getText();
             structPattern.setStartText(startText);
         }
 
-        final EndTextContext etCtx = ctx.line().endText();
+        final EndTextContext etCtx = ctx.endText();
         if (etCtx != null) {
             final String endText = etCtx.STRING().getText();
             structPattern.setEndText(endText);
         }
 
-        final List<SeparatorContext> separatorContexts = ctx.line().separator();
+        final List<SeparatorContext> separatorContexts = ctx.separator();
         if (separatorContexts != null && !separatorContexts.isEmpty()) {
             List<String> separators = new ArrayList<>(separatorContexts.size());
             for (SeparatorContext separatorContext: separatorContexts) {

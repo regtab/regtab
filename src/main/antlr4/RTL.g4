@@ -77,8 +77,7 @@ SCHEMA : DOLLAR ('s' | 'schema') ;
 actionBody : STRING | lookup ;
 
 // Cтруктура (structured) включает паттерн строки текста (line),
-struct : line ; // struct : LPAREN line (SEMICOLON line)* RPAREN;
-line : LPAREN startText? element (separator element)* endText? RPAREN; //TODO либо избавиться от line, либо реализовать его (спецификатор L)
+struct : LPAREN startText? element (separator element)* endText? RPAREN ;
 startText : STRING ;
 separator : STRING ;
 endText   : STRING ;
