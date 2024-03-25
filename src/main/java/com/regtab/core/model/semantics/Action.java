@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-public final class Action implements Provenance {
+public final class Action {
     @Getter
     private final Action.Type type;
 

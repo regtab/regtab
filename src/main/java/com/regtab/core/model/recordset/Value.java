@@ -1,7 +1,6 @@
 package com.regtab.core.model.recordset;
 
 import com.regtab.core.model.semantics.Element;
-import com.regtab.core.model.semantics.Provenance;
 import lombok.*;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;

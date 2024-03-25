@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Element implements Provenance {
+public final class Element {
     @Getter
     private final Type type;
 
