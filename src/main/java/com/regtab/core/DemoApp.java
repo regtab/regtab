@@ -299,17 +299,13 @@ public class DemoApp {
             String ttlII13 = "[{[A:~@blank]{3}[S:@blank]?}+]{[{[V->$R(*ROW:C+1..+2):~@blank][V:~@blank]{2}[S:@blank]?}+]+[[s]+:@blank]? ->$S(COL)}+";
             extract(xlFile2, 13, ttlII13);
 
-//            System.out.printf("TTL = %s : SHEET = %d%n", "II 14", 14);
-//            String ttlII14 = "[[(A '=' V -> $R(*LINE))(A '=' V)+ -> $S(LINE)]+]+";
-//            extract(xlFile2, 14, ttlII14);
+            System.out.printf("TTL = %s : SHEET = %d%n", "II 14", 14);
+            String ttlII14 = "{[[(A '=' V -> $R(*DOWN:R+1..+2))]+] [[(A '=' V)]+]{2} -> $S(CELL)}+";
+            extract(xlFile2, 14, ttlII14);
 
-//            System.out.printf("TTL = %s : SHEET = %d%n", "II 15", 15);
-//            String ttlII15 = "[[A][(A)+]][[V -> $S(COL); $R(*RIGHT)][(V -> $COL:L0)(V -> $COL:L1)]]";
-//            extract(xlFile2, 15, ttlII15);
-//
-//            System.out.printf("TTL = %s : SHEET = %d%n", "II 15a", 15);
-//            String ttlII15a = "[[A][(A)+]][[V -> $S(COL); $R(RIGHT:L1)][(V -> $COL:L0)(V -> $COL:L1)]]";
-//            extract(xlFile2, 15, ttlII15a);
+            System.out.printf("TTL = %s : SHEET = %d%n", "II 15", 15);
+            String ttlII15 = "[[A][A]][[S][A]]{[[V->$R(*CELL:C+1R+0..+1)][V]->$S(COL:R0)][[S][V->$S(COL:R1)]]}+";
+            extract(xlFile2, 15, ttlII15);
         }
     }
 }
