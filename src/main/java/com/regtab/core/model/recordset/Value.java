@@ -7,7 +7,6 @@ import lombok.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-@EqualsAndHashCode
 public final class Value {
     @Getter
     private Attribute attribute;
@@ -20,7 +19,7 @@ public final class Value {
     private final String string;
 
     @Getter
-    private Provenance provenance;
+    private Element element;
 
     public void setAttribute(@NonNull Attribute attribute) {
         this.attribute = attribute;
@@ -28,22 +27,20 @@ public final class Value {
 
     Value(@NonNull String string) {
         this.string = string;
-        //provenance = element; // провенанс надо брать из action
     }
 
     Value(@NonNull Element element) {
         if (element.getType() != Element.Type.VALUE)
             throw new IllegalArgumentException("Недопустимый тип элемента");
         string = element.getText();
-        provenance = element;
+        this.element = element;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
                 .append("attribute", attribute)
-                .append("data", string)
-                .append("provenance", provenance)
+                .append("string", string)
                 .toString();
     }
 }

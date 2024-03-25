@@ -19,7 +19,8 @@ public final class Recordset {
 
     private void addValue(Value value, Record record) {
         record.addValue(value);
-        elemValMap.put((Element) value.getProvenance(), value);
+        final Element element = value.getElement();
+        elemValMap.put(element, value);
     }
 
     public void updateSchema(@NonNull Element valElement, @NonNull String attrName) {
@@ -73,7 +74,6 @@ public final class Recordset {
         updateSchema(v2, attrName);
     }
 
-    @NonNull
     public void updateRecord(@NonNull Record record, @NonNull String str) {
         Value v2 = new Value(str);
         addValue(v2, record);

@@ -1,8 +1,7 @@
 package com.regtab.core.model.recordset;
 
 import com.regtab.core.model.semantics.Element;
-import com.regtab.core.model.semantics.Provenance;
-import lombok.EqualsAndHashCode;
+
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-@EqualsAndHashCode
 public final class Attribute {
     @Getter
     private final String name;
 
     private final List<Value> values = new ArrayList<>();
 
-    private Provenance provenance;
+    @Getter
+    private Element element;
 
     public void addValue(@NonNull Value value) {
         values.add(value);
@@ -32,7 +31,7 @@ public final class Attribute {
         if (element.getType() != Element.Type.ATTRIBUTE)
             throw new IllegalArgumentException("Недопустимый тип элемента");
         name = element.getText();
-        provenance = element;
+        this.element = element;
     }
 
     Attribute(@NonNull String name, @NonNull Group group) {
@@ -44,8 +43,6 @@ public final class Attribute {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
                 .append("name", name)
-                //.append("values", values)
-                .append("provenance", provenance)
                 .toString();
     }
 }
