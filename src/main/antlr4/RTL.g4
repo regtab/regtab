@@ -86,9 +86,8 @@ endText   : STRING ;
 choice : (choiceBody OR choiceBody) QUESTION cond ;
 choiceBody : element | struct ;
 
-// Условие (cond) включает одно или несколько ограничений (constr).
-cond : constr (SEMICOLON constr)* ; // TODO constr избыточен
-constr : expr ;
+// Условие (cond) включает одно или несколько логических выражений (ограничений) (expr).
+cond : expr (SEMICOLON expr)* ;
 
 // Поиск элементов (lookup).
 lookup : all? direction (COLON ((where cond?) | (where? cond)))? ;
@@ -141,10 +140,10 @@ start      : relative? INT ;
 end        : relative? INT ;
 relative   : PLUS | MINUS ;
 
-ROW : 'R';
-COL : 'C';
+ROW : 'r';
+COL : 'c';
 
-elementIndex : 'E' INT ; // Индекс элемента внутри структурированной ячейки.
+elementIndex : 'e' INT ; // Индекс элемента внутри структурированной ячейки.
 
 expr
  : LPAREN expr RPAREN                                 #parenExpr

@@ -48,9 +48,9 @@ public class RTLLexer extends Lexer {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'='", "'E'", "'a'", "'v'", "'s'", null, null, null, null, null, 
+			null, "'='", "'e'", "'a'", "'v'", "'s'", null, null, null, null, null, 
 			"'left'", "'right'", "'up'", "'down'", "'row'", "'col'", "'cell'", "'line'", 
-			"'R'", "'C'", "'this'", "'&'", "'|'", "'~'", "'TRUE'", "'FALSE'", "'>'", 
+			"'r'", "'c'", "'this'", "'&'", "'|'", "'~'", "'TRUE'", "'FALSE'", "'>'", 
 			"'>='", "'<'", "'<='", "'=='", "'!='", "'contains'", "'matches'", "'+'", 
 			"'-'", "'*'", "'%'", "'('", "')'", "'{'", "'}'", "'['", "']'", "'->'", 
 			"':'", "';'", "','", "'$'", "'?'", "'..'"

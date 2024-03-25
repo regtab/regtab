@@ -308,16 +308,6 @@ public interface RTLListener extends ParseTreeListener {
 	 */
 	void exitCond(RTLParser.CondContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link RTLParser#constr}.
-	 * @param ctx the parse tree
-	 */
-	void enterConstr(RTLParser.ConstrContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link RTLParser#constr}.
-	 * @param ctx the parse tree
-	 */
-	void exitConstr(RTLParser.ConstrContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link RTLParser#lookup}.
 	 * @param ctx the parse tree
 	 */

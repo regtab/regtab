@@ -191,12 +191,6 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCond(RTLParser.CondContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link RTLParser#constr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitConstr(RTLParser.ConstrContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link RTLParser#lookup}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

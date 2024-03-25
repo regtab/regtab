@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public final class Func {
+public final class Func<T> {
     private final String name;
 
     private final List<Object> args = new ArrayList<>();
@@ -18,13 +18,13 @@ public final class Func {
     }
 
     @NonNull
-    private final Evaluator evaluator;
+    private final Evaluator<T> evaluator;
 
     public static Func get(String name){
         return funcs.get(name);
     }
 
-    Object eval(@NonNull ICell cell) {
+    T eval(@NonNull ICell cell) {
         return evaluator.eval(cell, args.toArray());
     }
 
@@ -85,7 +85,7 @@ public final class Func {
         funcs.put(LOWER_CASE.name, LOWER_CASE);
     }
 
-    private interface Evaluator {
-        Object eval(ICell cell, Object... args);
+    private interface Evaluator<T> {
+        T eval(ICell cell, Object... args);
     }
 }

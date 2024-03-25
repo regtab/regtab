@@ -1,7 +1,7 @@
 token literal names:
 null
 '='
-'E'
+'e'
 'a'
 'v'
 's'
@@ -18,8 +18,8 @@ null
 'col'
 'cell'
 'line'
-'R'
-'C'
+'r'
+'c'
 'this'
 '&'
 '|'

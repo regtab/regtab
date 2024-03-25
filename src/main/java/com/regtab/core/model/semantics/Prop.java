@@ -11,16 +11,16 @@ import lombok.RequiredArgsConstructor;
 import java.util.HashMap;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public final class Prop {
+public final class Prop<T> {
     private final String name;
 
-    private final Evaluator evaluator;
+    private final Evaluator<T> evaluator;
 
     public static Prop get(String name) {
         return props.get(name);
     }
     
-    Object eval(@NonNull ICell cell) {
+    T eval(@NonNull ICell cell) {
         return evaluator.eval(cell);
     }
 
@@ -280,8 +280,8 @@ public final class Prop {
         props.put(SS_DATATYPE_FORMULA.name, SS_DATATYPE_FORMULA);
     }
 
-    private interface Evaluator {
-        Object eval(ICell cell);
+    private interface Evaluator<T> {
+        T eval(ICell cell);
     }
     
 }

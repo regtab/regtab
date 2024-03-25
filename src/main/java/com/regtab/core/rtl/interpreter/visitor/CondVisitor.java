@@ -16,10 +16,9 @@ final class CondVisitor extends RTLBaseVisitor<Condition> {
     @Override
     public Condition visitCond(CondContext ctx) {
         Condition cond = new Condition();
-        List<ConstrContext> constrCtxList = ctx.constr();
+        List<ExprContext> exprCtxList = ctx.expr();
 
-        for (ConstrContext constrCtx : constrCtxList) {
-            ExprContext exprCtx = constrCtx.expr();
+        for (ExprContext exprCtx : exprCtxList) {
             Expr expr = exprVisitor.visit(exprCtx);
 
             if (expr == null)

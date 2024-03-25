@@ -30,12 +30,12 @@ public class Expr {
     }
 
     public Object eval(@NonNull ICell caller, ICell candidate) {
-        if (candidate == null)
+       if (candidate == null)
             useCaller = true;
 
         if (expr != null) {
             if (not)
-                return !(Boolean) expr.eval(caller, candidate);
+                return ! (Boolean) expr.eval(caller, candidate);
             else
                 return expr.eval(caller, candidate);
         }
