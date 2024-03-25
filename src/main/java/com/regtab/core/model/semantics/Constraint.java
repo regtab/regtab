@@ -14,4 +14,13 @@ public final class Constraint {
         else
             throw new IllegalStateException("Выражение не является логическим");
     }
+
+    public boolean eval(@NonNull ICell caller) {
+        final Object result = boolExpr.eval(caller);
+        if (result instanceof Boolean)
+            return (Boolean) result;
+        else
+            throw new IllegalStateException("Выражение не является логическим");
+    }
+
 }

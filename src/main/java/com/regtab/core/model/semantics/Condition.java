@@ -26,6 +26,15 @@ public final class Condition {
         return true;
     }
 
+    public boolean check(@NonNull ICell caller) {
+        for (Constraint constraint : constraints) {
+            if (!constraint.eval(caller))
+                return false;
+        }
+        return true;
+    }
+
+
     public Condition join(@NonNull Condition cond) {
         if (cond != null)
             this.constraints.addAll(cond.constraints());

@@ -46,8 +46,8 @@ public class DemoApp {
     }
 
     public static void main(String[] args) throws IOException {
-        File xlFile = new File("../../data/rtl/example1.xlsx");
-        File xlFile2 = new File("../../data/rtl/example2.xlsx");
+        final File xlFile = new File("../../data/rtl/example1.xlsx");
+        final File xlFile2 = new File("../../data/rtl/example2.xlsx");
 
         if (true) {
             System.out.printf("TTL = %s: SHEET = %d%n", "0", 0);

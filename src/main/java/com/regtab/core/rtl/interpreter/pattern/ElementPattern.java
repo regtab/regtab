@@ -46,7 +46,7 @@ public final class ElementPattern extends ElementsPattern {
 
     boolean apply(@NonNull ICell cell, @NonNull String val) {
         if (expr != null) {
-            final Object result = expr.evalThis(cell);
+            final Object result = expr.eval(cell);
             if (result == null)
                 return false; // TODO log
             val = result.toString();

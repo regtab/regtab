@@ -43,7 +43,6 @@ elements : (element | struct | choice) (ARROW actions)? (COLON cond)? ;
 
 // Элемент (element) включает тип (elementType).
 // Может дополняться набором тегов (tags) и набором действий (actions).
-//element : elementType ('=' data)? tags? (ARROW actions)? ;
 element : elementType ('=' expr)? tags? (ARROW actions)? ;
 
 // Тип элемента (elementType) может быть атрибутом (ATTRIBUTE), значением (VALUE), или пропускаемым (SKIPPED).
@@ -84,8 +83,7 @@ endText   : STRING ;
 
 // Выбор (choice) из двух тел (choiceBody) по условию (cond):
 // если условие (cond) истино, то выбирается левое тело, иначе --- правое.
-choice : (choiceBody OR choiceBody) QUESTION cond ; // TODO м.б. добавить LPAREN и RPAREN?
-//choice : LPAREN (choiceBody OR choiceBody) QUESTION cond RPAREN ;
+choice : (choiceBody OR choiceBody) QUESTION cond ;
 choiceBody : element | struct ;
 
 // Условие (cond) включает одно или несколько ограничений (constr).

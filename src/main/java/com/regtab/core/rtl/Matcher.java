@@ -438,7 +438,7 @@ public class Matcher {
     private CellMap match(@NonNull ICell cell, CellPattern tmpl) {
         final Condition condition = tmpl.getCondition();
         if (condition != null) {
-            final boolean result = condition.check(cell, cell); //TODO переделать на один аргумент
+            final boolean result = condition.check(cell);
             if (!result) {
                 // final String msg = String.format("cell {%s} does not match end pattern %s", cell, tmpl);
                 // log.warning(msg);

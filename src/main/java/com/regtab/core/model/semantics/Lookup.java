@@ -36,10 +36,6 @@ public final class Lookup {
     @Setter
     private Integer elementIndex;
 
-//    @Getter
-//    @Setter
-//    private Integer lineIndex;
-
     private final List<String> tags = new ArrayList<>();
 
     public void addTag(@NonNull String tag) {
@@ -139,7 +135,7 @@ public final class Lookup {
             case RIGHT -> collectCells(rows, rRange, rightRange);
             case UP -> collectCells(cols, cRange, upRange);
             case DOWN -> collectCells(cols, cRange, downRange);
-            case IN_CELL -> collectCells(cols, cellCRange, cellRRange); // TODO или rows?
+            case IN_CELL -> collectCells(rows, cellRRange, cellCRange);
         };
 
         List<Element> elements = new ArrayList<>();

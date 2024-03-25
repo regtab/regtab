@@ -22,17 +22,20 @@ public class Expr {
     private String string;
     private Prop prop;
     private Func func;
+
     private boolean useCaller;
 
-    public Object evalThis(ICell caller) {
-        useCaller = true;
+    public Object eval(@NonNull ICell caller) {
         return eval(caller, null);
     }
 
-    public Object eval(ICell caller, ICell candidate) {
+    public Object eval(@NonNull ICell caller, ICell candidate) {
+        if (candidate == null)
+            useCaller = true;
+
         if (expr != null) {
             if (not)
-                return ! (Boolean) expr.eval(caller, candidate);
+                return !(Boolean) expr.eval(caller, candidate);
             else
                 return expr.eval(caller, candidate);
         }
