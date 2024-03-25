@@ -15,11 +15,10 @@ import java.util.List;
 import com.regtab.core.rtl.parser.RTLParser.*;
 
 public final class ElementPattern extends ElementsPattern {
-    public ElementPattern(ElementContext context) {
+    public ElementPattern(@NonNull ElementContext context) {
         super(context);
     }
 
-    @NonNull
     @Getter
     @Setter
     private Element.Type elementType;
@@ -45,7 +44,7 @@ public final class ElementPattern extends ElementsPattern {
         return apply(cell, val);
     }
 
-    boolean apply(@NonNull final ICell cell, @NonNull String val) {
+    boolean apply(@NonNull ICell cell, @NonNull String val) {
         if (expr != null) {
             final Object result = expr.evalThis(cell);
             if (result == null)

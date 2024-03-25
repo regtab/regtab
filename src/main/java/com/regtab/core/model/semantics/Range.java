@@ -1,9 +1,9 @@
 package com.regtab.core.model.semantics;
 
-public record Range(int from, int to) {
+public record Range(int start, int end) {
     public static Range intersection(Range range1, Range range2) {
-        int from = Math.max(range1.from, range2.from);
-        int to = Math.min(range1.to, range2.to);
-        return new Range(from, to);
+        final int start = Math.max(range1.start, range2.start);
+        final int end = Math.min(range1.end, range2.end);
+        return new Range(start, end);
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 import com.regtab.core.rtl.parser.RTLParser.*;
 
 public final class StructPattern extends ElementsPattern {
-    public StructPattern(StructContext context) {
+    public StructPattern(@NonNull StructContext context) {
         super(context);
     }
 

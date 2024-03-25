@@ -39,8 +39,8 @@ public final class Recordset {
         if (valElement == attrElement)
             throw new IllegalArgumentException("Недопустимая операция: элементы совпадают");
 
-        String data = attrElement.getText();
-        updateSchema(valElement, data);
+        String text = attrElement.getText();
+        updateSchema(valElement, text);
     }
 
     private void updateSchema(Value val, String attrName) {
@@ -56,8 +56,7 @@ public final class Recordset {
 
     private final List<Element> recordedElements = new ArrayList<>();
 
-    @NonNull
-    public Record createRecord(Element elem) {
+    public Record createRecord(@NonNull Element elem) {
         Record record = new Record();
         Value v = new Value(elem);
         addValue(v, record);
@@ -67,8 +66,7 @@ public final class Recordset {
         return record;
     }
 
-    @NonNull
-    public void updateRecord(Record record, String attrName, String valStr) {
+    public void updateRecord(@NonNull Record record, @NonNull String attrName, @NonNull String valStr) {
         Value v2 = new Value(valStr);
         addValue(v2, record);
 
@@ -76,12 +74,12 @@ public final class Recordset {
     }
 
     @NonNull
-    public void updateRecord(Record record, String str) {
+    public void updateRecord(@NonNull Record record, @NonNull String str) {
         Value v2 = new Value(str);
         addValue(v2, record);
     }
 
-    public void updateRecord(Record record, Element elem) {
+    public void updateRecord(@NonNull Record record, @NonNull Element elem) {
         boolean result = recordedElements.contains(elem);
         if (result)
             throw new IllegalArgumentException("Элемент уже принадлежит записи");
@@ -95,7 +93,7 @@ public final class Recordset {
     private final HashMap<Element, Group> elemGroupMap = new HashMap<>();
     private final List<Group> groups = new ArrayList<>();
 
-    public void updateGroup(Element elem1, Element elem2) {
+    public void updateGroup(@NonNull Element elem1, @NonNull Element elem2) {
         if (elem1.getType() == Element.Type.ATTRIBUTE)
             throw new IllegalArgumentException("Первый элемент является атрибутом");
 

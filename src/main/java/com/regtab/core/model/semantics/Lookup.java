@@ -2,6 +2,7 @@ package com.regtab.core.model.semantics;
 
 import com.regtab.core.model.*;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -41,7 +42,7 @@ public final class Lookup {
 
     private final List<String> tags = new ArrayList<>();
 
-    public void addTag(String tag) {
+    public void addTag(@NonNull String tag) {
         tags.add(tag);
     }
 
@@ -155,8 +156,8 @@ public final class Lookup {
     }
 
     private List<ICell> collectCells(IRow[] rows, Range range1, Range range2) {
-        final int from = range1.from();
-        final int to = range1.to();
+        final int from = range1.start();
+        final int to = range1.end();
         final IRow[] sub = Arrays.copyOfRange(rows, from, to + 1);
 
         final List<ICell> allCells = new ArrayList<>();
@@ -169,8 +170,8 @@ public final class Lookup {
     }
 
     private List<ICell> collectCells(ICol[] cols, Range range1, Range range2) {
-        final int from = range1.from();
-        final int to = range1.to();
+        final int from = range1.start();
+        final int to = range1.end();
         final ICol[] sub = Arrays.copyOfRange(cols, from, to + 1);
 
         final List<ICell> allCells = new ArrayList<>();
@@ -183,8 +184,8 @@ public final class Lookup {
     }
 
     private List<ICell> collectCells(final ICell[] cells, final Range range) {
-        int from = range.from();
-        int to = range.to();
+        int from = range.start();
+        int to = range.end();
 
         List<ICell> subList = new ArrayList<>(to - from + 1);
 

@@ -40,7 +40,7 @@ public final class IRow {
         return cells.length;
     }
 
-    IRow(final int position, final int size) {
+    IRow(int position, int size) {
         this.position = position;
         cells = new ICell[size];
     }

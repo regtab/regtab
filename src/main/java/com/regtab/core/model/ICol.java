@@ -1,6 +1,7 @@
 package com.regtab.core.model;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
@@ -39,7 +40,7 @@ public final class ICol {
         return cells.length;
     }
 
-    ICol(final int position, final int size) {
+    ICol(int position, int size) {
         this.position = position;
         cells = new ICell[size];
     }

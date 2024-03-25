@@ -17,7 +17,6 @@ public final class CellPattern extends RepeatablePattern {
         super(context);
     }
 
-    @NonNull
     @Getter
     @Setter
     private ElementsPattern elementsPattern; //TODO перевести в final

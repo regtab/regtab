@@ -13,7 +13,7 @@ import java.util.List;
 import com.regtab.core.rtl.parser.RTLParser.*;
 
 public final class SubtablePattern extends RepeatablePattern {
-    public SubtablePattern(SubtableContext context) {
+    public SubtablePattern(@NonNull SubtableContext context) {
         super(context);
     }
 
@@ -35,7 +35,7 @@ public final class SubtablePattern extends RepeatablePattern {
     @Getter
     private final List<RowPattern> rowPatterns = new ArrayList<>();
 
-    public void add(RowPattern tmpl) {
+    public void add(@NonNull RowPattern tmpl) {
         tmpl.setSubtablePattern(this);
         rowPatterns.add(tmpl);
     }

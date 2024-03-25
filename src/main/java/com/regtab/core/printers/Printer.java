@@ -42,7 +42,7 @@ public final class Printer {
                 record = records.get(i);
                 values = record.values();
                 for (int j = 0; j < numOfCols; j++) {
-                    data[i][j] = values.get(j).getData();
+                    data[i][j] = values.get(j).getString();
                 }
             }
 

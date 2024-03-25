@@ -1,47 +1,48 @@
 package com.regtab.core.model.recordset;
 
 import com.regtab.core.model.semantics.Element;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import com.regtab.core.model.semantics.Provenance;
+import lombok.*;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @EqualsAndHashCode
 public final class Value {
     @Getter
     private Attribute attribute;
 
-    @Getter @Setter
+    @Getter
+    @Setter(AccessLevel.PACKAGE)
     private Group group;
 
     @Getter
-    private final String data;
+    private final String string;
 
     @Getter
     private Provenance provenance;
 
-    public void setAttribute(Attribute attribute) {
+    public void setAttribute(@NonNull Attribute attribute) {
         this.attribute = attribute;
     }
 
-    Value(String str) {
-        data = str;
+    Value(@NonNull String string) {
+        this.string = string;
         //provenance = element; // провенанс надо брать из action
     }
 
-    Value(Element element) {
+    Value(@NonNull Element element) {
         if (element.getType() != Element.Type.VALUE)
             throw new IllegalArgumentException("Недопустимый тип элемента");
-        data = element.getText();
+        string = element.getText();
         provenance = element;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
                 .append("attribute", attribute)
-                .append("data", data)
+                .append("data", string)
                 .append("provenance", provenance)
                 .toString();
     }

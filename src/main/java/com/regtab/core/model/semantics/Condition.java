@@ -9,7 +9,7 @@ import java.util.List;
 public final class Condition {
     private final List<Constraint> constraints = new ArrayList<>();
 
-    public void addConstraint(Constraint constraint) {
+    public void addConstraint(@NonNull Constraint constraint) {
         constraints.add(constraint);
     }
 
@@ -25,7 +25,7 @@ public final class Condition {
         return true;
     }
 
-    public Condition join(Condition cond) {
+    public Condition join(@NonNull Condition cond) {
         if (cond != null)
             this.constraints.addAll(cond.constraints());
 

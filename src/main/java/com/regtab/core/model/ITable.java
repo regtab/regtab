@@ -3,6 +3,7 @@ package com.regtab.core.model;
 import com.regtab.core.model.recordset.Recordset;
 import com.regtab.core.model.semantics.Action;
 import lombok.Getter;
+import lombok.NonNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +36,7 @@ public final class ITable {
     @Getter
     private final Recordset recordset = new Recordset();
 
-    public ITable(final int numOfRows, final int numOfCols) {
+    public ITable(int numOfRows, int numOfCols) {
         if (numOfRows < 1)
             throw new IllegalArgumentException("Number of rows is less 1");
 
@@ -57,7 +58,7 @@ public final class ITable {
 
     private int last;
 
-    private boolean add(final ICell cell) {
+    private boolean add(@NonNull ICell cell) {
         if (last == cells.length)
             return false;
         cells[last] = cell;
@@ -65,17 +66,7 @@ public final class ITable {
         return true;
     }
 
-//    public void complete() {
-//        for (int i = 0; i < rows.length; i++) {
-//            for (int j = 0; j < cols.length; j++) {
-//                final ICell cell = rows[i].get(j);
-//                if (cell == null)
-//                    createCell(i, j, "");
-//            }
-//        }
-//    }
-
-    public ICell createCell(final int rowIndex, final int colIndex, final String text) {
+    public ICell createCell(int rowIndex, int colIndex, @NonNull String text) {
         if (rowIndex < 0 || rowIndex >= rows.length)
             throw new IllegalArgumentException("Row index is out of bounds");
 

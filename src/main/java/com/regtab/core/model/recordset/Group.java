@@ -6,15 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Group {
-
     private final List<Value> values = new ArrayList<>();
 
-    public void addValue(Value value) {
+    public void addValue(@NonNull Value value) {
         values.add(value);
         value.setGroup(this);
     }
 
-    public void join(Group group) {
+    public void join(@NonNull Group group) {
         for (Value value : group.values) {
             values.add(value);
             value.setGroup(this);

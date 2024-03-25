@@ -1,4 +1,4 @@
-// Generated from C:/Users/shiga/YandexDisk/code/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
+// Generated start C:/Users/shiga/YandexDisk/code/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
 package com.regtab.core.rtl.parser;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;

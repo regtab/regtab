@@ -1,6 +1,7 @@
 package com.regtab.core.model.recordset;
 
 import com.regtab.core.model.semantics.Element;
+import com.regtab.core.model.semantics.Provenance;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
@@ -22,7 +23,7 @@ public final class Attribute {
 
     private Provenance provenance;
 
-    public void addValue(Value value) {
+    public void addValue(@NonNull Value value) {
         values.add(value);
         value.setAttribute(this);
     }
@@ -34,7 +35,7 @@ public final class Attribute {
         provenance = element;
     }
 
-    Attribute(@NonNull String name, @NonNull  Group group) {
+    Attribute(@NonNull String name, @NonNull Group group) {
         this(name);
         group.fillAttribute(this);
     }

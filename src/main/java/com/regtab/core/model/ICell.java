@@ -16,19 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class ICell {
-    @NonNull
     @Getter
     private final ITable table;
 
-    @NonNull
     @Getter
     private final IRow row;
 
-    @NonNull
     @Getter
     private final ICol col;
 
-    @NonNull
     @Getter
     private String text;
 
@@ -59,7 +55,7 @@ public final class ICell {
         return element;
     }
 
-    ICell(ITable table, IRow row, ICol col, String text) {
+    ICell(@NonNull ITable table, @NonNull IRow row, @NonNull ICol col, @NonNull String text) {
         this.table = table;
         this.row = row;
         this.col = col;

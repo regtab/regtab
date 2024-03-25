@@ -24,7 +24,7 @@ public final class ChoicePattern extends ElementsPattern {
     }
 
     @Override
-    public boolean apply(ICell cell) {
+    public boolean apply(@NonNull ICell cell) {
         final boolean result = condition.check(cell, cell); // TODO заменить на один аргумент
         return result ? left.apply(cell) : right.apply(cell);
     }

@@ -440,7 +440,7 @@ public class Matcher {
         if (condition != null) {
             final boolean result = condition.check(cell, cell); //TODO переделать на один аргумент
             if (!result) {
-                // final String msg = String.format("cell {%s} does not match to pattern %s", cell, tmpl);
+                // final String msg = String.format("cell {%s} does not match end pattern %s", cell, tmpl);
                 // log.warning(msg);
                 return null; // TODO log
             }

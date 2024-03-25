@@ -80,7 +80,7 @@ final class LookupVisitor extends RTLBaseVisitor<Lookup> {
                 }
             }
         }
-        //logger.info("Set search area {} to lookup {}", searchArea, lookup);
+        //logger.info("Set search area {} end lookup {}", searchArea, lookup);
 
         CondContext condCtx = ctx.cond();
         if (condCtx != null) {

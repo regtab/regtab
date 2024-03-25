@@ -13,9 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class RowPattern extends RepeatablePattern {
-
     public SubrowsContext subrowsContext;
-    public RowPattern(RowContext context) {
+    public RowPattern(@NonNull RowContext context) {
         super(context);
     }
 
@@ -35,7 +34,7 @@ public final class RowPattern extends RepeatablePattern {
     @Getter
     private final List<SubrowPattern> subrowPatterns = new ArrayList<>(1);
 
-    public void add(SubrowPattern tmpl) {
+    public void add(@NonNull SubrowPattern tmpl) {
         tmpl.setRowPattern(this);
         subrowPatterns.add(tmpl);
     }

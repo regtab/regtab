@@ -1,4 +1,4 @@
-// Generated from C:/Users/shiga/YandexDisk/code/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
+// Generated start C:/Users/shiga/YandexDisk/code/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
 package com.regtab.core.rtl.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -7,7 +7,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
  * This class provides an empty implementation of {@link RTLListener},
- * which can be extended to create a listener which only needs to handle a subset
+ * which can be extended end create a listener which only needs end handle a subset
  * of the available methods.
  */
 @SuppressWarnings("CheckReturnValue")

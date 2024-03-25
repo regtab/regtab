@@ -1,10 +1,9 @@
 package com.regtab.core.model.semantics;
 
 import com.regtab.core.model.ICell;
-import com.regtab.core.model.recordset.Provenance;
 
-import lombok.Getter;
 import lombok.NonNull;
+import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -24,8 +23,7 @@ public final class Element implements Provenance {
     @Setter
     private String text;
 
-    @NonNull
-    public Element(ICell cell, Type type, String text) {
+    public Element(@NonNull ICell cell, @NonNull Type type, @NonNull String text) {
         this.cell = cell;
         this.type = type;
         this.text = text;
@@ -33,7 +31,7 @@ public final class Element implements Provenance {
 
     private final List<String> tags = new ArrayList<>();
 
-    public void addTag(String tag) {
+    public void addTag(@NonNull String tag) {
         tags.add(tag);
     }
 
@@ -46,7 +44,7 @@ public final class Element implements Provenance {
 
     private final List<Action> actions = new ArrayList<>();
 
-    public void addAction(Action action) {
+    public void addAction(@NonNull Action action) {
         actions.add(action);
     }
 
@@ -96,7 +94,7 @@ public final class Element implements Provenance {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
                 .append("type", type)
-                .append("data", text)
+                .append("text", text)
                 .toString();
     }
 }

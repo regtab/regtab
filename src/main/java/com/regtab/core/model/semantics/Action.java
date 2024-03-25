@@ -1,11 +1,11 @@
 package com.regtab.core.model.semantics;
 
-import com.regtab.core.model.recordset.Provenance;
+import lombok.NonNull;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import com.regtab.core.model.recordset.Record;
 import com.regtab.core.model.recordset.Recordset;
-import lombok.Getter;
-
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -19,7 +19,7 @@ public final class Action implements Provenance {
 
     private final List<Body> bodies = new ArrayList<>();
 
-    public void addBody(Body body) {
+    public void addBody(@NonNull Body body) {
         bodies.add(body);
     }
 
@@ -141,7 +141,7 @@ public final class Action implements Provenance {
     }
 
     public void perform(Element element) {
-        //log.info("Perform action {} to element {}", this, element);
+        //log.info("Perform action {} end element {}", this, element);
         switch (type) {
             case FACTOR -> performFactor(element);
             case CONCAT -> performContact(element);

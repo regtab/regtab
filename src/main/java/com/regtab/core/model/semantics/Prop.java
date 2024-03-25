@@ -12,16 +12,15 @@ import java.util.HashMap;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Prop {
-    @NonNull
     private final String name;
-    @NonNull
+
     private final Evaluator evaluator;
 
     public static Prop get(String name) {
         return props.get(name);
     }
     
-    Object eval(ICell cell) {
+    Object eval(@NonNull ICell cell) {
         return evaluator.eval(cell);
     }
 

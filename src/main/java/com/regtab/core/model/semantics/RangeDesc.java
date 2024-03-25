@@ -2,6 +2,7 @@ package com.regtab.core.model.semantics;
 
 import com.regtab.core.model.ICell;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -26,7 +27,7 @@ public final class RangeDesc {
     @Setter
     private boolean useRelativeEnd;
 
-    public Range createRange(ICell cell) {
+    public Range createRange(@NonNull ICell cell) {
         final int position = type == Type.ROW ? cell.r() : cell.c();
         return createRange(position);
     }

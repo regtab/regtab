@@ -9,12 +9,11 @@ import java.util.List;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Func {
-    @NonNull
     private final String name;
 
     private final List<Object> args = new ArrayList<>();
 
-    public void addArg(Object arg) {
+    public void addArg(@NonNull Object arg) {
         args.add(arg);
     }
 
@@ -25,7 +24,7 @@ public final class Func {
         return funcs.get(name);
     }
 
-    Object eval(ICell cell) {
+    Object eval(@NonNull ICell cell) {
         return evaluator.eval(cell, args.toArray());
     }
 
@@ -68,19 +67,12 @@ public final class Func {
         return text.toLowerCase();
     };
 
-//    private static final Evaluator indentDiff = (cell, args) -> {
-//        int indent = (Integer) args[0];
-//        return cell.getIndent() - indent;
-//    };
-
     private static final Func SUBSTR = new Func("substr", substr);
     private static final Func TOKEN = new Func("token", token);
     private static final Func REPLACE = new Func("replace", replace);
     private static final Func REPLACE_ALL = new Func("replaceAll", replaceAll);
     private static final Func UPPER_CASE = new Func("upperCase", upperCase);
     private static final Func LOWER_CASE = new Func("lowerCase", lowerCase);
-
-//    private static final Func INDENT_DIFF = new Func("indentDiff", indentDiff);
 
     private static final HashMap<String, Func> funcs = new HashMap<>();
 
@@ -91,8 +83,6 @@ public final class Func {
         funcs.put(REPLACE_ALL.name, REPLACE_ALL);
         funcs.put(UPPER_CASE.name, UPPER_CASE);
         funcs.put(LOWER_CASE.name, LOWER_CASE);
-
-//        funcs.put(INDENT_DIFF.name, INDENT_DIFF);
     }
 
     private interface Evaluator {
