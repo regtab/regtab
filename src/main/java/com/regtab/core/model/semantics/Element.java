@@ -22,39 +22,14 @@ public final class Element implements Provenance {
 
     @Getter
     @Setter
-    private String data;
-
-    private static final String SEPARATOR = "|";
-
-    public void concat(String data) {
-        this.data = String.join(SEPARATOR, data, this.data);
-    }
-
-//    public Element(ICell cell, Type type, String data) {
-//        this.cell = cell;
-//        this.type = type;
-//        this.data = data;
-//    }
+    private String text;
 
     @NonNull
-    public Element(ICell cell, Type type, String data) {
+    public Element(ICell cell, Type type, String text) {
         this.cell = cell;
         this.type = type;
-        this.data = data;
+        this.text = text;
     }
-
-
-//    private Element(Type type, ICell cell, int lineIndex, int indexInLine, String data) {
-//        this.type = type;
-//        this.cell = cell;
-//        this.lineIndex = lineIndex;
-//        this.indexInLine = indexInLine;
-//        this.data = data;
-//    }
-//
-//    public Element createAttributeElement(ICell cell, int lineIndex, int indexInLine, String data) {
-//        return new Element(Type.ATTRIBUTE, cell, lineIndex, indexInLine, data);
-//    }
 
     private final List<String> tags = new ArrayList<>();
 
@@ -121,7 +96,7 @@ public final class Element implements Provenance {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
                 .append("type", type)
-                .append("data", data)
+                .append("data", text)
                 .toString();
     }
 }

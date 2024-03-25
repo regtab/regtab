@@ -30,7 +30,7 @@ public final class Attribute {
     Attribute(@NonNull Element element) {
         if (element.getType() != Element.Type.ATTRIBUTE)
             throw new IllegalArgumentException("Недопустимый тип элемента");
-        name = element.getData();
+        name = element.getText();
         provenance = element;
     }
 

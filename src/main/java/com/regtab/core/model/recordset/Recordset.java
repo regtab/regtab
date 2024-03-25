@@ -39,7 +39,7 @@ public final class Recordset {
         if (valElement == attrElement)
             throw new IllegalArgumentException("Недопустимая операция: элементы совпадают");
 
-        String data = attrElement.getData();
+        String data = attrElement.getText();
         updateSchema(valElement, data);
     }
 

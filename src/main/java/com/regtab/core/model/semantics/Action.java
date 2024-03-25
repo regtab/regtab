@@ -29,16 +29,18 @@ public final class Action implements Provenance {
             if (lookup != null) {
                 Element foundElem = lookup.findElement(element);
                 if (foundElem != null) {
-                    String data = foundElem.getData();
-                    element.setData(data);
+                    String text = foundElem.getText();
+                    element.setText(text);
                 }
                 return;
             }
             String str = body.string;
             if (str != null)
-                element.setData(str);
+                element.setText(str);
         }
     }
+
+    private static final String SEPARATOR = "/";
 
     private void performContact(Element element) {
         for (Body body : bodies) {
@@ -46,14 +48,18 @@ public final class Action implements Provenance {
             if (lookup != null) {
                 Element foundElem = lookup.findElement(element);
                 if (foundElem != null) {
-                    String data = foundElem.getData();
-                    element.concat(data);
+                    String prefix = foundElem.getText();
+                    if (!prefix.isEmpty()) {
+                        String text = element.getText();
+                        text = prefix + SEPARATOR + text;
+                        element.setText(text);
+                    }
                 }
                 return;
             }
             String str = body.string;
             if (str != null)
-                element.setData(str);
+                element.setText(str);
         }
     }
 

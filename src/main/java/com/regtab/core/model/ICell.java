@@ -52,15 +52,8 @@ public final class ICell {
             element.perform(type);
     }
 
-    public Element createElement(@NonNull Element.Type type, @NonNull String data) {
-        Element element = new Element(this, type, data.trim());
-        elements.add(element);
-
-        return element;
-    }
-
-    public Element createElement(@NonNull Element.Type type) {
-        Element element = new Element(this, type, text);
+    public Element createElement(@NonNull Element.Type type, @NonNull String text) {
+        Element element = new Element(this, type, text.trim());
         elements.add(element);
 
         return element;
@@ -73,37 +66,13 @@ public final class ICell {
         this.text = text;
     }
 
-//    private int getIndent(String text) {
-//        if (!text.isBlank()) {
-//            for (int i = 0; i < text.length(); i++) {
-//                char c = text.charAt(i);
-//                if (c != 32) return i;
-//            }
-//        }
-//        return 0;
-//    }
-
-//    public Element createElement(@NonNull Element.Type type, @NonNull String data) {
-//        Element element = new Element(this, type, data.trim());
-//        elements.add(element);
-//
-//        return element;
-//    }
-//
-//    public Element createElement(@NonNull Element.Type type) {
-//        Element element = new Element(this, type, text);
-//        elements.add(element);
-//
-//        return element;
-//    }
-
     @Getter
     @Setter
     private Style style;
 
     @Getter
     @Setter
-    private int indent; // TODO убрать в line
+    private int indent;
 
     @Getter
     @Setter
@@ -135,7 +104,7 @@ public final class ICell {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE)
+        return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
                 //.append("r", r())
                 //.append("c", c())
                 .append("text", text)

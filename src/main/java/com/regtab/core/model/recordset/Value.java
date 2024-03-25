@@ -33,7 +33,7 @@ public final class Value {
     Value(Element element) {
         if (element.getType() != Element.Type.VALUE)
             throw new IllegalArgumentException("Недопустимый тип элемента");
-        data = element.getData();
+        data = element.getText();
         provenance = element;
     }
 
