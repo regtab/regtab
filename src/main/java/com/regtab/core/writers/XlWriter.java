@@ -1,4 +1,4 @@
-package ru.icc.td.tabbyetl.writers;
+package com.regtab.core.writers;
 
 public class XlWriter {
 

@@ -476,18 +476,6 @@ public interface RTLListener extends ParseTreeListener {
 	 */
 	void exitArithmExpr(RTLParser.ArithmExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code notExpr}
-	 * labeled alternative in {@link RTLParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterNotExpr(RTLParser.NotExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code notExpr}
-	 * labeled alternative in {@link RTLParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitNotExpr(RTLParser.NotExprContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code funcExpr}
 	 * labeled alternative in {@link RTLParser#expr}.
 	 * @param ctx the parse tree
@@ -511,18 +499,6 @@ public interface RTLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPropExpr(RTLParser.PropExprContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code compExpr}
-	 * labeled alternative in {@link RTLParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterCompExpr(RTLParser.CompExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code compExpr}
-	 * labeled alternative in {@link RTLParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitCompExpr(RTLParser.CompExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code intLiteral}
 	 * labeled alternative in {@link RTLParser#expr}.
@@ -560,6 +536,18 @@ public interface RTLListener extends ParseTreeListener {
 	 */
 	void exitBoolLiteral(RTLParser.BoolLiteralContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code hexExpr}
+	 * labeled alternative in {@link RTLParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterHexExpr(RTLParser.HexExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code hexExpr}
+	 * labeled alternative in {@link RTLParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitHexExpr(RTLParser.HexExprContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code parenExpr}
 	 * labeled alternative in {@link RTLParser#expr}.
 	 * @param ctx the parse tree
@@ -571,6 +559,42 @@ public interface RTLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParenExpr(RTLParser.ParenExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code hexLiteral}
+	 * labeled alternative in {@link RTLParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterHexLiteral(RTLParser.HexLiteralContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code hexLiteral}
+	 * labeled alternative in {@link RTLParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitHexLiteral(RTLParser.HexLiteralContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code notExpr}
+	 * labeled alternative in {@link RTLParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterNotExpr(RTLParser.NotExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code notExpr}
+	 * labeled alternative in {@link RTLParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitNotExpr(RTLParser.NotExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code compExpr}
+	 * labeled alternative in {@link RTLParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterCompExpr(RTLParser.CompExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code compExpr}
+	 * labeled alternative in {@link RTLParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitCompExpr(RTLParser.CompExprContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link RTLParser#compOp}.
 	 * @param ctx the parse tree
@@ -651,4 +675,14 @@ public interface RTLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStrOp(RTLParser.StrOpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RTLParser#hexOp}.
+	 * @param ctx the parse tree
+	 */
+	void enterHexOp(RTLParser.HexOpContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RTLParser#hexOp}.
+	 * @param ctx the parse tree
+	 */
+	void exitHexOp(RTLParser.HexOpContext ctx);
 }

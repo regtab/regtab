@@ -3,22 +3,31 @@ package com.regtab.core.readers;
 import com.regtab.core.model.*;
 import com.regtab.core.model.format.SSDatatype;
 import com.regtab.core.model.style.*;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+
 import lombok.extern.java.Log;
+import lombok.NonNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import org.apache.poi.ss.formula.FormulaParseException;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.usermodel.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.awt.Color;
 
 @Log
 public final class XlReader {
@@ -126,19 +135,10 @@ public final class XlReader {
                 cell.setBlank(blank);
                 cell.setIndent(indent);
 
-//                if (text == null || text.isBlank()) {
-//                    cell.setBlank(true);
-//                } else {
-//                    final int indent = getIndent(text);
-//                    cell.setIndent(indent);
-//                }
-
                 cell.setStyle(cellStyle);
                 cell.setDatatype(datatype);
             }
         }
-
-//        table.complete();
 
         return table;
     }
@@ -165,10 +165,10 @@ public final class XlReader {
         };
     }
 
-    private CFont createFont(Font xlFont) {
+    private Font createFont(XSSFFont xlFont) {
         if (xlFont == null) return null;
 
-        CFont font = new CFont();
+        Font font = new Font();
 
         String fontName = xlFont.getFontName();
         font.setName(fontName);
@@ -186,9 +186,9 @@ public final class XlReader {
         font.setStrikeout(strikeout);
 
         byte underline = xlFont.getUnderline();
-        if (underline != Font.U_NONE)
+        if (underline != XSSFFont.U_NONE)
             font.setUnderline(true);
-        if (underline == Font.U_DOUBLE || underline == Font.U_DOUBLE_ACCOUNTING)
+        if (underline == XSSFFont.U_DOUBLE || underline == XSSFFont.U_DOUBLE_ACCOUNTING)
             font.setDoubleUnderline(true);
 
         return font;
@@ -237,17 +237,16 @@ public final class XlReader {
         return new Border(left, top, right, bottom);
     }
 
-    private CColor createColor(XSSFColor xlColor) {
-        // When xlColor has index 64 then this color is null
+    private Color createColor(XSSFColor xlColor) {
+        // Index 64 means that color is null
         if (xlColor == null || xlColor.getIndexed() == 64)
             return null;
 
-        String hexRGB = xlColor.getARGBHex();
-        if (hexRGB == null)
+        byte[] rgb = xlColor.getRGBWithTint();
+        if (rgb == null)
             return null;
 
-        hexRGB = hexRGB.substring(2);
-        return new CColor(hexRGB);
+        return new Color(rgb[0] & 0xFF, rgb[1] & 0xFF, rgb[2] & 0xFF);
     }
 
     private Style createCellStyle(CellStyle xlCellStyle) {
@@ -255,8 +254,8 @@ public final class XlReader {
 
         Style cellStyle = new Style();
 
-        Font xlFont = workbook.getFontAt(xlCellStyle.getFontIndex());
-        CFont font = createFont(xlFont);
+        XSSFFont xlFont = (XSSFFont) workbook.getFontAt(xlCellStyle.getFontIndex());
+        Font font = createFont(xlFont);
         cellStyle.setFont(font);
 
         int indention = xlCellStyle.getIndention();
@@ -282,10 +281,11 @@ public final class XlReader {
 
         // Cell style has a foreground color when there is no a background pattern.
         // Otherwise, it has a background color.
-        XSSFColor bgColor = (XSSFColor) xlCellStyle.getFillForegroundColorColor();
-        if (bgColor == null)
-            bgColor = (XSSFColor) xlCellStyle.getFillBackgroundColorColor();
-        CColor color = createColor(bgColor);
+        XSSFColor xlColor = (XSSFColor) xlCellStyle.getFillForegroundColorColor();
+        if (xlColor == null) {
+            xlColor = (XSSFColor) xlCellStyle.getFillBackgroundColorColor();
+        }
+        Color color = createColor(xlColor);
         cellStyle.setBgColor(color);
 
         return cellStyle;

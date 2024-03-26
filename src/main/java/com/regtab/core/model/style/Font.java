@@ -3,7 +3,7 @@ package com.regtab.core.model.style;
 import lombok.Getter;
 import lombok.Setter;
 
-public final class CFont {
+public final class Font {
     @Getter
     @Setter
     private String name;

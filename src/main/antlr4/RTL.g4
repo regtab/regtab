@@ -152,11 +152,13 @@ expr
  | leftExpr = expr op = strOp rightExpr = expr        #strExpr
  | leftExpr = expr op = compOp rightExpr = expr       #compExpr
  | leftExpr = expr op = binaryOp rightExpr = expr     #binaryExpr
+ //| leftExpr = expr op = hexOp rightExpr = expr        #hexExpr
  | prop                                               #propExpr
  | func                                               #funcExpr
  | THIS (prop | func)                                 #thisExpr
  | INT                                                #intLiteral
  | STRING                                             #strLiteral
+ | HEX                                                #hexLiteral
  | bool                                               #boolLiteral
  ;
 
@@ -209,6 +211,11 @@ strOp
  : PLUS
  ;
 
+hexOp
+ : EQ
+ | NEQ
+ ;
+
 // Lexer
 
 PLUS  : '+' ;
@@ -236,6 +243,8 @@ TAG : '#' [a-z_] [a-z_0-9]* {setText(getText().substring(1, getText().length()))
 ID : '@' [a-z_] [a-z_0-9]* {setText(getText().substring(1, getText().length()));} ;
 
 INT : [0-9]+ ;
+
+HEX : '0x' [a-f0-9]+ {setText(getText().substring(2, getText().length()));} ;
 
 STRING : '\'' ( ESC | ~[\\'\r\n] )* '\'' {setText(getText().substring(1, getText().length()-1));} ;
 

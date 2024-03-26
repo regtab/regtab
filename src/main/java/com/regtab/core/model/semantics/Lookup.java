@@ -144,8 +144,8 @@ public final class Lookup {
             if (direction != Direction.IN_CELL)
                 cells.remove(cell);
             collectElements(cells, type, elements);
-            if (direction == Direction.IN_CELL)
-                elements.remove(caller);
+            //if (direction == Direction.IN_CELL)
+            //    elements.remove(caller);
         }
 
         return elements.isEmpty() ? null : elements;
@@ -228,9 +228,12 @@ public final class Lookup {
         if (elements != null) {
             if (elementIndex != null && elementIndex < elements.size()) {
                 Element elem = elements.get(elementIndex);
-                collectElement(elem, type, result);
+                if (elem != caller)
+                    collectElement(elem, type, result);
             } else {
                 for (Element elem : elements) {
+                    if (elem == caller)
+                        continue;
                     collectElement(elem, type, result);
                     if (!all && !result.isEmpty()) return;
                 }

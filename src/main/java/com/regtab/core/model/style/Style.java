@@ -3,10 +3,12 @@ package com.regtab.core.model.style;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.awt.*;
+
 public class Style {
     @Getter
     @Setter
-    private CFont font;
+    private Font font;
 
     @Getter
     @Setter
@@ -22,11 +24,11 @@ public class Style {
 
     @Getter
     @Setter
-    private CColor bgColor;
+    private Color bgColor;
 
     @Getter
     @Setter
-    private CColor fgColor;
+    private Color fgColor;
 
     @Getter
     @Setter

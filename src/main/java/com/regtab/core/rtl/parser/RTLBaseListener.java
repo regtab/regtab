@@ -569,18 +569,6 @@ public class RTLBaseListener implements RTLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNotExpr(RTLParser.NotExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNotExpr(RTLParser.NotExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFuncExpr(RTLParser.FuncExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -600,18 +588,6 @@ public class RTLBaseListener implements RTLListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPropExpr(RTLParser.PropExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterCompExpr(RTLParser.CompExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCompExpr(RTLParser.CompExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -653,6 +629,18 @@ public class RTLBaseListener implements RTLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterHexExpr(RTLParser.HexExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitHexExpr(RTLParser.HexExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterParenExpr(RTLParser.ParenExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -660,6 +648,42 @@ public class RTLBaseListener implements RTLListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitParenExpr(RTLParser.ParenExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterHexLiteral(RTLParser.HexLiteralContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitHexLiteral(RTLParser.HexLiteralContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNotExpr(RTLParser.NotExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNotExpr(RTLParser.NotExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCompExpr(RTLParser.CompExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCompExpr(RTLParser.CompExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -756,6 +780,18 @@ public class RTLBaseListener implements RTLListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStrOp(RTLParser.StrOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterHexOp(RTLParser.HexOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitHexOp(RTLParser.HexOpContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

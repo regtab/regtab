@@ -17,9 +17,11 @@ public class Expr {
     private BinaryOperator binaryOperator;
     private ArithmOperator arithmOperator;
     private StrOperator strOperator;
+    //private HexOperator hexOperator;
     private Boolean bool;
     private Integer integer;
     private String string;
+    private String hex;
     private Prop prop;
     private Func func;
 
@@ -43,6 +45,15 @@ public class Expr {
         if (compOperator != null) {
             Object o1 = left.eval(caller, candidate);
             Object o2 = right.eval(caller, candidate);
+
+            if (o1 == null || o2 == null)
+                return false; // TODO Test
+
+//            if (o1 == null && o2 == null)
+//                return true;
+//
+//            if (o1 == null ^ o2 == null)
+//                return false;
 
             return switch (compOperator) {
                 case EQUAL -> o1.equals(o2);
@@ -93,6 +104,19 @@ public class Expr {
             };
         }
 
+//        if (hexOperator != null) {
+//            final String leftHex = (String) left.eval(caller, candidate);
+//            final String rightHex = (String) right.eval(caller, candidate);
+//
+//            if (leftHex == null || rightHex == null)
+//                return false; // Цвет ячейки не задан
+//
+//            return switch (hexOperator) {
+//                case EQ -> leftHex.equalsIgnoreCase(rightHex);
+//                case NEQ -> !leftHex.equalsIgnoreCase(rightHex);
+//            };
+//        }
+
         if (prop != null)
             return useCaller ? prop.eval(caller) : prop.eval(candidate);
 
@@ -107,6 +131,9 @@ public class Expr {
 
         if (string != null)
             return string;
+
+        if (hex != null)
+            return hex; //Integer.parseInt(hex, 16);
 
         return null;
     }
@@ -193,5 +220,25 @@ public class Expr {
             this.token = token;
         }
     }
+
+//    public enum HexOperator {
+//        EQ("=="),
+//        NEQ("!=");
+//
+//        public final String token;
+//
+//        public static HexOperator get(String token) {
+//            for (HexOperator value : values()) {
+//                if (value.token.equals(token))
+//                    return value;
+//            }
+//            return null;
+//        }
+//
+//        HexOperator(String token) {
+//            this.token = token;
+//        }
+//    }
+
 }
 

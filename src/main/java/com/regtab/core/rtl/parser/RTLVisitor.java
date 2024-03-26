@@ -291,13 +291,6 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArithmExpr(RTLParser.ArithmExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code notExpr}
-	 * labeled alternative in {@link RTLParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNotExpr(RTLParser.NotExprContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code funcExpr}
 	 * labeled alternative in {@link RTLParser#expr}.
 	 * @param ctx the parse tree
@@ -311,13 +304,6 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPropExpr(RTLParser.PropExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code compExpr}
-	 * labeled alternative in {@link RTLParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCompExpr(RTLParser.CompExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code intLiteral}
 	 * labeled alternative in {@link RTLParser#expr}.
@@ -340,12 +326,40 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBoolLiteral(RTLParser.BoolLiteralContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code hexExpr}
+	 * labeled alternative in {@link RTLParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHexExpr(RTLParser.HexExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code parenExpr}
 	 * labeled alternative in {@link RTLParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitParenExpr(RTLParser.ParenExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code hexLiteral}
+	 * labeled alternative in {@link RTLParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHexLiteral(RTLParser.HexLiteralContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code notExpr}
+	 * labeled alternative in {@link RTLParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotExpr(RTLParser.NotExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code compExpr}
+	 * labeled alternative in {@link RTLParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCompExpr(RTLParser.CompExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RTLParser#compOp}.
 	 * @param ctx the parse tree
@@ -394,4 +408,10 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStrOp(RTLParser.StrOpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RTLParser#hexOp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHexOp(RTLParser.HexOpContext ctx);
 }

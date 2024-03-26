@@ -4,10 +4,12 @@ import com.regtab.core.model.format.HtmlTag;
 import com.regtab.core.model.ICell;
 import com.regtab.core.model.format.SSDatatype;
 import com.regtab.core.model.style.*;
+import com.regtab.core.model.style.Font;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.awt.*;
 import java.util.HashMap;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -27,7 +29,7 @@ public final class Prop<T> {
     private static final Evaluator fontName = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
-        CFont font = cellStyle.getFont();
+        Font font = cellStyle.getFont();
         if (font == null) return null;
         String fontName = font.getName();
         if (fontName == null || fontName.isEmpty()) return null;
@@ -38,7 +40,7 @@ public final class Prop<T> {
     private static final Evaluator fontBold = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
-        CFont font = cellStyle.getFont();
+        Font font = cellStyle.getFont();
         if (font == null) return null;
 
         return font.isBold();
@@ -47,7 +49,7 @@ public final class Prop<T> {
     private static final Evaluator fontItalic = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
-        CFont font = cellStyle.getFont();
+        Font font = cellStyle.getFont();
         if (font == null) return null;
 
         return font.isItalic();
@@ -56,7 +58,7 @@ public final class Prop<T> {
     private static final Evaluator fontStrikeout = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
-        CFont font = cellStyle.getFont();
+        Font font = cellStyle.getFont();
         if (font == null) return null;
 
         return font.isStrikeout();
@@ -65,7 +67,7 @@ public final class Prop<T> {
     private static final Evaluator fontUnderline = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
-        CFont font = cellStyle.getFont();
+        Font font = cellStyle.getFont();
         if (font == null) return null;
 
         return font.isUnderline();
@@ -74,7 +76,7 @@ public final class Prop<T> {
     private static final Evaluator fontDoubleUnderline = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
-        CFont font = cellStyle.getFont();
+        Font font = cellStyle.getFont();
         if (font == null) return null;
 
         return font.isDoubleUnderline();
@@ -83,7 +85,7 @@ public final class Prop<T> {
     private static final Evaluator fontSize = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
-        CFont font = cellStyle.getFont();
+        Font font = cellStyle.getFont();
         if (font == null) return null;
 
         return font.getSize();
@@ -164,10 +166,12 @@ public final class Prop<T> {
     private static final Evaluator bgColor = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
-        CColor bgColor = cellStyle.getBgColor();
+        Color bgColor = cellStyle.getBgColor();
         if (bgColor == null) return null;
 
-        return bgColor.toHexRGBString();
+        String hex = Integer.toHexString(bgColor.getRGB());
+        return hex.substring(2, hex.length());
+        //return  Integer.toHexString(bgColor.getRGB() & 0xffffff);
     };
 
     private static final Evaluator indent = ICell::getIndent;
