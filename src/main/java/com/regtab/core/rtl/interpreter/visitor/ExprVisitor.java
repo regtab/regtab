@@ -149,20 +149,6 @@ final class ExprVisitor extends RTLBaseVisitor<Expr> {
         return null; // Impossible
     }
 
-//    @Override
-//    public Expr visitHexExpr(HexExprContext ctx) {
-//        Expr left = this.visit(ctx.leftExpr);
-//        Expr right = this.visit(ctx.rightExpr);
-//
-//        if (ctx.op.EQ() != null)
-//            return Expr.builder().hexOperator(Expr.HexOperator.EQ).left(left).right(right).build();
-//
-//        if (ctx.op.NEQ() != null)
-//            return Expr.builder().hexOperator(Expr.HexOperator.NEQ).left(left).right(right).build();
-//
-//        return null; // Impossible
-//    }
-
     @Override
     public Expr visitBoolLiteral(BoolLiteralContext ctx) {
         if (ctx.bool().TRUE() != null)
