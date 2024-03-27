@@ -146,14 +146,14 @@ public final class Action {
         }
     }
 
-    public void perform(Element element) {
-        //log.info("Perform action {} end element {}", this, element);
+    void perform(Element caller) {
+        //log.info("Perform action {} end caller {}", this, caller);
         switch (type) {
-            case FACTOR -> performFactor(element);
-            case CONCAT -> performContact(element);
-            case RECORD -> performRecord(element);
-            case GROUP -> performGroup(element);
-            case SCHEMA -> performSchema(element);
+            case FACTOR -> performFactor(caller);
+            case CONCAT -> performContact(caller);
+            case RECORD -> performRecord(caller);
+            case GROUP -> performGroup(caller);
+            case SCHEMA -> performSchema(caller);
         }
     }
 
