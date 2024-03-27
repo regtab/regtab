@@ -1,10 +1,7 @@
 package com.regtab.core.model.semantics;
 
 import com.regtab.core.model.*;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +10,10 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public final class Lookup {
+//    @Getter
+//    @Setter(AccessLevel.PACKAGE)
+//    private Action action;
+
     private Element caller;
 
     @Getter
@@ -66,17 +67,44 @@ public final class Lookup {
         }
     }
 
-    public Element findElement(Element caller) {
-        return findElement(null, caller);
+    Element findFirst(Element caller) {
+        return findFirst(caller.getType(), caller);
     }
 
-    public Element findElement(Element.Type type, Element caller) {
-        List<Element> elements = findElements(type, caller);
+    Element findFirst(Element.Type type, Element caller) {
+        final List<Element> elements = findElements(type, caller);
         if (elements == null) return null;
-        return elements.size() > 0 ? elements.get(0) : null;
+        return elements.size() > 0 ? elements.getFirst() : null;
     }
 
-    public List<Element> findElements(Element.Type type, Element caller) {
+//    public Element findElement(Element caller) {
+//        return findElement(null, caller);
+//    }
+
+//    public Element findElement(Element.Type type, Element caller) {
+//        List<Element> elements = findElements(type, caller);
+//        if (elements == null) return null;
+//        return elements.size() > 0 ? elements.get(0) : null;
+//    }
+
+    List<Element> findAll(Element.Type type, Element caller) {
+        return findElements(type, caller);
+    }
+
+    private List<Element> findElements(Element.Type type, Element caller) {
+        final List<ICell> cells = collectCells(caller);
+        List<Element> elements = new ArrayList<>();
+
+        if (cells != null) {
+            collectElements(cells, type, elements);
+            if (direction == Direction.IN_CELL)
+                elements.remove(caller);
+        }
+
+        return elements.isEmpty() ? null : elements;
+    }
+
+    private List<ICell> collectCells(Element caller) {
         this.caller = caller;
 
         final ICell cell = caller.getCell();
@@ -138,17 +166,12 @@ public final class Lookup {
             case IN_CELL -> collectCells(rows, cellRRange, cellCRange);
         };
 
-        List<Element> elements = new ArrayList<>();
-
         if (cells != null) {
             if (direction != Direction.IN_CELL)
                 cells.remove(cell);
-            collectElements(cells, type, elements);
-            //if (direction == Direction.IN_CELL)
-            //    elements.remove(caller);
         }
 
-        return elements.isEmpty() ? null : elements;
+        return cells.isEmpty() ? null : cells;
     }
 
     private List<ICell> collectCells(IRow[] rows, Range range1, Range range2) {

@@ -43,50 +43,49 @@ public final class Action {
             this.string = string;
     }
 
-    private void performFactor(Element element) {
+    private void performFactor(Element caller) {
         if (lookup != null) {
-            Element foundElem = lookup.findElement(element);
-            if (foundElem != null) {
-                String text = foundElem.getText();
-                element.setText(text);
+            final Element found = lookup.findFirst(caller);
+            if (found != null) {
+                String text = found.getText();
+                caller.setText(text);
             }
             return;
         }
         if (string != null)
-            element.setText(string);
-
+            caller.setText(string);
     }
 
     private static final String SEPARATOR = "/"; //TODO настройки
 
-    private void performContact(Element element) {
+    private void performContact(Element caller) {
         if (lookup != null) {
-            Element foundElem = lookup.findElement(element);
-            if (foundElem != null) {
-                String prefix = foundElem.getText();
+            Element found = lookup.findFirst(caller);
+            if (found != null) {
+                String prefix = found.getText();
                 if (!prefix.isEmpty()) {
-                    String text = element.getText();
+                    String text = caller.getText();
                     text = prefix + SEPARATOR + text;
-                    element.setText(text);
+                    caller.setText(text);
                 }
             }
             return;
         }
         if (string != null)
-            element.setText(string);
+            caller.setText(string);
     }
 
-    private void performRecord(Element element) {
+    private void performRecord(Element caller) {
         if (lookups.isEmpty() && strings.isEmpty()) return;
 
-        final Recordset recordset = element.getCell().getTable().getRecordset();
-        final Record record = recordset.createRecord(element);
+        final Recordset recordset = caller.getCell().getTable().getRecordset();
+        final Record record = recordset.createRecord(caller);
 
         for (Lookup lookup : lookups) {
-            final List<Element> elements = lookup.findElements(Element.Type.VALUE, element);
+            final List<Element> elements = lookup.findAll(Element.Type.VALUE, caller);
             if (elements != null) {
-                for (Element elem : elements)
-                    recordset.updateRecord(record, elem);
+                for (Element element : elements)
+                    recordset.updateRecord(record, element);
             }
         }
 
@@ -118,22 +117,23 @@ public final class Action {
         }
     }
 
-    private void performGroup(Element element) {
+    private void performGroup(Element caller) {
         if (lookups.isEmpty()) return;
 
-        final Recordset recordset = element.getCell().getTable().getRecordset();
+        final Recordset recordset = caller.getCell().getTable().getRecordset();
+
         for (Lookup lookup : lookups) {
-            final List<Element> elements = lookup.findElements(Element.Type.VALUE, element);
+            final List<Element> elements = lookup.findAll(Element.Type.VALUE, caller);
             if (elements != null) {
-                for (Element e : elements)
-                    recordset.updateGroup(element, e);
+                for (Element element : elements)
+                    recordset.updateGroup(caller, element);
             }
         }
     }
 
     private void performSchema(Element element) {
         if (lookup != null) {
-            final Element e = lookup.findElement(Element.Type.ATTRIBUTE, element);
+            final Element e = lookup.findFirst(Element.Type.ATTRIBUTE, element);
             if (e != null) {
                 final Recordset recordset = element.getCell().getTable().getRecordset();
                 recordset.updateSchema(element, e);
