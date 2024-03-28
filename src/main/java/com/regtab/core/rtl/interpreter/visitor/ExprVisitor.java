@@ -64,6 +64,10 @@ final class ExprVisitor extends RTLBaseVisitor<Expr> {
     @Override
     public Expr visitNotExpr(NotExprContext ctx) {
         Expr boolExpr = this.visit(ctx.expr());
+
+        if (boolExpr == null)
+            return null; // TODO log
+
         return Expr.builder().not(true).expr(boolExpr).build();
     }
 
@@ -76,6 +80,9 @@ final class ExprVisitor extends RTLBaseVisitor<Expr> {
     public Expr visitCompExpr(CompExprContext ctx) {
         Expr left = this.visit(ctx.leftExpr);
         Expr right = this.visit(ctx.rightExpr);
+
+        if (left == null || right == null)
+            return null; // TODO log
 
         if (ctx.op.EQ() != null)
             return Expr.builder().compOperator(Expr.CompOperator.EQUAL).left(left).right(right).build();

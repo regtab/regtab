@@ -326,13 +326,6 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBoolLiteral(RTLParser.BoolLiteralContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code hexExpr}
-	 * labeled alternative in {@link RTLParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitHexExpr(RTLParser.HexExprContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code parenExpr}
 	 * labeled alternative in {@link RTLParser#expr}.
 	 * @param ctx the parse tree

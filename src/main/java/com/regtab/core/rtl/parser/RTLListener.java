@@ -536,18 +536,6 @@ public interface RTLListener extends ParseTreeListener {
 	 */
 	void exitBoolLiteral(RTLParser.BoolLiteralContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code hexExpr}
-	 * labeled alternative in {@link RTLParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterHexExpr(RTLParser.HexExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code hexExpr}
-	 * labeled alternative in {@link RTLParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitHexExpr(RTLParser.HexExprContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code parenExpr}
 	 * labeled alternative in {@link RTLParser#expr}.
 	 * @param ctx the parse tree

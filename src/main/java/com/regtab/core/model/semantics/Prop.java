@@ -5,21 +5,29 @@ import com.regtab.core.model.ICell;
 import com.regtab.core.model.format.SSDatatype;
 import com.regtab.core.model.style.*;
 import com.regtab.core.model.style.Font;
-import lombok.AccessLevel;
+
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+
 
 import java.awt.*;
 import java.util.HashMap;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Prop<T> {
     private final String name;
 
+    private final String cannonic;
+
     private final Evaluator<T> evaluator;
 
-    public static Prop get(String name) {
-        return props.get(name);
+    private Prop(String name, Evaluator<T> evaluator) {
+        this.name = name;
+        this.cannonic = name.toLowerCase();
+        this.evaluator = evaluator;
+    }
+
+    public static Prop get(@NonNull String name) {
+        final String cannonic = name.toLowerCase().replaceAll("_", "");
+        return props.get(cannonic);
     }
     
     T eval(@NonNull ICell cell) {
@@ -254,34 +262,34 @@ public final class Prop<T> {
     private static final HashMap<String, Prop> props = new HashMap<>();
 
     static {
-        props.put(FONT_NAME.name, FONT_NAME);
-        props.put(FONT_BOLD.name, FONT_BOLD);
-        props.put(FONT_ITALIC.name, FONT_ITALIC);
-        props.put(FONT_STRIKEOUT.name, FONT_STRIKEOUT);
-        props.put(FONT_UNDERLINE.name, FONT_UNDERLINE);
-        props.put(FONT_DOUBLE_UNDERLINE.name, FONT_DOUBLE_UNDERLINE);
-        props.put(FONT_SIZE.name, FONT_SIZE);
-        props.put(HORIZONTAL_ALIGNMENT_LEFT.name, HORIZONTAL_ALIGNMENT_LEFT);
-        props.put(HORIZONTAL_ALIGNMENT_CENTER.name, HORIZONTAL_ALIGNMENT_CENTER);
-        props.put(HORIZONTAL_ALIGNMENT_RIGHT.name, HORIZONTAL_ALIGNMENT_RIGHT);
-        props.put(HORIZONTAL_ALIGNMENT_JUSTIFY.name, HORIZONTAL_ALIGNMENT_JUSTIFY);
-        props.put(VERTICAL_ALIGNMENT_TOP.name, VERTICAL_ALIGNMENT_TOP);
-        props.put(VERTICAL_ALIGNMENT_CENTER.name, VERTICAL_ALIGNMENT_CENTER);
-        props.put(VERTICAL_ALIGNMENT_BOTTOM.name, VERTICAL_ALIGNMENT_BOTTOM);
-        props.put(VERTICAL_ALIGNMENT_JUSTIFY.name, VERTICAL_ALIGNMENT_JUSTIFY);
-        props.put(BACKGROUND_COLOR.name, BACKGROUND_COLOR);
-        props.put(INDENT.name, INDENT);
-        props.put(TEXT.name, TEXT);
-        props.put(BLANK.name, BLANK);
-        props.put(MERGED.name, MERGED);
-        props.put(NESTED.name, NESTED);
-        props.put(SPANNING.name, SPANNING);
-        props.put(HTML_TAG_TH.name, HTML_TAG_TH);
-        props.put(HTML_TAG_TD.name, HTML_TAG_TD);
-        props.put(SS_DATATYPE_NUMERIC.name, SS_DATATYPE_NUMERIC);
-        props.put(SS_DATATYPE_STRING.name, SS_DATATYPE_STRING);
-        props.put(SS_DATATYPE_BOOLEAN.name, SS_DATATYPE_BOOLEAN);
-        props.put(SS_DATATYPE_FORMULA.name, SS_DATATYPE_FORMULA);
+        props.put(FONT_NAME.cannonic, FONT_NAME);
+        props.put(FONT_BOLD.cannonic, FONT_BOLD);
+        props.put(FONT_ITALIC.cannonic, FONT_ITALIC);
+        props.put(FONT_STRIKEOUT.cannonic, FONT_STRIKEOUT);
+        props.put(FONT_UNDERLINE.cannonic, FONT_UNDERLINE);
+        props.put(FONT_DOUBLE_UNDERLINE.cannonic, FONT_DOUBLE_UNDERLINE);
+        props.put(FONT_SIZE.cannonic, FONT_SIZE);
+        props.put(HORIZONTAL_ALIGNMENT_LEFT.cannonic, HORIZONTAL_ALIGNMENT_LEFT);
+        props.put(HORIZONTAL_ALIGNMENT_CENTER.cannonic, HORIZONTAL_ALIGNMENT_CENTER);
+        props.put(HORIZONTAL_ALIGNMENT_RIGHT.cannonic, HORIZONTAL_ALIGNMENT_RIGHT);
+        props.put(HORIZONTAL_ALIGNMENT_JUSTIFY.cannonic, HORIZONTAL_ALIGNMENT_JUSTIFY);
+        props.put(VERTICAL_ALIGNMENT_TOP.cannonic, VERTICAL_ALIGNMENT_TOP);
+        props.put(VERTICAL_ALIGNMENT_CENTER.cannonic, VERTICAL_ALIGNMENT_CENTER);
+        props.put(VERTICAL_ALIGNMENT_BOTTOM.cannonic, VERTICAL_ALIGNMENT_BOTTOM);
+        props.put(VERTICAL_ALIGNMENT_JUSTIFY.cannonic, VERTICAL_ALIGNMENT_JUSTIFY);
+        props.put(BACKGROUND_COLOR.cannonic, BACKGROUND_COLOR);
+        props.put(INDENT.cannonic, INDENT);
+        props.put(TEXT.cannonic, TEXT);
+        props.put(BLANK.cannonic, BLANK);
+        props.put(MERGED.cannonic, MERGED);
+        props.put(NESTED.cannonic, NESTED);
+        props.put(SPANNING.cannonic, SPANNING);
+        props.put(HTML_TAG_TH.cannonic, HTML_TAG_TH);
+        props.put(HTML_TAG_TD.cannonic, HTML_TAG_TD);
+        props.put(SS_DATATYPE_NUMERIC.cannonic, SS_DATATYPE_NUMERIC);
+        props.put(SS_DATATYPE_STRING.cannonic, SS_DATATYPE_STRING);
+        props.put(SS_DATATYPE_BOOLEAN.cannonic, SS_DATATYPE_BOOLEAN);
+        props.put(SS_DATATYPE_FORMULA.cannonic, SS_DATATYPE_FORMULA);
     }
 
     private interface Evaluator<T> {

@@ -70,18 +70,18 @@ final class CellVisitor extends RTLBaseVisitor<CellPattern> {
 
         cellPattern.setQuantifier(quantifier);
 
-        final ActionsContext actionsCtx = elementsContext.actions();
-        if (actionsCtx != null) {
-            List<ActionContext> actionCtxList = actionsCtx.action();
-            if (actionCtxList != null) {
-                for (ActionContext actionCtx : actionCtxList) {
-                    Action action = actionVisitor.visit(actionCtx);
-                    if (action == null)
-                        return null; // TODO test
-                    cellPattern.add(action);
-                }
-            }
-        }
+//        final ActionsContext actionsCtx = elementsContext.actions();
+//        if (actionsCtx != null) {
+//            List<ActionContext> actionCtxList = actionsCtx.action();
+//            if (actionCtxList != null) {
+//                for (ActionContext actionCtx : actionCtxList) {
+//                    Action action = actionVisitor.visit(actionCtx);
+//                    if (action == null)
+//                        return null; // TODO test
+//                    cellPattern.add(action);
+//                }
+//            }
+//        }
 
         return cellPattern;
     }
