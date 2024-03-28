@@ -190,22 +190,22 @@ public class DemoApp {
                     "[[v#cr]{2} [v -> $r(*up:#cl;*left:#cr); $s('DAT')]+]+";
             extract(xlFile, 20, ttl20);
 
-            System.out.printf("TTL = %s : SHEET = %d%n", "20a", 21);
-            String ttl20a = "[[s: ~@numeric]{2}[v#cl -> $g(*right) : ~@numeric][v#cl : ~@numeric]+]+" +
+            System.out.printf("TTL = %s : SHEET = %d%n", "21", 21);
+            String ttl21 = "[[s: ~@numeric]{2}[v#cl -> $g(*right) : ~@numeric][v#cl : ~@numeric]+]+" +
                     "[[v#cr -> $g(*down)]{2} [v -> $r(*up:#cl;*left:#cr); $s('DAT')]+]" +
                     "[[v#cr]{2} [v -> $r(*up:#cl;*left:#cr); $s('DAT')]+]+";
-            extract(xlFile, 21, ttl20a);
+            extract(xlFile, 21, ttl21);
 
-            System.out.printf("TTL = %s : SHEET = %d%n", "20b", 21);
-            String ttl20b = "[[s: @blank]{2}[v#cl -> $g(*right): @string][v#cl: @string]+]+" +
+            System.out.printf("TTL = %s : SHEET = %d%n", "21a", 21);
+            String ttl21a = "[[s: @blank]{2}[v#cl -> $g(*right): @string][v#cl: @string]+]+" +
                     "[[v#cr -> $g(*down)]{2} [v -> $r(*up:#cl;*left:#cr); $s('DAT')]+]" +
                     "[[v#cr]{2} [v -> $r(*up:#cl;*left:#cr); $s('DAT')]+]+";
-            extract(xlFile, 21, ttl20b);
+            extract(xlFile, 21, ttl21a);
 
             System.out.printf("TTL = %s : SHEET = %d%n", "20c", 22);
-            String ttl20c = "[[s: @blank; ~@numeric]+ [v#cl: ~@numeric]+]+" +
+            String ttl22 = "[[s: @blank; ~@numeric]+ [v#cl: ~@numeric]+]+" +
                     "[[v#cr: @string]+ [v -> $r(*up:#cl;*left:#cr)]+]+";
-            extract(xlFile, 22, ttl20c);
+            extract(xlFile, 22, ttl22);
 
             System.out.printf("TTL = %s : SHEET = %d%n", "23", 23);
             String ttl23 = "[[A]+] #r1[[V->$R(*ROW): ~@blank][V: ~@blank]*[S: @blank]*[V: ~@blank]* -> $S(COL:R0)]+[[s]+ : @blank]*[#r1]*";
