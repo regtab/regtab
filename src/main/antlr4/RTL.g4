@@ -65,10 +65,11 @@ action : actionType ASSIGN (actionBody | (LPAREN actionBody (SEMICOLON actionBod
 // RECORD -- связать значения с записью.
 // GROUP  -- связать значения с группой (анонимным атрибутом).
 // SCHEMA -- связать значение с атрибутом.
-actionType : FACTOR | CONCAT | RECORD | GROUP | SCHEMA ;
+actionType : FACTOR | PREFIX | SUFFIX | RECORD | GROUP | SCHEMA ;
 
 FACTOR : 'factor' ;
-CONCAT : 'prefix' ;
+PREFIX : 'prefix' ;
+SUFFIX : 'suffix' ;
 RECORD : 'record' ;
 GROUP  : 'group' ;
 SCHEMA : 'schema' ;

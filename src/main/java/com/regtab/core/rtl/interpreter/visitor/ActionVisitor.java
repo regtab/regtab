@@ -21,8 +21,10 @@ final class ActionVisitor extends RTLBaseVisitor<Action> {
 
         if (actionTypeCtx.FACTOR() != null)
             actType = Action.Type.FACTOR;
-        else if (actionTypeCtx.CONCAT() != null)
-            actType = Action.Type.CONCAT;
+        else if (actionTypeCtx.PREFIX() != null)
+            actType = Action.Type.PREFIX;
+        else if (actionTypeCtx.SUFFIX() != null)
+            actType = Action.Type.SUFFIX;
         else if (actionTypeCtx.RECORD() != null)
             actType = Action.Type.RECORD;
         else if (actionTypeCtx.GROUP() != null)

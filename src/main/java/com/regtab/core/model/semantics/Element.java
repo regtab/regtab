@@ -57,7 +57,13 @@ public final class Element {
                     action.perform(this);
             }
         }
-        else if (actionType == Action.Type.CONCAT) {
+        else if (actionType == Action.Type.PREFIX) {
+            for (Action action : actions) {
+                if (action.getType() == actionType)
+                    action.perform(this);
+            }
+        }
+        else if (actionType == Action.Type.SUFFIX) {
             for (Action action : actions) {
                 if (action.getType() == actionType)
                     action.perform(this);

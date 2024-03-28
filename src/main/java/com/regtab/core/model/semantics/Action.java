@@ -58,14 +58,31 @@ public final class Action {
 
     private static final String SEPARATOR = "/"; //TODO настройки
 
-    private void performContact(Element caller) {
+    private void performPrefix(Element caller) {
         if (lookup != null) {
-            Element found = lookup.findFirst(caller);
+            final Element found = lookup.findFirst(caller);
             if (found != null) {
-                String prefix = found.getText();
+                final String prefix = found.getText();
                 if (!prefix.isEmpty()) {
                     String text = caller.getText();
                     text = prefix + SEPARATOR + text;
+                    caller.setText(text);
+                }
+            }
+            return;
+        }
+        if (string != null)
+            caller.setText(string);
+    }
+
+    private void performSuffix(Element caller) {
+        if (lookup != null) {
+            final Element found = lookup.findFirst(caller);
+            if (found != null) {
+                final String suffix = found.getText();
+                if (!suffix.isEmpty()) {
+                    String text = caller.getText();
+                    text = text + SEPARATOR + suffix;
                     caller.setText(text);
                 }
             }
@@ -150,7 +167,8 @@ public final class Action {
         //log.info("Perform action {} end caller {}", this, caller);
         switch (type) {
             case FACTOR -> performFactor(caller);
-            case CONCAT -> performContact(caller);
+            case PREFIX -> performPrefix(caller);
+            case SUFFIX -> performSuffix(caller);
             case RECORD -> performRecord(caller);
             case GROUP -> performGroup(caller);
             case SCHEMA -> performSchema(caller);
@@ -158,7 +176,7 @@ public final class Action {
     }
 
     public enum Type {
-        FACTOR, CONCAT, GROUP, SCHEMA, RECORD
+        FACTOR, PREFIX, SUFFIX, GROUP, SCHEMA, RECORD
     }
 
     @Override

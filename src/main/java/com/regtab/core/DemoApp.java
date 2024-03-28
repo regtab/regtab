@@ -268,7 +268,6 @@ public class DemoApp {
             System.out.printf("TTL = %s: SHEET = %d%n", "22", 22);
             sb.append("[[@blank; ~@numeric -> skip]+ [~@numeric -> val#cl]+]+");
             sb.append("[[@string -> val#cr]+ [val : record=((*up:#cl);(*left:#cr))]+]+");
-            sb.append("");
             extract(xlFile, 22, sb.toString());
             sb.setLength(0);
 
@@ -449,6 +448,11 @@ public class DemoApp {
             System.out.printf("TTL = %s: SHEET = %d%n", "II 16", 16);
             sb.append("[[@COLOR==0xFFFF00 ? (VAL : RECORD=CELL '=' VAL) | SKIP]+]+");
             extract(xlFile2, 16, sb.toString());
+            sb.setLength(0);
+
+            System.out.printf("TTL = %s: SHEET = %d%n", "II 17", 17);
+            sb.append("[[V][V : SUFFIX=LEFT][V: RECORD=LEFT]]+");
+            extract(xlFile2, 17, sb.toString());
             sb.setLength(0);
         }
     }

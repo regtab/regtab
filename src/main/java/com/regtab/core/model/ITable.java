@@ -89,7 +89,10 @@ public final class ITable {
             cell.perform(Action.Type.FACTOR);
 
         for (ICell cell: cells)
-            cell.perform(Action.Type.CONCAT);
+            cell.perform(Action.Type.PREFIX);
+
+        for (ICell cell: cells)
+            cell.perform(Action.Type.SUFFIX);
 
         for (ICell cell: cells)
             cell.perform(Action.Type.RECORD);
