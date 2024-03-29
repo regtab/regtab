@@ -21,13 +21,15 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.model.StylesTable;
+import org.apache.poi.ss.util.CellAddress;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.awt.Color;
+import java.util.HashMap;
 
 @Log
 public final class XlReader {
@@ -84,25 +86,53 @@ public final class XlReader {
         return new int[]{rt, rb, minCl, maxCr};
     }
 
+    private HashMap<CellAddress, Cell> mergedCells = new HashMap<>();
+
+    private void readMergedCells(Sheet sheet) {
+        for (int i = 0; i < sheet.getNumMergedRegions(); i++) {
+            final CellRangeAddress region = sheet.getMergedRegion(i);
+            final int firstRowIdx = region.getFirstRow();
+            final int firstColIdx = region.getFirstColumn();
+            final int lastRowIdx = region.getLastRow();
+            final int lastColIdx = region.getLastColumn();
+
+            final Row xlRow = sheet.getRow(firstRowIdx);
+            final Cell xlCell = xlRow.getCell(firstColIdx);
+
+            for (int j = firstRowIdx; j <= lastRowIdx; j++) {
+                for (int k = firstColIdx; k <= lastColIdx; k++) {
+                    CellAddress address = new CellAddress(j, k);
+                    mergedCells.put(address, xlCell);
+                }
+            }
+        }
+    }
+
     public ITable readTable(int sheetIndex) {
+        final Sheet sheet = getSheet(sheetIndex);
+        readMergedCells(sheet);
+        final int[] range = getCellRange(sheet);
 
-        Sheet sheet = getSheet(sheetIndex);
+        return readTable(sheet, range);
+    }
 
-        int[] range = getCellRange(sheet);
+    private ITable readTable(Sheet sheet, int[] range) {
+        final int rt = range[0];
+        final int rb = range[1];
+        final int cl = range[2];
+        final int cr = range[3];
 
-        int rt = range[0];
-        int rb = range[1];
-        int cl = range[2];
-        int cr = range[3];
+        final int numOfRows = rb - rt + 1;
+        final int numOfCols = cr - cl + 1;
 
-        int numOfRows = rb - rt + 1;
-        int numOfCols = cr - cl + 1;
+        final ITable table = new ITable(numOfRows, numOfCols);
 
-        ITable table = new ITable(numOfRows, numOfCols);
+        int rowCount = 0;
 
         for (int i = rt; i <= rb; i++) {
-            Row xlRow = sheet.getRow(i);
+            final Row xlRow = sheet.getRow(i);
 
+            int colCount = 0;
             for (int j = cl; j <= cr; j++) {
                 String text = "";
                 boolean blank = true;
@@ -117,6 +147,12 @@ public final class XlReader {
                     Cell xlCell = xlRow.getCell(j);
 
                     if (xlCell != null) {
+                        final int r = xlCell.getRowIndex();
+                        final int c = xlCell.getColumnIndex();
+                        final Cell xlMergedCell = mergedCells.get(new CellAddress(r, c));
+                        if (xlMergedCell != null)
+                            xlCell = xlMergedCell;
+
                         text = getText(xlCell);
                         if (text == null || text.isBlank())
                             text = "";
@@ -131,13 +167,16 @@ public final class XlReader {
                     }
                 }
 
-                final ICell cell = table.createCell(i, j, text);
+                //final ICell cell = table.createCell(i, j, text);
+                final ICell cell = table.createCell(rowCount, colCount, text);
                 cell.setBlank(blank);
                 cell.setIndent(indent);
-
                 cell.setStyle(cellStyle);
                 cell.setDatatype(datatype);
+
+                colCount++;
             }
+            rowCount++;
         }
 
         return table;
@@ -328,5 +367,6 @@ public final class XlReader {
 
         return value == null ? "" : value;
     }
+
 
 }

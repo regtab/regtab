@@ -459,6 +459,12 @@ public class DemoApp {
             sb.append("[[V=@token(' ', 1)][V : RECORD=LEFT]]+");
             extract(xlFile2, 18, sb.toString());
             sb.setLength(0);
+
+            System.out.printf("TTL = %s: SHEET = %d%n", "II 19", 19);
+            sb.append("[[A]{2}[V #HEAD]+]{2}");
+            sb.append("[[V #STUB : SCHEMA=COL]{2}[V : RECORD=((*COL:#HEAD);(*ROW:#STUB))]+]+");
+            extract(xlFile2, 19, sb.toString());
+            sb.setLength(0);
         }
     }
 }
