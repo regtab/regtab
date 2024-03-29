@@ -39,40 +39,17 @@ public final class Func<T> {
 
         if (args[0] == null)
             throw new IllegalStateException("First argument is null");
-
-        final int start;
-        if (args[0] instanceof Integer) {
-            start = (Integer) args[0];
-        }
-        else if (args[0] instanceof Expr expr) {
-            final Object result = expr.eval(cell);
-            if (!(result instanceof Integer)) {
-                throw new IllegalStateException("First argument is not integer");
-            }
-            start = (Integer) result;
-        } else {
+        if (!(args[0] instanceof Integer))
             throw new IllegalStateException("First argument is not integer");
-        }
+        final int start = (Integer) args[0];
 
         if (args[1] == null)
             throw new IllegalStateException("Second argument is null");
-
-        final int end;
-        if (args[1] instanceof Integer) {
-            end = (Integer) args[1];
-        }
-        else if (args[1] instanceof Expr expr) {
-            final Object result = expr.eval(cell);
-            if (!(result instanceof Integer)) {
-                throw new IllegalStateException("Second argument is not integer");
-            }
-            end = (Integer) result;
-        } else {
+        if (!(args[1] instanceof Integer))
             throw new IllegalStateException("Second argument is not integer");
-        }
+        final int end = (Integer) args[1];
 
         final String text = cell.getText();
-
         if (text == null)
             return null; // Impossible
 
@@ -80,38 +57,87 @@ public final class Func<T> {
     };
 
     private static final Evaluator<String> token = (cell, args) -> {
-        String separator = (String) args[0];
-        int index = (Integer) args[1];
+        if (args.length < 2)
+            throw new IllegalStateException("No required arguments");
+
+        if (args[0] == null)
+            throw new IllegalStateException("First argument is null");
+        if (!(args[0] instanceof String))
+            throw new IllegalStateException("First argument is not string");
+        final String separator = (String) args[0];
+
+        if (args[1] == null)
+            throw new IllegalStateException("Second argument is null");
+        if (!(args[1] instanceof Integer))
+            throw new IllegalStateException("Second argument is not integer");
+        final int index = (Integer) args[1];
+
         final String text = cell.getText();
-        String[] tokens = text.split(separator);
+        if (text == null)
+            return null; // Impossible
+        final String[] tokens = text.split(separator);
 
         return tokens[index];
     };
 
     private static final Evaluator<String> replace = (cell, args) -> {
-        String regex = (String) args[0];
-        String replacement = (String) args[1];
+        if (args.length < 2)
+            throw new IllegalStateException("No required arguments");
+
+        if (args[0] == null)
+            throw new IllegalStateException("First argument is null");
+        if (!(args[0] instanceof String))
+            throw new IllegalStateException("First argument is not string");
+        final String regex = (String) args[0];
+
+        if (args[1] == null)
+            throw new IllegalStateException("First argument is null");
+        if (!(args[1] instanceof String))
+            throw new IllegalStateException("First argument is not string");
+        final String replacement = (String) args[1];
+
         final String text = cell.getText();
+        if (text == null)
+            return null; // Impossible
 
         return text.replaceFirst(regex, replacement);
     };
 
     private static final Evaluator<String> replaceAll = (cell, args) -> {
-        String regex = (String) args[0];
-        String replacement = (String) args[1];
+        if (args.length < 2)
+            throw new IllegalStateException("No required arguments");
+
+        if (args[0] == null)
+            throw new IllegalStateException("First argument is null");
+        if (!(args[0] instanceof String))
+            throw new IllegalStateException("First argument is not string");
+        final String regex = (String) args[0];
+
+        if (args[1] == null)
+            throw new IllegalStateException("First argument is null");
+        if (!(args[1] instanceof String))
+            throw new IllegalStateException("First argument is not string");
+        final String replacement = (String) args[1];
+
         final String text = cell.getText();
+        if (text == null)
+            return null; // Impossible
 
         return text.replaceAll(regex, replacement);
     };
 
     private static final Evaluator<String> upperCase = (cell, args) -> {
         final String text = cell.getText();
+        if (text == null)
+            return null; // Impossible
 
         return text.toUpperCase();
     };
 
     private static final Evaluator<String> lowerCase = (cell, args) -> {
         final String text = cell.getText();
+        if (text == null)
+            return null; // Impossible
 
         return text.toLowerCase();
     };
