@@ -22,7 +22,7 @@ public final class Prop<T> {
         this.evaluator = evaluator;
     }
 
-    public static Prop get(@NonNull String name) {
+    public static Prop<?> get(@NonNull String name) {
         final String cannonic = name.toLowerCase().replaceAll("_", "");
         return props.get(cannonic);
     }

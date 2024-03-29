@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-//@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Func<T> {
     private final String name;
 
@@ -25,7 +24,7 @@ public final class Func<T> {
         this.evaluator = evaluator;
     }
 
-    public static Func get(@NonNull String name) {
+    public static Func<?> get(@NonNull String name) {
         final String cannonic = name.toLowerCase().replaceAll("_", "");
         return funcs.get(cannonic);
     }
