@@ -15,13 +15,10 @@ import java.util.HashMap;
 public final class Prop<T> {
     private final String name;
 
-    private final String cannonic;
-
     private final Evaluator<T> evaluator;
 
     private Prop(String name, Evaluator<T> evaluator) {
-        this.name = name;
-        this.cannonic = name.toLowerCase();
+        this.name = name.toLowerCase();
         this.evaluator = evaluator;
     }
 
@@ -34,7 +31,7 @@ public final class Prop<T> {
         return evaluator.eval(cell);
     }
 
-    private static final Evaluator fontName = cell -> {
+    private static final Evaluator<String> fontName = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         Font font = cellStyle.getFont();
@@ -45,7 +42,7 @@ public final class Prop<T> {
         return fontName;
     };
 
-    private static final Evaluator fontBold = cell -> {
+    private static final Evaluator<Boolean> fontBold = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         Font font = cellStyle.getFont();
@@ -54,7 +51,7 @@ public final class Prop<T> {
         return font.isBold();
     };
 
-    private static final Evaluator fontItalic = cell -> {
+    private static final Evaluator<Boolean> fontItalic = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         Font font = cellStyle.getFont();
@@ -63,7 +60,7 @@ public final class Prop<T> {
         return font.isItalic();
     };
 
-    private static final Evaluator fontStrikeout = cell -> {
+    private static final Evaluator<Boolean> fontStrikeout = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         Font font = cellStyle.getFont();
@@ -72,7 +69,7 @@ public final class Prop<T> {
         return font.isStrikeout();
     };
 
-    private static final Evaluator fontUnderline = cell -> {
+    private static final Evaluator<Boolean> fontUnderline = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         Font font = cellStyle.getFont();
@@ -81,7 +78,7 @@ public final class Prop<T> {
         return font.isUnderline();
     };
 
-    private static final Evaluator fontDoubleUnderline = cell -> {
+    private static final Evaluator<Boolean> fontDoubleUnderline = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         Font font = cellStyle.getFont();
@@ -90,7 +87,7 @@ public final class Prop<T> {
         return font.isDoubleUnderline();
     };
 
-    private static final Evaluator fontSize = cell -> {
+    private static final Evaluator<Integer> fontSize = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         Font font = cellStyle.getFont();
@@ -99,7 +96,7 @@ public final class Prop<T> {
         return font.getSize();
     };
 
-    private static final Evaluator hLeft = cell -> {
+    private static final Evaluator<Boolean> hLeft = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         HAlignment hAlignment = cellStyle.getHAlignment();
@@ -108,7 +105,7 @@ public final class Prop<T> {
         return hAlignment.isLeft();
     };
 
-    private static final Evaluator hCenter = cell -> {
+    private static final Evaluator<Boolean> hCenter = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         HAlignment hAlignment = cellStyle.getHAlignment();
@@ -117,7 +114,7 @@ public final class Prop<T> {
         return hAlignment.isCenter();
     };
 
-    private static final Evaluator hRight = cell -> {
+    private static final Evaluator<Boolean> hRight = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         HAlignment hAlignment = cellStyle.getHAlignment();
@@ -126,7 +123,7 @@ public final class Prop<T> {
         return hAlignment.isRight();
     };
 
-    private static final Evaluator hJustify = cell -> {
+    private static final Evaluator<Boolean> hJustify = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         HAlignment hAlignment = cellStyle.getHAlignment();
@@ -135,7 +132,7 @@ public final class Prop<T> {
         return hAlignment.isJustify();
     };
 
-    private static final Evaluator vTop = cell -> {
+    private static final Evaluator<Boolean> vTop = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         VAlignment vAlignment = cellStyle.getVAlignment();
@@ -144,7 +141,7 @@ public final class Prop<T> {
         return vAlignment.isTop();
     };
 
-    private static final Evaluator vCenter = cell -> {
+    private static final Evaluator<Boolean> vCenter = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         VAlignment vAlignment = cellStyle.getVAlignment();
@@ -153,7 +150,7 @@ public final class Prop<T> {
         return vAlignment.isCenter();
     };
 
-    private static final Evaluator vBottom = cell -> {
+    private static final Evaluator<Boolean> vBottom = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         VAlignment vAlignment = cellStyle.getVAlignment();
@@ -162,7 +159,7 @@ public final class Prop<T> {
         return vAlignment.isBottom();
     };
 
-    private static final Evaluator vJustify = cell -> {
+    private static final Evaluator<Boolean> vJustify = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         VAlignment vAlignment = cellStyle.getVAlignment();
@@ -171,125 +168,124 @@ public final class Prop<T> {
         return vAlignment.isJustify();
     };
 
-    private static final Evaluator bgColor = cell -> {
+    private static final Evaluator<String> bgColor = cell -> {
         Style cellStyle = cell.getStyle();
         if (cellStyle == null) return null;
         Color bgColor = cellStyle.getBgColor();
         if (bgColor == null) return null;
 
         String hex = Integer.toHexString(bgColor.getRGB());
-        return hex.substring(2, hex.length());
-        //return  Integer.toHexString(bgColor.getRGB() & 0xffffff);
+        return hex.substring(2);
     };
 
-    private static final Evaluator indent = ICell::getIndent;
+    private static final Evaluator<Integer> indent = ICell::getIndent;
 
-    private static final Evaluator text = ICell::getText;
+    private static final Evaluator<String> text = ICell::getText;
 
-    private static final Evaluator blank = ICell::isBlank;
+    private static final Evaluator<Boolean> blank = ICell::isBlank;
 
-    private static final Evaluator merged = ICell::isMerged;
+    private static final Evaluator<Boolean> merged = ICell::isMerged;
 
-    private static final Evaluator nested = ICell::isNested;
+    private static final Evaluator<Boolean> nested = ICell::isNested;
 
-    private static final Evaluator spanning = ICell::isSpanning;
+    private static final Evaluator<Boolean> spanning = ICell::isSpanning;
 
-    private static final Evaluator htmlTagTH = cell -> {
+    private static final Evaluator<Boolean> htmlTagTH = cell -> {
         HtmlTag htmlTag = cell.getHtmlTag();
         if (htmlTag == null) return false;
         return htmlTag.isTh();
     };
 
-    private static final Evaluator htmlTagTD = cell -> {
+    private static final Evaluator<Boolean> htmlTagTD = cell -> {
         HtmlTag htmlTag = cell.getHtmlTag();
         if (htmlTag == null) return false;
         return htmlTag.isTd();
     };
 
-    private static final Evaluator ssDTNumeric = cell -> {
+    private static final Evaluator<Boolean> ssDTNumeric = cell -> {
         SSDatatype ssDatatype = cell.getDatatype();
         if (ssDatatype == null) return false;
         return ssDatatype.isNumeric();
     };
 
-    private static final Evaluator ssDTString = cell -> {
+    private static final Evaluator<Boolean> ssDTString = cell -> {
         SSDatatype ssDatatype = cell.getDatatype();
         if (ssDatatype == null) return false;
         return ssDatatype.isStr();
     };
 
-    private static final Evaluator ssDTBoolean = cell -> {
+    private static final Evaluator<Boolean> ssDTBoolean = cell -> {
         SSDatatype ssDatatype = cell.getDatatype();
         if (ssDatatype == null) return false;
         return ssDatatype.isBool();
     };
 
-    private static final Evaluator ssDTFormula = cell -> {
+    private static final Evaluator<Boolean> ssDTFormula = cell -> {
         SSDatatype ssDatatype = cell.getDatatype();
         if (ssDatatype == null) return false;
         return ssDatatype.isFormula();
     };
 
-    private static final Prop FONT_NAME = new Prop("fontName", fontName);
-    private static final Prop FONT_BOLD = new Prop("bold", fontBold);
-    private static final Prop FONT_ITALIC = new Prop("italic", fontItalic);
-    private static final Prop FONT_STRIKEOUT = new Prop("strikeout", fontStrikeout);
-    private static final Prop FONT_UNDERLINE = new Prop("underline", fontUnderline);
-    private static final Prop FONT_DOUBLE_UNDERLINE = new Prop("doubleUnderline", fontDoubleUnderline);
-    private static final Prop FONT_SIZE = new Prop("fontSize", fontSize);
-    private static final Prop HORIZONTAL_ALIGNMENT_LEFT = new Prop("hLeft", hLeft);
-    private static final Prop HORIZONTAL_ALIGNMENT_CENTER = new Prop("hCenter", hCenter);
-    private static final Prop HORIZONTAL_ALIGNMENT_RIGHT = new Prop("hRight", hRight);
-    private static final Prop HORIZONTAL_ALIGNMENT_JUSTIFY = new Prop("hJustify", hJustify);
-    private static final Prop VERTICAL_ALIGNMENT_TOP = new Prop("vTop", vTop);
-    private static final Prop VERTICAL_ALIGNMENT_CENTER = new Prop("vCenter", vCenter);
-    private static final Prop VERTICAL_ALIGNMENT_BOTTOM = new Prop("vBottom", vBottom);
-    private static final Prop VERTICAL_ALIGNMENT_JUSTIFY = new Prop("vJustify", vJustify);
-    private static final Prop BACKGROUND_COLOR = new Prop("color", bgColor);
-    private static final Prop INDENT = new Prop("indent", indent);
-    private static final Prop TEXT = new Prop("text", text);
-    private static final Prop BLANK = new Prop("blank", blank);
-    private static final Prop MERGED = new Prop("merged", merged);
-    private static final Prop NESTED = new Prop("nested", nested);
-    private static final Prop SPANNING = new Prop("spanning", spanning);
-    private static final Prop HTML_TAG_TH = new Prop("th", htmlTagTH);
-    private static final Prop HTML_TAG_TD = new Prop("td", htmlTagTD);
-    private static final Prop SS_DATATYPE_NUMERIC = new Prop("numeric", ssDTNumeric);
-    private static final Prop SS_DATATYPE_STRING = new Prop("string", ssDTString);
-    private static final Prop SS_DATATYPE_BOOLEAN = new Prop("bool", ssDTBoolean);
-    private static final Prop SS_DATATYPE_FORMULA = new Prop("formula", ssDTFormula);
+    private static final Prop<String> FONT_NAME = new Prop<>("fontName", fontName);
+    private static final Prop<Boolean> FONT_BOLD = new Prop<>("bold", fontBold);
+    private static final Prop<Boolean> FONT_ITALIC = new Prop<>("italic", fontItalic);
+    private static final Prop<Boolean> FONT_STRIKEOUT = new Prop<>("strikeout", fontStrikeout);
+    private static final Prop<Boolean> FONT_UNDERLINE = new Prop<>("underline", fontUnderline);
+    private static final Prop<Boolean> FONT_DOUBLE_UNDERLINE = new Prop<>("doubleUnderline", fontDoubleUnderline);
+    private static final Prop<Integer> FONT_SIZE = new Prop<>("fontSize", fontSize);
+    private static final Prop<Boolean> HORIZONTAL_ALIGNMENT_LEFT = new Prop<>("hLeft", hLeft);
+    private static final Prop<Boolean> HORIZONTAL_ALIGNMENT_CENTER = new Prop<>("hCenter", hCenter);
+    private static final Prop<Boolean> HORIZONTAL_ALIGNMENT_RIGHT = new Prop<>("hRight", hRight);
+    private static final Prop<Boolean> HORIZONTAL_ALIGNMENT_JUSTIFY = new Prop<>("hJustify", hJustify);
+    private static final Prop<Boolean> VERTICAL_ALIGNMENT_TOP = new Prop<>("vTop", vTop);
+    private static final Prop<Boolean> VERTICAL_ALIGNMENT_CENTER = new Prop<>("vCenter", vCenter);
+    private static final Prop<Boolean> VERTICAL_ALIGNMENT_BOTTOM = new Prop<>("vBottom", vBottom);
+    private static final Prop<Boolean> VERTICAL_ALIGNMENT_JUSTIFY = new Prop<>("vJustify", vJustify);
+    private static final Prop<String> BACKGROUND_COLOR = new Prop<>("color", bgColor);
+    private static final Prop<Integer> INDENT = new Prop<>("indent", indent);
+    private static final Prop<String> TEXT = new Prop<>("text", text);
+    private static final Prop<Boolean> BLANK = new Prop<>("blank", blank);
+    private static final Prop<Boolean> MERGED = new Prop<>("merged", merged);
+    private static final Prop<Boolean> NESTED = new Prop<>("nested", nested);
+    private static final Prop<Boolean> SPANNING = new Prop<>("spanning", spanning);
+    private static final Prop<Boolean> HTML_TAG_TH = new Prop<>("th", htmlTagTH);
+    private static final Prop<Boolean> HTML_TAG_TD = new Prop<>("td", htmlTagTD);
+    private static final Prop<Boolean> SS_DATATYPE_NUMERIC = new Prop<>("numeric", ssDTNumeric);
+    private static final Prop<Boolean> SS_DATATYPE_STRING = new Prop<>("string", ssDTString);
+    private static final Prop<Boolean> SS_DATATYPE_BOOLEAN = new Prop<>("bool", ssDTBoolean);
+    private static final Prop<Boolean> SS_DATATYPE_FORMULA = new Prop<>("formula", ssDTFormula);
 
-    private static final HashMap<String, Prop> props = new HashMap<>();
+    private static final HashMap<String, Prop<?>> props = new HashMap<>();
 
     static {
-        props.put(FONT_NAME.cannonic, FONT_NAME);
-        props.put(FONT_BOLD.cannonic, FONT_BOLD);
-        props.put(FONT_ITALIC.cannonic, FONT_ITALIC);
-        props.put(FONT_STRIKEOUT.cannonic, FONT_STRIKEOUT);
-        props.put(FONT_UNDERLINE.cannonic, FONT_UNDERLINE);
-        props.put(FONT_DOUBLE_UNDERLINE.cannonic, FONT_DOUBLE_UNDERLINE);
-        props.put(FONT_SIZE.cannonic, FONT_SIZE);
-        props.put(HORIZONTAL_ALIGNMENT_LEFT.cannonic, HORIZONTAL_ALIGNMENT_LEFT);
-        props.put(HORIZONTAL_ALIGNMENT_CENTER.cannonic, HORIZONTAL_ALIGNMENT_CENTER);
-        props.put(HORIZONTAL_ALIGNMENT_RIGHT.cannonic, HORIZONTAL_ALIGNMENT_RIGHT);
-        props.put(HORIZONTAL_ALIGNMENT_JUSTIFY.cannonic, HORIZONTAL_ALIGNMENT_JUSTIFY);
-        props.put(VERTICAL_ALIGNMENT_TOP.cannonic, VERTICAL_ALIGNMENT_TOP);
-        props.put(VERTICAL_ALIGNMENT_CENTER.cannonic, VERTICAL_ALIGNMENT_CENTER);
-        props.put(VERTICAL_ALIGNMENT_BOTTOM.cannonic, VERTICAL_ALIGNMENT_BOTTOM);
-        props.put(VERTICAL_ALIGNMENT_JUSTIFY.cannonic, VERTICAL_ALIGNMENT_JUSTIFY);
-        props.put(BACKGROUND_COLOR.cannonic, BACKGROUND_COLOR);
-        props.put(INDENT.cannonic, INDENT);
-        props.put(TEXT.cannonic, TEXT);
-        props.put(BLANK.cannonic, BLANK);
-        props.put(MERGED.cannonic, MERGED);
-        props.put(NESTED.cannonic, NESTED);
-        props.put(SPANNING.cannonic, SPANNING);
-        props.put(HTML_TAG_TH.cannonic, HTML_TAG_TH);
-        props.put(HTML_TAG_TD.cannonic, HTML_TAG_TD);
-        props.put(SS_DATATYPE_NUMERIC.cannonic, SS_DATATYPE_NUMERIC);
-        props.put(SS_DATATYPE_STRING.cannonic, SS_DATATYPE_STRING);
-        props.put(SS_DATATYPE_BOOLEAN.cannonic, SS_DATATYPE_BOOLEAN);
-        props.put(SS_DATATYPE_FORMULA.cannonic, SS_DATATYPE_FORMULA);
+        props.put(FONT_NAME.name, FONT_NAME);
+        props.put(FONT_BOLD.name, FONT_BOLD);
+        props.put(FONT_ITALIC.name, FONT_ITALIC);
+        props.put(FONT_STRIKEOUT.name, FONT_STRIKEOUT);
+        props.put(FONT_UNDERLINE.name, FONT_UNDERLINE);
+        props.put(FONT_DOUBLE_UNDERLINE.name, FONT_DOUBLE_UNDERLINE);
+        props.put(FONT_SIZE.name, FONT_SIZE);
+        props.put(HORIZONTAL_ALIGNMENT_LEFT.name, HORIZONTAL_ALIGNMENT_LEFT);
+        props.put(HORIZONTAL_ALIGNMENT_CENTER.name, HORIZONTAL_ALIGNMENT_CENTER);
+        props.put(HORIZONTAL_ALIGNMENT_RIGHT.name, HORIZONTAL_ALIGNMENT_RIGHT);
+        props.put(HORIZONTAL_ALIGNMENT_JUSTIFY.name, HORIZONTAL_ALIGNMENT_JUSTIFY);
+        props.put(VERTICAL_ALIGNMENT_TOP.name, VERTICAL_ALIGNMENT_TOP);
+        props.put(VERTICAL_ALIGNMENT_CENTER.name, VERTICAL_ALIGNMENT_CENTER);
+        props.put(VERTICAL_ALIGNMENT_BOTTOM.name, VERTICAL_ALIGNMENT_BOTTOM);
+        props.put(VERTICAL_ALIGNMENT_JUSTIFY.name, VERTICAL_ALIGNMENT_JUSTIFY);
+        props.put(BACKGROUND_COLOR.name, BACKGROUND_COLOR);
+        props.put(INDENT.name, INDENT);
+        props.put(TEXT.name, TEXT);
+        props.put(BLANK.name, BLANK);
+        props.put(MERGED.name, MERGED);
+        props.put(NESTED.name, NESTED);
+        props.put(SPANNING.name, SPANNING);
+        props.put(HTML_TAG_TH.name, HTML_TAG_TH);
+        props.put(HTML_TAG_TD.name, HTML_TAG_TD);
+        props.put(SS_DATATYPE_NUMERIC.name, SS_DATATYPE_NUMERIC);
+        props.put(SS_DATATYPE_STRING.name, SS_DATATYPE_STRING);
+        props.put(SS_DATATYPE_BOOLEAN.name, SS_DATATYPE_BOOLEAN);
+        props.put(SS_DATATYPE_FORMULA.name, SS_DATATYPE_FORMULA);
     }
 
     private interface Evaluator<T> {

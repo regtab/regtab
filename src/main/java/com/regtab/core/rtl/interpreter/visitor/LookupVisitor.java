@@ -2,7 +2,7 @@ package com.regtab.core.rtl.interpreter.visitor;
 
 import com.regtab.core.model.semantics.Condition;
 import com.regtab.core.model.semantics.Lookup;
-import com.regtab.core.model.semantics.RangeDesc;
+import com.regtab.core.model.semantics.Range;
 import com.regtab.core.rtl.parser.RTLBaseVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -40,7 +40,7 @@ final class LookupVisitor extends RTLBaseVisitor<Lookup> {
             if (rangeCtx != null) {
                 RowRangeContext rowRangeCtx = rangeCtx.rowRange();
                 if (rowRangeCtx != null) {
-                    final RangeDesc rowRangeDesc = new RangeDesc(RangeDesc.Type.ROW);
+                    final Range.Desc rowRangeDesc = new Range.Desc(true);
                     RangeBodyContext rbCtx = rowRangeCtx.rangeBody();
                     apply(rowRangeDesc, rbCtx);
                     lookup.setRowRangeDesc(rowRangeDesc);
@@ -48,7 +48,7 @@ final class LookupVisitor extends RTLBaseVisitor<Lookup> {
                 ColRangeContext colRangeCtx = rangeCtx.colRange();
                 if (colRangeCtx != null) {
                     RangeBodyContext rbCtx = colRangeCtx.rangeBody();
-                    final RangeDesc colRangeDesc = new RangeDesc(RangeDesc.Type.COL);
+                    final Range.Desc colRangeDesc = new Range.Desc(false);
                     apply(colRangeDesc, rbCtx);
                     lookup.setColRangeDesc(colRangeDesc);
                 }
@@ -82,7 +82,7 @@ final class LookupVisitor extends RTLBaseVisitor<Lookup> {
         return lookup;
     }
 
-    private void apply(RangeDesc rangeDesc, RangeBodyContext ctx) {
+    private void apply(final Range.Desc rangeDesc, RangeBodyContext ctx) {
         int start;
         int end;
         boolean useRelativeStart = false;

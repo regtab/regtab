@@ -50,7 +50,7 @@ public class DemoApp {
         final File xlFile2 = new File("../../data/rtl/example2.xlsx");
 
         if (true) {
-            StringBuffer sb = new StringBuffer();
+            final StringBuffer sb = new StringBuffer();
 
             System.out.printf("TTL = %s: SHEET = %d%n", "0", 0);
             sb.append("[[skip][val: schema='cl']+]");

@@ -10,10 +10,6 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public final class Lookup {
-//    @Getter
-//    @Setter(AccessLevel.PACKAGE)
-//    private Action action;
-
     private Element caller;
 
     @Getter
@@ -26,12 +22,12 @@ public final class Lookup {
     @Getter
     @Setter
     private
-    RangeDesc rowRangeDesc;
+    Range.Desc rowRangeDesc;
 
     @Getter
     @Setter
     private
-    RangeDesc colRangeDesc;
+    Range.Desc colRangeDesc;
 
     @Getter
     @Setter
@@ -76,16 +72,6 @@ public final class Lookup {
         if (elements == null) return null;
         return elements.size() > 0 ? elements.getFirst() : null;
     }
-
-//    public Element findElement(Element caller) {
-//        return findElement(null, caller);
-//    }
-
-//    public Element findElement(Element.Type type, Element caller) {
-//        List<Element> elements = findElements(type, caller);
-//        if (elements == null) return null;
-//        return elements.size() > 0 ? elements.get(0) : null;
-//    }
 
     List<Element> findAll(Element.Type type, Element caller) {
         return findElements(type, caller);
