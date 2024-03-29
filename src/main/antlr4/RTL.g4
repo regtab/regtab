@@ -172,7 +172,7 @@ binaryOp
 
 // Функция
 func : ID LPAREN (arg (COMMA arg)*)? RPAREN ;
-arg : STRING | INT | prop ; // TODO реализовать поддержку аргументов func
+arg : STRING | INT ;
 
 // Свойство ячейки
 prop : ID ;

@@ -10,7 +10,7 @@ import java.util.List;
 public final class Func<T> {
     private final String name;
 
-    private final List<Object> args = new ArrayList<>();
+    private final List<Object> args = new ArrayList<>(2);
 
     public void addArg(@NonNull Object arg) {
         args.add(arg);
@@ -34,41 +34,85 @@ public final class Func<T> {
     }
 
     private static final Evaluator<String> substr = (cell, args) -> {
-        int from = (Integer) args[0];
-        int to = (Integer) args[1];
-        String text = cell.getText();
-        return text.substring(from, to);
+        if (args.length < 2)
+            throw new IllegalStateException("No required arguments");
+
+        if (args[0] == null)
+            throw new IllegalStateException("First argument is null");
+
+        final int start;
+        if (args[0] instanceof Integer) {
+            start = (Integer) args[0];
+        }
+        else if (args[0] instanceof Expr expr) {
+            final Object result = expr.eval(cell);
+            if (!(result instanceof Integer)) {
+                throw new IllegalStateException("First argument is not integer");
+            }
+            start = (Integer) result;
+        } else {
+            throw new IllegalStateException("First argument is not integer");
+        }
+
+        if (args[1] == null)
+            throw new IllegalStateException("Second argument is null");
+
+        final int end;
+        if (args[1] instanceof Integer) {
+            end = (Integer) args[1];
+        }
+        else if (args[1] instanceof Expr expr) {
+            final Object result = expr.eval(cell);
+            if (!(result instanceof Integer)) {
+                throw new IllegalStateException("Second argument is not integer");
+            }
+            end = (Integer) result;
+        } else {
+            throw new IllegalStateException("Second argument is not integer");
+        }
+
+        final String text = cell.getText();
+
+        if (text == null)
+            return null; // Impossible
+
+        return text.substring(start, end);
     };
 
     private static final Evaluator<String> token = (cell, args) -> {
         String separator = (String) args[0];
         int index = (Integer) args[1];
-        String text = cell.getText();
+        final String text = cell.getText();
         String[] tokens = text.split(separator);
+
         return tokens[index];
     };
 
     private static final Evaluator<String> replace = (cell, args) -> {
         String regex = (String) args[0];
         String replacement = (String) args[1];
-        String text = cell.getText();
+        final String text = cell.getText();
+
         return text.replaceFirst(regex, replacement);
     };
 
     private static final Evaluator<String> replaceAll = (cell, args) -> {
         String regex = (String) args[0];
         String replacement = (String) args[1];
-        String text = cell.getText();
+        final String text = cell.getText();
+
         return text.replaceAll(regex, replacement);
     };
 
     private static final Evaluator<String> upperCase = (cell, args) -> {
-        String text = cell.getText();
+        final String text = cell.getText();
+
         return text.toUpperCase();
     };
 
     private static final Evaluator<String> lowerCase = (cell, args) -> {
-        String text = cell.getText();
+        final String text = cell.getText();
+
         return text.toLowerCase();
     };
 

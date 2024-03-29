@@ -36,8 +36,8 @@ final class ExprVisitor extends RTLBaseVisitor<Expr> {
 
     @Override
     public Expr visitFunc(FuncContext ctx) {
-        String id = ctx.ID().getText();
-        final Func<?> func = Func.get(id);
+        final String funcId = ctx.ID().getText();
+        final Func<?> func = Func.get(funcId);
         if (func == null)
             return null; // TODO log (такой функции нет)
 
@@ -51,14 +51,7 @@ final class ExprVisitor extends RTLBaseVisitor<Expr> {
                 } else if (argCtx.STRING() != null) {
                     final String str = argCtx.STRING().getText();
                     func.addArg(str);
-                } else if (argCtx.prop() != null) {
-                    id = argCtx.prop().ID().getText();
-                    final Prop<?> prop = Prop.get(id);
-                    if (prop == null)
-                        return null; // TODO log (такого свойства нет)
-                    func.addArg(prop);
                 }
-                // TODO реализовать поддержку аргументов func
             }
         }
 

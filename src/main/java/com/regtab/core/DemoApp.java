@@ -454,6 +454,11 @@ public class DemoApp {
             sb.append("[[V][V : SUFFIX=LEFT][V: RECORD=LEFT]]+");
             extract(xlFile2, 17, sb.toString());
             sb.setLength(0);
+
+            System.out.printf("TTL = %s: SHEET = %d%n", "II 18", 18);
+            sb.append("[[V=@token(' ', 1)][V : RECORD=LEFT]]+");
+            extract(xlFile2, 18, sb.toString());
+            sb.setLength(0);
         }
     }
 }
