@@ -18,7 +18,7 @@ public class DemoApp {
         final XlReader reader = new XlReader(xlFile);
         reader.setUseCellValue(false);
 
-        final ITable table = reader.readTable(sheetIdx);
+        final ITable table = reader.readTable(sheetIdx, false);
         final Pattern pattern = Pattern.compile(ttl);
         if (pattern == null) {
             System.err.println("Не удалось разобрать паттерн");
@@ -465,6 +465,14 @@ public class DemoApp {
             sb.append("[[V #STUB : SCHEMA=COL]{2}[V : RECORD=((*COL:#HEAD);(*ROW:#STUB))]+]+");
             extract(xlFile2, 19, sb.toString());
             sb.setLength(0);
+
+//            System.out.printf("TTL = %s: SHEET = %d%n", "II 20", 20);
+//            sb.append("{SCHEMA=CELL");
+//            sb.append("[[(ATTR '=' VAL: RECORD=(*DOWN:R+1..+2))]+]");
+//            sb.append("[[(ATTR '=' VAL)]+]{2}");
+//            sb.append("}+");
+//            extract(xlFile2, 20, sb.toString());
+//            sb.setLength(0);
         }
     }
 }
