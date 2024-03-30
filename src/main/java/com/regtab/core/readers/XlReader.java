@@ -40,7 +40,11 @@ public final class XlReader {
 
     @Getter
     @Setter
-    private boolean useCellValue;
+    private boolean formatMode;
+
+    @Getter
+    @Setter
+    private boolean multilineMode;
 
     public XlReader(@NonNull File xlFile) throws IOException {
         FileInputStream fin = new FileInputStream(xlFile);
@@ -108,12 +112,12 @@ public final class XlReader {
         }
     }
 
-    public ITable readTable(int sheetIndex, boolean multiline) {
+    public ITable readTable(int sheetIndex) {
         final Sheet sheet = getSheet(sheetIndex);
         readMergedCells(sheet);
         final int[] range = getCellRange(sheet);
 
-        return readTable(sheet, range, multiline);
+        return readTable(sheet, range);
     }
 
     private HashMap<Integer, Integer> countLines(Sheet sheet, int[] range) {
@@ -156,72 +160,7 @@ public final class XlReader {
         return counts;
     }
 
-//    private ITable readTable(Sheet sheet, int[] range) {
-//        final int rt = range[0];
-//        final int rb = range[1];
-//        final int cl = range[2];
-//        final int cr = range[3];
-//
-//        final int numOfRows = rb - rt + 1;
-//        final int numOfCols = cr - cl + 1;
-//
-//        final ITable table = new ITable(numOfRows, numOfCols);
-//
-//        int rowCount = 0;
-//
-//        for (int i = rt; i <= rb; i++) {
-//            final Row xlRow = sheet.getRow(i);
-//
-//            int colCount = 0;
-//            for (int j = cl; j <= cr; j++) {
-//                String text = "";
-//                boolean blank = true;
-//                int indent = 0;
-//
-//                CellStyle xlCellStyle;
-//                Style cellStyle = null;
-//                CellType xlCellType;
-//                SSDatatype datatype = null;
-//
-//                if (xlRow != null) {
-//                    Cell xlCell = xlRow.getCell(j);
-//
-//                    if (xlCell != null) {
-//                        final int r = xlCell.getRowIndex();
-//                        final int c = xlCell.getColumnIndex();
-//                        final Cell xlMergedCell = mergedCells.get(new CellAddress(r, c));
-//                        if (xlMergedCell != null)
-//                            xlCell = xlMergedCell;
-//
-//                        text = getText(xlCell);
-//                        if (text == null || text.isBlank())
-//                            text = "";
-//                        else {
-//                            blank = false;
-//                            indent = getIndent(text);
-//                        }
-//                        xlCellStyle = xlCell.getCellStyle();
-//                        cellStyle = createCellStyle(xlCellStyle);
-//                        xlCellType = xlCell.getCellType();
-//                        datatype = getDataType(xlCellType);
-//                    }
-//                }
-//
-//                final ICell cell = table.createCell(rowCount, colCount, text);
-//                cell.setBlank(blank);
-//                cell.setIndent(indent);
-//                cell.setStyle(cellStyle);
-//                cell.setDatatype(datatype);
-//
-//                colCount++;
-//            }
-//            rowCount++;
-//        }
-//
-//        return table;
-//    }
-
-    private ITable readTable(Sheet sheet, int[] range, boolean multiline) {
+    private ITable readTable(Sheet sheet, int[] range) {
         final int rt = range[0];
         final int rb = range[1];
         final int cl = range[2];
@@ -230,7 +169,7 @@ public final class XlReader {
         final HashMap<Integer, Integer> counts;
         final int numOfRows;
 
-        if (multiline) {
+        if (multilineMode) {
             counts = countLines(sheet, range);
             numOfRows = counts.values().stream().reduce(0, Integer::sum);
         } else {
@@ -249,7 +188,7 @@ public final class XlReader {
             final Row xlRow = sheet.getRow(i);
 
             final int countOfLines;
-            if (multiline)
+            if (multilineMode)
                 countOfLines = counts.get(rowIndex);
             else
                 countOfLines = 1;
@@ -275,7 +214,7 @@ public final class XlReader {
                         if (text == null || text.isBlank())
                             text = "";
                         else {
-                            if (multiline)
+                            if (multilineMode)
                                 lines = text.split("\\R");
                             else
                                 lines = null;
@@ -288,7 +227,7 @@ public final class XlReader {
                 int r = lineIndex;
                 int c = colIndex;
 
-                if (multiline) {
+                if (multilineMode) {
                     for (int k = 0; k < countOfLines; k++) {
                         r = lineIndex + k;
                         if (lines == null) {
@@ -516,7 +455,7 @@ public final class XlReader {
     }
 
     private String getText(Cell xlCell) {
-        return useCellValue ? getCellValue(xlCell) : getFormatCellValue(xlCell);
+        return formatMode ? getFormatCellValue(xlCell) : getCellValue(xlCell);
     }
 
     private String getFormatCellValue(Cell xlCell) {

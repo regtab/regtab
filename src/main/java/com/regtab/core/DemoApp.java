@@ -16,9 +16,10 @@ public class DemoApp {
 
     private static void extract(File xlFile, int sheetIdx, String ttl) throws IOException {
         final XlReader reader = new XlReader(xlFile);
-        reader.setUseCellValue(false);
+        reader.setFormatMode(true);
+        reader.setMultilineMode(true);
 
-        final ITable table = reader.readTable(sheetIdx, false);
+        final ITable table = reader.readTable(sheetIdx);
         final Pattern pattern = Pattern.compile(ttl);
         if (pattern == null) {
             System.err.println("Не удалось разобрать паттерн");
@@ -466,13 +467,13 @@ public class DemoApp {
             extract(xlFile2, 19, sb.toString());
             sb.setLength(0);
 
-//            System.out.printf("TTL = %s: SHEET = %d%n", "II 20", 20);
-//            sb.append("{SCHEMA=CELL");
-//            sb.append("[[(ATTR '=' VAL: RECORD=(*DOWN:R+1..+2))]+]");
-//            sb.append("[[(ATTR '=' VAL)]+]{2}");
-//            sb.append("}+");
-//            extract(xlFile2, 20, sb.toString());
-//            sb.setLength(0);
+            System.out.printf("TTL = %s: SHEET = %d%n", "II 20", 20);
+            sb.append("{SCHEMA=CELL");
+            sb.append("[[(ATTR '=' VAL: RECORD=(*DOWN:R+1..+2))]+]");
+            sb.append("[[(ATTR '=' VAL)]+]{2}");
+            sb.append("}+");
+            extract(xlFile2, 20, sb.toString());
+            sb.setLength(0);
         }
     }
 }
