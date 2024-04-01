@@ -4,6 +4,7 @@ import com.regtab.core.model.recordset.Recordset;
 import com.regtab.core.model.semantics.Action;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -108,4 +109,5 @@ public final class ITable {
 
         return recordset;
     }
+
 }

@@ -1,16 +1,16 @@
 package com.regtab.core.rtl.interpreter.pattern;
 
-import com.regtab.core.model.semantics.Action;
-import com.regtab.core.model.semantics.Condition;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import com.regtab.core.model.semantics.Action;
+import com.regtab.core.model.semantics.Condition;
+import com.regtab.core.rtl.parser.RTLParser.*;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.regtab.core.rtl.parser.RTLParser.*;
 
 public final class SubrowPattern extends RepeatablePattern {
     public SubrowPattern(@NonNull SubrowContext context) {
@@ -35,9 +35,9 @@ public final class SubrowPattern extends RepeatablePattern {
     @Getter
     private final List<CellPattern> cellPatterns = new ArrayList<>();
 
-    public void add(@NonNull CellPattern tmpl) {
-        tmpl.setSubrowPattern(this);
-        cellPatterns.add(tmpl);
+    public void add(@NonNull CellPattern pattern) {
+        pattern.setSubrowPattern(this);
+        cellPatterns.add(pattern);
     }
 
     public void add(@NonNull Action action) {

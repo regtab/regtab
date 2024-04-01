@@ -6,6 +6,7 @@ import com.regtab.core.model.semantics.Prop;
 
 import java.util.List;
 
+import com.regtab.core.rtl.RTLSyntaxException;
 import com.regtab.core.rtl.parser.RTLBaseVisitor;
 import com.regtab.core.rtl.parser.RTLParser.*;
 
@@ -23,8 +24,10 @@ final class ExprVisitor extends RTLBaseVisitor<Expr> {
         final String id = ctx.getText();
         final Prop<?> prop = Prop.get(id);
 
-        if (prop == null)
-            return null; // TODO log (такого свойства нет)
+        if (prop == null) {
+            final String msg = String.format("undefined property \"%s\"", id);
+            throw new RTLSyntaxException(msg, ctx);
+        }
 
         return Expr.builder().prop(prop).build();
     }
@@ -36,10 +39,12 @@ final class ExprVisitor extends RTLBaseVisitor<Expr> {
 
     @Override
     public Expr visitFunc(FuncContext ctx) {
-        final String funcId = ctx.ID().getText();
-        final Func<?> func = Func.get(funcId);
-        if (func == null)
-            return null; // TODO log (такой функции нет)
+        final String id = ctx.ID().getText();
+        final Func<?> func = Func.get(id);
+        if (func == null) {
+            final String msg = String.format("undefined function \"%s\"", id);
+            throw new RTLSyntaxException(msg, ctx);
+        }
 
         final List<ArgContext> argCtxList = ctx.arg();
         if (argCtxList != null) {
@@ -68,7 +73,7 @@ final class ExprVisitor extends RTLBaseVisitor<Expr> {
         final Expr boolExpr = visit(ctx.expr());
 
         if (boolExpr == null)
-            return null; // TODO log
+            return null; // Impossible
 
         return Expr.builder().notExpr(boolExpr).build();
     }
@@ -84,7 +89,7 @@ final class ExprVisitor extends RTLBaseVisitor<Expr> {
         final Expr right = this.visit(ctx.rightExpr);
 
         if (left == null || right == null)
-            return null; // TODO log
+            return null; // Impossible
 
         if (ctx.op.EQ() != null)
             return Expr.builder().compOperator(Expr.CompOperator.EQUAL).left(left).right(right).build();
@@ -119,7 +124,7 @@ final class ExprVisitor extends RTLBaseVisitor<Expr> {
         final Expr right = this.visit(ctx.rightExpr);
 
         if (left == null || right == null)
-            return null; // TODO log
+            return null; // Impossible
 
         if (ctx.op.AND() != null)
             return Expr.builder().binaryOperator(Expr.BinaryOperator.AND).left(left).right(right).build();
@@ -136,7 +141,7 @@ final class ExprVisitor extends RTLBaseVisitor<Expr> {
         final Expr right = this.visit(ctx.rightExpr);
 
         if (left == null || right == null)
-            return null; // TODO log
+            return null; // Impossible
 
         if (ctx.op.PLUS() != null)
             return Expr.builder().arithmOperator(Expr.ArithmOperator.SUM).left(left).right(right).build();
@@ -159,7 +164,7 @@ final class ExprVisitor extends RTLBaseVisitor<Expr> {
         final Expr right = this.visit(ctx.rightExpr);
 
         if (left == null || right == null)
-            return null; // TODO log
+            return null; // Impossible
 
         if (ctx.op.PLUS() != null)
             return Expr.builder().strOperator(Expr.StrOperator.CONCAT).left(left).right(right).build();
@@ -181,6 +186,8 @@ final class ExprVisitor extends RTLBaseVisitor<Expr> {
     @Override
     public Expr visitStrLiteral(StrLiteralContext ctx) {
         final String str = ctx.getText();
+        if (str == null)
+            return null; // Impossible
 
         return Expr.builder().string(str).build();
     }
@@ -188,8 +195,10 @@ final class ExprVisitor extends RTLBaseVisitor<Expr> {
     @Override
     public Expr visitHexLiteral(HexLiteralContext ctx) {
         final String hex = ctx.getText().toLowerCase();
-        if (!hex.matches("[a-f0-9]{6}"))
-            return null; // TODO log
+        if (!hex.matches("[a-f0-9]{6}")) {
+            final String msg = String.format("incorrect hexadecimal \"%s\"", hex);
+            throw new RTLSyntaxException(msg, ctx);
+        }
 
         return Expr.builder().hex(hex).build();
     }

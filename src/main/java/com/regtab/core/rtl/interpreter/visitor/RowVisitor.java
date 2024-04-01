@@ -2,17 +2,17 @@ package com.regtab.core.rtl.interpreter.visitor;
 
 import com.regtab.core.model.semantics.Action;
 import com.regtab.core.model.semantics.Condition;
+
+import com.regtab.core.rtl.RTLSyntaxException;
 import com.regtab.core.rtl.interpreter.pattern.RowPattern;
 import com.regtab.core.rtl.interpreter.pattern.SubrowPattern;
 import com.regtab.core.rtl.parser.RTLBaseVisitor;
-import lombok.extern.java.Log;
 
 import java.util.HashMap;
 import java.util.List;
 
 import com.regtab.core.rtl.parser.RTLParser.*;
 
-@Log
 final class RowVisitor extends RTLBaseVisitor<RowPattern> {
     private static final SubrowVisitor subrowVisitor = new SubrowVisitor();
     private static final CondVisitor condVisitor = new CondVisitor();
@@ -31,9 +31,8 @@ final class RowVisitor extends RTLBaseVisitor<RowPattern> {
             String label = copyContext.TAG().getText();
             subrowsContext = store.get(label);
             if (subrowsContext == null) {
-                final String message = String.format("No a such label [%s]", label);
-                log.warning(message);
-                return null;
+                final String msg = String.format("undefined label \"%s\"", label);
+                throw new RTLSyntaxException(msg, ctx);
             }
         } else {
             subrowsContext = ctx.subrows();
@@ -76,7 +75,7 @@ final class RowVisitor extends RTLBaseVisitor<RowPattern> {
                 for (ActionContext actionCtx : actionCtxList) {
                     Action action = actionVisitor.visit(actionCtx);
                     if (action == null)
-                        return null; // TODO test
+                        return null; // Impossible
                     rowPattern.add(action);
                 }
             }

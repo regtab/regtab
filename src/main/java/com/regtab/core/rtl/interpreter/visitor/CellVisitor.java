@@ -2,19 +2,18 @@ package com.regtab.core.rtl.interpreter.visitor;
 
 import com.regtab.core.model.semantics.Action;
 import com.regtab.core.model.semantics.Condition;
+
+import com.regtab.core.rtl.RTLSyntaxException;
 import com.regtab.core.rtl.interpreter.pattern.CellPattern;
 import com.regtab.core.rtl.interpreter.pattern.StructPattern;
 import com.regtab.core.rtl.interpreter.pattern.ChoicePattern;
 import com.regtab.core.rtl.interpreter.pattern.ElementPattern;
 import com.regtab.core.rtl.parser.RTLBaseVisitor;
-import lombok.extern.java.Log;
+import com.regtab.core.rtl.parser.RTLParser.*;
 
 import java.util.HashMap;
 import java.util.List;
 
-import com.regtab.core.rtl.parser.RTLParser.*;
-
-@Log
 final class CellVisitor extends RTLBaseVisitor<CellPattern> {
     private static final ElementVisitor elementVisitor = new ElementVisitor();
     private static final StructVisitor structVisitor = new StructVisitor();
@@ -35,10 +34,8 @@ final class CellVisitor extends RTLBaseVisitor<CellPattern> {
             String label = copyContext.TAG().getText();
             elementsContext = store.get(label);
             if (elementsContext == null) {
-                final String message = String.format("No a such label [%s]", label);
-                //throw new PatternException(message); //TODO подумать, как лучше сделать?
-                log.warning(message);
-                return null;
+                final String msg = String.format("undefined label \"%s\"", label);
+                throw new RTLSyntaxException(msg, ctx);
             }
         } else {
             elementsContext = ctx.elements();
@@ -50,10 +47,9 @@ final class CellVisitor extends RTLBaseVisitor<CellPattern> {
             store.put(label, elementsContext);
         }
 
-        cellPattern.elementsContext = elementsContext;
-        boolean result = apply(cellPattern, elementsContext);
+        final boolean result = apply(cellPattern, elementsContext);
         if (!result)
-            return null; // TODO test
+            return null; // Impossible
 
         final CondContext condContext = elementsContext.cond();
         if (condContext != null) {
@@ -70,30 +66,30 @@ final class CellVisitor extends RTLBaseVisitor<CellPattern> {
 
         cellPattern.setQuantifier(quantifier);
 
-//        final ActionsContext actionsCtx = elementsContext.actions();
-//        if (actionsCtx != null) {
-//            List<ActionContext> actionCtxList = actionsCtx.action();
-//            if (actionCtxList != null) {
-//                for (ActionContext actionCtx : actionCtxList) {
-//                    Action action = actionVisitor.visit(actionCtx);
-//                    if (action == null)
-//                        return null; // TODO test
-//                    cellPattern.add(action);
-//                }
-//            }
-//        }
+        final ActionsContext actionsCtx = elementsContext.actions();
+        if (actionsCtx != null) {
+            List<ActionContext> actionCtxList = actionsCtx.action();
+            if (actionCtxList != null) {
+                for (ActionContext actionCtx : actionCtxList) {
+                    Action action = actionVisitor.visit(actionCtx);
+                    if (action == null)
+                        return null; // Impossible
+                    cellPattern.add(action);
+                }
+            }
+        }
 
         return cellPattern;
     }
 
-    private boolean apply(CellPattern tmpl, ElementsContext ctx) {
+    private boolean apply(CellPattern pattern, ElementsContext ctx) {
         final ElementContext elementContext = ctx.element();
         if (elementContext != null) {
             final ElementPattern elementPattern = elementVisitor.visit(elementContext);
             if (elementPattern == null)
-                return false; // TODO log
+                return false; // Impossible
 
-            tmpl.setElementsPattern(elementPattern);
+            pattern.setElementsPattern(elementPattern);
             return true;
         }
 
@@ -101,9 +97,9 @@ final class CellVisitor extends RTLBaseVisitor<CellPattern> {
         if (structuredContext != null) {
             final StructPattern structPattern = structVisitor.visit(structuredContext);
             if (structPattern == null)
-                return false; // TODO log
+                return false; // Impossible
 
-            tmpl.setElementsPattern(structPattern);
+            pattern.setElementsPattern(structPattern);
             return true;
         }
 
@@ -111,9 +107,9 @@ final class CellVisitor extends RTLBaseVisitor<CellPattern> {
         if (choiceContext != null) {
             final ChoicePattern choicePattern = choiceVisitor.visit(choiceContext);
             if (choicePattern == null)
-                return false; // TODO log
+                return false; // Impossible
 
-            tmpl.setElementsPattern(choicePattern);
+            pattern.setElementsPattern(choicePattern);
         }
 
         return true;

@@ -211,9 +211,7 @@ public final class XlReader {
                             xlCell = xlMergedCell;
 
                         text = getText(xlCell);
-                        if (text == null || text.isBlank())
-                            text = "";
-                        else {
+                        if (text != null && !text.isBlank()) {
                             if (multilineMode)
                                 lines = text.split("\\R");
                             else
@@ -470,6 +468,5 @@ public final class XlReader {
 
         return value == null ? "" : value;
     }
-
 
 }

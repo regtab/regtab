@@ -4,22 +4,23 @@ import com.regtab.core.model.semantics.Action;
 import com.regtab.core.model.semantics.Element;
 import com.regtab.core.model.semantics.Expr;
 import com.regtab.core.rtl.parser.RTLBaseVisitor;
-import org.antlr.v4.runtime.tree.TerminalNode;
 import com.regtab.core.rtl.interpreter.pattern.ElementPattern;
+
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.List;
 
 import com.regtab.core.rtl.parser.RTLParser.*;
 
 final class ElementVisitor extends RTLBaseVisitor<ElementPattern> {
-    private static final ExprVisitor exprVisitor = new ExprVisitor();
-    private static final ActionVisitor actionVisitor = new ActionVisitor();
+    private final ExprVisitor exprVisitor = new ExprVisitor();
+    private final ActionVisitor actionVisitor = new ActionVisitor();
 
     @Override
     public ElementPattern visitElement(ElementContext ctx) {
         final ElementTypeContext etCtx = ctx.elementType();
 
-        Element.Type elementType;
+        final Element.Type elementType;
         if (etCtx.VALUE() != null)
             elementType = Element.Type.VALUE;
         else if (etCtx.ATTRIBUTE() != null)
@@ -36,13 +37,13 @@ final class ElementVisitor extends RTLBaseVisitor<ElementPattern> {
         if (exprContext != null) {
             final Expr expr = exprVisitor.visit(exprContext);
             if (expr == null)
-                return null; // TODO test
+                return null; // Impossible
             elementPattern.setExpr(expr);
         }
 
         final TagsContext tagsCtx = ctx.tags();
         if (tagsCtx != null) {
-            List<TerminalNode> tns = tagsCtx.TAG();
+            final List<TerminalNode> tns = tagsCtx.TAG();
             for (TerminalNode tn : tns) {
                 String tag = tn.getText();
                 elementPattern.add(tag);
@@ -51,12 +52,12 @@ final class ElementVisitor extends RTLBaseVisitor<ElementPattern> {
 
         final ActionsContext actionsCtx = ctx.actions();
         if (actionsCtx != null) {
-            List<ActionContext> actionCtxList = actionsCtx.action();
+            final List<ActionContext> actionCtxList = actionsCtx.action();
             if (actionCtxList != null) {
                 for (ActionContext actionCtx : actionCtxList) {
-                    Action action = actionVisitor.visit(actionCtx);
+                    final Action action = actionVisitor.visit(actionCtx);
                     if (action == null)
-                        return null; // TODO test
+                        return null; // Impossible
                     elementPattern.add(action);
                 }
             }

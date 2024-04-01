@@ -1,7 +1,9 @@
 package com.regtab.core.rtl.interpreter.visitor;
 
-import com.regtab.core.rtl.interpreter.pattern.TablePattern;
 import lombok.NonNull;
+
+import com.regtab.core.rtl.interpreter.pattern.TablePattern;
+
 import org.antlr.v4.runtime.tree.ParseTree;
 
 public final class Interpreter {

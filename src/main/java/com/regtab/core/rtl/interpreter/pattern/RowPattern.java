@@ -34,9 +34,9 @@ public final class RowPattern extends RepeatablePattern {
     @Getter
     private final List<SubrowPattern> subrowPatterns = new ArrayList<>(1);
 
-    public void add(@NonNull SubrowPattern tmpl) {
-        tmpl.setRowPattern(this);
-        subrowPatterns.add(tmpl);
+    public void add(@NonNull SubrowPattern pattern) {
+        pattern.setRowPattern(this);
+        subrowPatterns.add(pattern);
     }
 
     public void add(@NonNull Action action) {

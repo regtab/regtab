@@ -2,6 +2,7 @@ package com.regtab.core.rtl.interpreter.visitor;
 
 import com.regtab.core.model.semantics.Action;
 import com.regtab.core.model.semantics.Condition;
+import com.regtab.core.rtl.Configurator;
 import com.regtab.core.rtl.interpreter.pattern.CellPattern;
 import com.regtab.core.rtl.interpreter.pattern.SubrowPattern;
 
@@ -24,7 +25,8 @@ final class SubrowVisitor extends RTLBaseVisitor<SubrowPattern> {
         if (cellContexts != null && !cellContexts.isEmpty()) {
             boolean result = apply(cellContexts, subrowPattern);
             if (!result)
-                return null; // TODO test
+                return null; // Impossible
+
             return subrowPattern;
         }
 
@@ -32,48 +34,49 @@ final class SubrowVisitor extends RTLBaseVisitor<SubrowPattern> {
         if (cellsContext != null) {
             boolean result = apply(cellsContext, subrowPattern);
             if (!result)
-                return null; // TODO test
+                return null; // Impossible
+
             return subrowPattern;
         }
 
         return null; // Impossible
     }
 
-    private boolean apply(List<CellContext> cellContexts, SubrowPattern tmpl) {
+    private boolean apply(List<CellContext> cellContexts, SubrowPattern pattern) {
         for (CellContext ctx : cellContexts) {
             CellPattern cellPattern = cellVisitor.visit(ctx);
             if (cellPattern == null)
-                return false; // TODO log
+                return false; // Impossible
 
-            tmpl.add(cellPattern);
+            pattern.add(cellPattern);
         }
 
         final Quantifier quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
-        tmpl.setQuantifier(quantifier);
+        pattern.setQuantifier(quantifier);
 
         return true;
     }
 
-    private boolean apply(CellsContext cellsContext, SubrowPattern tmpl) {
-        tmpl.cellsContext = cellsContext;
+    private boolean apply(CellsContext cellsContext, SubrowPattern pattern) {
+        pattern.cellsContext = cellsContext;
 
         // Instruction order matter
         final List<CellContext> cellContexts = cellsContext.cell();
         for (CellContext ctx : cellContexts) {
             CellPattern cellPattern = cellVisitor.visit(ctx);
             if (cellPattern == null)
-                return false; // TODO log
+                return false; // Impossible
 
-            tmpl.add(cellPattern);
+            pattern.add(cellPattern);
         }
 
         final CondContext condContext = cellsContext.cond();
         if (condContext != null) {
             final Condition condition = condVisitor.visit(condContext);
             if (condition == null)
-                return false; // TODO log
+                return false; // Impossible
 
-            tmpl.setCondition(condition);
+            pattern.setCondition(condition);
         }
 
         final Quantifier quantifier;
@@ -83,9 +86,9 @@ final class SubrowVisitor extends RTLBaseVisitor<SubrowPattern> {
         } else {
             quantifier = quantifierVisitor.visit(quantifierContext);
             if (quantifier == null)
-                return false; // TODO log
+                return false; // Impossible
         }
-        tmpl.setQuantifier(quantifier);
+        pattern.setQuantifier(quantifier);
 
         final ActionsContext actionsCtx = cellsContext.actions();
         if (actionsCtx != null) {
@@ -94,8 +97,8 @@ final class SubrowVisitor extends RTLBaseVisitor<SubrowPattern> {
                 for (ActionContext actionCtx : actionCtxList) {
                     Action action = actionVisitor.visit(actionCtx);
                     if (action == null)
-                        return false; // TODO test
-                    tmpl.add(action);
+                        return false; // Impossible
+                    pattern.add(action);
                 }
             }
         }

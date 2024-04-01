@@ -4,14 +4,13 @@ import com.regtab.core.rtl.interpreter.pattern.ChoicePattern;
 import com.regtab.core.rtl.interpreter.pattern.ElementPattern;
 import com.regtab.core.rtl.interpreter.pattern.ElementsPattern;
 import com.regtab.core.rtl.interpreter.pattern.StructPattern;
-
 import com.regtab.core.rtl.parser.RTLBaseVisitor;
 import com.regtab.core.rtl.parser.RTLParser.*;
 
 final class ChoiceVisitor extends RTLBaseVisitor<ChoicePattern> {
-    private static final ElementVisitor elementVisitor = new ElementVisitor();
-    private static final StructVisitor structVisitor = new StructVisitor();
-    private static final CondVisitor condVisitor = new CondVisitor();
+    private final ElementVisitor elementVisitor = new ElementVisitor();
+    private final StructVisitor structVisitor = new StructVisitor();
+    private final CondVisitor condVisitor = new CondVisitor();
 
     @Override
     public ChoicePattern visitChoice(ChoiceContext ctx) {

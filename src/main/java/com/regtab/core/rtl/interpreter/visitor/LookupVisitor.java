@@ -15,39 +15,48 @@ final class LookupVisitor extends RTLBaseVisitor<Lookup> {
 
     @Override
     public Lookup visitLookup(LookupContext ctx) {
-        DirectionContext directionCtx = ctx.direction();
-        Lookup.Direction direction = null;
+        final DirectionContext directionCtx = ctx.direction();
+        final Lookup.Direction direction;
 
-        if (directionCtx.LEFT() != null) direction = Lookup.Direction.LEFT;
-        if (directionCtx.RIGHT() != null) direction = Lookup.Direction.RIGHT;
-        if (directionCtx.UP() != null) direction = Lookup.Direction.UP;
-        if (directionCtx.DOWN() != null) direction = Lookup.Direction.DOWN;
-        if (directionCtx.INROW() != null) direction = Lookup.Direction.IN_ROW;
-        if (directionCtx.INCOL() != null) direction = Lookup.Direction.IN_COL;
-        if (directionCtx.INCELL() != null) direction = Lookup.Direction.IN_CELL;
+        if (directionCtx.LEFT() != null)
+            direction = Lookup.Direction.LEFT;
+        else if (directionCtx.RIGHT() != null)
+            direction = Lookup.Direction.RIGHT;
+        else if (directionCtx.UP() != null)
+            direction = Lookup.Direction.UP;
+        else if (directionCtx.DOWN() != null)
+            direction = Lookup.Direction.DOWN;
+        else if (directionCtx.INROW() != null)
+            direction = Lookup.Direction.IN_ROW;
+        else if (directionCtx.INCOL() != null)
+            direction = Lookup.Direction.IN_COL;
+        else if (directionCtx.INCELL() != null)
+            direction = Lookup.Direction.IN_CELL;
+        else
+            return null; // Impossible
 
         final Lookup lookup = new Lookup(direction);
 
-        AllContext allCtx = ctx.all();
+        final AllContext allCtx = ctx.all();
         if (allCtx != null)
             lookup.setAll(true);
 
-        WhereContext whereCtx = ctx.where();
+        final WhereContext whereCtx = ctx.where();
 
         if (whereCtx != null) {
-            RangeContext rangeCtx = whereCtx.range();
+            final RangeContext rangeCtx = whereCtx.range();
 
             if (rangeCtx != null) {
-                RowRangeContext rowRangeCtx = rangeCtx.rowRange();
+                final RowRangeContext rowRangeCtx = rangeCtx.rowRange();
                 if (rowRangeCtx != null) {
                     final Range.Desc rowRangeDesc = new Range.Desc(true);
-                    RangeBodyContext rbCtx = rowRangeCtx.rangeBody();
+                    final RangeBodyContext rbCtx = rowRangeCtx.rangeBody();
                     apply(rowRangeDesc, rbCtx);
                     lookup.setRowRangeDesc(rowRangeDesc);
                 }
-                ColRangeContext colRangeCtx = rangeCtx.colRange();
+                final ColRangeContext colRangeCtx = rangeCtx.colRange();
                 if (colRangeCtx != null) {
-                    RangeBodyContext rbCtx = colRangeCtx.rangeBody();
+                    final RangeBodyContext rbCtx = colRangeCtx.rangeBody();
                     final Range.Desc colRangeDesc = new Range.Desc(false);
                     apply(colRangeDesc, rbCtx);
                     lookup.setColRangeDesc(colRangeDesc);
@@ -61,21 +70,21 @@ final class LookupVisitor extends RTLBaseVisitor<Lookup> {
                 lookup.setElementIndex(index);
             }
 
-            TagsContext tagsCtx = whereCtx.tags();
+            final TagsContext tagsCtx = whereCtx.tags();
             if (tagsCtx != null) {
-                List<TerminalNode> tns = tagsCtx.TAG();
+                final List<TerminalNode> tns = tagsCtx.TAG();
                 for (TerminalNode tn : tns) {
                     String tag = tn.getText();
                     lookup.addTag(tag);
                 }
             }
         }
-        //logger.info("Set search area {} end lookup {}", searchArea, lookup);
 
-        CondContext condCtx = ctx.cond();
+        final CondContext condCtx = ctx.cond();
         if (condCtx != null) {
-            Condition cond = condVisitor.visit(condCtx);
-            if (cond == null) return null;
+            final Condition cond = condVisitor.visit(condCtx);
+            if (cond == null)
+                return null; // Impossible
             lookup.setCondition(cond);
         }
 

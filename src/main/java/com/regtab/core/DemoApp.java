@@ -4,9 +4,9 @@ import com.regtab.core.model.ITable;
 import com.regtab.core.model.recordset.Recordset;
 import com.regtab.core.printers.Printer;
 import com.regtab.core.readers.XlReader;
-import com.regtab.core.rtl.Matcher;
+import com.regtab.core.rtl.RTLMatcher;
 import com.regtab.core.rtl.TableMap;
-import com.regtab.core.rtl.Pattern;
+import com.regtab.core.rtl.RTLPattern;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,13 +20,13 @@ public class DemoApp {
         reader.setMultilineMode(true);
 
         final ITable table = reader.readTable(sheetIdx);
-        final Pattern pattern = Pattern.compile(ttl);
+        final RTLPattern pattern = RTLPattern.compile(ttl);
         if (pattern == null) {
             System.err.println("Не удалось разобрать паттерн");
             System.exit(0);
         }
 
-        final Matcher matcher = pattern.matcher();
+        final RTLMatcher matcher = pattern.matcher();
         final TableMap map = matcher.match(table);
         if (map == null) {
             System.err.println("Не удалось сопоставить таблицу с паттерном");
@@ -40,7 +40,6 @@ public class DemoApp {
         }
 
         // Карта таблицы успешно применена
-
         final Recordset recordset = table.performActions();
         printer.print(recordset);
         System.out.println();
@@ -473,6 +472,28 @@ public class DemoApp {
             sb.append("[[(ATTR '=' VAL)]+]{2}");
             sb.append("}+");
             extract(xlFile2, 20, sb.toString());
+            sb.setLength(0);
+
+            System.out.printf("TTL = %s: SHEET = %d%n", "II 21", 21);
+            sb.append("[SCHEMA=LEFT");
+            sb.append("[@BLANK ? ATTR : FACTOR=UP | ATTR][@BLANK ? VAL='NA': RECORD=*RIGHT | VAL: RECORD=*RIGHT]");
+            sb.append("{[@BLANK ? ATTR : FACTOR=UP | ATTR][@BLANK ? VAL='NA' | VAL]}+");
+            sb.append("]+");
+            extract(xlFile2, 21, sb.toString());
+            sb.setLength(0);
+
+            System.out.printf("TTL = %s: SHEET = %d%n", "II 21a", 21);
+            sb.append("[SCHEMA=LEFT");
+            sb.append("[@BLANK ? ATTR : FACTOR=UP | ATTR][RECORD=*RIGHT @BLANK ? VAL='NA' | VAL]");
+            sb.append("{[@BLANK ? ATTR : FACTOR=UP | ATTR][@BLANK ? VAL='NA' | VAL]}+");
+            sb.append("]+");
+            extract(xlFile2, 21, sb.toString());
+            sb.setLength(0);
+
+            System.out.printf("TTL = %s: SHEET = %d%n", "ERROR 2b", 2);
+            sb.append("[[skip] #c1[~@blank -> val: schema='cl']+ [skip][skip][#c11]+]");
+            sb.append("[#c2[val: schema='rl'] #c3[~@blank -> val: record=((left: ~(@text matches '[0-9.]+')); (col:r0)); schema='data']+ [skip][#c2][#c3]+]+");
+            extract(xlFile, 2, sb.toString());
             sb.setLength(0);
         }
     }

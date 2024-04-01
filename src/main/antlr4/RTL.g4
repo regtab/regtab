@@ -39,7 +39,7 @@ cell : label? LSQUARE (elements | copy) RSQUARE quantifier? ;
 
 // Паттерн группы элементов (elements) включает элемент (element), структуру (structured) или выбор (choice).
 // Может дополняться набором условий (cond).
-elements : (cond ARROW)? (element | struct | choice) ;
+elements : (cond ARROW)? actions? (element | struct | choice) ;
 
 // Элемент (element) включает тип (elementType).
 // Может дополняться набором тегов (tags) и набором действий (actions).

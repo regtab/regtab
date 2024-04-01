@@ -5,6 +5,7 @@ import com.regtab.core.model.semantics.Element;
 import com.regtab.core.model.semantics.Expr;
 import com.regtab.core.model.ICell;
 
+import lombok.extern.slf4j.Slf4j;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import com.regtab.core.rtl.parser.RTLParser.*;
 
+@Slf4j
 public final class ElementPattern extends ElementsPattern {
     public ElementPattern(@NonNull ElementContext context) {
         super(context);
@@ -47,8 +49,10 @@ public final class ElementPattern extends ElementsPattern {
     boolean apply(@NonNull ICell cell, @NonNull String val) {
         if (expr != null) {
             final Object result = expr.eval(cell);
-            if (result == null)
-                return false; // TODO log
+            if (result == null) {
+                log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                return false;
+            }
             val = result.toString();
         }
 

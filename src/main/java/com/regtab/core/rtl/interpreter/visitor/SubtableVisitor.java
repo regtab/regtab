@@ -4,11 +4,10 @@ import com.regtab.core.model.semantics.Action;
 import com.regtab.core.model.semantics.Condition;
 import com.regtab.core.rtl.interpreter.pattern.RowPattern;
 import com.regtab.core.rtl.interpreter.pattern.SubtablePattern;
-
-import java.util.List;
-
 import com.regtab.core.rtl.parser.RTLBaseVisitor;
 import com.regtab.core.rtl.parser.RTLParser.*;
+
+import java.util.List;
 
 final class SubtableVisitor extends RTLBaseVisitor<SubtablePattern> {
     private static final RowVisitor rowVisitor = new RowVisitor();
@@ -22,18 +21,18 @@ final class SubtableVisitor extends RTLBaseVisitor<SubtablePattern> {
 
         final List<RowContext> rowContexts = ctx.row();
         if (rowContexts != null && !rowContexts.isEmpty()) {
-            boolean result = apply(rowContexts, subtablePattern);
+            final boolean result = apply(rowContexts, subtablePattern);
             if (!result)
-                return null; // TODO test
+                return null; // Impossible
 
             return subtablePattern;
         }
 
         final RowsContext rowsContext = ctx.rows();
         if (rowsContext != null) {
-            boolean result = apply(rowsContext, subtablePattern);
+            final boolean result = apply(rowsContext, subtablePattern);
             if (!result)
-                return null; // TODO test
+                return null; // Impossible
 
             return subtablePattern;
         }
@@ -41,41 +40,40 @@ final class SubtableVisitor extends RTLBaseVisitor<SubtablePattern> {
         return null; // Impossible
     }
 
-    private boolean apply(List<RowContext> rowContexts, SubtablePattern tmpl) {
+    private boolean apply(List<RowContext> rowContexts, SubtablePattern pattern) {
         for (RowContext ctx : rowContexts) {
             RowPattern rowPattern = rowVisitor.visit(ctx);
             if (rowPattern == null)
-                return false; // TODO log
+                return false; // Impossible
 
-            tmpl.add(rowPattern);
+            pattern.add(rowPattern);
         }
 
-        //tmpl.quantifier = new Quantifier(EXACTLY, 1);
         final Quantifier quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
-        tmpl.setQuantifier(quantifier);
+        pattern.setQuantifier(quantifier);
 
         return true;
     }
 
-    private boolean apply(RowsContext rowsContext, SubtablePattern tmpl) {
-        tmpl.rowsContext = rowsContext;
+    private boolean apply(RowsContext rowsContext, SubtablePattern pattern) {
+        pattern.rowsContext = rowsContext;
 
         // Instruction order matter
-        List<RowContext> rowContexts = rowsContext.row();
+        final List<RowContext> rowContexts = rowsContext.row();
         for (RowContext ctx : rowContexts) {
             RowPattern rowPattern = rowVisitor.visit(ctx);
             if (rowPattern == null)
-                return false; // TODO log
-            tmpl.add(rowPattern);
+                return false; // Impossible
+            pattern.add(rowPattern);
         }
 
         final CondContext condContext = rowsContext.cond();
         if (condContext != null) {
             final Condition condition = condVisitor.visit(condContext);
             if (condition == null)
-                return false; // TODO log
+                return false; // Impossible
 
-            tmpl.setCondition(condition);
+            pattern.setCondition(condition);
         }
 
         final Quantifier quantifier;
@@ -85,19 +83,19 @@ final class SubtableVisitor extends RTLBaseVisitor<SubtablePattern> {
         } else {
             quantifier = quantifierVisitor.visit(quantifierContext);
             if (quantifier == null)
-                return false; // TODO log
+                return false; // Impossible
         }
-        tmpl.setQuantifier(quantifier);
+        pattern.setQuantifier(quantifier);
 
         final ActionsContext actionsCtx = rowsContext.actions();
         if (actionsCtx != null) {
-            List<ActionContext> actionCtxList = actionsCtx.action();
+            final List<ActionContext> actionCtxList = actionsCtx.action();
             if (actionCtxList != null) {
                 for (ActionContext actionCtx : actionCtxList) {
                     Action action = actionVisitor.visit(actionCtx);
                     if (action == null)
-                        return false; // TODO test
-                    tmpl.add(action);
+                        return false; // Impossible
+                    pattern.add(action);
                 }
             }
         }

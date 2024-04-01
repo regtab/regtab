@@ -12,14 +12,13 @@ import lombok.Setter;
 import com.regtab.core.rtl.parser.RTLParser.*;
 
 public final class CellPattern extends RepeatablePattern {
-    public ElementsContext elementsContext;
     public CellPattern(CellContext context) {
         super(context);
     }
 
     @Getter
     @Setter
-    private ElementsPattern elementsPattern; //TODO перевести в final
+    private ElementsPattern elementsPattern;
 
     @Override
     public void setCondition(@NonNull Condition condition) {
@@ -32,7 +31,7 @@ public final class CellPattern extends RepeatablePattern {
 
     public void add(@NonNull Action action) {
         getActions().add(action);
-        if (elementsPattern != null) //TODO убрать, после перевода elementsPattern в final
+        if (elementsPattern != null)
             elementsPattern.add(action);
     }
 

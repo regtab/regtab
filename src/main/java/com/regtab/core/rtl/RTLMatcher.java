@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.Queue;
 
 @Log
-public class Matcher {
+public class RTLMatcher {
     @NonNull
-    private final Pattern pattern;
+    private final RTLPattern pattern;
 
-    public Matcher(@NonNull Pattern pattern) {
+    public RTLMatcher(@NonNull RTLPattern pattern) {
         this.pattern = pattern;
     }
 
@@ -30,12 +30,12 @@ public class Matcher {
         return match(table, tablePattern);
     }
 
-    private TableMap match(ITable table, TablePattern tmpl) {
+    private TableMap match(ITable table, TablePattern pattern) {
         final TableMap tableMap = new TableMap();
 
         final Queue<IRow> rows = new LinkedList<>(table.rowsAsList());
 
-        final List<SubtablePattern> subtablePatterns = tmpl.getSubtablePatterns();
+        final List<SubtablePattern> subtablePatterns = pattern.getSubtablePatterns();
         for (SubtablePattern subtablePattern : subtablePatterns) {
             int repetitionCount = 0;
 
@@ -118,13 +118,13 @@ public class Matcher {
         return tableMap;
     }
 
-    private SubtableMap match(Queue<IRow> rows, SubtablePattern tmpl) {
+    private SubtableMap match(Queue<IRow> rows, SubtablePattern pattern) {
         if (rows.isEmpty())
             return null;
 
         final SubtableMap subtableMap = new SubtableMap();
 
-        final List<RowPattern> rowPatterns = tmpl.getRowPatterns();
+        final List<RowPattern> rowPatterns = pattern.getRowPatterns();
         for (RowPattern rowPattern : rowPatterns) {
             int repetitionCount = 0;
 
@@ -232,11 +232,11 @@ public class Matcher {
         return subtableMap;
     }
 
-    private RowMap match(@NonNull IRow row, RowPattern tmpl) {
+    private RowMap match(@NonNull IRow row, RowPattern pattern) {
         final RowMap rowMap = new RowMap();
 
         final Queue<ICell> cells = new LinkedList<>(row.cellsAsList());
-        final List<SubrowPattern> subrowPatterns = tmpl.getSubrowPatterns();
+        final List<SubrowPattern> subrowPatterns = pattern.getSubrowPatterns();
         for (SubrowPattern subrowPattern : subrowPatterns) {
             int repetitionCount = 0;
 
@@ -322,13 +322,13 @@ public class Matcher {
         return rowMap;
     }
 
-    private SubrowMap match(Queue<ICell> cells, SubrowPattern tmpl) {
+    private SubrowMap match(Queue<ICell> cells, SubrowPattern pattern) {
         if (cells.isEmpty())
             return null;
 
         final SubrowMap subrowMap = new SubrowMap();
 
-        final List<CellPattern> cellPatterns = tmpl.getCellPatterns();
+        final List<CellPattern> cellPatterns = pattern.getCellPatterns();
         for (CellPattern cellPattern : cellPatterns) {
             int repetitionCount = 0;
 
@@ -435,18 +435,18 @@ public class Matcher {
         return subrowMap;
     }
 
-    private CellMap match(@NonNull ICell cell, CellPattern tmpl) {
-        final Condition condition = tmpl.getCondition();
+    private CellMap match(@NonNull ICell cell, CellPattern pattern) {
+        final Condition condition = pattern.getCondition();
         if (condition != null) {
             final boolean result = condition.check(cell);
             if (!result) {
-                // final String msg = String.format("cell {%s} does not match end pattern %s", cell, tmpl);
+                // final String msg = String.format("cell {%s} does not match end pattern %s", cell, pattern);
                 // log.warning(msg);
                 return null; // TODO log
             }
         }
 
-        return new CellMap(cell, tmpl);
+        return new CellMap(cell, pattern);
     }
 
 }

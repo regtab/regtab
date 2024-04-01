@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.regtab.core.rtl.parser.RTLParser.*;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public final class StructPattern extends ElementsPattern {
     public StructPattern(@NonNull StructContext context) {
         super(context);
@@ -19,8 +21,8 @@ public final class StructPattern extends ElementsPattern {
     @Getter
     private final List<ElementPattern> elementPatterns = new ArrayList<>();
 
-    public void add(@NonNull ElementPattern tmpl) {
-        elementPatterns.add(tmpl);
+    public void add(@NonNull ElementPattern pattern) {
+        elementPatterns.add(pattern);
     }
 
     @Getter
@@ -43,8 +45,6 @@ public final class StructPattern extends ElementsPattern {
 
     public boolean apply(@NonNull ICell cell) {
         final String text = cell.getText();
-        if (text.isBlank())
-            return false; // TODO log
 
         int start = 0;
         int end = text.length();
@@ -53,15 +53,19 @@ public final class StructPattern extends ElementsPattern {
 
         if (startText != null) {
             result = text.startsWith(startText);
-            if (!result)
-                return false; // TODO log
+            if (!result) {
+                log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                return false;
+            }
             start = startText.length();
         }
 
         if (endText != null) {
             result = text.endsWith(endText);
-            if (!result)
-                return false; // TODO log
+            if (!result) {
+                log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                return false;
+            }
             end = text.length() - endText.length();
         }
 
@@ -69,21 +73,26 @@ public final class StructPattern extends ElementsPattern {
 
         // Если нет разделителей, то есть только один элемент
         if (separators == null) {
-            if (elementPatterns.size() != 1)
-                return false; // TODO log
-
+            if (elementPatterns.size() != 1) {
+                log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                return false;
+            }
             final ElementPattern elementPattern = elementPatterns.getFirst();
             final String val = subText;
             result = elementPattern.apply(cell, val);
-            if (result == false)
-                return false; // TODO log
+            if (result == false) {
+                log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                return false;
+            }
 
             return true;
         }
 
         // Если есть n разделителей, то есть n-1 элементов
-        if (elementPatterns.size() != separators.size() + 1)
-            return false; // TODO log
+        if (elementPatterns.size() != separators.size() + 1) {
+            log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+            return false;
+        }
 
         start = 0;
         int shift = 0;
@@ -100,8 +109,10 @@ public final class StructPattern extends ElementsPattern {
 
             String val = subText.substring(start, end);
             result = elementPattern.apply(cell, val);
-            if (result == false)
-                return false; // TODO log
+            if (result == false) {
+                log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                return false;
+            }
 
             start = end + shift;
         }

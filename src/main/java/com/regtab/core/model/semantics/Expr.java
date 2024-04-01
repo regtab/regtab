@@ -1,10 +1,13 @@
 package com.regtab.core.model.semantics;
 
-import com.regtab.core.model.ICell;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
+import com.regtab.core.model.ICell;
+
+@Slf4j
 @Builder(toBuilder = true)
 @Getter
 @NonNull
@@ -20,8 +23,8 @@ public class Expr {
     private Integer integer;
     private String string;
     private String hex;
-    private Prop prop;
-    private Func func;
+    private Prop<?> prop;
+    private Func<?> func;
 
     private boolean useCaller;
 
@@ -83,10 +86,10 @@ public class Expr {
         final Object o2 = right.eval(caller, candidate);
 
         if (o1 == o2)
-            return true; // TODO log warning
+            return true;
 
         if (o1 == null || o2 == null)
-            return false; // TODO Test
+            return false;
 
         return switch (compOperator) {
             case EQUAL -> o1.equals(o2);
@@ -128,9 +131,6 @@ public class Expr {
     private String evalStrOp(ICell caller, ICell candidate) {
         final Object o1 = left.eval(caller, candidate);
         final Object o2 = right.eval(caller, candidate);
-
-        if (o1 == null || o2 == null)
-            return null; // Impossible
 
         final String s1;
         if (o1 == null)

@@ -6,7 +6,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-abstract class BasePattern {
+public abstract class BasePattern {
     @Getter
     public final ParseTree tree;
 

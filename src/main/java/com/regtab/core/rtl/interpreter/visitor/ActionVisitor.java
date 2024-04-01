@@ -2,6 +2,8 @@ package com.regtab.core.rtl.interpreter.visitor;
 
 import com.regtab.core.model.semantics.Action;
 import com.regtab.core.model.semantics.Lookup;
+import com.regtab.core.rtl.Configurator;
+import com.regtab.core.rtl.RTLPattern;
 import com.regtab.core.rtl.parser.RTLBaseVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -14,10 +16,10 @@ final class ActionVisitor extends RTLBaseVisitor<Action> {
 
     @Override
     public Action visitAction(ActionContext ctx) {
-        List<ActionBodyContext> actionBodyCtxList = ctx.actionBody();
-        ActionTypeContext actionTypeCtx = ctx.actionType();
+        final List<ActionBodyContext> actionBodyCtxList = ctx.actionBody();
+        final ActionTypeContext actionTypeCtx = ctx.actionType();
 
-        Action.Type actType;
+        final Action.Type actType;
 
         if (actionTypeCtx.FACTOR() != null)
             actType = Action.Type.FACTOR;
@@ -32,24 +34,35 @@ final class ActionVisitor extends RTLBaseVisitor<Action> {
         else if (actionTypeCtx.SCHEMA() != null)
             actType = Action.Type.SCHEMA;
         else
-            throw new IllegalStateException("Тип действия неопределен");
+            return null; // Impossible
 
-        Action action = new Action(actType);
+        final Action action = new Action(actType);
+
+        final Configurator configurator = RTLPattern.getConfigurator();
+        if (configurator != null) {
+            final String concatSeparator = configurator.getConcatSeparator();
+            if (concatSeparator != null)
+                action.setConcatSeparator(concatSeparator);
+
+            final String avSeparator = configurator.getAvSeparator();
+            if (avSeparator != null)
+                action.setAvSeparator(avSeparator);
+        }
 
         if (actionBodyCtxList == null)
             return null; // Impossible
 
         for (ActionBodyContext actionBodyCtx : actionBodyCtxList) {
-            TerminalNode tn = actionBodyCtx.STRING();
+            final TerminalNode tn = actionBodyCtx.STRING();
 
             if (tn != null) {
                 final String string = tn.getText();
                 action.addString(string);
             } else {
-                LookupContext lookupCtx = actionBodyCtx.lookup();
-                Lookup lookup = lookupVisitor.visit(lookupCtx);
+                final LookupContext lookupCtx = actionBodyCtx.lookup();
+                final Lookup lookup = lookupVisitor.visit(lookupCtx);
                 if (lookup == null)
-                    return null;
+                    return null; // Impossible
                 action.addLookup(lookup);
             }
         }

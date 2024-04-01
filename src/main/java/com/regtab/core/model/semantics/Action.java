@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import com.regtab.core.model.recordset.Record;
 import com.regtab.core.model.recordset.Recordset;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -56,7 +57,19 @@ public final class Action {
             caller.setText(string);
     }
 
-    private static final String SEPARATOR = "/"; //TODO настройки
+    @Getter
+    private static final String DEFAULT_CONCAT_SEPARATOR = "/"; //TODO настройки
+
+    @Getter
+    private static final String DEFAULT_AV_SEPARATOR = ":"; //TODO настройки
+
+    @Getter
+    @Setter
+    private String concatSeparator = DEFAULT_CONCAT_SEPARATOR;
+
+    @Getter
+    @Setter
+    private String avSeparator = DEFAULT_AV_SEPARATOR;
 
     private void performPrefix(Element caller) {
         if (lookup != null) {
@@ -65,7 +78,7 @@ public final class Action {
                 final String prefix = found.getText();
                 if (!prefix.isEmpty()) {
                     String text = caller.getText();
-                    text = prefix + SEPARATOR + text;
+                    text = prefix + concatSeparator + text;
                     caller.setText(text);
                 }
             }
@@ -82,7 +95,7 @@ public final class Action {
                 final String suffix = found.getText();
                 if (!suffix.isEmpty()) {
                     String text = caller.getText();
-                    text = text + SEPARATOR + suffix;
+                    text = text + concatSeparator + suffix;
                     caller.setText(text);
                 }
             }
@@ -109,7 +122,7 @@ public final class Action {
         for (String string : strings) {
             String attrName;
             String valStr;
-            int sepPos = string.indexOf(':'); // TODO настройки
+            int sepPos = string.indexOf(avSeparator);
 
             if (sepPos > -1) {
                 attrName = string.substring(0, sepPos);

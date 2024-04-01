@@ -2,15 +2,14 @@ package com.regtab.core.rtl.interpreter.visitor;
 
 import com.regtab.core.rtl.interpreter.pattern.ElementPattern;
 import com.regtab.core.rtl.interpreter.pattern.StructPattern;
+import com.regtab.core.rtl.parser.RTLBaseVisitor;
+import com.regtab.core.rtl.parser.RTLParser.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.regtab.core.rtl.parser.RTLBaseVisitor;
-import com.regtab.core.rtl.parser.RTLParser.*;
-
 final class StructVisitor extends RTLBaseVisitor<StructPattern> {
-    private static final ElementVisitor elementVisitor = new ElementVisitor();
+    private final ElementVisitor elementVisitor = new ElementVisitor();
 
     @Override
     public StructPattern visitStruct(StructContext ctx) {
@@ -20,7 +19,7 @@ final class StructVisitor extends RTLBaseVisitor<StructPattern> {
         for (ElementContext elemCtx : elementContexts) {
             final ElementPattern elementPattern = elementVisitor.visit(elemCtx);
             if (elementPattern == null)
-                return null; // TODO test
+                return null; // Impossible
 
             structPattern.add(elementPattern);
         }
@@ -39,7 +38,7 @@ final class StructVisitor extends RTLBaseVisitor<StructPattern> {
 
         final List<SeparatorContext> separatorContexts = ctx.separator();
         if (separatorContexts != null && !separatorContexts.isEmpty()) {
-            List<String> separators = new ArrayList<>(separatorContexts.size());
+            final List<String> separators = new ArrayList<>(separatorContexts.size());
             for (SeparatorContext separatorContext: separatorContexts) {
                 String separator = separatorContext.STRING().getText();
                 separators.add(separator);

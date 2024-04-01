@@ -15,16 +15,16 @@ final class CondVisitor extends RTLBaseVisitor<Condition> {
 
     @Override
     public Condition visitCond(CondContext ctx) {
-        Condition cond = new Condition();
-        List<ExprContext> exprCtxList = ctx.expr();
+        final Condition cond = new Condition();
+        final List<ExprContext> exprCtxList = ctx.expr();
 
         for (ExprContext exprCtx : exprCtxList) {
-            Expr expr = exprVisitor.visit(exprCtx);
+            final Expr expr = exprVisitor.visit(exprCtx);
 
             if (expr == null)
                 return null; // Impossible
 
-            Constraint constr = new Constraint(expr);
+            final Constraint constr = new Constraint(expr);
             cond.addConstraint(constr);
         }
 
