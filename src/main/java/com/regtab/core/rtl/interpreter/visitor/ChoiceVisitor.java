@@ -36,7 +36,7 @@ final class ChoiceVisitor extends RTLBaseVisitor<ChoicePattern> {
         if (elementContext != null) {
             final ElementPattern elementPattern = elementVisitor.visit(elementContext);
             if (elementPattern == null)
-                return null; // TODO test
+                return null; // Impossible
 
             return elementPattern;
         }
@@ -45,7 +45,7 @@ final class ChoiceVisitor extends RTLBaseVisitor<ChoicePattern> {
         if (structuredContext != null) {
             final StructPattern structPattern = structVisitor.visit(structuredContext);
             if (structPattern == null)
-                return null; // TODO test
+                return null; // Impossible
 
             return structPattern;
         }

@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.Getter;
 import lombok.Setter;
 
+@Setter
 public final class Configurator {
     @Getter
     private static final String DEFAULT_CONCAT_SEPARATOR = "/";
@@ -13,12 +14,10 @@ public final class Configurator {
 
     @NonNull
     @Getter
-    @Setter
     private String concatSeparator;
 
     @NonNull
     @Getter
-    @Setter
     private String avSeparator;
 
     public static final Configurator DEFAULT_CONFIGURATOR;

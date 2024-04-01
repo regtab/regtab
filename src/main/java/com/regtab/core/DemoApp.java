@@ -11,7 +11,7 @@ import com.regtab.core.rtl.RTLPattern;
 import java.io.File;
 import java.io.IOException;
 
-public class DemoApp {
+public final class DemoApp {
     private static final Printer printer = new Printer();
 
     private static void extract(File xlFile, int sheetIdx, String ttl) throws IOException {
@@ -52,7 +52,7 @@ public class DemoApp {
         final File xlFile2 = new File("../../data/rtl/example2.xlsx");
 
         if (true) {
-            final StringBuffer sb = new StringBuffer();
+            final StringBuilder sb = new StringBuilder();
 
             System.out.printf("TTL = %s: SHEET = %d%n", "0", 0);
             sb.append("[[skip][val: schema='cl']+]");

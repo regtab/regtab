@@ -1,20 +1,19 @@
 package com.regtab.core.rtl;
 
-import com.regtab.core.model.semantics.Condition;
+import lombok.extern.slf4j.Slf4j;
 import lombok.NonNull;
-import lombok.extern.java.Log;
 
+import com.regtab.core.model.semantics.Condition;
 import com.regtab.core.model.*;
 import com.regtab.core.rtl.interpreter.pattern.*;
 import com.regtab.core.rtl.interpreter.visitor.Quantifier;
-
 import static com.regtab.core.rtl.TableMap.*;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-@Log
+@Slf4j
 public class RTLMatcher {
     @NonNull
     private final RTLPattern pattern;
@@ -440,9 +439,8 @@ public class RTLMatcher {
         if (condition != null) {
             final boolean result = condition.check(cell);
             if (!result) {
-                // final String msg = String.format("cell {%s} does not match end pattern %s", cell, pattern);
-                // log.warning(msg);
-                return null; // TODO log
+                log.debug("Cell {} does not match to pattern {}", cell, pattern);
+                return null;
             }
         }
 
