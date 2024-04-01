@@ -8,7 +8,6 @@ import com.regtab.core.rtl.parser.RTLParser.*;
 import java.util.List;
 
 final class TableVisitor extends RTLBaseVisitor<TablePattern> {
-
     private final static SubtableVisitor subtableVisitor = new SubtableVisitor();
 
     @Override

@@ -2,14 +2,12 @@ package com.regtab.core.rtl.interpreter.visitor;
 
 import com.regtab.core.model.semantics.Action;
 import com.regtab.core.model.semantics.Condition;
-import com.regtab.core.rtl.Configurator;
 import com.regtab.core.rtl.interpreter.pattern.CellPattern;
 import com.regtab.core.rtl.interpreter.pattern.SubrowPattern;
-
-import java.util.List;
-
 import com.regtab.core.rtl.parser.RTLBaseVisitor;
 import com.regtab.core.rtl.parser.RTLParser.*;
+
+import java.util.List;
 
 final class SubrowVisitor extends RTLBaseVisitor<SubrowPattern> {
     private static final CellVisitor cellVisitor = new CellVisitor();

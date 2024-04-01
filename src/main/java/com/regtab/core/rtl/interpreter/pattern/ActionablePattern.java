@@ -1,9 +1,10 @@
 package com.regtab.core.rtl.interpreter.pattern;
 
-import com.regtab.core.model.semantics.Action;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
+
+import com.regtab.core.model.semantics.Action;
+
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.ArrayList;

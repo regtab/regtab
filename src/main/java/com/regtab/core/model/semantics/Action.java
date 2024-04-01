@@ -2,10 +2,11 @@ package com.regtab.core.model.semantics;
 
 import lombok.NonNull;
 import lombok.Getter;
+import lombok.Setter;
 
 import com.regtab.core.model.recordset.Record;
 import com.regtab.core.model.recordset.Recordset;
-import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

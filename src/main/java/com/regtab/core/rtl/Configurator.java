@@ -1,7 +1,7 @@
 package com.regtab.core.rtl;
 
-import lombok.Getter;
 import lombok.NonNull;
+import lombok.Getter;
 import lombok.Setter;
 
 public final class Configurator {
