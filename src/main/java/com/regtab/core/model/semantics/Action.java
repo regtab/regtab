@@ -57,16 +57,15 @@ public final class Action {
             caller.setText(string);
     }
 
-    @Getter
-    private static final String DEFAULT_CONCAT_SEPARATOR = "/"; //TODO настройки
+    private static final String DEFAULT_CONCAT_SEPARATOR = "/";
+    private static final String DEFAULT_AV_SEPARATOR = ":";
 
-    @Getter
-    private static final String DEFAULT_AV_SEPARATOR = ":"; //TODO настройки
-
+    @NonNull
     @Getter
     @Setter
     private String concatSeparator = DEFAULT_CONCAT_SEPARATOR;
 
+    @NonNull
     @Getter
     @Setter
     private String avSeparator = DEFAULT_AV_SEPARATOR;

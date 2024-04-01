@@ -20,6 +20,8 @@ public class DemoApp {
         reader.setMultilineMode(true);
 
         final ITable table = reader.readTable(sheetIdx);
+        //RTLPattern.config().setConcatSeparator("/");
+
         final RTLPattern pattern = RTLPattern.compile(ttl);
         if (pattern == null) {
             System.err.println("Не удалось разобрать паттерн");

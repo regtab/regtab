@@ -62,7 +62,10 @@ public class RTLPattern {
     }
 
     @Getter
-    @Setter
-    private static Configurator configurator;// = DEFAULT_CONCAT_SEPARATOR;
+    private static Configurator configurator = Configurator.DEFAULT_CONFIGURATOR;
+
+    public static Configurator config() {
+        return configurator;
+    }
 
 }
