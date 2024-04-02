@@ -129,18 +129,14 @@ public final class Action {
                 valStr = string.substring(sepPos + 1, string.length());
 
                 if (attrName.isBlank() || valStr.isBlank())
-                    throw new IllegalStateException(
-                            "Недопустимое значение параметра STRING действия RECORD"
-                    );
+                    throw new IllegalArgumentException("Invalid parameter in action " + this);
 
                 recordset.updateRecord(record, attrName, valStr);
             } else {
                 valStr = string;
 
                 if (valStr.isBlank())
-                    throw new IllegalStateException(
-                            "Недопустимое значение параметра STRING действия RECORD"
-                    );
+                    throw new IllegalArgumentException("Invalid parameter in action " + this);
 
                 recordset.updateRecord(record, valStr);
             }
@@ -177,7 +173,6 @@ public final class Action {
     }
 
     void perform(Element caller) {
-        //log.info("Perform action {} end caller {}", this, caller);
         switch (type) {
             case FACTOR -> performFactor(caller);
             case PREFIX -> performPrefix(caller);

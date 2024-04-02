@@ -30,7 +30,7 @@ public final class Value {
 
     Value(@NonNull Element element) {
         if (element.getType() != Element.Type.VALUE)
-            throw new IllegalArgumentException("Недопустимый тип элемента");
+            throw new IllegalArgumentException("Invalid element type");
         string = element.getText();
         this.element = element;
     }

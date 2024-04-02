@@ -492,11 +492,6 @@ public final class DemoApp {
             extract(xlFile2, 21, sb.toString());
             sb.setLength(0);
 
-            System.out.printf("TTL = %s: SHEET = %d%n", "ERROR 2b", 2);
-            sb.append("[[skip] #c1[~@blank -> val: schema='cl']+ [skip][skip][#c11]+]");
-            sb.append("[#c2[val: schema='rl'] #c3[~@blank -> val: record=((left: ~(@text matches '[0-9.]+')); (col:r0)); schema='data']+ [skip][#c2][#c3]+]+");
-            extract(xlFile, 2, sb.toString());
-            sb.setLength(0);
         }
     }
 }

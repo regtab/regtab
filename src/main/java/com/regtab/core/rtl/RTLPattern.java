@@ -25,11 +25,9 @@ public class RTLPattern {
         this.tablePattern = tablePattern;
     }
 
-    @NonNull
-    public static RTLPattern compile(String ttl) {
-        if (ttl.isEmpty()) {
-            throw new IllegalArgumentException("ttl is empty");
-        }
+    public static RTLPattern compile(@NonNull String ttl) {
+        if (ttl.isBlank())
+            return null;
 
         final RTLLexer lexer = new RTLLexer(CharStreams.fromString(ttl));
         lexer.removeErrorListeners();
