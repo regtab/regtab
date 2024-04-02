@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 abstract class ActionablePattern extends BasePattern {
-    public ActionablePattern(ParseTree tree) {
+    ActionablePattern(ParseTree tree) {
         super(tree);
     }
 

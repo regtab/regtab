@@ -7,8 +7,8 @@ import lombok.Setter;
 import org.antlr.v4.runtime.tree.ParseTree;
 import com.regtab.core.rtl.interpreter.visitor.Quantifier;
 
-public abstract class RepeatablePattern extends ActionablePattern {
-    public RepeatablePattern(ParseTree tree) {
+abstract class RepeatablePattern extends ActionablePattern {
+    RepeatablePattern(ParseTree tree) {
         super(tree);
     }
 
