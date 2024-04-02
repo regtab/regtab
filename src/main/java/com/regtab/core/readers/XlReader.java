@@ -4,7 +4,7 @@ import com.regtab.core.model.*;
 import com.regtab.core.model.format.SSDatatype;
 import com.regtab.core.model.style.*;
 
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import lombok.NonNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.awt.Color;
 import java.util.HashMap;
 
-@Log
+@Slf4j
 public final class XlReader {
     private final Workbook workbook;
     private final int numOfSheets;
@@ -463,7 +463,7 @@ public final class XlReader {
             formulaEvaluator.evaluate(xlCell);
             value = formatter.formatCellValue(xlCell, formulaEvaluator);
         } catch (FormulaParseException e) {
-            log.warning(e.getMessage());
+            log.warn(e.getMessage());
         }
 
         return value == null ? "" : value;

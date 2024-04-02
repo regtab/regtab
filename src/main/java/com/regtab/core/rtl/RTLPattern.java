@@ -1,22 +1,19 @@
 package com.regtab.core.rtl;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NonNull;
+
 import com.regtab.core.model.ITable;
 import com.regtab.core.rtl.interpreter.pattern.TablePattern;
 import com.regtab.core.rtl.parser.RTLLexer;
 import com.regtab.core.rtl.parser.RTLParser;
-import lombok.Setter;
-import lombok.extern.java.Log;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NonNull;
+import com.regtab.core.rtl.interpreter.visitor.Interpreter;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import com.regtab.core.rtl.interpreter.visitor.Interpreter;
-
-@Log
 public class RTLPattern {
     @Getter(AccessLevel.PACKAGE)
     private final TablePattern tablePattern;

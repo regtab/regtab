@@ -1,12 +1,11 @@
 package com.regtab.core.model.recordset;
 
-import com.regtab.core.model.semantics.Element;
 import lombok.NonNull;
-import lombok.extern.java.Log;
+
+import com.regtab.core.model.semantics.Element;
 
 import java.util.*;
 
-@Log
 public final class Recordset {
     private final Map<String, Attribute> attributes = new HashMap<>();
     private final List<Record> records = new ArrayList<>();
