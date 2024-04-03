@@ -22,7 +22,7 @@ public final class Recordset {
 
         if (val != null) {
             if (attr == null) {
-                attr = new Attribute(attrName);
+                attr = new Attribute(attrName, null);
                 attributes.put(attr.getName(), attr);
             }
             attr.addValue(val);
@@ -41,7 +41,7 @@ public final class Recordset {
         Attribute attr = attributes.get(attrName);
 
         if (attr == null) {
-            attr = new Attribute(attrName);
+            attr = new Attribute(attrName, null);
             attributes.put(attr.getName(), attr);
         }
 
@@ -53,7 +53,7 @@ public final class Recordset {
     public Record createRecord(@NonNull Element elem) {
         Record record = new Record();
         final String text = elem.getText();
-        Value v = new Value(text);
+        Value v = new Value(text, elem);
         record.addValue(v);
         elemValMap.put(elem, v);
         recordedElements.add(elem);
@@ -63,14 +63,14 @@ public final class Recordset {
     }
 
     public void updateRecord(@NonNull Record record, @NonNull String attrName, @NonNull String valStr) {
-        Value v2 = new Value(valStr);
+        Value v2 = new Value(valStr, null);
         record.addValue(v2);
 
         updateSchema(v2, attrName);
     }
 
     public void updateRecord(@NonNull Record record, @NonNull String str) {
-        Value v2 = new Value(str);
+        Value v2 = new Value(str, null);
         record.addValue(v2);
     }
 
@@ -82,7 +82,7 @@ public final class Recordset {
         Value v2 = elemValMap.get(elem);
         if (v2 == null) {
             final String text = elem.getText();
-            v2 = new Value(text);
+            v2 = new Value(text, elem);
         }
         record.addValue(v2);
         elemValMap.put(elem, v2);
@@ -123,7 +123,7 @@ public final class Recordset {
                 }
             } else {
                 String attrName = "ATTR" + i;
-                currentAttr = new Attribute(attrName);
+                currentAttr = new Attribute(attrName, null);
                 attributes.put(attrName, currentAttr);
                 for (Record item : records) {
                     record = item;

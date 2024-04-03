@@ -12,22 +12,19 @@ public final class Value {
     @Setter
     private Attribute attribute;
 
+    @NonNull
     @Getter
     private final String string;
 
-//    @Getter
-//    private Element element;
+    @Getter
+    private final Element provenance;
 
-    Value(@NonNull String string) {
+    Value(@NonNull String string, Element provenance) {
         this.string = string;
+        if (provenance != null && provenance.getType() != Element.Type.VALUE)
+            throw new IllegalArgumentException("Invalid element type");
+        this.provenance = provenance;
     }
-
-//    Value(@NonNull Element element) {
-//        if (element.getType() != Element.Type.VALUE)
-//            throw new IllegalArgumentException("Invalid element type");
-//        string = element.getText();
-//        this.element = element;
-//    }
 
     @Override
     public String toString() {

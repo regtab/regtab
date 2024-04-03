@@ -85,7 +85,7 @@ public final class ITable {
         return cell;
     }
 
-    public Recordset performActions() {
+    public Recordset extract() {
         for (ICell cell: cells)
             cell.perform(Action.Type.FACTOR);
 

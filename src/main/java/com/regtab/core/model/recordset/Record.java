@@ -1,8 +1,12 @@
 package com.regtab.core.model.recordset;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 public final class Record {
     private final List<Value> values = new ArrayList<>();
 

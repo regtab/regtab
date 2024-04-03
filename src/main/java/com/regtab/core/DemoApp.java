@@ -42,7 +42,7 @@ public final class DemoApp {
         }
 
         // Карта таблицы успешно применена
-        final Recordset recordset = table.performActions();
+        final Recordset recordset = table.extract();
         printer.print(recordset);
         System.out.println();
     }
