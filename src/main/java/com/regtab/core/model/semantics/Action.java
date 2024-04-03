@@ -126,7 +126,7 @@ public final class Action {
 
             if (sepPos > -1) {
                 attrName = string.substring(0, sepPos);
-                valStr = string.substring(sepPos + 1, string.length());
+                valStr = string.substring(sepPos + 1);
 
                 if (attrName.isBlank() || valStr.isBlank())
                     throw new IllegalArgumentException("Invalid parameter in action " + this);

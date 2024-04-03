@@ -90,7 +90,7 @@ public final class XlReader {
         return new int[]{rt, rb, minCl, maxCr};
     }
 
-    private HashMap<CellAddress, Cell> mergedCells = new HashMap<>();
+    private final HashMap<CellAddress, Cell> mergedCells = new HashMap<>();
 
     private void readMergedCells(Sheet sheet) {
         for (int i = 0; i < sheet.getNumMergedRegions(); i++) {
@@ -188,10 +188,12 @@ public final class XlReader {
             final Row xlRow = sheet.getRow(i);
 
             final int countOfLines;
-            if (multilineMode)
+            if (multilineMode) {
+                assert counts != null;
                 countOfLines = counts.get(rowIndex);
-            else
+            } else {
                 countOfLines = 1;
+            }
 
             int colIndex = 0;
             for (int j = cl; j <= cr; j++) {
@@ -214,8 +216,6 @@ public final class XlReader {
                         if (text != null && !text.isBlank()) {
                             if (multilineMode)
                                 lines = text.split("\\R");
-                            else
-                                lines = null;
                         }
                     }
                 } else {
@@ -252,7 +252,7 @@ public final class XlReader {
         return table;
     }
 
-    private ICell createCell(ITable table, int r, int c, String text, Cell xlCell) {
+    private void createCell(ITable table, int r, int c, String text, Cell xlCell) {
         final boolean blank;
         final int indent;
 
@@ -280,7 +280,6 @@ public final class XlReader {
             cell.setDatatype(datatype);
         }
 
-        return cell;
     }
 
     private int getIndent(String text) {

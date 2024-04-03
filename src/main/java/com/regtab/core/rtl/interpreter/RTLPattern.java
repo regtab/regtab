@@ -61,17 +61,23 @@ public class RTLPattern {
 
     public static TableMap match(@NonNull String ttl, @NonNull ITable table) {
         final RTLPattern t = compile(ttl);
+        if  (t == null)
+            return null;
         final RTLMatcher m = t.matcher();
+
         return m.match(table);
     }
 
     public static boolean apply(@NonNull String ttl, @NonNull ITable table) {
         final TableMap map = match(ttl, table);
+        if  (map == null)
+            return false;
+
         return map.apply();
     }
 
     @Getter
-    private static Configurator configurator = Configurator.DEFAULT_CONFIGURATOR;
+    private static final Configurator configurator = Configurator.DEFAULT_CONFIGURATOR;
 
     public static Configurator config() {
         return configurator;
@@ -354,14 +360,17 @@ public class RTLPattern {
             super(context);
         }
 
+        @NonNull
         @Getter
         @Setter
         private Condition condition;
 
+        @NonNull
         @Getter
         @Setter
         private ElementsPattern left;
 
+        @NonNull
         @Getter
         @Setter
         private ElementsPattern right;
@@ -445,9 +454,8 @@ public class RTLPattern {
                     return false;
                 }
                 final ElementPattern elementPattern = elementPatterns.getFirst();
-                final String val = subText;
-                result = elementPattern.apply(cell, val);
-                if (result == false) {
+                result = elementPattern.apply(cell, subText);
+                if (!result) {
                     log.debug("Pattern {} could not be applied to the cell {}", this, cell);
                     return false;
                 }
@@ -476,7 +484,7 @@ public class RTLPattern {
 
                 String val = subText.substring(start, end);
                 result = elementPattern.apply(cell, val);
-                if (result == false) {
+                if (!result) {
                     log.debug("Pattern {} could not be applied to the cell {}", this, cell);
                     return false;
                 }

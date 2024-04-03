@@ -39,10 +39,6 @@ public final class Lookup {
         tags.add(tag);
     }
 
-    List<String> tags() {
-        return new ArrayList<>(tags);
-    }
-
     @Getter
     @Setter
     private Condition condition;
@@ -152,10 +148,8 @@ public final class Lookup {
             case IN_CELL -> collectCells(rows, cellRRange, cellCRange);
         };
 
-        if (cells != null) {
-            if (direction != Direction.IN_CELL)
-                cells.remove(cell);
-        }
+        if (direction != Direction.IN_CELL)
+            cells.remove(cell);
 
         return cells.isEmpty() ? null : cells;
     }
@@ -194,10 +188,7 @@ public final class Lookup {
 
         List<ICell> subList = new ArrayList<>(to - from + 1);
 
-        for (int i = from; i <= to; i++) {
-            ICell cell = cells[i];
-            subList.add(cell);
-        }
+        subList.addAll(Arrays.asList(cells).subList(from, to + 1));
 
         if (direction.reversed && subList.size() > 1)
             subList = subList.reversed();

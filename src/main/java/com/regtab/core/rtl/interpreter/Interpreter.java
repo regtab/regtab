@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.regtab.core.rtl.parser.RTLBaseVisitor;
+
 import static com.regtab.core.rtl.interpreter.RTLPattern.*;
 import static com.regtab.core.rtl.parser.RTLParser.*;
 
@@ -506,18 +507,24 @@ final class Interpreter {
             final ChoicePattern choicePattern = new ChoicePattern(ctx);
 
             ChoiceBodyContext choiceBodyContext;
-            
+
             choiceBodyContext = ctx.choiceBody(0);
             final ElementsPattern left = createVariant(choiceBodyContext);
+            if (left == null)
+                return null; // Impossible
             choicePattern.setLeft(left);
-            
+
             choiceBodyContext = ctx.choiceBody(1);
             final ElementsPattern right = createVariant(choiceBodyContext);
+            if (right == null)
+                return null; // Impossible
             choicePattern.setRight(right);
 
             final CondContext condContext = ctx.cond();
             if (condContext != null) {
                 final Condition condition = condVisitor.visit(condContext);
+                if (condition == null)
+                    return null; // Impossible
                 choicePattern.setCondition(condition);
             }
 
@@ -527,20 +534,12 @@ final class Interpreter {
         private ElementsPattern createVariant(ChoiceBodyContext ctx) {
             final ElementContext elementContext = ctx.element();
             if (elementContext != null) {
-                final ElementPattern elementPattern = elementVisitor.visit(elementContext);
-                if (elementPattern == null)
-                    return null; // Impossible
-
-                return elementPattern;
+                return elementVisitor.visit(elementContext);
             }
 
             final StructContext structuredContext = ctx.struct();
             if (structuredContext != null) {
-                final StructPattern structPattern = structVisitor.visit(structuredContext);
-                if (structPattern == null)
-                    return null; // Impossible
-
-                return structPattern;
+                return structVisitor.visit(structuredContext);
             }
 
             return null; // Impossible
@@ -634,12 +633,10 @@ final class Interpreter {
             final Configurator configurator = getConfigurator();
             if (configurator != null) {
                 final String concatSeparator = configurator.getConcatSeparator();
-                if (concatSeparator != null)
-                    action.setConcatSeparator(concatSeparator);
+                action.setConcatSeparator(concatSeparator);
 
                 final String avSeparator = configurator.getAvSeparator();
-                if (avSeparator != null)
-                    action.setAvSeparator(avSeparator);
+                action.setAvSeparator(avSeparator);
             }
 
             if (actionBodyCtxList == null)

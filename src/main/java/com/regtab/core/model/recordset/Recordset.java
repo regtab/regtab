@@ -109,13 +109,13 @@ public final class Recordset {
             group1.join(group2);
             elemGroupMap.replace(elem2, group1);
             groups.remove(group2);
-        } else if (group1 != null && group2 == null) {
+        } else if (group1 != null) {
             Value value2 = elemValMap.get(elem2);
             if (value2 != null) {
                 group1.addValue(value2);
                 elemGroupMap.put(elem2, group1);
             }
-        } else if (group1 == null && group2 != null) {
+        } else if (group2 != null) {
             Value value1 = elemValMap.get(elem1);
             if (value1 != null) {
                 group2.addValue(value1);
