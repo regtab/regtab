@@ -1,4 +1,4 @@
-package com.regtab.core.rtl;
+package com.regtab.core.rtl.interpreter;
 
 import lombok.NonNull;
 import lombok.Getter;

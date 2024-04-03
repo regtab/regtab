@@ -4,9 +4,9 @@ import com.regtab.core.model.ITable;
 import com.regtab.core.model.recordset.Recordset;
 import com.regtab.core.printers.Printer;
 import com.regtab.core.readers.XlReader;
-import com.regtab.core.rtl.RTLMatcher;
-import com.regtab.core.rtl.TableMap;
-import com.regtab.core.rtl.RTLPattern;
+import com.regtab.core.rtl.interpreter.RTLMatcher;
+import com.regtab.core.rtl.interpreter.TableMap;
+import com.regtab.core.rtl.interpreter.RTLPattern;
 
 import java.io.File;
 import java.io.IOException;

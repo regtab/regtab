@@ -1,13 +1,13 @@
-package com.regtab.core.rtl;
+package com.regtab.core.rtl.interpreter;
 
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 
-public class RTLErrorListener extends BaseErrorListener {
+class RTLErrorListener extends BaseErrorListener {
 
-    public static final RTLErrorListener INSTANCE = new RTLErrorListener();
+    static final RTLErrorListener INSTANCE = new RTLErrorListener();
 
     @Override
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e)

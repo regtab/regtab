@@ -1,17 +1,18 @@
-package com.regtab.core.rtl;
+package com.regtab.core.rtl.interpreter;
+
+import lombok.*;
 
 import com.regtab.core.model.ICell;
-import com.regtab.core.rtl.interpreter.pattern.CellPattern;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.regtab.core.rtl.interpreter.RTLPattern.CellPattern;
+
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 public final class TableMap {
     @Getter
-    private List<SubtableMap> subtableMaps = new ArrayList<>();
+    private final List<SubtableMap> subtableMaps = new ArrayList<>();
 
     void add(@NonNull SubtableMap map) {
         subtableMaps.add(map);
@@ -26,29 +27,17 @@ public final class TableMap {
         return true;
     }
 
-    @RequiredArgsConstructor
-    public static final class CellMap {
-        @NonNull
+    @NoArgsConstructor(access = AccessLevel.PACKAGE)
+    public static final class SubtableMap {
         @Getter
-        private final ICell cell;
-        @NonNull
-        @Getter
-        private final CellPattern pattern;
-        public boolean apply() {
-            return pattern.apply(cell);
-        }
-    }
+        private final List<RowMap> rowMaps = new ArrayList<>();
 
-    public static final class SubrowMap {
-        @Getter
-        private final List<CellMap> cellMaps = new ArrayList<>();
-
-        void add(@NonNull CellMap map) {
-            cellMaps.add(map);
+        void add(@NonNull RowMap map) {
+            rowMaps.add(map);
         }
 
         public boolean apply() {
-            for (CellMap map : cellMaps) {
+            for (RowMap map : rowMaps) {
                 boolean result = map.apply();
                 if (!result)
                     return false;
@@ -57,6 +46,7 @@ public final class TableMap {
         }
     }
 
+    @NoArgsConstructor(access = AccessLevel.PACKAGE)
     public static final class RowMap {
         @Getter
         private final List<SubrowMap> subrowMaps = new ArrayList<>();
@@ -75,21 +65,37 @@ public final class TableMap {
         }
     }
 
-    public static final class SubtableMap {
+    @NoArgsConstructor(access = AccessLevel.PACKAGE)
+    public static final class SubrowMap {
         @Getter
-        private final List<RowMap> rowMaps = new ArrayList<>();
+        private final List<CellMap> cellMaps = new ArrayList<>();
 
-        void add(@NonNull RowMap map) {
-            rowMaps.add(map);
+        void add(@NonNull CellMap map) {
+            cellMaps.add(map);
         }
 
         public boolean apply() {
-            for (RowMap map : rowMaps) {
+            for (CellMap map : cellMaps) {
                 boolean result = map.apply();
                 if (!result)
                     return false;
             }
             return true;
+        }
+    }
+
+    @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+    public static final class CellMap {
+        @NonNull
+        @Getter
+        private final ICell cell;
+
+        @NonNull
+        @Getter
+        private final CellPattern pattern;
+
+        public boolean apply() {
+            return pattern.apply(cell);
         }
     }
 

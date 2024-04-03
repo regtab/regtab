@@ -1,17 +1,17 @@
-package com.regtab.core.rtl;
+package com.regtab.core.rtl.interpreter;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.NonNull;
 
 import com.regtab.core.model.semantics.Condition;
 import com.regtab.core.model.*;
-import com.regtab.core.rtl.interpreter.pattern.*;
-import com.regtab.core.rtl.interpreter.visitor.Quantifier;
-import static com.regtab.core.rtl.TableMap.*;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+
+import static com.regtab.core.rtl.interpreter.TableMap.*;
+import static com.regtab.core.rtl.interpreter.RTLPattern.*;
 
 @Slf4j
 public class RTLMatcher {
@@ -21,8 +21,6 @@ public class RTLMatcher {
     public RTLMatcher(@NonNull RTLPattern pattern) {
         this.pattern = pattern;
     }
-
-    //private TableMap tableMap = new TableMap()
 
     public TableMap match(@NonNull ITable table) {
         final TablePattern tablePattern = pattern.getTablePattern();
