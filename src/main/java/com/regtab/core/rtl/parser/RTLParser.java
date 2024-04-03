@@ -18,13 +18,13 @@ public class RTLParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, ATTRIBUTE=2, VALUE=3, SKIPPED=4, FACTOR=5, PREFIX=6, SUFFIX=7, 
-		RECORD=8, GROUP=9, SCHEMA=10, LEFT=11, RIGHT=12, UP=13, DOWN=14, INROW=15, 
-		INCOL=16, INCELL=17, ROW=18, COL=19, THIS=20, AND=21, OR=22, NOT=23, TRUE=24, 
-		FALSE=25, GT=26, GE=27, LT=28, LE=29, EQ=30, NEQ=31, CONTAINS=32, MATCHES=33, 
-		PLUS=34, MINUS=35, MULT=36, MOD=37, LPAREN=38, RPAREN=39, LCURLY=40, RCURLY=41, 
-		LSQUARE=42, RSQUARE=43, ARROW=44, COLON=45, SEMICOLON=46, COMMA=47, DOLLAR=48, 
-		QUESTION=49, DOTS=50, ASSIGN=51, TAG=52, ID=53, INT=54, HEX=55, STRING=56, 
-		WS=57;
+		RECORD=8, GROUP=9, SCHEMA=10, LEFT=11, RIGHT=12, UP=13, DOWN=14, IN_ROW=15, 
+		IN_COL=16, IN_CELL=17, ROW=18, COL=19, THIS=20, AND=21, OR=22, NOT=23, 
+		TRUE=24, FALSE=25, GT=26, GE=27, LT=28, LE=29, EQ=30, NEQ=31, CONTAINS=32, 
+		MATCHES=33, PLUS=34, MINUS=35, MULT=36, MOD=37, LPAREN=38, RPAREN=39, 
+		LCURLY=40, RCURLY=41, LSQUARE=42, RSQUARE=43, ARROW=44, COLON=45, SEMICOLON=46, 
+		COMMA=47, DOLLAR=48, QUESTION=49, DOTS=50, ASSIGN=51, TAG=52, ID=53, INT=54, 
+		HEX=55, STRING=56, WS=57;
 	public static final int
 		RULE_table = 0, RULE_subtable = 1, RULE_rows = 2, RULE_label = 3, RULE_copy = 4, 
 		RULE_quantifier = 5, RULE_zeroOrOne = 6, RULE_zeroOrMore = 7, RULE_oneOrMore = 8, 
@@ -67,8 +67,8 @@ public class RTLParser extends Parser {
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, "ATTRIBUTE", "VALUE", "SKIPPED", "FACTOR", "PREFIX", "SUFFIX", 
-			"RECORD", "GROUP", "SCHEMA", "LEFT", "RIGHT", "UP", "DOWN", "INROW", 
-			"INCOL", "INCELL", "ROW", "COL", "THIS", "AND", "OR", "NOT", "TRUE", 
+			"RECORD", "GROUP", "SCHEMA", "LEFT", "RIGHT", "UP", "DOWN", "IN_ROW", 
+			"IN_COL", "IN_CELL", "ROW", "COL", "THIS", "AND", "OR", "NOT", "TRUE", 
 			"FALSE", "GT", "GE", "LT", "LE", "EQ", "NEQ", "CONTAINS", "MATCHES", 
 			"PLUS", "MINUS", "MULT", "MOD", "LPAREN", "RPAREN", "LCURLY", "RCURLY", 
 			"LSQUARE", "RSQUARE", "ARROW", "COLON", "SEMICOLON", "COMMA", "DOLLAR", 
@@ -1800,9 +1800,9 @@ public class RTLParser extends Parser {
 			case RIGHT:
 			case UP:
 			case DOWN:
-			case INROW:
-			case INCOL:
-			case INCELL:
+			case IN_ROW:
+			case IN_COL:
+			case IN_CELL:
 			case MULT:
 			case LPAREN:
 				enterOuterAlt(_localctx, 2);
@@ -2306,9 +2306,9 @@ public class RTLParser extends Parser {
 			case RIGHT:
 			case UP:
 			case DOWN:
-			case INROW:
-			case INCOL:
-			case INCELL:
+			case IN_ROW:
+			case IN_COL:
+			case IN_CELL:
 			case MULT:
 				enterOuterAlt(_localctx, 1);
 				{
@@ -2465,9 +2465,9 @@ public class RTLParser extends Parser {
 		public TerminalNode RIGHT() { return getToken(RTLParser.RIGHT, 0); }
 		public TerminalNode UP() { return getToken(RTLParser.UP, 0); }
 		public TerminalNode DOWN() { return getToken(RTLParser.DOWN, 0); }
-		public TerminalNode INROW() { return getToken(RTLParser.INROW, 0); }
-		public TerminalNode INCOL() { return getToken(RTLParser.INCOL, 0); }
-		public TerminalNode INCELL() { return getToken(RTLParser.INCELL, 0); }
+		public TerminalNode IN_ROW() { return getToken(RTLParser.IN_ROW, 0); }
+		public TerminalNode IN_COL() { return getToken(RTLParser.IN_COL, 0); }
+		public TerminalNode IN_CELL() { return getToken(RTLParser.IN_CELL, 0); }
 		public DirectionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}

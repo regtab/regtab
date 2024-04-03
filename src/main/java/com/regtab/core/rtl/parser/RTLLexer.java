@@ -18,13 +18,13 @@ public class RTLLexer extends Lexer {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, ATTRIBUTE=2, VALUE=3, SKIPPED=4, FACTOR=5, PREFIX=6, SUFFIX=7, 
-		RECORD=8, GROUP=9, SCHEMA=10, LEFT=11, RIGHT=12, UP=13, DOWN=14, INROW=15, 
-		INCOL=16, INCELL=17, ROW=18, COL=19, THIS=20, AND=21, OR=22, NOT=23, TRUE=24, 
-		FALSE=25, GT=26, GE=27, LT=28, LE=29, EQ=30, NEQ=31, CONTAINS=32, MATCHES=33, 
-		PLUS=34, MINUS=35, MULT=36, MOD=37, LPAREN=38, RPAREN=39, LCURLY=40, RCURLY=41, 
-		LSQUARE=42, RSQUARE=43, ARROW=44, COLON=45, SEMICOLON=46, COMMA=47, DOLLAR=48, 
-		QUESTION=49, DOTS=50, ASSIGN=51, TAG=52, ID=53, INT=54, HEX=55, STRING=56, 
-		WS=57;
+		RECORD=8, GROUP=9, SCHEMA=10, LEFT=11, RIGHT=12, UP=13, DOWN=14, IN_ROW=15, 
+		IN_COL=16, IN_CELL=17, ROW=18, COL=19, THIS=20, AND=21, OR=22, NOT=23, 
+		TRUE=24, FALSE=25, GT=26, GE=27, LT=28, LE=29, EQ=30, NEQ=31, CONTAINS=32, 
+		MATCHES=33, PLUS=34, MINUS=35, MULT=36, MOD=37, LPAREN=38, RPAREN=39, 
+		LCURLY=40, RCURLY=41, LSQUARE=42, RSQUARE=43, ARROW=44, COLON=45, SEMICOLON=46, 
+		COMMA=47, DOLLAR=48, QUESTION=49, DOTS=50, ASSIGN=51, TAG=52, ID=53, INT=54, 
+		HEX=55, STRING=56, WS=57;
 	public static String[] channelNames = {
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 	};
@@ -36,8 +36,8 @@ public class RTLLexer extends Lexer {
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"T__0", "ATTRIBUTE", "VALUE", "SKIPPED", "FACTOR", "PREFIX", "SUFFIX", 
-			"RECORD", "GROUP", "SCHEMA", "LEFT", "RIGHT", "UP", "DOWN", "INROW", 
-			"INCOL", "INCELL", "ROW", "COL", "THIS", "AND", "OR", "NOT", "TRUE", 
+			"RECORD", "GROUP", "SCHEMA", "LEFT", "RIGHT", "UP", "DOWN", "IN_ROW", 
+			"IN_COL", "IN_CELL", "ROW", "COL", "THIS", "AND", "OR", "NOT", "TRUE", 
 			"FALSE", "GT", "GE", "LT", "LE", "EQ", "NEQ", "CONTAINS", "MATCHES", 
 			"PLUS", "MINUS", "MULT", "MOD", "LPAREN", "RPAREN", "LCURLY", "RCURLY", 
 			"LSQUARE", "RSQUARE", "ARROW", "COLON", "SEMICOLON", "COMMA", "DOLLAR", 
@@ -61,8 +61,8 @@ public class RTLLexer extends Lexer {
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, "ATTRIBUTE", "VALUE", "SKIPPED", "FACTOR", "PREFIX", "SUFFIX", 
-			"RECORD", "GROUP", "SCHEMA", "LEFT", "RIGHT", "UP", "DOWN", "INROW", 
-			"INCOL", "INCELL", "ROW", "COL", "THIS", "AND", "OR", "NOT", "TRUE", 
+			"RECORD", "GROUP", "SCHEMA", "LEFT", "RIGHT", "UP", "DOWN", "IN_ROW", 
+			"IN_COL", "IN_CELL", "ROW", "COL", "THIS", "AND", "OR", "NOT", "TRUE", 
 			"FALSE", "GT", "GE", "LT", "LE", "EQ", "NEQ", "CONTAINS", "MATCHES", 
 			"PLUS", "MINUS", "MULT", "MOD", "LPAREN", "RPAREN", "LCURLY", "RCURLY", 
 			"LSQUARE", "RSQUARE", "ARROW", "COLON", "SEMICOLON", "COMMA", "DOLLAR", 

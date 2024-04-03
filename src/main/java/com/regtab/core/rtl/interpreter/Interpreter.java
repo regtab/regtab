@@ -675,11 +675,11 @@ final class Interpreter {
                 direction = Lookup.Direction.UP;
             else if (directionCtx.DOWN() != null)
                 direction = Lookup.Direction.DOWN;
-            else if (directionCtx.INROW() != null)
+            else if (directionCtx.IN_ROW() != null)
                 direction = Lookup.Direction.IN_ROW;
-            else if (directionCtx.INCOL() != null)
+            else if (directionCtx.IN_COL() != null)
                 direction = Lookup.Direction.IN_COL;
-            else if (directionCtx.INCELL() != null)
+            else if (directionCtx.IN_CELL() != null)
                 direction = Lookup.Direction.IN_CELL;
             else
                 return null; // Impossible

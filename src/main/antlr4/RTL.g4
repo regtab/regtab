@@ -102,24 +102,21 @@ direction
     | RIGHT
     | UP
     | DOWN
-    | INROW
-    | INCOL
-    | INCELL
-//    | INLINE
+    | IN_ROW
+    | IN_COL
+    | IN_CELL
     ;
 
 // UP -- вверх, DOWN -- вниз, LEFT -- влево, RIGHT -- вправо (по данным направлениям от ячейки);
-// INROW -- по строкам слева направо, INCOL -- по столбцам сверху вниз;
-// INCELL -- по ячейкам, INLINE -- в строке текста.
+// IN_ROW -- в строках слева направо, IN_COL -- в столбцах сверху вниз, IN_CELL -- в ячейках.
 
 LEFT   : 'left' ;
 RIGHT  : 'right' ;
 UP     : 'up' ;
 DOWN   : 'down' ;
-INROW  : 'row' ;
-INCOL  : 'col' ;
-INCELL : 'cell' ;
-//INLINE : 'line' ;
+IN_ROW  : 'row' ;
+IN_COL  : 'col' ;
+IN_CELL : 'cell' ;
 
 // Область поиска (where).
 where
