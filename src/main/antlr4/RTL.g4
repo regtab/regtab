@@ -63,15 +63,13 @@ action : actionType ASSIGN (actionBody | (LPAREN actionBody (SEMICOLON actionBod
 // FACTOR -- заимствовать значение элемента из другого элемента или литерала.
 // CONCAT -- соединить значение дочернего элемента со значением родительского элемента или литерала.
 // RECORD -- связать значения с записью.
-// GROUP  -- связать значения с группой (анонимным атрибутом).
 // SCHEMA -- связать значение с атрибутом.
-actionType : FACTOR | PREFIX | SUFFIX | RECORD | GROUP | SCHEMA ;
+actionType : FACTOR | PREFIX | SUFFIX | RECORD | SCHEMA ;
 
 FACTOR : 'factor' ;
 PREFIX : 'prefix' ;
 SUFFIX : 'suffix' ;
 RECORD : 'record' ;
-GROUP  : 'group' ;
 SCHEMA : 'schema' ;
 
 actionBody : STRING | lookup ;

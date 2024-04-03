@@ -34,11 +34,6 @@ public final class Attribute {
         this.element = element;
     }
 
-    Attribute(@NonNull String name, @NonNull Group group) {
-        this(name);
-        group.fillAttribute(this);
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)

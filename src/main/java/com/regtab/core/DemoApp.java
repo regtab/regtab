@@ -247,22 +247,22 @@ public final class DemoApp {
             sb.setLength(0);
 
             System.out.printf("TTL = %s: SHEET = %d%n", "20", 20);
-            sb.append("[[skip]{2}[v#cl : group=(*right)][val#cl]+]{3}");
-            sb.append("[[val#cr : group=(*down)]{2} [val: record=((*up:#cl);(*left:#cr)); schema='DAT']+]");
+            sb.append("[[skip]{2}[v#cl][val#cl]+]{3}");
+            sb.append("[[val#cr]{2} [val: record=((*up:#cl);(*left:#cr)); schema='DAT']+]");
             sb.append("[[val#cr]{2} [val : record=((*up:#cl);(*left:#cr)); schema='DAT']+]+");
             extract(xlFile, 20, sb.toString());
             sb.setLength(0);
 
             System.out.printf("TTL = %s: SHEET = %d%n", "21", 21);
-            sb.append("[[~@numeric -> skip]{2}[~@numeric -> val#cl : group=*right][~@numeric -> val#cl]+]+");
-            sb.append("[[val#cr : group=*down]{2} [val : record=((*up:#cl);(*left:#cr)); schema='DAT']+]");
+            sb.append("[[~@numeric -> skip]{2}[~@numeric -> val#cl][~@numeric -> val#cl]+]+");
+            sb.append("[[val#cr]{2} [val : record=((*up:#cl);(*left:#cr)); schema='DAT']+]");
             sb.append("[[val#cr]{2} [val : record=((*up:#cl);(*left:#cr)); schema='DAT']+]+");
             extract(xlFile, 21, sb.toString());
             sb.setLength(0);
 
             System.out.printf("TTL = %s: SHEET = %d%n", "21a", 21);
-            sb.append("[[@blank -> skip]{2}[@string -> v#cl : group=*right][@string -> val#cl]+]+");
-            sb.append("[[val#cr : group=*down]{2} [val: record=((*up:#cl);(*left:#cr)); schema='DAT']+]");
+            sb.append("[[@blank -> skip]{2}[@string -> v#cl][@string -> val#cl]+]+");
+            sb.append("[[val#cr]{2} [val: record=((*up:#cl);(*left:#cr)); schema='DAT']+]");
             sb.append("[[val#cr]{2} [val : record=((*up:#cl);(*left:#cr)); schema='DAT']+]+");
             extract(xlFile, 21, sb.toString());
             sb.setLength(0);

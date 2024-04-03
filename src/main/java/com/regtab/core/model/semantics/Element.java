@@ -78,12 +78,6 @@ public final class Element {
                     action.perform(this);
             }
         }
-        else if (actionType == Action.Type.GROUP) {
-            for (Action action : actions) {
-                if (action.getType() == actionType)
-                    action.perform(this);
-            }
-        }
         else if (actionType == Action.Type.SCHEMA) {
             for (Action action : actions) {
                 if (action.getType() == actionType)

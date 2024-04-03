@@ -11,10 +11,6 @@ public final class Value {
     private Attribute attribute;
 
     @Getter
-    @Setter(AccessLevel.PACKAGE)
-    private Group group;
-
-    @Getter
     private final String string;
 
     @Getter

@@ -99,12 +99,8 @@ public final class ITable {
             cell.perform(Action.Type.RECORD);
 
         for (ICell cell: cells)
-            cell.perform(Action.Type.GROUP);
-
-        for (ICell cell: cells)
             cell.perform(Action.Type.SCHEMA);
 
-        recordset.genAttributes();
         recordset.excludeNulls();
 
         return recordset;

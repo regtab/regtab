@@ -89,53 +89,6 @@ public final class Recordset {
         addValue(v2, record);
     }
 
-    private final HashMap<Element, Group> elemGroupMap = new HashMap<>();
-    private final List<Group> groups = new ArrayList<>();
-
-    public void updateGroup(@NonNull Element elem1, @NonNull Element elem2) {
-        if (elem1.getType() == Element.Type.ATTRIBUTE)
-            throw new IllegalArgumentException("Первый элемент является атрибутом");
-
-        if (elem2.getType() == Element.Type.ATTRIBUTE)
-            throw new IllegalArgumentException("Второй элемент является атрибутом");
-
-        if (elem1 == elem2)
-            throw new IllegalArgumentException("Элементы совпадают");
-
-        Group group1 = elemGroupMap.get(elem1);
-        Group group2 = elemGroupMap.get(elem2);
-
-        if (group1 != null && group2 != null) {
-            group1.join(group2);
-            elemGroupMap.replace(elem2, group1);
-            groups.remove(group2);
-        } else if (group1 != null) {
-            Value value2 = elemValMap.get(elem2);
-            if (value2 != null) {
-                group1.addValue(value2);
-                elemGroupMap.put(elem2, group1);
-            }
-        } else if (group2 != null) {
-            Value value1 = elemValMap.get(elem1);
-            if (value1 != null) {
-                group2.addValue(value1);
-                elemGroupMap.put(elem1, group2);
-            }
-        } else {
-            Value value1 = elemValMap.get(elem1);
-            Value value2 = elemValMap.get(elem2);
-            if (value1 != null && value2 != null) {
-                Group group = new Group();
-                groups.add(group);
-
-                group.addValue(value1);
-                elemGroupMap.put(elem1, group);
-                group.addValue(value2);
-                elemGroupMap.put(elem2, group);
-            }
-        }
-    }
-
     public void excludeNulls() {
         if (records.size() == 0) return;
         Record record = records.get(0);
@@ -179,15 +132,6 @@ public final class Recordset {
                     currentAttr.addValue(value);
                 }
             }
-        }
-    }
-
-    public void genAttributes() {
-        for (int i = 0; i < groups.size(); i++) {
-            Group group = groups.get(i);
-            String name = "GROUP" + i;
-            Attribute attribute = new Attribute(name, group);
-            attributes.put(name, attribute);
         }
     }
 

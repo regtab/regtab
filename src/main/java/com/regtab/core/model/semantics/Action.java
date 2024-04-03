@@ -19,7 +19,7 @@ public final class Action {
 
     public Action(@NonNull Type type) {
         this.type = type;
-        if (type == Type.RECORD || type == Type.GROUP) {
+        if (type == Type.RECORD) {
             lookups = new ArrayList<>(1);
             strings = new ArrayList<>(1);
         }
@@ -32,14 +32,14 @@ public final class Action {
     private List<String> strings;
 
     public void addLookup(@NonNull Lookup lookup) {
-        if (type == Type.RECORD || type == Type.GROUP)
+        if (type == Type.RECORD)
             lookups.add(lookup);
         else
             this.lookup = lookup;
     }
 
     public void addString(@NonNull String string) {
-        if (type == Type.RECORD || type == Type.GROUP)
+        if (type == Type.RECORD)
             strings.add(string);
         else
             this.string = string;
@@ -143,20 +143,6 @@ public final class Action {
         }
     }
 
-    private void performGroup(Element caller) {
-        if (lookups.isEmpty()) return;
-
-        final Recordset recordset = caller.getCell().getTable().getRecordset();
-
-        for (Lookup lookup : lookups) {
-            final List<Element> elements = lookup.findAll(Element.Type.VALUE, caller);
-            if (elements != null) {
-                for (Element element : elements)
-                    recordset.updateGroup(caller, element);
-            }
-        }
-    }
-
     private void performSchema(Element element) {
         if (lookup != null) {
             final Element e = lookup.findFirst(Element.Type.ATTRIBUTE, element);
@@ -178,13 +164,12 @@ public final class Action {
             case PREFIX -> performPrefix(caller);
             case SUFFIX -> performSuffix(caller);
             case RECORD -> performRecord(caller);
-            case GROUP -> performGroup(caller);
             case SCHEMA -> performSchema(caller);
         }
     }
 
     public enum Type {
-        FACTOR, PREFIX, SUFFIX, GROUP, SCHEMA, RECORD
+        FACTOR, PREFIX, SUFFIX, SCHEMA, RECORD
     }
 
     @Override
