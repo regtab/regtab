@@ -27,12 +27,12 @@ public final class Attribute {
         value.setAttribute(this);
     }
 
-    Attribute(@NonNull Element element) {
-        if (element.getType() != Element.Type.ATTRIBUTE)
-            throw new IllegalArgumentException("Недопустимый тип элемента");
-        name = element.getText();
-        this.element = element;
-    }
+//    Attribute(@NonNull Element element) {
+//        if (element.getType() != Element.Type.ATTRIBUTE)
+//            throw new IllegalArgumentException("Недопустимый тип элемента");
+//        name = element.getText();
+//        this.element = element;
+//    }
 
     @Override
     public String toString() {

@@ -16,12 +16,6 @@ public final class Recordset {
 
     private final Map<Element, Value> elemValMap = new HashMap<>();
 
-    private void addValue(Value value, Record record) {
-        record.addValue(value);
-        final Element element = value.getElement();
-        elemValMap.put(element, value);
-    }
-
     public void updateSchema(@NonNull Element valElement, @NonNull String attrName) {
         Attribute attr = attributes.get(attrName);
         Value val = elemValMap.get(valElement);
@@ -58,8 +52,10 @@ public final class Recordset {
 
     public Record createRecord(@NonNull Element elem) {
         Record record = new Record();
-        Value v = new Value(elem);
-        addValue(v, record);
+        final String text = elem.getText();
+        Value v = new Value(text);
+        record.addValue(v);
+        elemValMap.put(elem, v);
         recordedElements.add(elem);
         records.add(record);
 
@@ -68,14 +64,14 @@ public final class Recordset {
 
     public void updateRecord(@NonNull Record record, @NonNull String attrName, @NonNull String valStr) {
         Value v2 = new Value(valStr);
-        addValue(v2, record);
+        record.addValue(v2);
 
         updateSchema(v2, attrName);
     }
 
     public void updateRecord(@NonNull Record record, @NonNull String str) {
         Value v2 = new Value(str);
-        addValue(v2, record);
+        record.addValue(v2);
     }
 
     public void updateRecord(@NonNull Record record, @NonNull Element elem) {
@@ -84,9 +80,12 @@ public final class Recordset {
             throw new IllegalArgumentException("Элемент уже принадлежит записи");
 
         Value v2 = elemValMap.get(elem);
-        if (v2 == null)
-            v2 = new Value(elem);
-        addValue(v2, record);
+        if (v2 == null) {
+            final String text = elem.getText();
+            v2 = new Value(text);
+        }
+        record.addValue(v2);
+        elemValMap.put(elem, v2);
     }
 
     public void excludeNulls() {

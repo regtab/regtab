@@ -3,7 +3,7 @@ package com.regtab.core.model.recordset;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Record {
+public final class Record {
     private final List<Value> values = new ArrayList<>();
 
     void addValue(Value value) {
