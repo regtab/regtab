@@ -1,8 +1,6 @@
-package com.regtab.core.model.semantics;
+package com.regtab.core.model;
 
 import lombok.NonNull;
-
-import com.regtab.core.model.ICell;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,6 @@ public final class Condition {
         }
         return true;
     }
-
 
     public Condition join(@NonNull Condition cond) {
         if (cond != null)

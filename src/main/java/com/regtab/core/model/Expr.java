@@ -1,11 +1,9 @@
-package com.regtab.core.model.semantics;
+package com.regtab.core.model;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-
-import com.regtab.core.model.ICell;
 
 @Slf4j
 @Builder(toBuilder = true)

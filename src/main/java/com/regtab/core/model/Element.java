@@ -1,6 +1,4 @@
-package com.regtab.core.model.semantics;
-
-import com.regtab.core.model.ICell;
+package com.regtab.core.model;
 
 import lombok.NonNull;
 import lombok.Getter;
@@ -48,25 +46,25 @@ public final class Element {
         actions.add(action);
     }
 
-    public void perform(Action.Type actionType) {
+    public void perform(@NonNull Action.Type actionType, @NonNull Recordset recordset) {
         if (type == Type.SKIPPED) return;
 
         if (actionType == Action.Type.FACTOR) {
             for (Action action : actions) {
                 if (action.getType() == actionType)
-                    action.perform(this);
+                    action.perform(this, recordset);
             }
         }
         else if (actionType == Action.Type.PREFIX) {
             for (Action action : actions) {
                 if (action.getType() == actionType)
-                    action.perform(this);
+                    action.perform(this, recordset);
             }
         }
         else if (actionType == Action.Type.SUFFIX) {
             for (Action action : actions) {
                 if (action.getType() == actionType)
-                    action.perform(this);
+                    action.perform(this, recordset);
             }
         }
 
@@ -75,13 +73,13 @@ public final class Element {
         if (actionType == Action.Type.RECORD) {
             for (Action action : actions) {
                 if (action.getType() == actionType)
-                    action.perform(this);
+                    action.perform(this, recordset);
             }
         }
         else if (actionType == Action.Type.SCHEMA) {
             for (Action action : actions) {
                 if (action.getType() == actionType)
-                    action.perform(this);
+                    action.perform(this, recordset);
             }
         }
     }

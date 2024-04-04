@@ -1,10 +1,6 @@
 package com.regtab.core.model;
 
-import com.regtab.core.model.recordset.Recordset;
-import com.regtab.core.model.semantics.Action;
-import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,9 +29,6 @@ public final class ITable {
     public boolean isEmpty() {
         return cells.length == 0 ? true : false;
     }
-
-    @Getter
-    private final Recordset recordset = new Recordset();
 
     public ITable(int numOfRows, int numOfCols) {
         if (numOfRows < 1)
@@ -86,20 +79,24 @@ public final class ITable {
     }
 
     public Recordset extract() {
-        for (ICell cell: cells)
-            cell.perform(Action.Type.FACTOR);
+        final Recordset recordset = new Recordset();
 
         for (ICell cell: cells)
-            cell.perform(Action.Type.PREFIX);
+            cell.perform(Action.Type.FACTOR, recordset);
 
         for (ICell cell: cells)
-            cell.perform(Action.Type.SUFFIX);
+            cell.perform(Action.Type.PREFIX, recordset);
 
         for (ICell cell: cells)
-            cell.perform(Action.Type.RECORD);
+            cell.perform(Action.Type.SUFFIX, recordset);
+
+
 
         for (ICell cell: cells)
-            cell.perform(Action.Type.SCHEMA);
+            cell.perform(Action.Type.RECORD, recordset);
+
+        for (ICell cell: cells)
+            cell.perform(Action.Type.SCHEMA, recordset);
 
         recordset.excludeNulls();
 

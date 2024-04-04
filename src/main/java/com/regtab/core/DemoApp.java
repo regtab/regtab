@@ -1,26 +1,24 @@
 package com.regtab.core;
 
-import com.regtab.core.model.ITable;
-import com.regtab.core.model.recordset.Recordset;
-import com.regtab.core.printers.Printer;
+import com.regtab.core.model.*;
+import com.regtab.core.model.Record;
 import com.regtab.core.readers.XlReader;
 import com.regtab.core.rtl.interpreter.RTLMatcher;
 import com.regtab.core.rtl.interpreter.TableMap;
 import com.regtab.core.rtl.interpreter.RTLPattern;
+import dnl.utils.text.table.TextTable;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public final class DemoApp {
-    private static final Printer printer = new Printer();
-
     private static void extract(File xlFile, int sheetIdx, String ttl) throws IOException {
         final XlReader reader = new XlReader(xlFile);
         reader.setFormatMode(true);
         reader.setMultilineMode(true);
 
         final ITable table = reader.readTable(sheetIdx);
-        //RTLPattern.config().setConcatSeparator("/");
 
         final RTLPattern pattern = RTLPattern.compile(ttl);
         if (pattern == null) {
@@ -43,7 +41,7 @@ public final class DemoApp {
 
         // Карта таблицы успешно применена
         final Recordset recordset = table.extract();
-        printer.print(recordset);
+        print(recordset);
         System.out.println();
     }
 
@@ -492,6 +490,53 @@ public final class DemoApp {
             extract(xlFile2, 21, sb.toString());
             sb.setLength(0);
 
+        }
+    }
+
+    private static void print(Recordset recordset) {
+        List<Record> records = recordset.records();
+
+        final String[] header;
+        final String[][] data;
+        final int numOfRows = records.size();
+        Record record;
+
+        if (records.size() > 0) {
+            record = records.get(0);
+            List<Value> values = record.values();
+            final int numOfCols = values.size();
+            header = new String[numOfCols];
+
+            for (int i = 0; i < header.length; i++) {
+                Attribute attr = values.get(i).getAttribute();
+                String attrName;
+
+                if (attr == null)
+                    attrName = "UNDEFINED";
+                else
+                    attrName = attr.getName();
+
+                header[i] = attrName;
+            }
+
+            data = new String[numOfRows][numOfCols];
+
+            for (int i = 0; i < numOfRows; i++) {
+                record = records.get(i);
+                values = record.values();
+                for (int j = 0; j < numOfCols; j++) {
+                    data[i][j] = values.get(j).getString();
+                }
+            }
+
+            TextTable tt = new TextTable(header, data);
+
+            // this adds the numbering on the left
+            // tt.setAddRowNumbering(true);
+            // sort by the first column
+            // tt.setSort(0);
+
+            tt.printTable();
         }
     }
 }

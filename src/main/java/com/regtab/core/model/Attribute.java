@@ -1,6 +1,4 @@
-package com.regtab.core.model.recordset;
-
-import com.regtab.core.model.semantics.Element;
+package com.regtab.core.model;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -27,7 +25,7 @@ public final class Attribute {
 
     private final List<Value> values = new ArrayList<>();
 
-    public void addValue(@NonNull Value value) {
+    void addValue(@NonNull Value value) {
         values.add(value);
         value.setAttribute(this);
     }

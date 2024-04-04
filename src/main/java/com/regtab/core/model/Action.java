@@ -1,11 +1,8 @@
-package com.regtab.core.model.semantics;
+package com.regtab.core.model;
 
 import lombok.NonNull;
 import lombok.Getter;
 import lombok.Setter;
-
-import com.regtab.core.model.recordset.Record;
-import com.regtab.core.model.recordset.Recordset;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -105,10 +102,9 @@ public final class Action {
             caller.setText(string);
     }
 
-    private void performRecord(Element caller) {
+    private void performRecord(Element caller, final Recordset recordset) {
         if (lookups.isEmpty() && strings.isEmpty()) return;
 
-        final Recordset recordset = caller.getCell().getTable().getRecordset();
         final Record record = recordset.createRecord(caller);
 
         for (Lookup lookup : lookups) {
@@ -143,28 +139,26 @@ public final class Action {
         }
     }
 
-    private void performSchema(Element element) {
+    private void performSchema(Element element, final Recordset recordset) {
         if (lookup != null) {
             final Element e = lookup.findFirst(Element.Type.ATTRIBUTE, element);
             if (e != null) {
-                final Recordset recordset = element.getCell().getTable().getRecordset();
                 recordset.updateSchema(element, e);
             }
             return;
         }
         if (string != null) {
-            final Recordset recordset = element.getCell().getTable().getRecordset();
             recordset.updateSchema(element, string);
         }
     }
 
-    void perform(Element caller) {
+    void perform(@NonNull Element caller, @NonNull Recordset recordset) {
         switch (type) {
             case FACTOR -> performFactor(caller);
             case PREFIX -> performPrefix(caller);
             case SUFFIX -> performSuffix(caller);
-            case RECORD -> performRecord(caller);
-            case SCHEMA -> performSchema(caller);
+            case RECORD -> performRecord(caller, recordset);
+            case SCHEMA -> performSchema(caller, recordset);
         }
     }
 

@@ -7,10 +7,10 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import com.regtab.core.model.ICell;
-import com.regtab.core.model.semantics.Action;
-import com.regtab.core.model.semantics.Condition;
-import com.regtab.core.model.semantics.Element;
-import com.regtab.core.model.semantics.Expr;
+import com.regtab.core.model.Action;
+import com.regtab.core.model.Condition;
+import com.regtab.core.model.Element;
+import com.regtab.core.model.Expr;
 import com.regtab.core.model.ITable;
 
 import com.regtab.core.rtl.parser.RTLLexer;

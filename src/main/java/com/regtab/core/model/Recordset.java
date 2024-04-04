@@ -1,11 +1,12 @@
-package com.regtab.core.model.recordset;
+package com.regtab.core.model;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
-
-import com.regtab.core.model.semantics.Element;
 
 import java.util.*;
 
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 public final class Recordset {
     private final Map<String, Attribute> attributes = new HashMap<>();
     private final List<Record> records = new ArrayList<>();
@@ -16,7 +17,7 @@ public final class Recordset {
 
     private final Map<Element, Value> elemValMap = new HashMap<>();
 
-    public void updateSchema(@NonNull Element valElement, @NonNull String attrName) {
+    void updateSchema(@NonNull Element valElement, @NonNull String attrName) {
         Attribute attr = attributes.get(attrName);
         Value val = elemValMap.get(valElement);
 
@@ -29,7 +30,7 @@ public final class Recordset {
         }
     }
 
-    public void updateSchema(@NonNull Element valElement, @NonNull Element attrElement) {
+    void updateSchema(@NonNull Element valElement, @NonNull Element attrElement) {
         if (valElement == attrElement)
             throw new IllegalArgumentException("Недопустимая операция: элементы совпадают");
 
@@ -37,7 +38,7 @@ public final class Recordset {
         updateSchema(valElement, text);
     }
 
-    private void updateSchema(Value val, String attrName) {
+    void updateSchema(Value val, String attrName) {
         Attribute attr = attributes.get(attrName);
 
         if (attr == null) {
@@ -50,7 +51,7 @@ public final class Recordset {
 
     private final List<Element> recordedElements = new ArrayList<>();
 
-    public Record createRecord(@NonNull Element elem) {
+    Record createRecord(@NonNull Element elem) {
         Record record = new Record();
         final String text = elem.getText();
         Value v = new Value(text, elem);
@@ -62,19 +63,19 @@ public final class Recordset {
         return record;
     }
 
-    public void updateRecord(@NonNull Record record, @NonNull String attrName, @NonNull String valStr) {
+    void updateRecord(@NonNull Record record, @NonNull String attrName, @NonNull String valStr) {
         Value v2 = new Value(valStr, null);
         record.addValue(v2);
 
         updateSchema(v2, attrName);
     }
 
-    public void updateRecord(@NonNull Record record, @NonNull String str) {
+    void updateRecord(@NonNull Record record, @NonNull String str) {
         Value v2 = new Value(str, null);
         record.addValue(v2);
     }
 
-    public void updateRecord(@NonNull Record record, @NonNull Element elem) {
+    void updateRecord(@NonNull Record record, @NonNull Element elem) {
         boolean result = recordedElements.contains(elem);
         if (result)
             throw new IllegalArgumentException("Элемент уже принадлежит записи");
@@ -88,7 +89,7 @@ public final class Recordset {
         elemValMap.put(elem, v2);
     }
 
-    public void excludeNulls() {
+    void excludeNulls() {
         if (records.size() == 0) return;
         Record record = records.get(0);
         final int numOfCols = record.size();

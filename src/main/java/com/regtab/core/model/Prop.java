@@ -1,7 +1,6 @@
-package com.regtab.core.model.semantics;
+package com.regtab.core.model;
 
 import com.regtab.core.model.format.HtmlTag;
-import com.regtab.core.model.ICell;
 import com.regtab.core.model.format.SSDatatype;
 import com.regtab.core.model.style.*;
 import com.regtab.core.model.style.Font;

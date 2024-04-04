@@ -1,6 +1,5 @@
-package com.regtab.core.model.recordset;
+package com.regtab.core.model;
 
-import com.regtab.core.model.semantics.Element;
 import lombok.*;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;

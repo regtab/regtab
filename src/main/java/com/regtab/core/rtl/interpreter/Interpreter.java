@@ -1,8 +1,7 @@
 package com.regtab.core.rtl.interpreter;
 
+import com.regtab.core.model.*;
 import lombok.NonNull;
-
-import com.regtab.core.model.semantics.*;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;

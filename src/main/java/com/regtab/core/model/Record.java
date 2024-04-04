@@ -1,4 +1,4 @@
-package com.regtab.core.model.recordset;
+package com.regtab.core.model;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

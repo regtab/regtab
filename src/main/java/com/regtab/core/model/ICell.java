@@ -2,8 +2,6 @@ package com.regtab.core.model;
 
 import com.regtab.core.model.format.HtmlTag;
 import com.regtab.core.model.format.SSDatatype;
-import com.regtab.core.model.semantics.Action;
-import com.regtab.core.model.semantics.Element;
 import com.regtab.core.model.style.Style;
 
 import lombok.Getter;
@@ -43,9 +41,9 @@ public final class ICell {
         return elements.isEmpty() ? null : new ArrayList<>(elements);
     }
 
-    void perform(Action.Type type) {
+    void perform(@NonNull Action.Type type, @NonNull Recordset recordset) {
         for (Element element : elements)
-            element.perform(type);
+            element.perform(type, recordset);
     }
 
     public Element createElement(@NonNull Element.Type type, @NonNull String text) {

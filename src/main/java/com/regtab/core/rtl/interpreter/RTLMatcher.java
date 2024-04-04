@@ -3,7 +3,7 @@ package com.regtab.core.rtl.interpreter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.NonNull;
 
-import com.regtab.core.model.semantics.Condition;
+import com.regtab.core.model.Condition;
 import com.regtab.core.model.*;
 
 import java.util.LinkedList;
