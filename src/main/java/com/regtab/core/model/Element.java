@@ -21,7 +21,7 @@ public final class Element {
     @Setter
     private String text;
 
-    public Element(@NonNull ICell cell, @NonNull Type type, @NonNull String text) {
+    Element(@NonNull ICell cell, @NonNull Type type, @NonNull String text) {
         this.cell = cell;
         this.type = type;
         this.text = text;
