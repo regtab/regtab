@@ -1,7 +1,6 @@
 package com.regtab.core;
 
 import com.regtab.core.model.*;
-import com.regtab.core.model.Record;
 import com.regtab.core.readers.XlReader;
 import com.regtab.core.rtl.interpreter.RTLMatcher;
 import com.regtab.core.rtl.interpreter.TableMap;
@@ -494,21 +493,21 @@ public final class DemoApp {
     }
 
     private static void print(Recordset recordset) {
-        List<Record> records = recordset.records();
+        List<Recordset.Record> records = recordset.getRecords();
 
         final String[] header;
         final String[][] data;
         final int numOfRows = records.size();
-        Record record;
+        Recordset.Record record;
 
         if (records.size() > 0) {
             record = records.get(0);
-            List<Value> values = record.values();
+            List<Recordset.Value> values = record.getValues();
             final int numOfCols = values.size();
             header = new String[numOfCols];
 
             for (int i = 0; i < header.length; i++) {
-                Attribute attr = values.get(i).getAttribute();
+                Recordset.Attribute attr = values.get(i).getAttribute();
                 String attrName;
 
                 if (attr == null)
@@ -523,7 +522,7 @@ public final class DemoApp {
 
             for (int i = 0; i < numOfRows; i++) {
                 record = records.get(i);
-                values = record.values();
+                values = record.getValues();
                 for (int j = 0; j < numOfCols; j++) {
                     data[i][j] = values.get(j).getString();
                 }

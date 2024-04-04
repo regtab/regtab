@@ -105,7 +105,7 @@ public final class Action {
     private void performRecord(Element caller, final Recordset recordset) {
         if (lookups.isEmpty() && strings.isEmpty()) return;
 
-        final Record record = recordset.createRecord(caller);
+        final Recordset.Record record = recordset.createRecord(caller);
 
         for (Lookup lookup : lookups) {
             final List<Element> elements = lookup.findAll(Element.Type.VALUE, caller);

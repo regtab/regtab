@@ -1,19 +1,18 @@
 package com.regtab.core.model;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.*;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public final class Recordset {
+    @Getter
     private final Map<String, Attribute> attributes = new HashMap<>();
-    private final List<Record> records = new ArrayList<>();
 
-    public List<Record> records() {
-        return new ArrayList<>(records);
-    }
+    @Getter
+    private final List<Record> records = new ArrayList<>();
 
     private final Map<Element, Value> elemValMap = new HashMap<>();
 
@@ -55,7 +54,7 @@ public final class Recordset {
         Record record = new Record();
         final String text = elem.getText();
         Value v = new Value(text, elem);
-        record.addValue(v);
+        record.getValues().add(v);
         elemValMap.put(elem, v);
         recordedElements.add(elem);
         records.add(record);
@@ -65,14 +64,14 @@ public final class Recordset {
 
     void updateRecord(@NonNull Record record, @NonNull String attrName, @NonNull String valStr) {
         Value v2 = new Value(valStr, null);
-        record.addValue(v2);
+        record.getValues().add(v2);
 
         updateSchema(v2, attrName);
     }
 
     void updateRecord(@NonNull Record record, @NonNull String str) {
         Value v2 = new Value(str, null);
-        record.addValue(v2);
+        record.getValues().add(v2);
     }
 
     void updateRecord(@NonNull Record record, @NonNull Element elem) {
@@ -85,18 +84,18 @@ public final class Recordset {
             final String text = elem.getText();
             v2 = new Value(text, elem);
         }
-        record.addValue(v2);
+        record.getValues().add(v2);
         elemValMap.put(elem, v2);
     }
 
     void excludeNulls() {
         if (records.size() == 0) return;
         Record record = records.get(0);
-        final int numOfCols = record.size();
+        final int numOfCols = record.getValues().size();
 
         for (Record item : records) {
             record = item;
-            if (numOfCols != record.size()) {
+            if (numOfCols != record.getValues().size()) {
                 throw new IllegalStateException("Записи различаются количеством значений");
             }
         }
@@ -105,7 +104,7 @@ public final class Recordset {
             Attribute previousAttr = null, currentAttr = null;
             for (Record item : records) {
                 record = item;
-                Value value = record.getValue(i);
+                Value value = record.getValues().get(i);
                 currentAttr = value.getAttribute();
                 if (previousAttr == null || previousAttr == currentAttr) {
                     previousAttr = currentAttr;
@@ -117,7 +116,7 @@ public final class Recordset {
             if (currentAttr != null) {
                 for (Record item : records) {
                     record = item;
-                    Value value = record.getValue(i);
+                    Value value = record.getValues().get(i);
                     Attribute attr = value.getAttribute();
                     if (attr == null)
                         currentAttr.addValue(value);
@@ -128,11 +127,77 @@ public final class Recordset {
                 attributes.put(attrName, currentAttr);
                 for (Record item : records) {
                     record = item;
-                    Value value = record.getValue(i);
+                    Value value = record.getValues().get(i);
                     currentAttr.addValue(value);
                 }
             }
         }
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class Record {
+        @Getter
+        private final List<Value> values = new ArrayList<>();
+    }
+
+    public static final class Value {
+        @Getter
+        @Setter(AccessLevel.PRIVATE)
+        private Attribute attribute;
+
+        @NonNull
+        @Getter
+        private final String string;
+
+        @Getter
+        private final Element provenance;
+
+        private Value(@NonNull String string, Element provenance) {
+            this.string = string;
+            if (provenance != null && provenance.getType() != Element.Type.VALUE)
+                throw new IllegalArgumentException("Invalid element type");
+            this.provenance = provenance;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
+                    .append("attribute", attribute)
+                    .append("string", string)
+                    .toString();
+        }
+
+    }
+
+    public static final class Attribute {
+        @Getter
+        private final String name;
+
+        @Getter
+        private final Element provenance;
+
+        private Attribute(@NonNull String name, Element provenance) {
+            this.name = name;
+            if (provenance != null && provenance.getType() != Element.Type.ATTRIBUTE)
+                throw new IllegalArgumentException("Invalid element type");
+            this.provenance = provenance;
+        }
+
+        @Getter
+        private final List<Value> values = new ArrayList<>();
+
+        private void addValue(@NonNull Recordset.Value value) {
+            values.add(value);
+            value.setAttribute(this);
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
+                    .append("name", name)
+                    .toString();
+        }
+
     }
 
 }
