@@ -17,15 +17,15 @@ public final class Recordset {
     private final Map<Element, Value> elemValMap = new HashMap<>();
 
     void updateSchema(@NonNull Element valElement, @NonNull String attrName) {
-        Attribute attr = attributes.get(attrName);
-        Value val = elemValMap.get(valElement);
+        Attribute attribute = attributes.get(attrName);
+        final Value value = elemValMap.get(valElement);
 
-        if (val != null) {
-            if (attr == null) {
-                attr = new Attribute(attrName, null);
-                attributes.put(attr.getName(), attr);
+        if (value != null) {
+            if (attribute == null) {
+                attribute = new Attribute(attrName, null);
+                attributes.put(attribute.getName(), attribute);
             }
-            attr.addValue(val);
+            attribute.addValue(value);
         }
     }
 
@@ -33,68 +33,69 @@ public final class Recordset {
         if (valElement == attrElement)
             throw new IllegalArgumentException("Недопустимая операция: элементы совпадают");
 
-        String text = attrElement.getText();
+        final String text = attrElement.getText();
         updateSchema(valElement, text);
     }
 
-    void updateSchema(Value val, String attrName) {
-        Attribute attr = attributes.get(attrName);
+    void updateSchema(Value value, String attrName) {
+        Attribute attribute = attributes.get(attrName);
 
-        if (attr == null) {
-            attr = new Attribute(attrName, null);
-            attributes.put(attr.getName(), attr);
+        if (attribute == null) {
+            attribute = new Attribute(attrName, null);
+            attributes.put(attribute.getName(), attribute);
         }
 
-        attr.addValue(val);
+        attribute.addValue(value);
     }
 
     private final List<Element> recordedElements = new ArrayList<>();
 
-    Record createRecord(@NonNull Element elem) {
-        Record record = new Record();
-        final String text = elem.getText();
-        Value v = new Value(text, elem);
-        record.getValues().add(v);
-        elemValMap.put(elem, v);
-        recordedElements.add(elem);
+    Record createRecord(@NonNull Element element) {
+        final Record record = new Record();
+        final String text = element.getText();
+        final Value value = new Value(text, element);
+        record.getValues().add(value);
+        elemValMap.put(element, value);
+        recordedElements.add(element);
         records.add(record);
 
         return record;
     }
 
     void updateRecord(@NonNull Record record, @NonNull String attrName, @NonNull String valStr) {
-        Value v2 = new Value(valStr, null);
-        record.getValues().add(v2);
+        final Value value = new Value(valStr, null);
+        record.getValues().add(value);
 
-        updateSchema(v2, attrName);
+        updateSchema(value, attrName);
     }
 
     void updateRecord(@NonNull Record record, @NonNull String str) {
-        Value v2 = new Value(str, null);
-        record.getValues().add(v2);
+        final Value value = new Value(str, null);
+        record.getValues().add(value);
     }
 
     void updateRecord(@NonNull Record record, @NonNull Element elem) {
-        boolean result = recordedElements.contains(elem);
+        final boolean result = recordedElements.contains(elem);
         if (result)
             throw new IllegalArgumentException("Элемент уже принадлежит записи");
 
-        Value v2 = elemValMap.get(elem);
-        if (v2 == null) {
+        Value value = elemValMap.get(elem);
+        if (value == null) {
             final String text = elem.getText();
-            v2 = new Value(text, elem);
+            value = new Value(text, elem);
+            elemValMap.put(elem, value);
         }
-        record.getValues().add(v2);
-        elemValMap.put(elem, v2);
+        record.getValues().add(value);
     }
 
     void excludeNulls() {
         if (records.size() == 0) return;
+
         Record record = records.get(0);
         final int numOfCols = record.getValues().size();
 
-        for (Record item : records) {
-            record = item;
+        for (int i = 0; i < records.size(); i++) {
+            record = records.get(i);
             if (numOfCols != record.getValues().size()) {
                 throw new IllegalStateException("Записи различаются количеством значений");
             }
@@ -114,8 +115,8 @@ public final class Recordset {
             }
 
             if (currentAttr != null) {
-                for (Record item : records) {
-                    record = item;
+                for (int j = 0; j < records.size(); j++) {
+                    record = records.get(j);
                     Value value = record.getValues().get(i);
                     Attribute attr = value.getAttribute();
                     if (attr == null)
