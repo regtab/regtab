@@ -211,7 +211,6 @@ public final class XlReader {
                         final Cell xlMergedCell = mergedCells.get(new CellAddress(r, c));
                         if (xlMergedCell != null)
                             xlCell = xlMergedCell;
-
                         text = getText(xlCell);
                         if (text != null && !text.isBlank()) {
                             if (multilineMode)
@@ -278,6 +277,14 @@ public final class XlReader {
             final CellType xlCellType = xlCell.getCellType();
             final SSDatatype datatype = getDataType(xlCellType);
             cell.setDatatype(datatype);
+
+            final int rowIndex = xlCell.getRowIndex();
+            final int columnIndex = xlCell.getColumnIndex();
+            final CellAddress cellAddress =new CellAddress(rowIndex, columnIndex);
+            final Cell xlMergedCell = mergedCells.get(cellAddress);
+            if (xlMergedCell != null) {
+                cell.setMerged(true);
+            }
         }
 
     }
