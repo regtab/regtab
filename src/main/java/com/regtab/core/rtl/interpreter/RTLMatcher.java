@@ -6,6 +6,7 @@ import lombok.NonNull;
 import com.regtab.core.model.Condition;
 import com.regtab.core.model.*;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -34,6 +35,8 @@ public class RTLMatcher {
 
         final List<SubtablePattern> subtablePatterns = pattern.getSubtablePatterns();
         for (SubtablePattern subtablePattern : subtablePatterns) {
+            log.debug("Next subtable pattern: {}", subtablePattern);
+
             int repetitionCount = 0;
 
             final Quantifier quantifier = subtablePattern.getQuantifier();
@@ -41,8 +44,10 @@ public class RTLMatcher {
 
             if (times == Quantifier.Times.UNDEFINED) {
                 SubtableMap map = match(rows, subtablePattern);
-                if (map == null)
+                if (map == null) {
+                    log.debug("Subtable does not match to the pattern {}", subtablePattern);
                     return null;
+                }
 
                 tableMap.add(map);
                 repetitionCount++;
@@ -55,9 +60,10 @@ public class RTLMatcher {
                 final int exactly = quantifier.exactly();
                 for (int i = 0; i < exactly; i++) {
                     SubtableMap map = match(rows, subtablePattern);
-                    if (map == null)
+                    if (map == null) {
+                        log.debug("Subtable does not match to the pattern {}", subtablePattern);
                         return null;
-
+                    }
                     tableMap.add(map);
                     repetitionCount++;
                 }
@@ -93,8 +99,10 @@ public class RTLMatcher {
 
             if (quantifier.times() == Quantifier.Times.ONE_OR_MORE) {
                 SubtableMap map = match(rows, subtablePattern);
-                if (map == null)
+                if (map == null) {
+                    log.debug("Subtable does not match to the pattern {}", subtablePattern);
                     return null;
+                }
 
                 tableMap.add(map);
                 repetitionCount++;
@@ -116,13 +124,17 @@ public class RTLMatcher {
     }
 
     private SubtableMap match(Queue<IRow> rows, SubtablePattern pattern) {
-        if (rows.isEmpty())
+        if (rows.isEmpty()) {
+            log.debug("No more rows for matching");
             return null;
+        }
 
         final SubtableMap subtableMap = new SubtableMap();
 
         final List<RowPattern> rowPatterns = pattern.getRowPatterns();
         for (RowPattern rowPattern : rowPatterns) {
+            log.debug("Next row pattern: {}", rowPattern);
+
             int repetitionCount = 0;
 
             final Quantifier quantifier = rowPattern.getQuantifier();
@@ -130,12 +142,16 @@ public class RTLMatcher {
 
             if (times == Quantifier.Times.UNDEFINED) {
                 IRow row = rows.poll();
-                if (row == null)
+                if (row == null) {
+                    log.debug("Impossible");
                     return null; // Impossible
+                }
 
                 RowMap map = match(row, rowPattern);
-                if (map == null)
+                if (map == null) {
+                    log.debug("Row [{}] does not match to the pattern {}", row, rowPattern);
                     return null;
+                }
 
                 subtableMap.add(map);
                 repetitionCount++;
@@ -147,12 +163,16 @@ public class RTLMatcher {
             if (times == Quantifier.Times.EXACTLY) {
                 final int exactly = quantifier.exactly();
                 for (int i = 0; i < exactly; i++) {
-                    if (rows.isEmpty())
+                    if (rows.isEmpty()) {
+                        log.debug("No more rows for matching");
                         return null;
+                    }
                     IRow row = rows.peek();
                     RowMap map = match(row, rowPattern);
-                    if (map == null)
+                    if (map == null) {
+                        log.debug("Row [{}] does not match to the pattern {}", row, rowPattern);
                         return null;
+                    }
 
                     rows.poll();
                     subtableMap.add(map);
@@ -197,13 +217,16 @@ public class RTLMatcher {
             }
 
             if (quantifier.times() == Quantifier.Times.ONE_OR_MORE) {
-                if (rows.isEmpty())
+                if (rows.isEmpty()) {
+                    log.debug("No more rows for matching");
                     return null;
-
+                }
                 IRow row = rows.peek();
                 RowMap map = match(row, rowPattern);
-                if (map == null)
+                if (map == null) {
+                    log.debug("Row [{}] does not match to the pattern {}", row, rowPattern);
                     return null;
+                }
 
                 rows.poll();
                 subtableMap.add(map);
@@ -226,15 +249,21 @@ public class RTLMatcher {
             }
         }
 
+        log.debug("Subtable has been matched to the pattern {}", pattern);
         return subtableMap;
     }
 
     private RowMap match(@NonNull IRow row, RowPattern pattern) {
+        log.debug("Next row: {}", row);
+
         final RowMap rowMap = new RowMap();
 
         final Queue<ICell> cells = new LinkedList<>(row.cellsAsList());
         final List<SubrowPattern> subrowPatterns = pattern.getSubrowPatterns();
         for (SubrowPattern subrowPattern : subrowPatterns) {
+            log.debug("Next subrow pattern: {}", subrowPattern);
+            log.debug("Cells for matching: {}", Arrays.toString(cells.toArray()));
+
             int repetitionCount = 0;
 
             final Quantifier quantifier = subrowPattern.getQuantifier();
@@ -242,9 +271,10 @@ public class RTLMatcher {
 
             if (times == Quantifier.Times.UNDEFINED) {
                 SubrowMap map = match(cells, subrowPattern);
-                if (map == null)
+                if (map == null) {
+                    log.debug("Row does not match to the pattern {}", pattern);
                     return null;
-
+                }
                 rowMap.add(map);
                 repetitionCount++;
 
@@ -256,9 +286,10 @@ public class RTLMatcher {
                 final int exactly = quantifier.exactly();
                 for (int i = 0; i < exactly; i++) {
                     SubrowMap map = match(cells, subrowPattern);
-                    if (map == null)
+                    if (map == null) {
+                        log.debug("Row {} does not match to the pattern {}", pattern);
                         return null;
-
+                    }
                     rowMap.add(map);
                     repetitionCount++;
                 }
@@ -294,8 +325,10 @@ public class RTLMatcher {
 
             if (quantifier.times() == Quantifier.Times.ONE_OR_MORE) {
                 SubrowMap map = match(cells, subrowPattern);
-                if (map == null)
+                if (map == null) {
+                    log.debug("Row {} does not match to the pattern {}", pattern);
                     return null;
+                }
 
                 rowMap.add(map);
                 repetitionCount++;
@@ -313,20 +346,29 @@ public class RTLMatcher {
             }
         }
 
-        if (!cells.isEmpty())
+        if (!cells.isEmpty()) {
+            log.debug("No more cells for matching", pattern);
             return null;
+        }
+
+        final String subrowAsString = Arrays.toString(cells.toArray());
+        log.debug("Row {} has been matched to the pattern {}", pattern);
 
         return rowMap;
     }
 
     private SubrowMap match(Queue<ICell> cells, SubrowPattern pattern) {
-        if (cells.isEmpty())
+        if (cells.isEmpty()) {
+            log.debug("No more cells for matching", pattern);
             return null;
+        }
 
         final SubrowMap subrowMap = new SubrowMap();
 
         final List<CellPattern> cellPatterns = pattern.getCellPatterns();
         for (CellPattern cellPattern : cellPatterns) {
+            log.debug("Next cell pattern: {}", cellPattern);
+
             int repetitionCount = 0;
 
             final Quantifier quantifier = cellPattern.getQuantifier();
@@ -334,13 +376,17 @@ public class RTLMatcher {
 
             if (times == Quantifier.Times.UNDEFINED) {
                 ICell cell = cells.poll();
-                if (cell == null)
+                if (cell == null) {
+                    log.debug("Impossible");
                     return null; // Impossible
+                }
 
                 CellMap map = match(cell, cellPattern);
-                if (map == null)
+                if (map == null) {
+                    final String subrowAsString = Arrays.toString(cells.toArray());
+                    log.debug("Cells {} does not match to the pattern {}", subrowAsString, pattern);
                     return null;
-
+                }
                 subrowMap.add(map);
                 repetitionCount++;
 
@@ -351,13 +397,17 @@ public class RTLMatcher {
             if (times == Quantifier.Times.EXACTLY) {
                 final int exactly = quantifier.exactly();
                 for (int i = 0; i < exactly; i++) {
-                    if (cells.isEmpty())
+                    if (cells.isEmpty()) {
+                        log.debug("Cells {} does not match to the pattern {}", "[]", pattern);
                         return null;
+                    }
                     ICell cell = cells.peek();
                     CellMap map = match(cell, cellPattern);
-                    if (map == null)
+                    if (map == null) {
+                        final String subrowAsString = Arrays.toString(cells.toArray());
+                        log.debug("Cells {} does not match to the pattern {}", subrowAsString, pattern);
                         return null;
-
+                    }
                     cells.poll();
                     subrowMap.add(map);
                     repetitionCount++;
@@ -400,13 +450,17 @@ public class RTLMatcher {
             }
 
             if (quantifier.times() == Quantifier.Times.ONE_OR_MORE) {
-                if (cells.isEmpty())
+                if (cells.isEmpty()) {
+                    log.debug("Cells {} does not match to the pattern {}", "[]", pattern);
                     return null;
-
+                }
                 ICell cell = cells.peek();
                 CellMap map = match(cell, cellPattern);
-                if (map == null)
+                if (map == null) {
+                    final String subrowAsString = Arrays.toString(cells.toArray());
+                    log.debug("Cells {} does not match to the pattern {}", subrowAsString, pattern);
                     return null;
+                }
 
                 cells.poll();
                 subrowMap.add(map);
@@ -429,6 +483,8 @@ public class RTLMatcher {
             }
         }
 
+        log.debug("Subrow have been matched to the pattern {}", pattern);
+
         return subrowMap;
     }
 
@@ -437,11 +493,12 @@ public class RTLMatcher {
         if (condition != null) {
             final boolean result = condition.check(cell);
             if (!result) {
-                log.debug("Cell {} does not match to pattern {}", cell, pattern);
+                log.debug("Cell [{}] does not match to the pattern {}", cell, pattern);
                 return null;
             }
         }
 
+        log.debug("Cell [{}] has been matched to the pattern {}", cell, pattern);
         return new CellMap(cell, pattern);
     }
 

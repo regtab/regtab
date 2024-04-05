@@ -78,14 +78,6 @@ public final class ICell {
 
     @Getter
     @Setter
-    private boolean nested;
-
-    @Getter
-    @Setter
-    private boolean spanning;
-
-    @Getter
-    @Setter
     private boolean bordered;
 
     @Getter
