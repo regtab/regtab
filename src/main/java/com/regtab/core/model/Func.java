@@ -141,12 +141,12 @@ public final class Func<T> {
         return text.toLowerCase();
     };
 
-    private static final Func<String> SUBSTR = new Func<>("substr", substr);
-    private static final Func<String> TOKEN = new Func<>("token", token);
-    private static final Func<String> REPLACE = new Func<>("replace", replace);
-    private static final Func<String> REPLACE_ALL = new Func<>("replaceAll", replaceAll);
-    private static final Func<String> UPPER_CASE = new Func<>("upperCase", upperCase);
-    private static final Func<String> LOWER_CASE = new Func<>("lowerCase", lowerCase);
+    private static final Func<String> SUBSTR = new Func<>("@substr", substr);
+    private static final Func<String> TOKEN = new Func<>("@token", token);
+    private static final Func<String> REPLACE = new Func<>("@replace", replace);
+    private static final Func<String> REPLACE_ALL = new Func<>("@replaceAll", replaceAll);
+    private static final Func<String> UPPER_CASE = new Func<>("@upperCase", upperCase);
+    private static final Func<String> LOWER_CASE = new Func<>("@lowerCase", lowerCase);
 
     private static final HashMap<String, Func<?>> funcs = new HashMap<>();
 
