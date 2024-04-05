@@ -36,6 +36,7 @@ public class RTLMatcher {
         final List<SubtablePattern> subtablePatterns = pattern.getSubtablePatterns();
         for (SubtablePattern subtablePattern : subtablePatterns) {
             log.debug("Next subtable pattern: {}", subtablePattern);
+            log.debug("Rows ahead: {}", rows.size());
 
             int repetitionCount = 0;
 
@@ -262,7 +263,7 @@ public class RTLMatcher {
         final List<SubrowPattern> subrowPatterns = pattern.getSubrowPatterns();
         for (SubrowPattern subrowPattern : subrowPatterns) {
             log.debug("Next subrow pattern: {}", subrowPattern);
-            log.debug("Cells for matching: {}", Arrays.toString(cells.toArray()));
+            log.debug("Cells ahead: {}", cells.size());
 
             int repetitionCount = 0;
 
