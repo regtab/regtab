@@ -768,18 +768,6 @@ public class RTLBaseListener implements RTLListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStrOp(RTLParser.StrOpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterHexOp(RTLParser.HexOpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitHexOp(RTLParser.HexOpContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

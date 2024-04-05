@@ -453,11 +453,4 @@ public class RTLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements RT
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitStrOp(RTLParser.StrOpContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitHexOp(RTLParser.HexOpContext ctx) { return visitChildren(ctx); }
 }

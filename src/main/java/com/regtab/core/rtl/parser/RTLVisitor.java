@@ -401,10 +401,4 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStrOp(RTLParser.StrOpContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link RTLParser#hexOp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitHexOp(RTLParser.HexOpContext ctx);
 }

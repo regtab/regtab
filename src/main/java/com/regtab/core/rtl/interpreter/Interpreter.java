@@ -969,8 +969,6 @@ final class Interpreter {
         @Override
         public Expr visitStrLiteral(StrLiteralContext ctx) {
             final String str = unquote(ctx.STRING().getText());
-            if (str == null)
-                return null; // Impossible
 
             return Expr.builder().string(str).build();
         }

@@ -69,21 +69,21 @@ public final class Recordset {
         updateSchema(value, attrName);
     }
 
-    void updateRecord(@NonNull Record record, @NonNull String str) {
-        final Value value = new Value(str, null);
+    void updateRecord(@NonNull Record record, @NonNull String string) {
+        final Value value = new Value(string, null);
         record.getValues().add(value);
     }
 
-    void updateRecord(@NonNull Record record, @NonNull Element elem) {
-        final boolean result = recordedElements.contains(elem);
+    void updateRecord(@NonNull Record record, @NonNull Element element) {
+        final boolean result = recordedElements.contains(element);
         if (result)
             throw new IllegalArgumentException("Элемент уже принадлежит записи");
 
-        Value value = elemValMap.get(elem);
+        Value value = elemValMap.get(element);
         if (value == null) {
-            final String text = elem.getText();
-            value = new Value(text, elem);
-            elemValMap.put(elem, value);
+            final String text = element.getText();
+            value = new Value(text, element);
+            elemValMap.put(element, value);
         }
         record.getValues().add(value);
     }

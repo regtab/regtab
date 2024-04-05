@@ -206,11 +206,6 @@ strOp
  : PLUS
  ;
 
-hexOp
- : EQ
- | NEQ
- ;
-
 // Lexer
 
 PLUS  : '+' ;
