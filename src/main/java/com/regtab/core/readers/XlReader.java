@@ -53,22 +53,8 @@ public final class XlReader {
         formulaEvaluator = new XSSFFormulaEvaluator((XSSFWorkbook) workbook);
     }
 
-    private Sheet getSheet(int sheetIndex) {
-        if (sheetIndex < 0 || sheetIndex >= numOfSheets)
-            throw new IllegalArgumentException(
-                    String.format("Sheet index is not in [0, %d]", numOfSheets - 1)
-            );
-
-        Sheet sheet = workbook.getSheetAt(sheetIndex);
-
-        if (sheet == null)
-            throw new IllegalStateException("Sheet is null");
-
-        return sheet;
-    }
-
     // Return a range of not empty cells
-    private int[] getCellRange(Sheet sheet) {
+    private CellRangeAddress findCellRangeAddress(Sheet sheet) {
         int rt = sheet.getFirstRowNum();
         int rb = sheet.getLastRowNum();
 
@@ -87,7 +73,7 @@ public final class XlReader {
             if (cr > maxCr) maxCr = cr;
         }
 
-        return new int[]{rt, rb, minCl, maxCr};
+        return new CellRangeAddress(rt, rb, minCl, maxCr);
     }
 
     private final HashMap<CellAddress, Cell> mergedCells = new HashMap<>();
@@ -112,19 +98,34 @@ public final class XlReader {
         }
     }
 
-    public ITable readTable(int sheetIndex) {
-        final Sheet sheet = getSheet(sheetIndex);
-        readMergedCells(sheet);
-        final int[] range = getCellRange(sheet);
+    public ITable readTable(int sheetIndex, String range) {
+        if (sheetIndex < 0 || sheetIndex >= numOfSheets)
+            throw new IllegalArgumentException(
+                    String.format("Sheet index is not in [0, %d]", numOfSheets - 1)
+            );
 
-        return readTable(sheet, range);
+        final Sheet sheet = workbook.getSheetAt(sheetIndex);
+
+        if (sheet == null)
+            throw new IllegalStateException("Sheet is null");
+
+        readMergedCells(sheet);
+
+        final CellRangeAddress cellRangeAddress;
+        if (range == null) {
+            cellRangeAddress = findCellRangeAddress(sheet);
+        } else {
+            cellRangeAddress = CellRangeAddress.valueOf(range);
+        }
+
+        return readTable(sheet, cellRangeAddress);
     }
 
-    private HashMap<Integer, Integer> countLines(Sheet sheet, int[] range) {
-        final int rt = range[0];
-        final int rb = range[1];
-        final int cl = range[2];
-        final int cr = range[3];
+    private HashMap<Integer, Integer> countLines(Sheet sheet, CellRangeAddress range) {
+        final int rt = range.getFirstRow();
+        final int rb = range.getLastRow();
+        final int cl = range.getFirstColumn();
+        final int cr = range.getLastColumn();
 
         final HashMap<Integer, Integer> counts = new HashMap<>();
 
@@ -160,11 +161,11 @@ public final class XlReader {
         return counts;
     }
 
-    private ITable readTable(Sheet sheet, int[] range) {
-        final int rt = range[0];
-        final int rb = range[1];
-        final int cl = range[2];
-        final int cr = range[3];
+    private ITable readTable(Sheet sheet, CellRangeAddress range) {
+        final int rt = range.getFirstRow();
+        final int rb = range.getLastRow();
+        final int cl = range.getFirstColumn();
+        final int cr = range.getLastColumn();
 
         final HashMap<Integer, Integer> counts;
         final int numOfRows;
