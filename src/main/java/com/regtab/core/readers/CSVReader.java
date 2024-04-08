@@ -24,8 +24,6 @@ public class CSVReader {
 
         final List<CSVRecord> records = csvFormat.parse(reader).getRecords();
 
-        //final Iterable<CSVRecord> records = csvFormat.parse(reader);
-
         int numOfRows = 0;
         int numOfCols = 0;
 
@@ -39,7 +37,6 @@ public class CSVReader {
 
         final ITable table = new ITable(numOfRows, numOfCols);
 
-        //final Iterable<CSVRecord> records2 = csvFormat.parse(reader);
         int rowIndex = 0;
         for (CSVRecord record : records) {
             int colIndex = 0;
