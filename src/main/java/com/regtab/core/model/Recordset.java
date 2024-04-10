@@ -9,7 +9,7 @@ import java.util.*;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public final class Recordset {
     @Getter
-    private List<Attribute> attributes = new ArrayList<>();
+    private final List<Attribute> attributes = new ArrayList<>();
 
     @Getter
     private final List<Record> records = new ArrayList<>();
