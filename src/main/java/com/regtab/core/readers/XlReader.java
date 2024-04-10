@@ -46,8 +46,12 @@ public final class XlReader {
     @Setter
     private boolean multilineMode;
 
-    public XlReader(@NonNull File xlFile) throws IOException {
-        FileInputStream fin = new FileInputStream(xlFile);
+    public XlReader(@NonNull String path) throws IOException {
+        this(new File(path));
+    }
+
+    public XlReader(@NonNull File file) throws IOException {
+        FileInputStream fin = new FileInputStream(file);
         workbook = new XSSFWorkbook(fin);
         numOfSheets = workbook.getNumberOfSheets();
         formulaEvaluator = new XSSFFormulaEvaluator((XSSFWorkbook) workbook);

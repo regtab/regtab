@@ -3,6 +3,7 @@ package com.regtab.core.readers;
 import lombok.NonNull;
 
 import com.regtab.core.model.ITable;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
@@ -12,10 +13,13 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class CSVReader {
+    @NonNull
+    private final String path;
 
-    public ITable readTable(@NonNull File csvFile) throws IOException {
-        final Reader reader = new FileReader(csvFile);
+    public ITable read() throws IOException {
+        final Reader reader = new FileReader(path);
 
         final CSVFormat csvFormat = CSVFormat.DEFAULT
                 .builder()
