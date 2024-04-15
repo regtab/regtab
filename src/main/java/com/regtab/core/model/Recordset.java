@@ -9,21 +9,50 @@ import java.util.*;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public final class Recordset {
     @Getter
-    private final Map<String, Attribute> attributes = new HashMap<>();
+    private final List<Attribute> attributes = new ArrayList<>();
 
     @Getter
     private final List<Record> records = new ArrayList<>();
 
+    public String[] header() {
+        final int size = attributes.size();
+        final String[] header = new String[size];
+
+        for (int i = 0; i < size; i++) {
+            header[i] = attributes.get(i).getName();
+        }
+
+        return header;
+    }
+
+    public String[][] data() {
+        int size = records.size();
+        final String[][] data = new String[size][];
+
+        for (int i = 0; i < records.size(); i++) {
+            Record record = records.get(i);
+            size = record.values.size();
+            data[i] = new String[size];
+            for (int j = 0; j < size; j++) {
+                data[i][j] = record.values.get(j).getString();
+            }
+        }
+
+        return data;
+    }
+
+    private final Map<String, Attribute> attrMap = new HashMap<>();
+
     private final Map<Element, Value> elemValMap = new HashMap<>();
 
     void updateSchema(@NonNull Element valElement, @NonNull String attrName) {
-        Attribute attribute = attributes.get(attrName);
+        Attribute attribute = attrMap.get(attrName);
         final Value value = elemValMap.get(valElement);
 
         if (value != null) {
             if (attribute == null) {
                 attribute = new Attribute(attrName, null);
-                attributes.put(attribute.getName(), attribute);
+                attrMap.put(attribute.getName(), attribute);
             }
             attribute.addValue(value);
         }
@@ -38,11 +67,11 @@ public final class Recordset {
     }
 
     void updateSchema(Value value, String attrName) {
-        Attribute attribute = attributes.get(attrName);
+        Attribute attribute = attrMap.get(attrName);
 
         if (attribute == null) {
             attribute = new Attribute(attrName, null);
-            attributes.put(attribute.getName(), attribute);
+            attrMap.put(attribute.getName(), attribute);
         }
 
         attribute.addValue(value);
@@ -69,26 +98,26 @@ public final class Recordset {
         updateSchema(value, attrName);
     }
 
-    void updateRecord(@NonNull Record record, @NonNull String str) {
-        final Value value = new Value(str, null);
+    void updateRecord(@NonNull Record record, @NonNull String string) {
+        final Value value = new Value(string, null);
         record.getValues().add(value);
     }
 
-    void updateRecord(@NonNull Record record, @NonNull Element elem) {
-        final boolean result = recordedElements.contains(elem);
+    void updateRecord(@NonNull Record record, @NonNull Element element) {
+        final boolean result = recordedElements.contains(element);
         if (result)
             throw new IllegalArgumentException("Элемент уже принадлежит записи");
 
-        Value value = elemValMap.get(elem);
+        Value value = elemValMap.get(element);
         if (value == null) {
-            final String text = elem.getText();
-            value = new Value(text, elem);
-            elemValMap.put(elem, value);
+            final String text = element.getText();
+            value = new Value(text, element);
+            elemValMap.put(element, value);
         }
         record.getValues().add(value);
     }
 
-    void excludeNulls() {
+    void complete() {
         if (records.size() == 0) return;
 
         Record record = records.get(0);
@@ -125,13 +154,19 @@ public final class Recordset {
             } else {
                 String attrName = "ATTR" + i;
                 currentAttr = new Attribute(attrName, null);
-                attributes.put(attrName, currentAttr);
+                attrMap.put(attrName, currentAttr);
                 for (Record item : records) {
                     record = item;
                     Value value = record.getValues().get(i);
                     currentAttr.addValue(value);
                 }
             }
+        }
+
+        final List<Value> values = records.get(0).values;
+        for (Value value : values) {
+            Attribute attribute = value.getAttribute();
+            attributes.add(attribute);
         }
     }
 

@@ -663,14 +663,4 @@ public interface RTLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStrOp(RTLParser.StrOpContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link RTLParser#hexOp}.
-	 * @param ctx the parse tree
-	 */
-	void enterHexOp(RTLParser.HexOpContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link RTLParser#hexOp}.
-	 * @param ctx the parse tree
-	 */
-	void exitHexOp(RTLParser.HexOpContext ctx);
 }

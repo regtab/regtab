@@ -24,7 +24,7 @@ public final class ICell {
     private final ICol col;
 
     @Getter
-    private String text;
+    private final String text;
 
     public int r() {
         return row.getPosition();
@@ -75,14 +75,6 @@ public final class ICell {
     @Getter
     @Setter
     private boolean merged;
-
-    @Getter
-    @Setter
-    private boolean nested;
-
-    @Getter
-    @Setter
-    private boolean spanning;
 
     @Getter
     @Setter

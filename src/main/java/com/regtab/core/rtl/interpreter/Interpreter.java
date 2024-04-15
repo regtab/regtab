@@ -160,7 +160,7 @@ final class Interpreter {
             final SubrowsContext subrowsContext;
             final CopyContext copyContext = ctx.copy();
             if (copyContext != null) {
-                String label = copyContext.TAG().getText();
+                final String label = copyContext.TAG().getText();
                 subrowsContext = store.get(label);
                 if (subrowsContext == null) {
                     final String msg = String.format("undefined label \"%s\"", label);
@@ -475,13 +475,13 @@ final class Interpreter {
 
             final StartTextContext stCtx = ctx.startText();
             if (stCtx != null) {
-                final String startText = stCtx.STRING().getText();
+                final String startText = unquote(stCtx.STRING().getText());
                 structPattern.setStartText(startText);
             }
 
             final EndTextContext etCtx = ctx.endText();
             if (etCtx != null) {
-                final String endText = etCtx.STRING().getText();
+                final String endText = unquote(etCtx.STRING().getText());
                 structPattern.setEndText(endText);
             }
 
@@ -489,7 +489,7 @@ final class Interpreter {
             if (separatorContexts != null && !separatorContexts.isEmpty()) {
                 final List<String> separators = new ArrayList<>(separatorContexts.size());
                 for (SeparatorContext separatorContext : separatorContexts) {
-                    String separator = separatorContext.STRING().getText();
+                    String separator = unquote(separatorContext.STRING().getText());
                     separators.add(separator);
                 }
                 structPattern.setSeparators(separators);
@@ -643,7 +643,7 @@ final class Interpreter {
                 final TerminalNode tn = actionBodyCtx.STRING();
 
                 if (tn != null) {
-                    final String string = tn.getText();
+                    final String string = unquote(tn.getText());
                     action.addString(string);
                 } else {
                     final LookupContext lookupCtx = actionBodyCtx.lookup();
@@ -837,7 +837,7 @@ final class Interpreter {
                         final Integer integer = Integer.valueOf(str);
                         func.addArg(integer);
                     } else if (argCtx.STRING() != null) {
-                        final String str = argCtx.STRING().getText();
+                        final String str = unquote(argCtx.STRING().getText());
                         func.addArg(str);
                     }
                 }
@@ -968,9 +968,7 @@ final class Interpreter {
 
         @Override
         public Expr visitStrLiteral(StrLiteralContext ctx) {
-            final String str = ctx.getText();
-            if (str == null)
-                return null; // Impossible
+            final String str = unquote(ctx.STRING().getText());
 
             return Expr.builder().string(str).build();
         }
@@ -978,12 +976,12 @@ final class Interpreter {
         @Override
         public Expr visitHexLiteral(HexLiteralContext ctx) {
             final String hex = ctx.getText().toLowerCase();
-            if (!hex.matches("[a-f0-9]{6}")) {
+            if (!hex.matches("0x[a-f0-9]{6}")) {
                 final String msg = String.format("incorrect hexadecimal \"%s\"", hex);
                 throw new RTLSyntaxException(msg, ctx);
             }
 
-            return Expr.builder().hex(hex).build();
+            return Expr.builder().hex(hex.substring(2)).build();
         }
 
         @Override
@@ -1003,5 +1001,9 @@ final class Interpreter {
 
             return expr.toBuilder().useCaller(true).build();
         }
+    }
+
+    private static String unquote(String string) {
+        return string.substring(1, string.length() - 1);
     }
 }

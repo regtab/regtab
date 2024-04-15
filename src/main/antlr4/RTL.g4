@@ -206,11 +206,6 @@ strOp
  : PLUS
  ;
 
-hexOp
- : EQ
- | NEQ
- ;
-
 // Lexer
 
 PLUS  : '+' ;
@@ -234,15 +229,15 @@ QUESTION  : '?' ;
 DOTS      : '..' ;
 ASSIGN    : '=' ;
 
-TAG : '#' [a-z_] [a-z_0-9]* {setText(getText().substring(1, getText().length()));} ;
+TAG : '#' [a-z_] [a-z_0-9]* ;
 
-ID : '@' [a-z_] [a-z_0-9]* {setText(getText().substring(1, getText().length()));} ;
+ID : '@' [a-z_] [a-z_0-9]* ;
 
 INT : [0-9]+ ;
 
-HEX : '0x' [a-f0-9]+ {setText(getText().substring(2, getText().length()));} ;
+HEX : '0x' [a-f0-9]+ ;
 
-STRING : '\'' ( ESC | ~[\\'\r\n] )* '\'' {setText(getText().substring(1, getText().length()-1));} ;
+STRING : '\'' ( ESC | ~[\\'\r\n] )* '\'' ;
 
 fragment ESC : '\\"' | '\\\\' ;
 

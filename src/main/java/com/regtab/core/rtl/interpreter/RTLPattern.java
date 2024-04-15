@@ -36,11 +36,11 @@ public class RTLPattern {
         this.tablePattern = tablePattern;
     }
 
-    public static RTLPattern compile(@NonNull String ttl) {
-        if (ttl.isBlank())
+    public static RTLPattern compile(@NonNull String rtl) {
+        if (rtl.isBlank())
             return null;
 
-        final RTLLexer lexer = new RTLLexer(CharStreams.fromString(ttl));
+        final RTLLexer lexer = new RTLLexer(CharStreams.fromString(rtl));
         lexer.removeErrorListeners();
         lexer.addErrorListener(RTLErrorListener.INSTANCE);
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -59,8 +59,8 @@ public class RTLPattern {
         return new RTLMatcher(this);
     }
 
-    public static TableMap match(@NonNull String ttl, @NonNull ITable table) {
-        final RTLPattern t = compile(ttl);
+    public static TableMap match(@NonNull String rtl, @NonNull ITable table) {
+        final RTLPattern t = compile(rtl);
         if  (t == null)
             return null;
         final RTLMatcher m = t.matcher();
@@ -68,8 +68,8 @@ public class RTLPattern {
         return m.match(table);
     }
 
-    public static boolean apply(@NonNull String ttl, @NonNull ITable table) {
-        final TableMap map = match(ttl, table);
+    public static boolean apply(@NonNull String rtl, @NonNull ITable table) {
+        final TableMap map = match(rtl, table);
         if  (map == null)
             return false;
 

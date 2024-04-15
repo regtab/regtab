@@ -2,6 +2,8 @@ package com.regtab.core.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,4 +47,11 @@ public final class IRow {
         cells = new ICell[size];
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
+                .append("position", position)
+                .append("cells", Arrays.toString(cells))
+                .toString();
+    }
 }

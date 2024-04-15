@@ -98,7 +98,7 @@ public final class ITable {
         for (ICell cell: cells)
             cell.perform(Action.Type.SCHEMA, recordset);
 
-        recordset.excludeNulls();
+        recordset.complete();
 
         return recordset;
     }
