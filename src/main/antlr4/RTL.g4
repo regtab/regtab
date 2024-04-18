@@ -92,7 +92,8 @@ cond : expr (SEMICOLON expr)* ;
 lookup : (all? direction) | (LPAREN all? direction (COLON ((where cond?) | (where? cond)))? RPAREN);
 
 // При наличии (all) выполняется поиск всех элементов, иначе только одного.
-all : MULT;
+all : 'ALL IN' | MULT; // TODO учесть
+// TODO м.б. в принципе убрать т.к. это только для RECORD и возможно луше ограничить именно RECORD{1}
 
 // Направление поиска (direction).
 direction
@@ -179,13 +180,14 @@ bool
  : TRUE | FALSE
  ;
 
-AND : '&' ;
-OR  : '|' ;
-NOT : '~' ;
+AND : 'AND' ; //'&' | 'AND'; // TODO учесть
+OR  : 'OR' ; // '|' | 'OR'; // TODO учесть
+NOT : '!' | 'NOT'; //'~' | '!' | 'NOT'; // TODO учесть
 
 TRUE  : 'TRUE' ;
 FALSE : 'FALSE' ;
 
+//TODO добавить свойство число @NUMBER наряду с текстом @TEXT
 GT       : '>' ;
 GE       : '>=' ;
 LT       : '<' ;
@@ -194,6 +196,8 @@ EQ       : '==' ;
 NEQ      : '!=' ;
 CONTAINS : 'contains' ;
 MATCHES  : 'matches' ;
+NOT_CONTAINS : 'not contains' ; // TODO учесть
+NOT_MATCHES  : 'not matches' ; // TODO учесть
 
 arithmOp
  : PLUS
@@ -220,12 +224,16 @@ RCURLY  : '}' ;
 LSQUARE : '[' ;
 RSQUARE : ']' ;
 
-ARROW     : '->' ;
-COLON     : ':' ;
-SEMICOLON : ';' ;
-COMMA     : ',' ;
-DOLLAR    : '$' ;
-QUESTION  : '?' ;
+ARROW       : '->' ;
+COLON       : ':' ;
+SEMICOLON   : ';' ;
+COMMA       : ',' ;
+DOLLAR      : '$' ;
+QUESTION    : '?' ;
+VBAR        : '|' ; // TODO учесть
+EXCLAMATION : '!' ; // TODO учесть
+AMPERSAND   : '&' ; // TODO учесть
+
 DOTS      : '..' ;
 ASSIGN    : '=' ;
 

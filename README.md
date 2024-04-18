@@ -51,9 +51,10 @@ The pattern can be applied as follows:
 ```java
 import com.regtab.core.model.ITable;
 import com.regtab.core.model.Recordset;
-import com.regtab.core.readers.CSVReader;
 import com.regtab.core.rtl.interpreter.RTLPattern;
+import com.regtab.core.readers.CSVReader;
 import com.regtab.core.writers.CSVWriter;
+
 import java.io.IOException;
 
 public class Demo {

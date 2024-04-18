@@ -78,6 +78,10 @@ public final class ICell {
 
     @Getter
     @Setter
+    private boolean hidden;
+
+    @Getter
+    @Setter
     private boolean bordered;
 
     @Getter

@@ -102,7 +102,7 @@ public final class XlReader {
         }
     }
 
-    public ITable readTable(int sheetIndex, String range) {
+    public ITable read(int sheetIndex, String range) {
         if (sheetIndex < 0 || sheetIndex >= numOfSheets)
             throw new IllegalArgumentException(
                     String.format("Sheet index is not in [0, %d]", numOfSheets - 1)
@@ -122,7 +122,7 @@ public final class XlReader {
             cellRangeAddress = CellRangeAddress.valueOf(range);
         }
 
-        return readTable(sheet, cellRangeAddress);
+        return read(sheet, cellRangeAddress);
     }
 
     private HashMap<Integer, Integer> countLines(Sheet sheet, CellRangeAddress range) {
@@ -165,7 +165,7 @@ public final class XlReader {
         return counts;
     }
 
-    private ITable readTable(Sheet sheet, CellRangeAddress range) {
+    private ITable read(Sheet sheet, CellRangeAddress range) {
         final int rt = range.getFirstRow();
         final int rb = range.getLastRow();
         final int cl = range.getFirstColumn();
@@ -289,6 +289,12 @@ public final class XlReader {
             final Cell xlMergedCell = mergedCells.get(cellAddress);
             if (xlMergedCell != null) {
                 cell.setMerged(true);
+            }
+
+            // TODO учесть скрытые строки и скрытые столбцы, можно добавить поле hidden в ICell
+            final boolean zeroHeight = xlCell.getRow().getZeroHeight();
+            if (zeroHeight) {
+                cell.setHidden(true);
             }
         }
 

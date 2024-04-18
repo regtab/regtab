@@ -12,7 +12,6 @@ import com.regtab.core.model.Condition;
 import com.regtab.core.model.Element;
 import com.regtab.core.model.Expr;
 import com.regtab.core.model.ITable;
-
 import com.regtab.core.rtl.parser.RTLLexer;
 import com.regtab.core.rtl.parser.RTLParser;
 

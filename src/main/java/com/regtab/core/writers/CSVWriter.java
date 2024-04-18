@@ -1,19 +1,25 @@
 package com.regtab.core.writers;
 
-import com.regtab.core.model.Recordset;
 import lombok.RequiredArgsConstructor;
+
+import com.regtab.core.model.Recordset;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
-import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @RequiredArgsConstructor
 public final class CSVWriter {
     private final String path;
     public void write(Recordset recordset) throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT;
-        final FileWriter writer = new FileWriter(path);
+        final BufferedWriter writer = Files.newBufferedWriter(Paths.get(path), StandardCharsets.UTF_8);
+
         final CSVPrinter printer = new CSVPrinter(writer, format);
 
         final String[] header = recordset.header();
@@ -21,14 +27,6 @@ public final class CSVWriter {
 
         final String[][] data = recordset.data();
         printer.printRecords(data);
-
-        //final Collection<Recordset.Attribute> attributes = recordset.getAttributes().values();
-        //printer.printRecord(attributes);
-
-//        for (Recordset.Record record : recordset.getRecords()) {
-//            final List<Recordset.Value> values = record.getValues();
-//            printer.printRecord(values);
-//        }
 
         writer.flush();
         writer.close();

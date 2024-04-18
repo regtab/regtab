@@ -185,6 +185,8 @@ public final class Prop<T> {
 
     private static final Evaluator<Boolean> merged = ICell::isMerged;
 
+    private static final Evaluator<Boolean> hidden = ICell::isHidden;
+
     private static final Evaluator<Boolean> htmlTagTH = cell -> {
         HtmlTag htmlTag = cell.getHtmlTag();
         if (htmlTag == null) return false;
@@ -241,6 +243,7 @@ public final class Prop<T> {
     private static final Prop<String> TEXT = new Prop<>("@text", text);
     private static final Prop<Boolean> BLANK = new Prop<>("@blank", blank);
     private static final Prop<Boolean> MERGED = new Prop<>("@merged", merged);
+    private static final Prop<Boolean> HIDDEN = new Prop<>("@hidden", hidden);
     private static final Prop<Boolean> HTML_TAG_TH = new Prop<>("@th", htmlTagTH);
     private static final Prop<Boolean> HTML_TAG_TD = new Prop<>("@td", htmlTagTD);
     private static final Prop<Boolean> SS_DATATYPE_NUMERIC = new Prop<>("@numeric", ssDTNumeric);
@@ -271,6 +274,7 @@ public final class Prop<T> {
         props.put(TEXT.name, TEXT);
         props.put(BLANK.name, BLANK);
         props.put(MERGED.name, MERGED);
+        props.put(HIDDEN.name, HIDDEN);
         props.put(HTML_TAG_TH.name, HTML_TAG_TH);
         props.put(HTML_TAG_TD.name, HTML_TAG_TD);
         props.put(SS_DATATYPE_NUMERIC.name, SS_DATATYPE_NUMERIC);
