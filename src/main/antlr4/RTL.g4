@@ -178,9 +178,9 @@ bool
  : TRUE | FALSE
  ;
 
-AND : 'AND' ; //'&' | 'AND'; // TODO учесть
-OR  : 'OR' ; // '|' | 'OR'; // TODO учесть
-NOT : EXCLAMATION | 'NOT'; //'~' | '!' | 'NOT'; // TODO учесть
+AND : AMPERSAND | 'AND' ;
+OR  : VBAR | 'OR' ;
+NOT : EXCLAMATION | 'NOT';
 
 TRUE  : 'TRUE' ;
 FALSE : 'FALSE' ;
@@ -194,8 +194,6 @@ EQ       : '==' ;
 NEQ      : '!=' ;
 CONTAINS : 'contains' ;
 MATCHES  : 'matches' ;
-NOT_CONTAINS : 'not contains' ; // TODO учесть
-NOT_MATCHES  : 'not matches' ; // TODO учесть
 
 arithmOp
  : PLUS
@@ -207,8 +205,6 @@ arithmOp
 strOp
  : PLUS
  ;
-
-// Lexer
 
 PLUS  : '+' ;
 MINUS : '-' ;
@@ -228,9 +224,9 @@ SEMICOLON   : ';' ;
 COMMA       : ',' ;
 DOLLAR      : '$' ;
 QUESTION    : '?' ;
-VBAR        : '|' ; // TODO учесть
-EXCLAMATION : '!' ; // TODO учесть
-AMPERSAND   : '&' ; // TODO учесть
+VBAR        : '|' ;
+AMPERSAND   : '&' ;
+EXCLAMATION : '!' ;
 
 DOTS      : '..' ;
 ASSIGN    : '=' ;

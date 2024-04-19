@@ -27,6 +27,22 @@ public final class ICell {
     @Getter
     private final String text;
 
+    public Integer asInteger() {
+        try {
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public Double asDouble() {
+        try {
+            return Double.parseDouble(text);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
     public int r() {
         return row.getPosition();
     }

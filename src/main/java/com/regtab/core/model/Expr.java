@@ -83,14 +83,11 @@ public class Expr {
         final Object o1 = left.eval(caller, candidate);
         final Object o2 = right.eval(caller, candidate);
 
-        if (o1 == o2)
-            return true;
-
         if (o1 == null || o2 == null)
             return false;
 
         return switch (compOperator) {
-            case EQUAL -> o1.equals(o2);
+            case EQUAL ->  o1.equals(o2);
             case NOT_EQUAL -> !o1.equals(o2);
             case GREATER -> (Integer) o1 > (Integer) o2;
             case GREATER_OR_EQUAL -> (Integer) o1 >= (Integer) o2;
