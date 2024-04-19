@@ -389,13 +389,13 @@ public class RTLBaseListener implements RTLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAll(RTLParser.AllContext ctx) { }
+	@Override public void enterLimit(RTLParser.LimitContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAll(RTLParser.AllContext ctx) { }
+	@Override public void exitLimit(RTLParser.LimitContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

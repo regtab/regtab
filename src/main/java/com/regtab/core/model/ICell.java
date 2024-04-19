@@ -4,6 +4,7 @@ import com.regtab.core.model.format.HtmlTag;
 import com.regtab.core.model.format.SSDatatype;
 import com.regtab.core.model.style.Style;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -34,7 +35,7 @@ public final class ICell {
         return col.getPosition();
     }
 
-    @Getter
+    @Getter(AccessLevel.PACKAGE)
     private final List<Element> elements = new ArrayList<>();
 
     public List<Element> elements() {
@@ -99,6 +100,10 @@ public final class ICell {
                 //.append("c", c())
                 .append("text", text)
                 .toString();
+    }
+
+    void clear() {
+        elements.clear();
     }
 
 }

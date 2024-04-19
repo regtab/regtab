@@ -197,11 +197,11 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLookup(RTLParser.LookupContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link RTLParser#all}.
+	 * Visit a parse tree produced by {@link RTLParser#limit}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAll(RTLParser.AllContext ctx);
+	T visitLimit(RTLParser.LimitContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RTLParser#direction}.
 	 * @param ctx the parse tree

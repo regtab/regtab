@@ -29,10 +29,12 @@ public final class Action {
     private List<String> strings;
 
     public void addLookup(@NonNull Lookup lookup) {
-        if (type == Type.RECORD)
+        if (type == Type.RECORD) {
+            lookup.setAll(true);
             lookups.add(lookup);
-        else
+        } else {
             this.lookup = lookup;
+        }
     }
 
     public void addString(@NonNull String string) {

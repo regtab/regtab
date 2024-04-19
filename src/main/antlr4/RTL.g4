@@ -82,18 +82,16 @@ endText   : STRING ;
 
 // Выбор (choice) из двух тел (choiceBody) по условию (cond):
 // если условие (cond) истино, то выбирается левое тело, иначе --- правое.
-choice : cond QUESTION (choiceBody OR choiceBody) ;
+choice : cond QUESTION (choiceBody VBAR choiceBody) ;
 choiceBody : element | struct ;
 
 // Условие (cond) включает одно или несколько логических выражений (ограничений) (expr).
 cond : expr (SEMICOLON expr)* ;
 
 // Поиск элементов (lookup).
-lookup : (all? direction) | (LPAREN all? direction (COLON ((where cond?) | (where? cond)))? RPAREN);
+lookup : (direction limit?) | (LPAREN direction limit? (COLON ((where cond?) | (where? cond)))? RPAREN);
 
-// При наличии (all) выполняется поиск всех элементов, иначе только одного.
-all : 'ALL IN' | MULT; // TODO учесть
-// TODO м.б. в принципе убрать т.к. это только для RECORD и возможно луше ограничить именно RECORD{1}
+limit : LCURLY INT RCURLY ;
 
 // Направление поиска (direction).
 direction
@@ -182,7 +180,7 @@ bool
 
 AND : 'AND' ; //'&' | 'AND'; // TODO учесть
 OR  : 'OR' ; // '|' | 'OR'; // TODO учесть
-NOT : '!' | 'NOT'; //'~' | '!' | 'NOT'; // TODO учесть
+NOT : EXCLAMATION | 'NOT'; //'~' | '!' | 'NOT'; // TODO учесть
 
 TRUE  : 'TRUE' ;
 FALSE : 'FALSE' ;

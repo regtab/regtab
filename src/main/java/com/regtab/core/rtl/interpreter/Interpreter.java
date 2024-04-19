@@ -682,9 +682,14 @@ final class Interpreter {
 
             final Lookup lookup = new Lookup(direction);
 
-            final AllContext allCtx = ctx.all();
-            if (allCtx != null)
-                lookup.setAll(true);
+            final LimitContext limitCtx = ctx.limit();
+            if (limitCtx != null) {
+                final String str = limitCtx.INT().getText();
+                final int limit = Integer.parseInt(str);
+                if (limit <  1)
+                    throw new RTLSyntaxException("Limit should be more than 1", ctx);
+                lookup.setLimit(limit);
+            }
 
             final WhereContext whereCtx = ctx.where();
 

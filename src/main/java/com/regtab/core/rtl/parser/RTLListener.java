@@ -318,15 +318,15 @@ public interface RTLListener extends ParseTreeListener {
 	 */
 	void exitLookup(RTLParser.LookupContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link RTLParser#all}.
+	 * Enter a parse tree produced by {@link RTLParser#limit}.
 	 * @param ctx the parse tree
 	 */
-	void enterAll(RTLParser.AllContext ctx);
+	void enterLimit(RTLParser.LimitContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link RTLParser#all}.
+	 * Exit a parse tree produced by {@link RTLParser#limit}.
 	 * @param ctx the parse tree
 	 */
-	void exitAll(RTLParser.AllContext ctx);
+	void exitLimit(RTLParser.LimitContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link RTLParser#direction}.
 	 * @param ctx the parse tree
