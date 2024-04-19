@@ -1,8 +1,9 @@
 package com.regtab.core.rtl.interpreter;
 
+import lombok.NonNull;
+
 import com.regtab.core.model.*;
 import com.regtab.core.rtl.parser.RTLBaseVisitor;
-import lombok.NonNull;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -801,9 +802,19 @@ final class Interpreter {
         @Override
         public Expr visitIntLiteral(IntLiteralContext ctx) {
             final String str = ctx.INT().getText();
-            final Integer i = Integer.valueOf(str);
+            final Integer num = Integer.valueOf(str);
 
-            return Expr.builder().integer(i).build();
+            final String text = ctx.getText();
+            return Expr.builder().asString(text).integer(num).build();
+        }
+
+        @Override
+        public Expr visitDoubleLiteral(DoubleLiteralContext ctx) {
+            final String str = ctx.DOUBLE().getText();
+            final Double num = Double.valueOf(str);
+
+            final String text = ctx.getText();
+            return Expr.builder().asString(text).doubl(num).build();
         }
 
         @Override
@@ -816,7 +827,8 @@ final class Interpreter {
                 throw new RTLSyntaxException(msg, ctx);
             }
 
-            return Expr.builder().prop(prop).build();
+            final String text = ctx.getText();
+            return Expr.builder().asString(text).prop(prop).build();
         }
 
         @Override
@@ -847,7 +859,8 @@ final class Interpreter {
                 }
             }
 
-            return Expr.builder().func(func).build();
+            final String text = ctx.getText();
+            return Expr.builder().asString(text).func(func).build();
         }
 
         @Override
@@ -862,7 +875,8 @@ final class Interpreter {
             if (boolExpr == null)
                 return null; // Impossible
 
-            return Expr.builder().notExpr(boolExpr).build();
+            final String text = ctx.getText();
+            return Expr.builder().asString(text).notExpr(boolExpr).build();
         }
 
         @Override
@@ -878,29 +892,55 @@ final class Interpreter {
             if (left == null || right == null)
                 return null; // Impossible
 
+            final String text = ctx.getText();
+
             if (ctx.op.EQ() != null)
-                return Expr.builder().compOperator(Expr.CompOperator.EQUAL).left(left).right(right).build();
+                return Expr.builder()
+                        .asString(text)
+                        .compOperator(Expr.CompOperator.EQUAL).left(left).right(right)
+                        .build();
 
             if (ctx.op.NEQ() != null)
-                return Expr.builder().compOperator(Expr.CompOperator.NOT_EQUAL).left(left).right(right).build();
+                return Expr.builder()
+                        .asString(text)
+                        .compOperator(Expr.CompOperator.NOT_EQUAL).left(left).right(right)
+                        .build();
 
             if (ctx.op.GT() != null)
-                return Expr.builder().compOperator(Expr.CompOperator.GREATER).left(left).right(right).build();
+                return Expr.builder()
+                        .asString(text)
+                        .compOperator(Expr.CompOperator.GREATER).left(left).right(right)
+                        .build();
 
             if (ctx.op.GE() != null)
-                return Expr.builder().compOperator(Expr.CompOperator.GREATER_OR_EQUAL).left(left).right(right).build();
+                return Expr.builder()
+                        .asString(text)
+                        .compOperator(Expr.CompOperator.GREATER_OR_EQUAL).left(left).right(right)
+                        .build();
 
             if (ctx.op.LT() != null)
-                return Expr.builder().compOperator(Expr.CompOperator.LESS).left(left).right(right).build();
+                return Expr.builder()
+                        .asString(text)
+                        .compOperator(Expr.CompOperator.LESS).left(left).right(right)
+                        .build();
 
             if (ctx.op.LE() != null)
-                return Expr.builder().compOperator(Expr.CompOperator.LESS_OR_EQUAL).left(left).right(right).build();
+                return Expr.builder()
+                        .asString(text)
+                        .compOperator(Expr.CompOperator.LESS_OR_EQUAL).left(left).right(right)
+                        .build();
 
             if (ctx.op.CONTAINS() != null)
-                return Expr.builder().compOperator(Expr.CompOperator.CONTAINS).left(left).right(right).build();
+                return Expr.builder()
+                        .asString(text)
+                        .compOperator(Expr.CompOperator.CONTAINS).left(left).right(right)
+                        .build();
 
             if (ctx.op.MATCHES() != null)
-                return Expr.builder().compOperator(Expr.CompOperator.MATCHES).left(left).right(right).build();
+                return Expr.builder()
+                        .asString(text)
+                        .compOperator(Expr.CompOperator.MATCHES).left(left).right(right)
+                        .build();
 
             return null; // Impossible
         }
@@ -913,11 +953,19 @@ final class Interpreter {
             if (left == null || right == null)
                 return null; // Impossible
 
+            final String text = ctx.getText();
+
             if (ctx.op.AND() != null)
-                return Expr.builder().binaryOperator(Expr.BinaryOperator.AND).left(left).right(right).build();
+                return Expr.builder()
+                        .asString(text)
+                        .binaryOperator(Expr.BinaryOperator.AND).left(left).right(right)
+                        .build();
 
             if (ctx.op.OR() != null)
-                return Expr.builder().binaryOperator(Expr.BinaryOperator.OR).left(left).right(right).build();
+                return Expr.builder()
+                        .asString(text)
+                        .binaryOperator(Expr.BinaryOperator.OR).left(left).right(right)
+                        .build();
 
             return null; // Impossible
         }
@@ -930,17 +978,31 @@ final class Interpreter {
             if (left == null || right == null)
                 return null; // Impossible
 
+            final String text = ctx.getText();
+
             if (ctx.op.PLUS() != null)
-                return Expr.builder().arithmOperator(Expr.ArithmOperator.SUM).left(left).right(right).build();
+                return Expr.builder()
+                        .asString(text)
+                        .arithmOperator(Expr.ArithmOperator.SUM).left(left).right(right)
+                        .build();
 
             if (ctx.op.MINUS() != null)
-                return Expr.builder().arithmOperator(Expr.ArithmOperator.SUB).left(left).right(right).build();
+                return Expr.builder()
+                        .asString(text)
+                        .arithmOperator(Expr.ArithmOperator.SUB).left(left).right(right)
+                        .build();
 
             if (ctx.op.MULT() != null)
-                return Expr.builder().arithmOperator(Expr.ArithmOperator.MUL).left(left).right(right).build();
+                return Expr.builder()
+                        .asString(text)
+                        .arithmOperator(Expr.ArithmOperator.MUL).left(left).right(right)
+                        .build();
 
             if (ctx.op.MOD() != null)
-                return Expr.builder().arithmOperator(Expr.ArithmOperator.MOD).left(left).right(right).build();
+                return Expr.builder()
+                        .asString(text)
+                        .arithmOperator(Expr.ArithmOperator.MOD).left(left).right(right)
+                        .build();
 
             return null; // Impossible
         }
@@ -953,19 +1015,26 @@ final class Interpreter {
             if (left == null || right == null)
                 return null; // Impossible
 
+            final String text = ctx.getText();
+
             if (ctx.op.PLUS() != null)
-                return Expr.builder().strOperator(Expr.StrOperator.CONCAT).left(left).right(right).build();
+                return Expr.builder()
+                        .asString(text)
+                        .strOperator(Expr.StrOperator.CONCAT).left(left).right(right)
+                        .build();
 
             return null; // Impossible
         }
 
         @Override
         public Expr visitBoolLiteral(BoolLiteralContext ctx) {
+            final String text = ctx.getText();
+
             if (ctx.bool().TRUE() != null)
-                return Expr.builder().bool(true).build();
+                return Expr.builder().asString(text).bool(true).build();
 
             if (ctx.bool().FALSE() != null)
-                return Expr.builder().bool(false).build();
+                return Expr.builder().asString(text).bool(false).build();
 
             return null; // Impossible
         }
@@ -974,7 +1043,8 @@ final class Interpreter {
         public Expr visitStrLiteral(StrLiteralContext ctx) {
             final String str = unquote(ctx.STRING().getText());
 
-            return Expr.builder().string(str).build();
+            final String text = ctx.getText();
+            return Expr.builder().asString(text).string(str).build();
         }
 
         @Override
@@ -985,7 +1055,8 @@ final class Interpreter {
                 throw new RTLSyntaxException(msg, ctx);
             }
 
-            return Expr.builder().hex(hex.substring(2)).build();
+            final String text = ctx.getText();
+            return Expr.builder().asString(text).hex(hex.substring(2)).build();
         }
 
         @Override
@@ -1003,7 +1074,8 @@ final class Interpreter {
                     return null; // Impossible
             }
 
-            return expr.toBuilder().useCaller(true).build();
+            final String text = ctx.getText();
+            return expr.toBuilder().asString(text).useCaller(true).build();
         }
     }
 

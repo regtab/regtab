@@ -183,6 +183,8 @@ public final class Prop<T> {
 
     private static final Evaluator<Integer> asInteger = ICell::asInteger;
 
+    private static final Evaluator<Double> asDouble = ICell::asDouble;
+
     private static final Evaluator<Boolean> blank = ICell::isBlank;
 
     private static final Evaluator<Boolean> merged = ICell::isMerged;
@@ -244,6 +246,7 @@ public final class Prop<T> {
     private static final Prop<Integer> INDENT = new Prop<>("@indent", indent);
     private static final Prop<String> TEXT = new Prop<>("@text", text);
     private static final Prop<Integer> AS_INTEGER = new Prop<>("@asInteger", asInteger);
+    private static final Prop<Double> AS_DOUBLE = new Prop<>("@asDouble", asDouble);
     private static final Prop<Boolean> BLANK = new Prop<>("@blank", blank);
     private static final Prop<Boolean> MERGED = new Prop<>("@merged", merged);
     private static final Prop<Boolean> HIDDEN = new Prop<>("@hidden", hidden);
@@ -276,6 +279,7 @@ public final class Prop<T> {
         props.put(INDENT.name, INDENT);
         props.put(TEXT.name, TEXT);
         props.put(AS_INTEGER.name, AS_INTEGER);
+        props.put(AS_DOUBLE.name, AS_DOUBLE);
         props.put(BLANK.name, BLANK);
         props.put(MERGED.name, MERGED);
         props.put(HIDDEN.name, HIDDEN);

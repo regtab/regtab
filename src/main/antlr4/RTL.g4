@@ -130,7 +130,7 @@ range : rowRange | colRange | rowRange colRange | colRange rowRange ;
 
 rowRange   : ROW rangeBody ;
 colRange   : COL rangeBody ;
-rangeBody  : (relative? INT) | (start DOTS end) ;
+rangeBody  : (relative? INT) | (start DOUBLE_PERIOD end) ;
 start      : relative? INT ;
 end        : relative? INT ;
 relative   : PLUS | MINUS ;
@@ -151,6 +151,7 @@ expr
  | func                                               #funcExpr
  | THIS (prop | func)                                 #thisExpr
  | INT                                                #intLiteral
+ | DOUBLE                                             #doubleLiteral
  | STRING                                             #strLiteral
  | HEX                                                #hexLiteral
  | bool                                               #boolLiteral
@@ -178,14 +179,13 @@ bool
  : TRUE | FALSE
  ;
 
-AND : AMPERSAND | 'AND' ;
-OR  : VBAR | 'OR' ;
+AND : DOUBLE_AMPERSAND | 'AND' ;
+OR  : DOUBLE_VBAR | 'OR' ;
 NOT : EXCLAMATION | 'NOT';
 
 TRUE  : 'TRUE' ;
 FALSE : 'FALSE' ;
 
-//TODO добавить свойство число @NUMBER наряду с текстом @TEXT
 GT       : '>' ;
 GE       : '>=' ;
 LT       : '<' ;
@@ -203,8 +203,8 @@ arithmOp
  ;
 
 strOp
- : PLUS
- ;
+    : PLUS
+    ;
 
 PLUS  : '+' ;
 MINUS : '-' ;
@@ -225,17 +225,22 @@ COMMA       : ',' ;
 DOLLAR      : '$' ;
 QUESTION    : '?' ;
 VBAR        : '|' ;
-AMPERSAND   : '&' ;
 EXCLAMATION : '!' ;
 
-DOTS      : '..' ;
+DOUBLE_AMPERSAND : '&&' ;
+DOUBLE_VBAR : '||' ;
+
+DOUBLE_PERIOD : '..' ;
 ASSIGN    : '=' ;
+PERIOD    : '.' ;
 
 TAG : '#' [a-z_] [a-z_0-9]* ;
 
 ID : '@' [a-z_] [a-z_0-9]* ;
 
 INT : [0-9]+ ;
+
+DOUBLE : INT+ PERIOD INT+;
 
 HEX : '0x' [a-f0-9]+ ;
 

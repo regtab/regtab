@@ -1,4 +1,4 @@
-// Generated from D:/yd/code/regtab/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
+// Generated from C:/Users/shiga/YandexDisk/code/regtab/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
 package com.regtab.core.rtl.parser;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -397,6 +397,13 @@ public class RTLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements RT
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitCompExpr(RTLParser.CompExprContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitDoubleLiteral(RTLParser.DoubleLiteralContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

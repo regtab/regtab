@@ -63,7 +63,8 @@ public final class Lookup {
     }
 
     Element findFirst(Element caller) {
-        return findFirst(caller.getType(), caller);
+        //return findFirst(caller.getType(), caller);
+        return findFirst(null, caller);
     }
 
     Element findFirst(Element.Type type, Element caller) {
