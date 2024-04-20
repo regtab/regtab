@@ -1,4 +1,4 @@
-// Generated from D:/yd/code/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
+// Generated from D:/yd/code/regtab/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
 package com.regtab.core.rtl.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -389,13 +389,13 @@ public class RTLBaseListener implements RTLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAll(RTLParser.AllContext ctx) { }
+	@Override public void enterLimit(RTLParser.LimitContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAll(RTLParser.AllContext ctx) { }
+	@Override public void exitLimit(RTLParser.LimitContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -672,6 +672,18 @@ public class RTLBaseListener implements RTLListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCompExpr(RTLParser.CompExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDoubleLiteral(RTLParser.DoubleLiteralContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDoubleLiteral(RTLParser.DoubleLiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

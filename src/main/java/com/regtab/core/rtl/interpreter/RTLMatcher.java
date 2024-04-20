@@ -24,6 +24,7 @@ public class RTLMatcher {
     }
 
     public TableMap match(@NonNull ITable table) {
+        table.clear();
         final TablePattern tablePattern = pattern.getTablePattern();
         return match(table, tablePattern);
     }

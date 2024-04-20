@@ -103,4 +103,9 @@ public final class ITable {
         return recordset;
     }
 
+    public void clear() {
+        for (ICell cell: cells)
+            cell.clear();
+    }
+
 }

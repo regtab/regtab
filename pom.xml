@@ -7,6 +7,26 @@
     <groupId>com.regtab.core</groupId>
     <artifactId>regtab-core</artifactId>
     <version>0.1.0</version>
+    <packaging>jar</packaging>
+
+    <name>regtab</name>
+    <description>
+        Regtab is a Java library that provides Regular Table Language (RTL)
+        intended to simplify data extraction from arbitrary tables.
+    </description>
+    <url>https://github.com/regtab/regtab</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/regtab/regtab</url>
+    </scm>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -16,6 +36,16 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.4.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <tokenAuth>true</tokenAuth>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-maven-plugin</artifactId>

@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @NonNull
 public class Expr {
+    private String asString;
+
     private Expr notExpr;
     private Expr left;
     private Expr right;
@@ -19,6 +21,7 @@ public class Expr {
     private StrOperator strOperator;
     private Boolean bool;
     private Integer integer;
+    private Double doubl;
     private String string;
     private String hex;
     private Prop<?> prop;
@@ -66,6 +69,9 @@ public class Expr {
         if (integer != null)
             return integer;
 
+        if (doubl != null)
+            return doubl;
+
         if (string != null)
             return string;
 
@@ -83,22 +89,95 @@ public class Expr {
         final Object o1 = left.eval(caller, candidate);
         final Object o2 = right.eval(caller, candidate);
 
-        if (o1 == o2)
-            return true;
-
         if (o1 == null || o2 == null)
             return false;
 
         return switch (compOperator) {
-            case EQUAL -> o1.equals(o2);
-            case NOT_EQUAL -> !o1.equals(o2);
-            case GREATER -> (Integer) o1 > (Integer) o2;
-            case GREATER_OR_EQUAL -> (Integer) o1 >= (Integer) o2;
-            case LESS -> (Integer) o1 < (Integer) o2;
-            case LESS_OR_EQUAL -> (Integer) o1 <= (Integer) o2;
-            case CONTAINS -> ((String) o1).contains((String) o2);
-            case MATCHES -> ((String) o1).matches((String) o2);
+            case EQUAL -> equal(o1, o2);
+            case NOT_EQUAL -> notEqual(o1, o2);
+            case GREATER -> greater(o1, o2);
+            case GREATER_OR_EQUAL -> greaterOrEqual(o1, o2);
+            case LESS -> less(o1, o2);
+            case LESS_OR_EQUAL -> lessOrEqual(o1, o2);
+            case CONTAINS -> contains(o1, o2);
+            case MATCHES -> matches(o1, o2);
         };
+    }
+
+    private boolean equal(Object o1, Object o2) {
+        if (o1 instanceof Boolean && o2 instanceof Boolean) {
+            return o1.equals(o2);
+        }
+        if (o1 instanceof String && o2 instanceof String) {
+            return o1.equals(o2);
+        }
+        if (o1 instanceof Number && o2 instanceof Number) {
+            return asDouble(o1) == asDouble(o2);
+        }
+
+        throw new IllegalExpressionException(this, o1, o2);
+    }
+
+    private boolean notEqual(Object o1, Object o2) {
+        if (o1 instanceof Boolean && o2 instanceof Boolean) {
+            return !o1.equals(o2);
+        }
+        if (o1 instanceof String && o2 instanceof String) {
+            return !o1.equals(o2);
+        }
+        if (o1 instanceof Number && o2 instanceof Number) {
+            return asDouble(o1) != asDouble(o2);
+        }
+
+        throw new IllegalExpressionException(this, o1, o2);
+    }
+
+    private boolean greater(Object o1, Object o2) {
+        if (o1 instanceof Number && o2 instanceof Number) {
+            return asDouble(o1) > asDouble(o2);
+        }
+
+        throw new IllegalExpressionException(this, o1, o2);
+    }
+
+    private boolean greaterOrEqual(Object o1, Object o2) {
+        if (o1 instanceof Number && o2 instanceof Number) {
+            return asDouble(o1) >= asDouble(o2);
+        }
+
+        throw new IllegalExpressionException(this, o1, o2);
+    }
+
+    private boolean less(Object o1, Object o2) {
+        if (o1 instanceof Number && o2 instanceof Number) {
+            return asDouble(o1) < asDouble(o2);
+        }
+
+        throw new IllegalExpressionException(this, o1, o2);
+    }
+
+    private boolean lessOrEqual(Object o1, Object o2) {
+        if (o1 instanceof Number && o2 instanceof Number) {
+            return asDouble(o1) <= asDouble(o2);
+        }
+
+        throw new IllegalExpressionException(this, o1, o2);
+    }
+
+    private boolean contains(Object o1, Object o2) {
+        if (o1 instanceof String && o2 instanceof String) {
+            return ((String) o1).contains((String) o2);
+        }
+
+        throw new IllegalExpressionException(this, o1, o2);
+    }
+
+    private boolean matches(Object o1, Object o2) {
+        if (o1 instanceof String && o2 instanceof String) {
+            return ((String) o1).matches((String) o2);
+        }
+
+        throw new IllegalExpressionException(this, o1, o2);
     }
 
     private Boolean evalBinaryOp(ICell caller, ICell candidate) {
@@ -111,12 +190,16 @@ public class Expr {
         };
     }
 
-    private Integer evalArithmOp(ICell caller, ICell candidate) {
-        final Integer i1 = (Integer) left.eval(caller, candidate);
-        final Integer i2 = (Integer) right.eval(caller, candidate);
+    private double asDouble(Object o) {
+        if (o instanceof Number)
+            return ((Number) o).doubleValue();
+        else
+            throw new IllegalArgumentException("Not a number");
+    }
 
-        if (i1 == null || i2 == null)
-            return null; // Impossible
+    private Double evalArithmOp(ICell caller, ICell candidate) {
+        final Double i1 = asDouble(left.eval(caller, candidate));
+        final Double i2 = asDouble(right.eval(caller, candidate));
 
         return switch (arithmOperator) {
             case SUM -> i1 + i2;
@@ -181,8 +264,8 @@ public class Expr {
     }
 
     public enum BinaryOperator {
-        AND("&"),
-        OR("|");
+        AND("&&"),
+        OR("||");
 
         public final String token;
 

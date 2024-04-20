@@ -1,4 +1,4 @@
-// Generated from D:/yd/code/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
+// Generated from D:/yd/code/regtab/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
 package com.regtab.core.rtl.parser;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -318,15 +318,15 @@ public interface RTLListener extends ParseTreeListener {
 	 */
 	void exitLookup(RTLParser.LookupContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link RTLParser#all}.
+	 * Enter a parse tree produced by {@link RTLParser#limit}.
 	 * @param ctx the parse tree
 	 */
-	void enterAll(RTLParser.AllContext ctx);
+	void enterLimit(RTLParser.LimitContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link RTLParser#all}.
+	 * Exit a parse tree produced by {@link RTLParser#limit}.
 	 * @param ctx the parse tree
 	 */
-	void exitAll(RTLParser.AllContext ctx);
+	void exitLimit(RTLParser.LimitContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link RTLParser#direction}.
 	 * @param ctx the parse tree
@@ -583,6 +583,18 @@ public interface RTLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCompExpr(RTLParser.CompExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code doubleLiteral}
+	 * labeled alternative in {@link RTLParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterDoubleLiteral(RTLParser.DoubleLiteralContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code doubleLiteral}
+	 * labeled alternative in {@link RTLParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitDoubleLiteral(RTLParser.DoubleLiteralContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link RTLParser#compOp}.
 	 * @param ctx the parse tree

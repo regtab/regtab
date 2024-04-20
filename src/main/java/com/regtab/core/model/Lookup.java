@@ -11,9 +11,13 @@ import java.util.stream.Collectors;
 public final class Lookup {
     private Element caller;
 
+    @Getter(AccessLevel.PACKAGE)
+    @Setter(AccessLevel.PACKAGE)
+    private boolean all;
+
     @Getter
     @Setter
-    private boolean all;
+    private Integer limit;
 
     @Getter
     final private Direction direction;
@@ -59,7 +63,7 @@ public final class Lookup {
     }
 
     Element findFirst(Element caller) {
-        return findFirst(caller.getType(), caller);
+        return findFirst(null, caller);
     }
 
     Element findFirst(Element.Type type, Element caller) {
@@ -231,10 +235,16 @@ public final class Lookup {
                     collectElement(elem, type, result);
             } else {
                 for (Element elem : elements) {
+                    if (limit != null && result.size() == limit)
+                        return;
+
                     if (elem == caller)
                         continue;
+
                     collectElement(elem, type, result);
-                    if (!all && !result.isEmpty()) return;
+
+                    if (!all && !result.isEmpty())
+                        return;
                 }
             }
         }
