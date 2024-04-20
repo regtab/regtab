@@ -1,4 +1,4 @@
-// Generated from C:/Users/shiga/YandexDisk/code/regtab/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
+// Generated from D:/yd/code/regtab/regtab/src/main/antlr4/RTL.g4 by ANTLR 4.13.1
 package com.regtab.core.rtl.parser;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -50,10 +50,10 @@ public class RTLLexer extends Lexer {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'e'", null, null, null, "'factor'", "'prefix'", "'suffix'", "'record'", 
-			"'schema'", "'left'", "'right'", "'up'", "'down'", "'row'", "'col'", 
-			"'cell'", "'r'", "'c'", "'this'", null, null, null, "'TRUE'", "'FALSE'", 
-			"'>'", "'>='", "'<'", "'<='", "'=='", "'!='", "'contains'", "'matches'", 
+			null, "'E'", null, null, null, "'FACTOR'", "'PREFIX'", "'SUFFIX'", "'RECORD'", 
+			"'SCHEMA'", "'LEFT'", "'RIGHT'", "'UP'", "'DOWN'", "'ROW'", "'COL'", 
+			"'CELL'", "'R'", "'C'", "'THIS'", null, null, null, "'TRUE'", "'FALSE'", 
+			"'>'", "'>='", "'<'", "'<='", "'=='", "'!='", "'CONTAINS'", "'MATCHES'", 
 			"'+'", "'-'", "'*'", "'%'", "'('", "')'", "'{'", "'}'", "'['", "']'", 
 			"'->'", "':'", "';'", "','", "'$'", "'?'", "'|'", "'!'", "'&&'", "'||'", 
 			"'..'", "'='", "'.'"

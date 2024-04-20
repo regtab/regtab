@@ -2,10 +2,8 @@
 Regtab is a Java library that provides _Regular Table Language_ (RTL)
 intended to simplify data extraction from arbitrary tables represented
 in machine-readable sources such as spreadsheets, CSV or HTML. 
-
-RTL allows expressing patterns
-that describe a class of tables. Such patterns enable
-extracting recordsets from arbitrary tables.
+RTL allows expressing patterns that describe a class of tables. 
+Such patterns enable extracting recordsets from arbitrary tables.
 
 ## Dependency
 

@@ -63,7 +63,6 @@ public final class Lookup {
     }
 
     Element findFirst(Element caller) {
-        //return findFirst(caller.getType(), caller);
         return findFirst(null, caller);
     }
 
@@ -237,7 +236,7 @@ public final class Lookup {
             } else {
                 for (Element elem : elements) {
                     if (limit != null && result.size() == limit)
-                        return; // TODO проверить
+                        return;
 
                     if (elem == caller)
                         continue;

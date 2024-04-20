@@ -47,9 +47,9 @@ element : elementType (ASSIGN expr)? tags? (COLON actions)? ;
 
 // Тип элемента (elementType) может быть атрибутом (ATTRIBUTE), значением (VALUE), или пропускаемым (SKIPPED).
 elementType : ATTRIBUTE | VALUE | SKIPPED ;
-ATTRIBUTE : 'a' | 'attr' ;
-VALUE     : 'v' | 'val';
-SKIPPED   : 's' | 'skip';
+ATTRIBUTE : 'A' | 'ATTR' ;
+VALUE     : 'V' | 'VAL' ;
+SKIPPED   : 'S' | 'SKIP' ;
 
 tags : TAG+ ;
 
@@ -66,11 +66,11 @@ action : actionType ASSIGN (actionBody | (LPAREN actionBody (SEMICOLON actionBod
 // SCHEMA -- связать значение с атрибутом.
 actionType : FACTOR | PREFIX | SUFFIX | RECORD | SCHEMA ;
 
-FACTOR : 'factor' ;
-PREFIX : 'prefix' ;
-SUFFIX : 'suffix' ;
-RECORD : 'record' ;
-SCHEMA : 'schema' ;
+FACTOR : 'FACTOR' ;
+PREFIX : 'PREFIX' ;
+SUFFIX : 'SUFFIX' ;
+RECORD : 'RECORD' ;
+SCHEMA : 'SCHEMA' ;
 
 actionBody : STRING | lookup ;
 
@@ -107,13 +107,13 @@ direction
 // UP -- вверх, DOWN -- вниз, LEFT -- влево, RIGHT -- вправо (по данным направлениям от ячейки);
 // IN_ROW -- в строках слева направо, IN_COL -- в столбцах сверху вниз, IN_CELL -- в ячейках.
 
-LEFT   : 'left' ;
-RIGHT  : 'right' ;
-UP     : 'up' ;
-DOWN   : 'down' ;
-IN_ROW  : 'row' ;
-IN_COL  : 'col' ;
-IN_CELL : 'cell' ;
+LEFT    : 'LEFT' ;
+RIGHT   : 'RIGHT' ;
+UP      : 'UP' ;
+DOWN    : 'DOWN' ;
+IN_ROW  : 'ROW' ;
+IN_COL  : 'COL' ;
+IN_CELL : 'CELL' ;
 
 // Область поиска (where).
 where
@@ -135,10 +135,11 @@ start      : relative? INT ;
 end        : relative? INT ;
 relative   : PLUS | MINUS ;
 
-ROW : 'r';
-COL : 'c';
+ROW : 'R';
+COL : 'C';
 
-elementIndex : 'e' INT ; // Индекс элемента внутри структурированной ячейки.
+// Индекс элемента внутри структурированной ячейки.
+elementIndex : 'E' INT ;
 
 expr
  : LPAREN expr RPAREN                                 #parenExpr
@@ -173,7 +174,7 @@ arg : STRING | INT ;
 prop : ID ;
 
 // Ячейка, из которой было вызвано данное действие.
-THIS : 'this' ;
+THIS : 'THIS' ;
 
 bool
  : TRUE | FALSE
@@ -192,8 +193,8 @@ LT       : '<' ;
 LE       : '<=' ;
 EQ       : '==' ;
 NEQ      : '!=' ;
-CONTAINS : 'contains' ;
-MATCHES  : 'matches' ;
+CONTAINS : 'CONTAINS' ;
+MATCHES  : 'MATCHES' ;
 
 arithmOp
  : PLUS

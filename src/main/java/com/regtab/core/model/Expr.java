@@ -201,9 +201,6 @@ public class Expr {
         final Double i1 = asDouble(left.eval(caller, candidate));
         final Double i2 = asDouble(right.eval(caller, candidate));
 
-        if (i1 == null || i2 == null)
-            return null; // Impossible
-
         return switch (arithmOperator) {
             case SUM -> i1 + i2;
             case SUB -> i1 - i2;
