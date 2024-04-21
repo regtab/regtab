@@ -42,7 +42,7 @@ DATA,COUNTRY,YEAR
 The solution can be implemented as RTL-pattern as follows:
 ```
 [[SKIP][VAL: SCHEMA='YEAR']+]
-[[VAL: SCHEMA='CONTRY'][VAL: RECORD=(ROW;COL); SCHEMA='DATA']+]+
+[[VAL: SCHEMA='CONTRY'][VAL: RECORD=(ROW{1};COL{1}); SCHEMA='DATA']+]+
 ```
 
 The pattern can be applied as follows:
