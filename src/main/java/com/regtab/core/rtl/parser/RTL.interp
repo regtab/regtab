@@ -1,9 +1,9 @@
 token literal names:
 null
 'E'
-null
-null
-null
+'ATTR'
+'VAL'
+'SKIP'
 'FACTOR'
 'PREFIX'
 'SUFFIX'

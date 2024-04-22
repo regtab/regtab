@@ -47,9 +47,9 @@ element : elementType (ASSIGN expr)? tags? (COLON actions)? ;
 
 // Тип элемента (elementType) может быть атрибутом (ATTRIBUTE), значением (VALUE), или пропускаемым (SKIPPED).
 elementType : ATTRIBUTE | VALUE | SKIPPED ;
-ATTRIBUTE : 'A' | 'ATTR' ;
-VALUE     : 'V' | 'VAL' ;
-SKIPPED   : 'S' | 'SKIP' ;
+ATTRIBUTE : 'ATTR' ;
+VALUE     : 'VAL' ;
+SKIPPED   : 'SKIP' ;
 
 tags : TAG+ ;
 

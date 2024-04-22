@@ -56,13 +56,13 @@ public class RTLParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'E'", null, null, null, "'FACTOR'", "'PREFIX'", "'SUFFIX'", "'RECORD'", 
-			"'SCHEMA'", "'LEFT'", "'RIGHT'", "'UP'", "'DOWN'", "'ROW'", "'COL'", 
-			"'CELL'", "'R'", "'C'", "'THIS'", null, null, null, "'TRUE'", "'FALSE'", 
-			"'>'", "'>='", "'<'", "'<='", "'=='", "'!='", "'CONTAINS'", "'MATCHES'", 
-			"'+'", "'-'", "'*'", "'%'", "'('", "')'", "'{'", "'}'", "'['", "']'", 
-			"'->'", "':'", "';'", "','", "'$'", "'?'", "'|'", "'!'", "'&&'", "'||'", 
-			"'..'", "'='", "'.'"
+			null, "'E'", "'ATTR'", "'VAL'", "'SKIP'", "'FACTOR'", "'PREFIX'", "'SUFFIX'", 
+			"'RECORD'", "'SCHEMA'", "'LEFT'", "'RIGHT'", "'UP'", "'DOWN'", "'ROW'", 
+			"'COL'", "'CELL'", "'R'", "'C'", "'THIS'", null, null, null, "'TRUE'", 
+			"'FALSE'", "'>'", "'>='", "'<'", "'<='", "'=='", "'!='", "'CONTAINS'", 
+			"'MATCHES'", "'+'", "'-'", "'*'", "'%'", "'('", "')'", "'{'", "'}'", 
+			"'['", "']'", "'->'", "':'", "';'", "','", "'$'", "'?'", "'|'", "'!'", 
+			"'&&'", "'||'", "'..'", "'='", "'.'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
