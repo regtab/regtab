@@ -6,6 +6,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.*;
 
+/**
+ * The Recordset class represents a set of records. It provides methods to manage the schema and data of the records.
+ */
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public final class Recordset {
     @Getter
@@ -14,6 +17,11 @@ public final class Recordset {
     @Getter
     private final List<Record> records = new ArrayList<>();
 
+    /**
+     * Returns the header of the recordset as an array of attribute names.
+     *
+     * @return An array of attribute names.
+     */
     public String[] header() {
         final int size = attributes.size();
         final String[] header = new String[size];
@@ -25,6 +33,11 @@ public final class Recordset {
         return header;
     }
 
+    /**
+     * Returns the data of the recordset as a 2D array of string values.
+     *
+     * @return A 2D array of string values.
+     */
     public String[][] data() {
         int size = records.size();
         final String[][] data = new String[size][];
@@ -170,12 +183,18 @@ public final class Recordset {
         }
     }
 
+    /**
+     * Nested static class representing a record in the recordset.
+     */
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class Record {
         @Getter
         private final List<Value> values = new ArrayList<>();
     }
 
+    /**
+     * Nested static class representing a value in a record.
+     */
     public static final class Value {
         @Getter
         @Setter(AccessLevel.PRIVATE)
@@ -205,6 +224,9 @@ public final class Recordset {
 
     }
 
+    /**
+     * Nested static class representing an attribute in the recordset schema.
+     */
     public static final class Attribute {
         @Getter
         private final String name;

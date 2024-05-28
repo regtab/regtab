@@ -7,10 +7,13 @@ import com.regtab.core.model.style.Font;
 
 import lombok.NonNull;
 
-
 import java.awt.*;
 import java.util.HashMap;
 
+/**
+ * The Prop class represents a property of a cell in a table. It provides methods to evaluate the property value
+ * based on the cell's style and other properties.
+ */
 public final class Prop<T> {
     private final String name;
 
@@ -21,11 +24,23 @@ public final class Prop<T> {
         this.evaluator = evaluator;
     }
 
+    /**
+     * Retrieves a property by its name.
+     *
+     * @param name The name of the property.
+     * @return The property with the given name, or null if no such property exists.
+     */
     public static Prop<?> get(@NonNull String name) {
         final String cannonic = name.toLowerCase().replaceAll("_", "");
         return props.get(cannonic);
     }
-    
+
+    /**
+     * Evaluates the property value for the given cell.
+     *
+     * @param cell The cell for which to evaluate the property.
+     * @return The evaluated property value.
+     */
     T eval(@NonNull ICell cell) {
         return evaluator.eval(cell);
     }
@@ -291,7 +306,18 @@ public final class Prop<T> {
         props.put(SS_DATATYPE_FORMULA.name, SS_DATATYPE_FORMULA);
     }
 
+    /**
+     * The Evaluator interface defines a method to evaluate the property value based on the cell's state.
+     *
+     * @param <T> The type of the property value.
+     */
     private interface Evaluator<T> {
+        /**
+         * Evaluates the property value for the given cell.
+         *
+         * @param cell The cell for which to evaluate the property.
+         * @return The evaluated property value.
+         */
         T eval(ICell cell);
     }
     

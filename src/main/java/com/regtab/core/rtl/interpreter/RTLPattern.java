@@ -27,6 +27,11 @@ import java.util.List;
 
 import static com.regtab.core.rtl.parser.RTLParser.*;
 
+/**
+ * The `RTLPattern` class represents a compiled RegTab Language (RTL) pattern.
+ * It uses ANTLR to parse RTL expressions and constructs a hierarchical pattern structure
+ * that can be used to match and apply actions to tables.
+ */
 public class RTLPattern {
     @Getter(AccessLevel.PACKAGE)
     private final TablePattern tablePattern;
@@ -35,6 +40,12 @@ public class RTLPattern {
         this.tablePattern = tablePattern;
     }
 
+    /**
+     * Compiles an RTL string into a `RTLPattern` object.
+     *
+     * @param rtl The RTL string to compile.
+     * @return The compiled `RTLPattern` object, or null if the RTL string is blank.
+     */
     public static RTLPattern compile(@NonNull String rtl) {
         if (rtl.isBlank())
             return null;
@@ -54,10 +65,22 @@ public class RTLPattern {
         return tablePattern == null ? null : new RTLPattern(tablePattern);
     }
 
+    /**
+     * Creates a `RTLMatcher` object for matching against tables.
+     *
+     * @return The `RTLMatcher` object.
+     */
     public RTLMatcher matcher() {
         return new RTLMatcher(this);
     }
 
+    /**
+     * Static utility method for matching a pattern to a table and returning the result as a `TableMap`.
+     *
+     * @param rtl   The RTL string to match.
+     * @param table The table to match against.
+     * @return The `TableMap` representing the match result, or null if the pattern could not be compiled.
+     */
     public static TableMap match(@NonNull String rtl, @NonNull ITable table) {
         final RTLPattern t = compile(rtl);
         if  (t == null)
@@ -67,6 +90,13 @@ public class RTLPattern {
         return m.match(table);
     }
 
+    /**
+     * Static utility method for applying a pattern to a table.
+     *
+     * @param rtl   The RTL string to apply.
+     * @param table The table to apply the pattern to.
+     * @return True if the pattern was applied successfully, false otherwise.
+     */
     public static boolean apply(@NonNull String rtl, @NonNull ITable table) {
         final TableMap map = match(rtl, table);
         if  (map == null)
@@ -75,13 +105,24 @@ public class RTLPattern {
         return map.apply();
     }
 
+    /**
+     * The default configurator instance for the interpreter.
+     */
     @Getter
     private static final Configurator configurator = Configurator.DEFAULT_CONFIGURATOR;
 
+    /**
+     * Returns the configurator for the interpreter.
+     *
+     * @return The configurator.
+     */
     public static Configurator config() {
         return configurator;
     }
 
+    /**
+     * The abstract base class for all pattern classes.
+     */
     abstract static class BasePattern {
         @Getter
         private final ParseTree tree;
@@ -90,6 +131,11 @@ public class RTLPattern {
             this.tree = tree;
         }
 
+        /**
+         * Returns a string representation of the pattern.
+         *
+         * @return The string representation.
+         */
         @Override
         public String toString() {
             return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
@@ -98,6 +144,9 @@ public class RTLPattern {
         }
     }
 
+    /**
+     * The abstract class for patterns that can have actions associated with them.
+     */
     abstract static class ActionablePattern extends BasePattern {
         ActionablePattern(ParseTree tree) {
             super(tree);
@@ -110,6 +159,9 @@ public class RTLPattern {
 
     }
 
+    /**
+     * The abstract class for patterns that can be repeated according to a quantifier and condition.
+     */
     abstract static class RepeatablePattern extends ActionablePattern {
         RepeatablePattern(ParseTree tree) {
             super(tree);
@@ -134,6 +186,9 @@ public class RTLPattern {
         private Integer repetitionCount;
     }
 
+    /**
+     * Represents the root of the pattern structure for a table.
+     */
     static final class TablePattern extends BasePattern {
         TablePattern(@NonNull TableContext context) {
             super(context);
@@ -149,6 +204,9 @@ public class RTLPattern {
 
     }
 
+    /**
+     * Represents a pattern for a subtable within a table.
+     */
     static final class SubtablePattern extends RepeatablePattern {
         SubtablePattern(@NonNull SubtableContext context) {
             super(context);
@@ -187,6 +245,9 @@ public class RTLPattern {
 
     }
 
+    /**
+     * Represents a pattern for a row within a subtable.
+     */
     static final class RowPattern extends RepeatablePattern {
         SubrowsContext subrowsContext;
 
@@ -225,6 +286,9 @@ public class RTLPattern {
 
     }
 
+    /**
+     * Represents a pattern for a subrow within a row.
+     */
     static final class SubrowPattern extends RepeatablePattern {
         SubrowPattern(@NonNull SubrowContext context) {
             super(context);
@@ -262,6 +326,9 @@ public class RTLPattern {
         }
     }
 
+    /**
+     * Represents a pattern for a cell within a subrow.
+     */
     static final class CellPattern extends RepeatablePattern {
         CellPattern(CellContext context) {
             super(context);
@@ -291,6 +358,10 @@ public class RTLPattern {
         }
     }
 
+
+    /**
+     * Represents a pattern for a set of elements.
+     */
     abstract static class ElementsPattern extends ActionablePattern {
         ElementsPattern(ParseTree tree) {
             super(tree);
@@ -299,6 +370,9 @@ public class RTLPattern {
         abstract boolean apply(ICell cell);
     }
 
+    /**
+     * Represents a pattern for an element.
+     */
     @Slf4j
     static final class ElementPattern extends ElementsPattern {
         ElementPattern(@NonNull ElementContext context) {
@@ -354,6 +428,9 @@ public class RTLPattern {
 
     }
 
+    /**
+     * Represents a pattern for a choice.
+     */
     static final class ChoicePattern extends ElementsPattern {
         ChoicePattern(ChoiceContext context) {
             super(context);
@@ -387,6 +464,9 @@ public class RTLPattern {
 
     }
 
+    /**
+     * Represents a pattern for a struct.
+     */
     @Slf4j
     static final class StructPattern extends ElementsPattern {
         StructPattern(@NonNull StructContext context) {

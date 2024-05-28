@@ -14,20 +14,40 @@ import java.util.Queue;
 import static com.regtab.core.rtl.interpreter.TableMap.*;
 import static com.regtab.core.rtl.interpreter.RTLPattern.*;
 
+/**
+ * The `RTLMatcher` class is responsible for matching a given table against a compiled RTL pattern.
+ * It uses the `TableMap` and `RTLPattern` classes to represent the mapping and pattern respectively.
+ * The matching process is performed by the `match` method, which takes an `ITable` and a `RTLPattern` as input.
+ */
 @Slf4j
 public class RTLMatcher {
     @NonNull
     private final RTLPattern pattern;
 
+    /**
+     * Constructs a new `RTLMatcher` with the specified RTL pattern.
+     *
+     * @param pattern The RTL pattern to be used for matching.
+     */
     public RTLMatcher(@NonNull RTLPattern pattern) {
         this.pattern = pattern;
     }
 
+    /**
+     * Matches the given table against the compiled RTL pattern.
+     *
+     * @param table The table to be matched.
+     * @return A `TableMap` representing the mapping between the table and the pattern, or null if no match is found.
+     */
     public TableMap match(@NonNull ITable table) {
         table.clear();
         final TablePattern tablePattern = pattern.getTablePattern();
         return match(table, tablePattern);
     }
+
+    // Private helper methods for matching subtable, row, subrow, and cell patterns.
+    // Each method returns a corresponding map (SubtableMap, RowMap, SubrowMap, CellMap) if the match is successful,
+    // or null if the match fails.
 
     private TableMap match(ITable table, TablePattern pattern) {
         final TableMap tableMap = new TableMap();

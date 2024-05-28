@@ -6,11 +6,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * The Func class represents a function that can be applied to a cell.
+ * It uses a lambda expression to evaluate the function.
+ *
+ * @param <T> The type of the result of the function.
+ */
 public final class Func<T> {
     private final String name;
 
     private final List<Object> args = new ArrayList<>(2);
 
+    /**
+     * Adds an argument to the function.
+     *
+     * @param arg The argument to add.
+     */
     public void addArg(@NonNull Object arg) {
         args.add(arg);
     }
@@ -23,11 +34,23 @@ public final class Func<T> {
         this.evaluator = evaluator;
     }
 
+    /**
+     * Retrieves a function by its name.
+     *
+     * @param name The name of the function.
+     * @return The function with the given name, or null if not found.
+     */
     public static Func<?> get(@NonNull String name) {
         final String cannonic = name.toLowerCase().replaceAll("_", "");
         return funcs.get(cannonic);
     }
 
+    /**
+     * Evaluates the function on the given cell.
+     *
+     * @param cell The cell to evaluate the function on.
+     * @return The result of the function.
+     */
     T eval(@NonNull ICell cell) {
         return evaluator.eval(cell, args.toArray());
     }
@@ -159,7 +182,19 @@ public final class Func<T> {
         funcs.put(LOWER_CASE.name, LOWER_CASE);
     }
 
+    /**
+     * The Evaluator interface defines a method for evaluating a function on a cell.
+     *
+     * @param <T> The type of the result of the function.
+     */
     private interface Evaluator<T> {
+        /**
+         * Evaluates the function on the given cell with the given arguments.
+         *
+         * @param cell The cell to evaluate the function on.
+         * @param args The arguments to the function.
+         * @return The result of the function.
+         */
         T eval(ICell cell, Object... args);
     }
 }

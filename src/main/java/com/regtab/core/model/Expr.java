@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * The Expr class represents a boolean or arithmetic expression that can be evaluated against a cell.
+ */
 @Slf4j
 @Builder(toBuilder = true)
 @Getter
@@ -29,10 +32,23 @@ public class Expr {
 
     private boolean useCaller;
 
+    /**
+     * Evaluates the expression using the caller cell.
+     *
+     * @param caller The caller cell.
+     * @return The result of the evaluation.
+     */
     public Object eval(@NonNull ICell caller) {
         return eval(caller, null);
     }
 
+    /**
+     * Evaluates the expression using the caller and candidate cells.
+     *
+     * @param caller The caller cell.
+     * @param candidate The candidate cell.
+     * @return The result of the evaluation.
+     */
     public Object eval(@NonNull ICell caller, ICell candidate) {
        if (candidate == null)
             useCaller = true;
@@ -238,6 +254,9 @@ public class Expr {
         };
     }
 
+    /**
+     * The CompOperator enum represents the different comparison operators.
+     */
     public enum CompOperator {
         EQUAL("=="),
         NOT_EQUAL("!="),
@@ -263,6 +282,9 @@ public class Expr {
         }
     }
 
+    /**
+     * The BinaryOperator enum represents the different binary operators.
+     */
     public enum BinaryOperator {
         AND("&&"),
         OR("||");
@@ -282,6 +304,9 @@ public class Expr {
         }
     }
 
+    /**
+     * The ArithmOperator enum represents the different arithmetic operators.
+     */
     public enum ArithmOperator {
         SUM("+"),
         SUB("-"),
@@ -303,6 +328,9 @@ public class Expr {
         }
     }
 
+    /**
+     * The StrOperator enum represents the different string operators.
+     */
     public enum StrOperator {
         CONCAT("+");
 

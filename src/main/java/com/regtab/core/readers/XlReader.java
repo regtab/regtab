@@ -31,6 +31,10 @@ import java.io.IOException;
 import java.awt.Color;
 import java.util.HashMap;
 
+/**
+ * The XlReader class is responsible for reading Excel files and converting them into an ITable object.
+ * It supports only .xlsx format.
+ */
 @Slf4j
 public final class XlReader {
     private final Workbook workbook;
@@ -46,10 +50,22 @@ public final class XlReader {
     @Setter
     private boolean multilineMode;
 
+    /**
+     * Constructs a new XlReader object and initializes it with the Excel file at the given path.
+     *
+     * @param path The path to the Excel file.
+     * @throws IOException If an I/O error occurs while reading the file.
+     */
     public XlReader(@NonNull String path) throws IOException {
         this(new File(path));
     }
 
+    /**
+     * Constructs a new XlReader object and initializes it with the given Excel file.
+     *
+     * @param file The Excel file.
+     * @throws IOException If an I/O error occurs while reading the file.
+     */
     public XlReader(@NonNull File file) throws IOException {
         FileInputStream fin = new FileInputStream(file);
         workbook = new XSSFWorkbook(fin);
@@ -102,6 +118,15 @@ public final class XlReader {
         }
     }
 
+    /**
+     * Reads the specified sheet and range from the Excel workbook and converts it into an ITable object.
+     *
+     * @param sheetIndex The index of the sheet to read from.
+     * @param range The range of cells to read, in Excel format (e.g., "A1:B2"). If null, the entire sheet is read.
+     * @return The ITable object representing the specified sheet and range.
+     * @throws IllegalArgumentException If the sheet index is out of range.
+     * @throws IllegalStateException If the sheet is null.
+     */
     public ITable read(int sheetIndex, String range) {
         if (sheetIndex < 0 || sheetIndex >= numOfSheets)
             throw new IllegalArgumentException(

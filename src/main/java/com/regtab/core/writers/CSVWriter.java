@@ -13,9 +13,19 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * The `CSVWriter` class is responsible for writing a `Recordset` object to a CSV file.
+ */
 @RequiredArgsConstructor
 public final class CSVWriter {
     private final String path;
+
+    /**
+     * Writes the provided `Recordset` object to a CSV file.
+     *
+     * @param recordset the `Recordset` object to be written to the CSV file
+     * @throws IOException if an I/O error occurs while writing to the file
+     */
     public void write(Recordset recordset) throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT;
         final BufferedWriter writer = Files.newBufferedWriter(Paths.get(path), StandardCharsets.UTF_8);
