@@ -24,25 +24,41 @@
         </license>
     </licenses>
 
-    <!--
+    <developers>
+        <developer>
+            <id>shigarov</id>
+            <name>Alexey Shigarov</name>
+            <email>shigarov@gmail.com</email>
+            <organization>ISDCT SB RAS</organization>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>+8</timezone>
+            <properties>
+                <picUrl>https://avatars.githubusercontent.com/u/14847113</picUrl>
+            </properties>
+        </developer>
+    </developers>
+
     <scm>
+        <connection>scm:git:git://github.com/regtab/regtab.git</connection>
+        <developerConnection>scm:git:git://github.com/regtab/regtab.git</developerConnection>
         <url>https://github.com/regtab/regtab</url>
     </scm>
-    -->
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <build>
         <plugins>
-            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
+                <version>3.3.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -55,7 +71,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
+                <version>3.6.3</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -64,11 +80,17 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                    <excludePackageNames>
+                        com.regtab.core.rtl.parser
+                    </excludePackageNames>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.5</version>
+                <version>3.2.4</version>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
@@ -79,17 +101,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.7</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
+
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
@@ -98,9 +110,11 @@
                 <configuration>
                     <publishingServerId>central</publishingServerId>
                     <tokenAuth>true</tokenAuth>
+                    <autoPublish>true</autoPublish>
+                    <waitUntil>published</waitUntil>
                 </configuration>
             </plugin>
-            -->
+
             <plugin>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-maven-plugin</artifactId>
