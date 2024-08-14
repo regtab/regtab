@@ -97,9 +97,11 @@ public final class XlReader {
     }
 
     private final HashMap<CellAddress, Cell> mergedCells = new HashMap<>();
+    private final HashMap<CellAddress, CellRangeAddress> mergedRegions = new HashMap<>();
 
     private void readMergedCells(Sheet sheet) {
-        for (int i = 0; i < sheet.getNumMergedRegions(); i++) {
+        final int numOfMergedRegions = sheet.getNumMergedRegions();
+        for (int i = 0; i < numOfMergedRegions; i++) {
             final CellRangeAddress region = sheet.getMergedRegion(i);
             final int firstRowIdx = region.getFirstRow();
             final int firstColIdx = region.getFirstColumn();
@@ -113,6 +115,7 @@ public final class XlReader {
                 for (int k = firstColIdx; k <= lastColIdx; k++) {
                     CellAddress address = new CellAddress(j, k);
                     mergedCells.put(address, xlCell);
+                    mergedRegions.put(address, region);
                 }
             }
         }
@@ -191,12 +194,10 @@ public final class XlReader {
     }
 
     private ITable read(Sheet sheet, CellRangeAddress range) {
-        final int rt = range.getFirstRow();
-        final int rb = range.getLastRow();
-        final int cl = range.getFirstColumn();
-        final int cr = range.getLastColumn();
-
-        final CellPos cellPos = new CellPos(rt, rb, cl, cr);
+        final int firstRow = range.getFirstRow();
+        final int lastRow = range.getLastRow();
+        final int firstColumn = range.getFirstColumn();
+        final int lastColumn = range.getLastColumn();
 
         final HashMap<Integer, Integer> counts;
         final int numOfRows;
@@ -206,17 +207,17 @@ public final class XlReader {
             numOfRows = counts.values().stream().reduce(0, Integer::sum);
         } else {
             counts = null;
-            numOfRows = rb - rt + 1;
+            numOfRows = lastRow - firstRow + 1;
         }
 
-        final int numOfCols = cr - cl + 1;
+        final int numOfCols = lastColumn - firstColumn + 1;
 
         final ITable table = new ITable(numOfRows, numOfCols);
 
         int rowIndex = 0;
         int lineIndex = 0;
 
-        for (int i = rt; i <= rb; i++) {
+        for (int i = firstRow; i <= lastRow; i++) {
             final Row xlRow = sheet.getRow(i);
 
             final int countOfLines;
@@ -228,11 +229,15 @@ public final class XlReader {
             }
 
             int colIndex = 0;
-            for (int j = cl; j <= cr; j++) {
+            for (int j = firstColumn; j <= lastColumn; j++) {
                 Cell xlCell;
+                CellPos cellPos;
 
                 String text = "";
                 String[] lines = null;
+
+                boolean isMerged = false;
+                int rt = 0, rb = 0, cl = 0, cr = 0;
 
                 if (xlRow != null) {
                     xlCell = xlRow.getCell(j);
@@ -241,8 +246,15 @@ public final class XlReader {
                         final int r = xlCell.getRowIndex();
                         final int c = xlCell.getColumnIndex();
                         final Cell xlMergedCell = mergedCells.get(new CellAddress(r, c));
-                        if (xlMergedCell != null)
+                        if (xlMergedCell != null) {
                             xlCell = xlMergedCell;
+                            isMerged = true;
+                            CellRangeAddress mergedRegion = mergedRegions.get(new CellAddress(r, c));
+                            rt = mergedRegion.getFirstRow() - firstRow;
+                            rb = mergedRegion.getLastRow() - firstRow;
+                            cl = mergedRegion.getFirstColumn() - firstColumn;
+                            cr = mergedRegion.getLastColumn() - firstColumn;
+                        }
                         text = getText(xlCell);
                         if (text != null && !text.isBlank()) {
                             if (multilineMode)
@@ -255,6 +267,12 @@ public final class XlReader {
 
                 int r = lineIndex;
                 int c = colIndex;
+
+                if (isMerged) {
+                    cellPos = new CellPos(rt,rb,cl,cr);
+                } else {
+                    cellPos = new CellPos(r,r,c,c);
+                }
 
                 if (multilineMode) {
                     for (int k = 0; k < countOfLines; k++) {
