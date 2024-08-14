@@ -1,6 +1,9 @@
 package com.regtab.core.model;
 
 import lombok.*;
+
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -101,6 +104,9 @@ public final class Recordset {
         recordedElements.add(element);
         records.add(record);
 
+        //recordMap.put(element, record);
+        recordMultiMap.put(element, record);
+
         return record;
     }
 
@@ -128,6 +134,71 @@ public final class Recordset {
             elemValMap.put(element, value);
         }
         record.getValues().add(value);
+    }
+
+    //private final HashMap<Element, Record> recordMap = new HashMap<>();
+    private final MultiValuedMap<Element, Record> recordMultiMap = new ArrayListValuedHashMap<>();
+
+//    void joinRecords(@NonNull Element leftElem, @NonNull Element joinedElem) {
+//        // Найти запись, связанную с элементом leftElem
+//
+//
+//        final Record leftRecord = recordMap.get(leftElem);
+//        if (leftRecord == null)
+//            return;
+//
+//        // Найти запись, связанную с элементом joinedElem
+//        final Record joinedRecord = recordMap.remove(joinedElem);
+//        if (joinedRecord == null)
+//            return;
+//
+//        recordMap.put(joinedElem, leftRecord);
+//
+//        // Изъять найденные записи
+//        records.remove(joinedRecord);
+//
+//        // Добавить объединенную запись
+//        final List<Recordset.Value> leftValues = leftRecord.getValues();
+//
+//        final List<Recordset.Value> joinedValues = joinedRecord.getValues();
+//        for (Recordset.Value value : joinedValues) {
+//            if (value.provenance == joinedElem)
+//                continue;
+//            leftValues.add(value);
+//        }
+//    }
+
+    void joinRecords(@NonNull Element leftElem, @NonNull Element joinedElem) {
+        // Найти все записи, связанные с элементом leftElem
+        final Collection<Record> leftRecs = recordMultiMap.get(leftElem);
+        if (leftRecs == null)
+            return;
+
+        // Найти все записи, связанные с элементом joinedElem
+        final Collection<Record> joinedRecs = recordMultiMap.remove(joinedElem);
+        if (joinedRecs == null)
+            return;
+
+        for (Record leftRecord : leftRecs)
+            recordMultiMap.put(joinedElem, leftRecord);
+
+        // Изъять все найденные записи, связанные с элементом joinedElem
+        for (Record joinedRecord : joinedRecs)
+            records.remove(joinedRecord);
+
+        // Обновить все найденные записи, связанные с элементом leftElem
+        for (Record leftRecord : leftRecs) {
+            List<Recordset.Value> leftValues = leftRecord.getValues();
+            for (Record joinedRecord : joinedRecs) {
+                List<Recordset.Value> joinedValues = joinedRecord.getValues();
+                for (Recordset.Value value : joinedValues) {
+                    if (value.provenance == joinedElem)
+                        continue;
+                    leftValues.add(value);
+                }
+            }
+        }
+
     }
 
     void complete() {

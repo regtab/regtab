@@ -202,6 +202,8 @@ public final class Prop<T> {
 
     private static final Evaluator<Boolean> blank = ICell::isBlank;
 
+    private static final Evaluator<Boolean> caps = ICell::isCaps;
+
     private static final Evaluator<Boolean> merged = ICell::isMerged;
 
     private static final Evaluator<Boolean> hidden = ICell::isHidden;
@@ -242,6 +244,13 @@ public final class Prop<T> {
         return ssDatatype.isFormula();
     };
 
+    private static final Evaluator<Integer> r = ICell::r;
+    private static final Evaluator<Integer> c = ICell::c;
+    private static final Evaluator<Integer> rt = ICell::rt;
+    private static final Evaluator<Integer> rb = ICell::rb;
+    private static final Evaluator<Integer> cl = ICell::cl;
+    private static final Evaluator<Integer> cr = ICell::cr;
+
     private static final Prop<String> FONT_NAME = new Prop<>("@fontName", fontName);
     private static final Prop<Boolean> FONT_BOLD = new Prop<>("@bold", fontBold);
     private static final Prop<Boolean> FONT_ITALIC = new Prop<>("@italic", fontItalic);
@@ -263,6 +272,7 @@ public final class Prop<T> {
     private static final Prop<Integer> AS_INTEGER = new Prop<>("@asInteger", asInteger);
     private static final Prop<Double> AS_DOUBLE = new Prop<>("@asDouble", asDouble);
     private static final Prop<Boolean> BLANK = new Prop<>("@blank", blank);
+    private static final Prop<Boolean> CAPS = new Prop<>("@caps", caps);
     private static final Prop<Boolean> MERGED = new Prop<>("@merged", merged);
     private static final Prop<Boolean> HIDDEN = new Prop<>("@hidden", hidden);
     private static final Prop<Boolean> HTML_TAG_TH = new Prop<>("@th", htmlTagTH);
@@ -271,6 +281,13 @@ public final class Prop<T> {
     private static final Prop<Boolean> SS_DATATYPE_STRING = new Prop<>("@string", ssDTString);
     private static final Prop<Boolean> SS_DATATYPE_BOOLEAN = new Prop<>("@bool", ssDTBoolean);
     private static final Prop<Boolean> SS_DATATYPE_FORMULA = new Prop<>("@formula", ssDTFormula);
+
+    private static final Prop<Integer> R = new Prop<>("@r", r);
+    private static final Prop<Integer> C = new Prop<>("@c", c);
+    private static final Prop<Integer> RT = new Prop<>("@rt", rt);
+    private static final Prop<Integer> RB = new Prop<>("@rb", rb);
+    private static final Prop<Integer> CL = new Prop<>("@cl", cl);
+    private static final Prop<Integer> CR = new Prop<>("@cr", cr);
 
     private static final HashMap<String, Prop<?>> props = new HashMap<>();
 
@@ -296,6 +313,7 @@ public final class Prop<T> {
         props.put(AS_INTEGER.name, AS_INTEGER);
         props.put(AS_DOUBLE.name, AS_DOUBLE);
         props.put(BLANK.name, BLANK);
+        props.put(CAPS.name, CAPS);
         props.put(MERGED.name, MERGED);
         props.put(HIDDEN.name, HIDDEN);
         props.put(HTML_TAG_TH.name, HTML_TAG_TH);
@@ -304,6 +322,13 @@ public final class Prop<T> {
         props.put(SS_DATATYPE_STRING.name, SS_DATATYPE_STRING);
         props.put(SS_DATATYPE_BOOLEAN.name, SS_DATATYPE_BOOLEAN);
         props.put(SS_DATATYPE_FORMULA.name, SS_DATATYPE_FORMULA);
+
+        props.put(R.name, R);
+        props.put(C.name, C);
+        props.put(RT.name, RT);
+        props.put(RB.name, RB);
+        props.put(CL.name, CL);
+        props.put(CR.name, CR);
     }
 
     /**

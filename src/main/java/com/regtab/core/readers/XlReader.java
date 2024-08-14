@@ -196,6 +196,8 @@ public final class XlReader {
         final int cl = range.getFirstColumn();
         final int cr = range.getLastColumn();
 
+        final CellPos cellPos = new CellPos(rt, rb, cl, cr);
+
         final HashMap<Integer, Integer> counts;
         final int numOfRows;
 
@@ -258,18 +260,18 @@ public final class XlReader {
                     for (int k = 0; k < countOfLines; k++) {
                         r = lineIndex + k;
                         if (lines == null) {
-                            createCell(table, r, c, "", xlCell);
+                            createCell(table, r, c, cellPos, "", xlCell);
                         } else {
                             if (k < lines.length) {
                                 String line = lines[k];
-                                createCell(table, r, c, line, xlCell);
+                                createCell(table, r, c, cellPos, line, xlCell);
                             } else {
-                                createCell(table, r, c, "", xlCell);
+                                createCell(table, r, c, cellPos, "", xlCell);
                             }
                         }
                     }
                 } else {
-                    createCell(table, r, c, text, xlCell);
+                    createCell(table, r, c, cellPos, text, xlCell);
                 }
 
                 colIndex++;
@@ -281,7 +283,7 @@ public final class XlReader {
         return table;
     }
 
-    private void createCell(ITable table, int r, int c, String text, Cell xlCell) {
+    private void createCell(ITable table, int r, int c, CellPos cellPos, String text, Cell xlCell) {
         final boolean blank;
         final int indent;
 
@@ -294,7 +296,7 @@ public final class XlReader {
             indent = getIndent(text);
         }
 
-        final ICell cell = table.createCell(r, c, text);
+        final ICell cell = table.createCell(r, c, cellPos, text);
 
         cell.setBlank(blank);
         cell.setIndent(indent);
@@ -310,7 +312,7 @@ public final class XlReader {
 
             final int rowIndex = xlCell.getRowIndex();
             final int columnIndex = xlCell.getColumnIndex();
-            final CellAddress cellAddress =new CellAddress(rowIndex, columnIndex);
+            final CellAddress cellAddress = new CellAddress(rowIndex, columnIndex);
             final Cell xlMergedCell = mergedCells.get(cellAddress);
             if (xlMergedCell != null) {
                 cell.setMerged(true);

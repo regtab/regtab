@@ -107,8 +107,12 @@ public final class Element {
                 if (action.getType() == actionType)
                     action.perform(this, recordset);
             }
-        }
-        else if (actionType == Action.Type.SCHEMA) {
+        } else if (actionType == Action.Type.JOIN) {
+            for (Action action : actions) {
+                if (action.getType() == actionType)
+                    action.perform(this, recordset);
+            }
+        } else if (actionType == Action.Type.SCHEMA) {
             for (Action action : actions) {
                 if (action.getType() == actionType)
                     action.perform(this, recordset);

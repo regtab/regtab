@@ -111,7 +111,7 @@ public final class ITable {
      * @return The created cell.
      * @throws IllegalArgumentException If the row or column index is out of bounds.
      */
-    public ICell createCell(int rowIndex, int colIndex, @NonNull String text) {
+    public ICell createCell(int rowIndex, int colIndex, CellPos cellPos, @NonNull String text) {
         if (rowIndex < 0 || rowIndex >= rows.length)
             throw new IllegalArgumentException("Row index is out of bounds");
 
@@ -120,7 +120,7 @@ public final class ITable {
 
         final IRow row = rows[rowIndex];
         final ICol col = cols[colIndex];
-        final ICell cell = new ICell(this, row, col, text);
+        final ICell cell = new ICell(this, row, col, cellPos, text);
 
         row.add(cell);
         col.add(cell);
@@ -146,10 +146,11 @@ public final class ITable {
         for (ICell cell: cells)
             cell.perform(Action.Type.SUFFIX, recordset);
 
-
-
         for (ICell cell: cells)
             cell.perform(Action.Type.RECORD, recordset);
+
+        for (ICell cell: cells)
+            cell.perform(Action.Type.JOIN, recordset);
 
         for (ICell cell: cells)
             cell.perform(Action.Type.SCHEMA, recordset);

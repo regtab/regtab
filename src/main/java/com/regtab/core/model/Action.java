@@ -159,16 +159,29 @@ public final class Action {
         }
     }
 
-    private void performSchema(Element element, final Recordset recordset) {
+    private void performJoin(Element caller, final Recordset recordset) {
         if (lookup != null) {
-            final Element e = lookup.findFirst(Element.Type.ATTRIBUTE, element);
+            final Element e = lookup.findFirst(Element.Type.VALUE, caller);
             if (e != null) {
-                recordset.updateSchema(element, e);
+                recordset.joinRecords(e, caller);
             }
             return;
         }
         if (string != null) {
-            recordset.updateSchema(element, string);
+            // TODO recordset.joinRecords(element, string);
+        }
+    }
+
+    private void performSchema(Element caller, final Recordset recordset) {
+        if (lookup != null) {
+            final Element e = lookup.findFirst(Element.Type.ATTRIBUTE, caller);
+            if (e != null) {
+                recordset.updateSchema(caller, e);
+            }
+            return;
+        }
+        if (string != null) {
+            recordset.updateSchema(caller, string);
         }
     }
 
@@ -184,6 +197,7 @@ public final class Action {
             case PREFIX -> performPrefix(caller);
             case SUFFIX -> performSuffix(caller);
             case RECORD -> performRecord(caller, recordset);
+            case JOIN -> performJoin(caller, recordset);
             case SCHEMA -> performSchema(caller, recordset);
         }
     }
@@ -192,7 +206,7 @@ public final class Action {
      * The Type enum represents the different types of actions that can be performed.
      */
     public enum Type {
-        FACTOR, PREFIX, SUFFIX, SCHEMA, RECORD
+        FACTOR, PREFIX, SUFFIX, RECORD, JOIN, SCHEMA
     }
 
     @Override

@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -30,6 +31,10 @@ public final class ICell {
 
     @Getter
     private final String text;
+
+    // Four positions of a source cell (it is useful to know them in the case when the source cell is merged)
+    @Getter
+    private final CellPos cellPos;
 
     /**
      * Attempts to parse the text content of the cell as an integer.
@@ -74,6 +79,14 @@ public final class ICell {
     public int c() {
         return col.getPosition();
     }
+
+    public int rt() { return cellPos.rt(); }
+
+    public int rb() { return cellPos.rb(); }
+
+    public int cl() { return cellPos.cl(); }
+
+    public int cr() { return cellPos.cr(); }
 
     @Getter(AccessLevel.PACKAGE)
     private final List<Element> elements = new ArrayList<>();
@@ -121,10 +134,11 @@ public final class ICell {
      * @param text The text content of this cell.
      * @throws NullPointerException if any of the parameters are null.
      */
-    ICell(@NonNull ITable table, @NonNull IRow row, @NonNull ICol col, @NonNull String text) {
+    ICell(@NonNull ITable table, @NonNull IRow row, @NonNull ICol col, CellPos cellPos, @NonNull String text) {
         this.table = table;
         this.row = row;
         this.col = col;
+        this.cellPos = cellPos;
         this.text = text;
     }
 
@@ -139,6 +153,11 @@ public final class ICell {
     @Getter
     @Setter
     private boolean blank;
+
+    // Проверить все ли символы напечатаны в верхнем регистре
+    public boolean isCaps() {
+        return text.equals(text.toUpperCase());
+    }
 
     @Getter
     @Setter

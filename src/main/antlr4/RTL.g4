@@ -47,9 +47,9 @@ element : elementType (ASSIGN expr)? tags? (COLON actions)? ;
 
 // Тип элемента (elementType) может быть атрибутом (ATTRIBUTE), значением (VALUE), или пропускаемым (SKIPPED).
 elementType : ATTRIBUTE | VALUE | SKIPPED ;
-ATTRIBUTE : 'ATTR' ;
-VALUE     : 'VAL' ;
-SKIPPED   : 'SKIP' ;
+ATTRIBUTE : 'A' | 'ATTR' ;
+VALUE     : 'V' | 'VAL' ;
+SKIPPED   : 'S' | 'SKIP' ;
 
 tags : TAG+ ;
 
@@ -64,12 +64,13 @@ action : actionType ASSIGN (actionBody | (LPAREN actionBody (SEMICOLON actionBod
 // CONCAT -- соединить значение дочернего элемента со значением родительского элемента или литерала.
 // RECORD -- связать значения с записью.
 // SCHEMA -- связать значение с атрибутом.
-actionType : FACTOR | PREFIX | SUFFIX | RECORD | SCHEMA ;
+actionType : FACTOR | PREFIX | SUFFIX | RECORD | JOIN | SCHEMA ;
 
 FACTOR : 'FACTOR' ;
 PREFIX : 'PREFIX' ;
 SUFFIX : 'SUFFIX' ;
 RECORD : 'RECORD' ;
+JOIN : 'JOIN' ;
 SCHEMA : 'SCHEMA' ;
 
 actionBody : STRING | lookup ;

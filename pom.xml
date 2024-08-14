@@ -6,7 +6,7 @@
 
     <groupId>com.regtab.core</groupId>
     <artifactId>regtab-core</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <packaging>jar</packaging>
 
     <name>regtab</name>
@@ -16,6 +16,7 @@
     </description>
     <url>https://github.com/regtab/regtab</url>
 
+    <!-- Раскомментировать эти секции для того, чтобы разместить артефакт в центральном репозитории
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -46,15 +47,17 @@
         <developerConnection>scm:git:git://github.com/regtab/regtab.git</developerConnection>
         <url>https://github.com/regtab/regtab</url>
     </scm>
+    -->
 
     <properties>
-        <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <build>
         <plugins>
+            <!-- Раскомментировать эти секции для того, чтобы разместить артефакт в центральном репозитории
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -101,7 +104,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
@@ -114,7 +116,7 @@
                     <waitUntil>published</waitUntil>
                 </configuration>
             </plugin>
-
+            -->
             <plugin>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-maven-plugin</artifactId>
@@ -193,6 +195,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>1.10.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
         </dependency>
 
         <dependency>

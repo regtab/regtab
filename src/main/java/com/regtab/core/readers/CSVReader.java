@@ -54,7 +54,7 @@ public class CSVReader {
             int colIndex = 0;
             final String[] values = record.values();
             for (String value :  values) {
-                table.createCell(rowIndex, colIndex, value);
+                table.createCell(rowIndex, colIndex, null, value);
                 colIndex++;
             }
 

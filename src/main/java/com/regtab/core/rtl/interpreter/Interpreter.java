@@ -663,6 +663,8 @@ final class Interpreter {
                 actType = Action.Type.SUFFIX;
             else if (actionTypeCtx.RECORD() != null)
                 actType = Action.Type.RECORD;
+            else if (actionTypeCtx.JOIN() != null)
+                actType = Action.Type.JOIN;
             else if (actionTypeCtx.SCHEMA() != null)
                 actType = Action.Type.SCHEMA;
             else
