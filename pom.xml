@@ -16,7 +16,11 @@
     </description>
     <url>https://github.com/regtab/regtab</url>
 
-    <!-- Раскомментировать эти секции для того, чтобы разместить артефакт в центральном репозитории
+    <!-- Для того чтобы разместить артефакт в Maven Central Repository:
+        1. Раскомментировать эти секции
+        2. Выполнить команду gpg-connect-agent -v
+        3. Выполнить команду mvn clean deploy
+    -->
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -47,7 +51,7 @@
         <developerConnection>scm:git:git://github.com/regtab/regtab.git</developerConnection>
         <url>https://github.com/regtab/regtab</url>
     </scm>
-    -->
+    <!-- -->
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -57,7 +61,7 @@
 
     <build>
         <plugins>
-            <!-- Раскомментировать эти секции для того, чтобы разместить артефакт в центральном репозитории
+            <!-- Раскомментировать эти секции для того, чтобы разместить артефакт в Maven Central Repository -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -116,7 +120,7 @@
                     <waitUntil>published</waitUntil>
                 </configuration>
             </plugin>
-            -->
+            <!-- -->
             <plugin>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-maven-plugin</artifactId>
