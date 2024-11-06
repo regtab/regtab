@@ -6,7 +6,7 @@
 
     <groupId>com.regtab.core</groupId>
     <artifactId>regtab-core</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.2</version>
     <packaging>jar</packaging>
 
     <name>regtab</name>
@@ -16,6 +16,11 @@
     </description>
     <url>https://github.com/regtab/regtab</url>
 
+    <!-- Для того чтобы разместить артефакт в Maven Central Repository:
+        1. Раскомментировать эти секции
+        2. Выполнить команду gpg-connect-agent -v
+        3. Выполнить команду mvn clean deploy
+
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -24,9 +29,29 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <id>shigarov</id>
+            <name>Alexey Shigarov</name>
+            <email>shigarov@gmail.com</email>
+            <organization>ISDCT SB RAS</organization>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>+8</timezone>
+            <properties>
+                <picUrl>https://avatars.githubusercontent.com/u/14847113</picUrl>
+            </properties>
+        </developer>
+    </developers>
+
     <scm>
+        <connection>scm:git:git://github.com/regtab/regtab.git</connection>
+        <developerConnection>scm:git:git://github.com/regtab/regtab.git</developerConnection>
         <url>https://github.com/regtab/regtab</url>
     </scm>
+    -->
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -36,6 +61,53 @@
 
     <build>
         <plugins>
+            <!-- Раскомментировать эти секции для того, чтобы разместить артефакт в Maven Central Repository
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.3</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                    <excludePackageNames>
+                        com.regtab.core.rtl.parser
+                    </excludePackageNames>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
@@ -44,8 +116,11 @@
                 <configuration>
                     <publishingServerId>central</publishingServerId>
                     <tokenAuth>true</tokenAuth>
+                    <autoPublish>true</autoPublish>
+                    <waitUntil>published</waitUntil>
                 </configuration>
             </plugin>
+            -->
             <plugin>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-maven-plugin</artifactId>
@@ -124,6 +199,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>1.10.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
         </dependency>
 
         <dependency>

@@ -7,6 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The Lookup class is used to find elements in a table based on certain criteria.
+ * It can search in different directions and apply conditions to filter the results.
+ */
 @RequiredArgsConstructor
 public final class Lookup {
     private Element caller;
@@ -38,6 +42,11 @@ public final class Lookup {
 
     private final List<String> tags = new ArrayList<>();
 
+    /**
+     * Adds a tag to the lookup.
+     *
+     * @param tag The tag to add.
+     */
     public void addTag(@NonNull String tag) {
         tags.add(tag);
     }
@@ -46,6 +55,9 @@ public final class Lookup {
     @Setter
     private Condition condition;
 
+    /**
+     * The Direction enum represents the direction in which the lookup should proceed.
+     */
     public enum Direction {
         LEFT(true),
         RIGHT(false),
@@ -62,16 +74,36 @@ public final class Lookup {
         }
     }
 
+    /**
+     * Finds the first element that matches the lookup criteria.
+     *
+     * @param caller The element from which the lookup is initiated.
+     * @return The first matching element, or null if no match is found.
+     */
     Element findFirst(Element caller) {
         return findFirst(null, caller);
     }
 
+    /**
+     * Finds the first element of a specific type that matches the lookup criteria.
+     *
+     * @param type The type of the element to find.
+     * @param caller The element from which the lookup is initiated.
+     * @return The first matching element of the specified type, or null if no match is found.
+     */
     Element findFirst(Element.Type type, Element caller) {
         final List<Element> elements = findElements(type, caller);
         if (elements == null) return null;
         return elements.size() > 0 ? elements.getFirst() : null;
     }
 
+    /**
+     * Finds all elements that match the lookup criteria.
+     *
+     * @param type The type of the elements to find.
+     * @param caller The element from which the lookup is initiated.
+     * @return A list of matching elements, or null if no match is found.
+     */
     List<Element> findAll(Element.Type type, Element caller) {
         return findElements(type, caller);
     }
@@ -89,6 +121,12 @@ public final class Lookup {
         return elements.isEmpty() ? null : elements;
     }
 
+    /**
+     * Private helper method to collect cells based on the lookup criteria.
+     *
+     * @param caller The element from which the lookup is initiated.
+     * @return A list of cells that match the lookup criteria.
+     */
     private List<ICell> collectCells(Element caller) {
         this.caller = caller;
 
@@ -201,6 +239,13 @@ public final class Lookup {
                 collect(Collectors.toList());
     }
 
+    /**
+     * Private helper method to collect elements from a list of cells.
+     *
+     * @param cells The list of cells to search for elements.
+     * @param type The type of the elements to collect.
+     * @param result The list to which the collected elements will be added.
+     */
     private void collectElements(List<ICell> cells, Element.Type type, List<Element> result) {
         for (ICell c : cells) {
             collectElements(c, type, result);

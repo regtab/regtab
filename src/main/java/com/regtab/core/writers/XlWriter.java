@@ -10,7 +10,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ * The `XlWriter` class is responsible for writing a `Recordset` object to an Excel file.
+ */
 public final class XlWriter extends Writer {
+    /**
+     * Creates an Excel workbook from the provided `Recordset` object.
+     *
+     * @param recordset the `Recordset` object to be written to the Excel workbook
+     * @return the created Excel workbook
+     */
     private Workbook createWorkbook(Recordset recordset) {
         Workbook workbook = new XSSFWorkbook();
 
@@ -44,6 +53,12 @@ public final class XlWriter extends Writer {
         return workbook;
     }
 
+    /**
+     * Writes the provided `Recordset` object to an Excel file.
+     *
+     * @param recordset the `Recordset` object to be written to the Excel file
+     * @throws IOException if an I/O error occurs during the write operation
+     */
     @Override
     public void write(Recordset recordset) throws IOException {
         Workbook workbook = createWorkbook(recordset);
@@ -52,6 +67,11 @@ public final class XlWriter extends Writer {
         out.close();
     }
 
+    /**
+     * Constructs an `XlWriter` object with the specified output file path.
+     *
+     * @param outputFile the path to the output Excel file
+     */
     public XlWriter(String outputFile) {
         super(new File(outputFile));
     }

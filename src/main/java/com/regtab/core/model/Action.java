@@ -10,10 +10,18 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Action class represents an action that can be performed on an Element.
+ */
 public final class Action {
     @Getter
     private final Action.Type type;
 
+    /**
+     * Constructs an Action with the specified type.
+     *
+     * @param type the type of the action
+     */
     public Action(@NonNull Type type) {
         this.type = type;
         if (type == Type.RECORD) {
@@ -28,6 +36,11 @@ public final class Action {
     private List<Lookup> lookups;
     private List<String> strings;
 
+    /**
+     * Adds a lookup to the action.
+     *
+     * @param lookup the lookup to add
+     */
     public void addLookup(@NonNull Lookup lookup) {
         if (type == Type.RECORD) {
             lookup.setAll(true);
@@ -37,6 +50,11 @@ public final class Action {
         }
     }
 
+    /**
+     * Adds a string to the action.
+     *
+     * @param string the string to add
+     */
     public void addString(@NonNull String string) {
         if (type == Type.RECORD)
             strings.add(string);
@@ -141,31 +159,54 @@ public final class Action {
         }
     }
 
-    private void performSchema(Element element, final Recordset recordset) {
+    private void performJoin(Element caller, final Recordset recordset) {
         if (lookup != null) {
-            final Element e = lookup.findFirst(Element.Type.ATTRIBUTE, element);
+            final Element e = lookup.findFirst(Element.Type.VALUE, caller);
             if (e != null) {
-                recordset.updateSchema(element, e);
+                recordset.joinRecords(e, caller);
             }
             return;
         }
         if (string != null) {
-            recordset.updateSchema(element, string);
+            // TODO recordset.joinRecords(element, string);
         }
     }
 
+    private void performSchema(Element caller, final Recordset recordset) {
+        if (lookup != null) {
+            final Element e = lookup.findFirst(Element.Type.ATTRIBUTE, caller);
+            if (e != null) {
+                recordset.updateSchema(caller, e);
+            }
+            return;
+        }
+        if (string != null) {
+            recordset.updateSchema(caller, string);
+        }
+    }
+
+    /**
+     * Performs the action on the specified element and recordset.
+     *
+     * @param caller the element to perform the action on
+     * @param recordset the recordset to use
+     */
     void perform(@NonNull Element caller, @NonNull Recordset recordset) {
         switch (type) {
             case FACTOR -> performFactor(caller);
             case PREFIX -> performPrefix(caller);
             case SUFFIX -> performSuffix(caller);
             case RECORD -> performRecord(caller, recordset);
+            case JOIN -> performJoin(caller, recordset);
             case SCHEMA -> performSchema(caller, recordset);
         }
     }
 
+    /**
+     * The Type enum represents the different types of actions that can be performed.
+     */
     public enum Type {
-        FACTOR, PREFIX, SUFFIX, SCHEMA, RECORD
+        FACTOR, PREFIX, SUFFIX, RECORD, JOIN, SCHEMA
     }
 
     @Override

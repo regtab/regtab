@@ -4,6 +4,9 @@ import lombok.NonNull;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * The `Configurator` class is used to hold configuration settings for the interpreter.
+ */
 @Setter
 public final class Configurator {
     @Getter

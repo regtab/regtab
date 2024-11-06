@@ -4,6 +4,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * The SSDatatype class represents a data type in a spreadsheet. It provides static instances for numeric, string,
+ * boolean, and formula data types.
+ */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public final class SSDatatype {
@@ -12,9 +16,24 @@ public final class SSDatatype {
     private final boolean bool;
     private final boolean formula;
 
+    /**
+     * Represents a numeric data type.
+     */
     public static final SSDatatype NUMERIC;
+
+    /**
+     * Represents a string data type.
+     */
     public static final SSDatatype STRING;
+
+    /**
+     * Represents a boolean data type.
+     */
     public static final SSDatatype BOOLEAN;
+
+    /**
+     * Represents a formula data type.
+     */
     public static final SSDatatype FORMULA;
 
     static {
