@@ -6,7 +6,7 @@
 
     <groupId>com.regtab.core</groupId>
     <artifactId>regtab-core</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <packaging>jar</packaging>
 
     <name>regtab</name>
@@ -20,7 +20,7 @@
         1. Раскомментировать эти секции
         2. Выполнить команду gpg-connect-agent -v
         3. Выполнить команду mvn clean deploy
-    -->
+
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -51,7 +51,7 @@
         <developerConnection>scm:git:git://github.com/regtab/regtab.git</developerConnection>
         <url>https://github.com/regtab/regtab</url>
     </scm>
-    <!-- -->
+    -->
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -61,7 +61,7 @@
 
     <build>
         <plugins>
-            <!-- Раскомментировать эти секции для того, чтобы разместить артефакт в Maven Central Repository -->
+            <!-- Раскомментировать эти секции для того, чтобы разместить артефакт в Maven Central Repository
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -120,7 +120,7 @@
                     <waitUntil>published</waitUntil>
                 </configuration>
             </plugin>
-            <!-- -->
+            -->
             <plugin>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-maven-plugin</artifactId>

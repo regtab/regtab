@@ -3,7 +3,6 @@ package com.regtab.core.rtl.interpreter;
 import lombok.NonNull;
 
 import com.regtab.core.model.*;
-import com.regtab.core.rtl.parser.RTLBaseVisitor;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.regtab.core.rtl.parser.*;
 import static com.regtab.core.rtl.interpreter.RTLPattern.*;
 import static com.regtab.core.rtl.parser.RTLParser.*;
 

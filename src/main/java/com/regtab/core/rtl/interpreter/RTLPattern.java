@@ -12,19 +12,19 @@ import com.regtab.core.model.Condition;
 import com.regtab.core.model.Element;
 import com.regtab.core.model.Expr;
 import com.regtab.core.model.ITable;
-import com.regtab.core.rtl.parser.RTLLexer;
-import com.regtab.core.rtl.parser.RTLParser;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.regtab.core.rtl.parser.*;
 import static com.regtab.core.rtl.parser.RTLParser.*;
 
 /**
@@ -555,8 +555,13 @@ public class RTLPattern {
 
                 if (i < elementPatterns.size() - 1) {
                     String separator = separators.get(i);
-                    end = subText.indexOf(separator, start);
-                    shift = separator.length();
+                    //end = subText.indexOf(separator, start);
+                    String unescapedSeparator = StringEscapeUtils.unescapeJava(separator);
+                    end = subText.indexOf(unescapedSeparator, start);
+                    if (end == -1) {
+                        throw new IllegalStateException("Invalid separator");
+                    }
+                    shift = unescapedSeparator.length();
                 } else {
                     end = subText.length();
                 }

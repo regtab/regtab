@@ -105,9 +105,6 @@ public class Expr {
         final Object o1 = left.eval(caller, candidate);
         final Object o2 = right.eval(caller, candidate);
 
-        if (o1 == null || o2 == null)
-            return false;
-
         return switch (compOperator) {
             case EQUAL -> equal(o1, o2);
             case NOT_EQUAL -> notEqual(o1, o2);
@@ -121,6 +118,12 @@ public class Expr {
     }
 
     private boolean equal(Object o1, Object o2) {
+        if (o1 == null && o2 == null)
+            return true;
+
+        if (o1 == null ^ o2 == null)
+            return false;
+
         if (o1 instanceof Boolean && o2 instanceof Boolean) {
             return o1.equals(o2);
         }
@@ -135,20 +138,13 @@ public class Expr {
     }
 
     private boolean notEqual(Object o1, Object o2) {
-        if (o1 instanceof Boolean && o2 instanceof Boolean) {
-            return !o1.equals(o2);
-        }
-        if (o1 instanceof String && o2 instanceof String) {
-            return !o1.equals(o2);
-        }
-        if (o1 instanceof Number && o2 instanceof Number) {
-            return asDouble(o1) != asDouble(o2);
-        }
-
-        throw new IllegalExpressionException(this, o1, o2);
+        return ! equal(o1, o2);
     }
 
     private boolean greater(Object o1, Object o2) {
+        if (o1 == null || o2 == null)
+            new IllegalStateException("Comparison operator is not applicable");
+
         if (o1 instanceof Number && o2 instanceof Number) {
             return asDouble(o1) > asDouble(o2);
         }
@@ -157,6 +153,9 @@ public class Expr {
     }
 
     private boolean greaterOrEqual(Object o1, Object o2) {
+        if (o1 == null || o2 == null)
+            new IllegalStateException("Comparison operator is not applicable");
+
         if (o1 instanceof Number && o2 instanceof Number) {
             return asDouble(o1) >= asDouble(o2);
         }
@@ -165,6 +164,9 @@ public class Expr {
     }
 
     private boolean less(Object o1, Object o2) {
+        if (o1 == null || o2 == null)
+            new IllegalStateException("Comparison operator is not applicable");
+
         if (o1 instanceof Number && o2 instanceof Number) {
             return asDouble(o1) < asDouble(o2);
         }
@@ -173,6 +175,9 @@ public class Expr {
     }
 
     private boolean lessOrEqual(Object o1, Object o2) {
+        if (o1 == null || o2 == null)
+            new IllegalStateException("Comparison operator is not applicable");
+
         if (o1 instanceof Number && o2 instanceof Number) {
             return asDouble(o1) <= asDouble(o2);
         }
@@ -181,6 +186,9 @@ public class Expr {
     }
 
     private boolean contains(Object o1, Object o2) {
+        if (o1 == null || o2 == null)
+            new IllegalStateException("Contains operator is not applicable");
+
         if (o1 instanceof String && o2 instanceof String) {
             return ((String) o1).contains((String) o2);
         }
@@ -189,6 +197,9 @@ public class Expr {
     }
 
     private boolean matches(Object o1, Object o2) {
+        if (o1 == null || o2 == null)
+            new IllegalStateException("Matches operator is not applicable");
+
         if (o1 instanceof String && o2 instanceof String) {
             return ((String) o1).matches((String) o2);
         }

@@ -242,12 +242,19 @@ ID : '@' [a-z_] [a-z_0-9]* ;
 
 INT : [0-9]+ ;
 
-DOUBLE : INT+ PERIOD INT+;
+DOUBLE : INT+ PERIOD INT+ ;
 
 HEX : '0x' [a-f0-9]+ ;
 
-STRING : '\'' ( ESC | ~[\\'\r\n] )* '\'' ;
+STRING
+    : '"'      (ESC | '""'   | ~["])* '"'
+    | '\''     (ESC | '\'\'' | ~['])* '\''
+    | '\u201C' (ESC | .)*? ('\u201D' | '\u2033')   // smart quotes
+    ;
 
-fragment ESC : '\\"' | '\\\\' ;
+fragment ESC
+    : '\u0060\''    // backtick single-quote
+    | '\u0060"'     // backtick double-quote
+    ;
 
 WS : [ \r\t\u000C\n]+ -> channel(HIDDEN) ;
