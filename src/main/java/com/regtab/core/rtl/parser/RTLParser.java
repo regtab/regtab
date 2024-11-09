@@ -25,7 +25,7 @@ public class RTLParser extends Parser {
 		LCURLY=40, RCURLY=41, LSQUARE=42, RSQUARE=43, ARROW=44, COLON=45, SEMICOLON=46, 
 		COMMA=47, DOLLAR=48, QUESTION=49, VBAR=50, EXCLAMATION=51, DOUBLE_AMPERSAND=52, 
 		DOUBLE_VBAR=53, DOUBLE_PERIOD=54, ASSIGN=55, PERIOD=56, TAG=57, ID=58, 
-		INT=59, DOUBLE=60, HEX=61, STRING=62, WS=63;
+		INT=59, DOUBLE=60, HEX=61, STRING=62, WS=63, LineComment=64;
 	public static final int
 		RULE_table = 0, RULE_subtable = 1, RULE_rows = 2, RULE_label = 3, RULE_copy = 4, 
 		RULE_quantifier = 5, RULE_zeroOrOne = 6, RULE_zeroOrMore = 7, RULE_oneOrMore = 8, 
@@ -76,7 +76,7 @@ public class RTLParser extends Parser {
 			"LSQUARE", "RSQUARE", "ARROW", "COLON", "SEMICOLON", "COMMA", "DOLLAR", 
 			"QUESTION", "VBAR", "EXCLAMATION", "DOUBLE_AMPERSAND", "DOUBLE_VBAR", 
 			"DOUBLE_PERIOD", "ASSIGN", "PERIOD", "TAG", "ID", "INT", "DOUBLE", "HEX", 
-			"STRING", "WS"
+			"STRING", "WS", "LineComment"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -4210,7 +4210,7 @@ public class RTLParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001?\u01f8\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001@\u01f8\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+

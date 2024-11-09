@@ -21,8 +21,11 @@ public final class Element {
     private final ICell cell;
 
     @Getter
-    @Setter
     private String text;
+
+    public void setText(String text) {
+        this.text = text.trim().replaceAll("\\s+", " ");
+    }
 
     /**
      * Constructs an Element with the specified cell, type, and text.
@@ -34,7 +37,7 @@ public final class Element {
     Element(@NonNull ICell cell, @NonNull Type type, @NonNull String text) {
         this.cell = cell;
         this.type = type;
-        this.text = text;
+        setText(text);
     }
 
     private final List<String> tags = new ArrayList<>();

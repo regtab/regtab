@@ -136,37 +136,7 @@ public final class Recordset {
         record.getValues().add(value);
     }
 
-    //private final HashMap<Element, Record> recordMap = new HashMap<>();
     private final MultiValuedMap<Element, Record> recordMultiMap = new ArrayListValuedHashMap<>();
-
-//    void joinRecords(@NonNull Element leftElem, @NonNull Element joinedElem) {
-//        // Найти запись, связанную с элементом leftElem
-//
-//
-//        final Record leftRecord = recordMap.get(leftElem);
-//        if (leftRecord == null)
-//            return;
-//
-//        // Найти запись, связанную с элементом joinedElem
-//        final Record joinedRecord = recordMap.remove(joinedElem);
-//        if (joinedRecord == null)
-//            return;
-//
-//        recordMap.put(joinedElem, leftRecord);
-//
-//        // Изъять найденные записи
-//        records.remove(joinedRecord);
-//
-//        // Добавить объединенную запись
-//        final List<Recordset.Value> leftValues = leftRecord.getValues();
-//
-//        final List<Recordset.Value> joinedValues = joinedRecord.getValues();
-//        for (Recordset.Value value : joinedValues) {
-//            if (value.provenance == joinedElem)
-//                continue;
-//            leftValues.add(value);
-//        }
-//    }
 
     void joinRecords(@NonNull Element leftElem, @NonNull Element joinedElem) {
         // Найти все записи, связанные с элементом leftElem

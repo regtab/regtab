@@ -258,3 +258,7 @@ fragment ESC
     ;
 
 WS : [ \r\t\u000C\n]+ -> channel(HIDDEN) ;
+
+LineComment
+    : '//' ~[\r\n]* -> channel(HIDDEN)
+    ;
