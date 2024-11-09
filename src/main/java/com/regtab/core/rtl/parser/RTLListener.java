@@ -158,35 +158,35 @@ public interface RTLListener extends ParseTreeListener {
 	 */
 	void exitCell(RTLParser.CellContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link RTLParser#elements}.
+	 * Enter a parse tree produced by {@link RTLParser#components}.
 	 * @param ctx the parse tree
 	 */
-	void enterElements(RTLParser.ElementsContext ctx);
+	void enterComponents(RTLParser.ComponentsContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link RTLParser#elements}.
+	 * Exit a parse tree produced by {@link RTLParser#components}.
 	 * @param ctx the parse tree
 	 */
-	void exitElements(RTLParser.ElementsContext ctx);
+	void exitComponents(RTLParser.ComponentsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link RTLParser#element}.
+	 * Enter a parse tree produced by {@link RTLParser#component}.
 	 * @param ctx the parse tree
 	 */
-	void enterElement(RTLParser.ElementContext ctx);
+	void enterComponent(RTLParser.ComponentContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link RTLParser#element}.
+	 * Exit a parse tree produced by {@link RTLParser#component}.
 	 * @param ctx the parse tree
 	 */
-	void exitElement(RTLParser.ElementContext ctx);
+	void exitComponent(RTLParser.ComponentContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link RTLParser#elementType}.
+	 * Enter a parse tree produced by {@link RTLParser#componentType}.
 	 * @param ctx the parse tree
 	 */
-	void enterElementType(RTLParser.ElementTypeContext ctx);
+	void enterComponentType(RTLParser.ComponentTypeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link RTLParser#elementType}.
+	 * Exit a parse tree produced by {@link RTLParser#componentType}.
 	 * @param ctx the parse tree
 	 */
-	void exitElementType(RTLParser.ElementTypeContext ctx);
+	void exitComponentType(RTLParser.ComponentTypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link RTLParser#tags}.
 	 * @param ctx the parse tree
@@ -418,15 +418,15 @@ public interface RTLListener extends ParseTreeListener {
 	 */
 	void exitRelative(RTLParser.RelativeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link RTLParser#elementIndex}.
+	 * Enter a parse tree produced by {@link RTLParser#componentIndex}.
 	 * @param ctx the parse tree
 	 */
-	void enterElementIndex(RTLParser.ElementIndexContext ctx);
+	void enterComponentIndex(RTLParser.ComponentIndexContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link RTLParser#elementIndex}.
+	 * Exit a parse tree produced by {@link RTLParser#componentIndex}.
 	 * @param ctx the parse tree
 	 */
-	void exitElementIndex(RTLParser.ElementIndexContext ctx);
+	void exitComponentIndex(RTLParser.ComponentIndexContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code strLiteral}
 	 * labeled alternative in {@link RTLParser#expr}.

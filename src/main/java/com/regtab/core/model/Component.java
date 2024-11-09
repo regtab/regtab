@@ -2,7 +2,6 @@ package com.regtab.core.model;
 
 import lombok.NonNull;
 import lombok.Getter;
-import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -11,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The Element class represents a part of a record or schema with a specific type and associated actions.
+ * The Component class represents a part of a record or schema with a specific type and associated actions.
  */
-public final class Element {
+public final class Component {
     @Getter
     private final Type type;
 
@@ -28,13 +27,13 @@ public final class Element {
     }
 
     /**
-     * Constructs an Element with the specified cell, type, and text.
+     * Constructs a component with the specified cell, type, and text.
      *
-     * @param cell The cell associated with this element.
-     * @param type The type of this element.
-     * @param text The text associated with this element.
+     * @param cell The cell associated with this component.
+     * @param type The type of this component.
+     * @param text The text associated with this component.
      */
-    Element(@NonNull ICell cell, @NonNull Type type, @NonNull String text) {
+    Component(@NonNull ICell cell, @NonNull Type type, @NonNull String text) {
         this.cell = cell;
         this.type = type;
         setText(text);
@@ -43,7 +42,7 @@ public final class Element {
     private final List<String> tags = new ArrayList<>();
 
     /**
-     * Adds a tag to this element.
+     * Adds a tag to this component.
      *
      * @param tag The tag to be added.
      */
@@ -52,10 +51,10 @@ public final class Element {
     }
 
     /**
-     * Checks if this element has a specific tag.
+     * Checks if this component has a specific tag.
      *
      * @param tag The tag to check.
-     * @return True if the element has the tag, false otherwise.
+     * @return True if the component has the tag, false otherwise.
      */
     boolean hasTag(String tag) {
         for (String t : tags)
@@ -67,7 +66,7 @@ public final class Element {
     private final List<Action> actions = new ArrayList<>();
 
     /**
-     * Adds an action to this element.
+     * Adds an action to this component.
      *
      * @param action The action to be added.
      */
@@ -76,7 +75,7 @@ public final class Element {
     }
 
     /**
-     * Performs actions of a specific type on this element.
+     * Performs actions of a specific type on this component.
      *
      * @param actionType The type of actions to perform.
      * @param recordset The recordset to perform the actions on.
@@ -124,7 +123,7 @@ public final class Element {
     }
 
     /**
-     * The Type enum represents the different types of elements.
+     * The Type enum represents the different types of components.
      */
     public enum Type {
         SKIPPED, ATTRIBUTE, VALUE

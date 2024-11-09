@@ -148,9 +148,9 @@ subrows
 subrow
 cells
 cell
-elements
-element
-elementType
+components
+component
+componentType
 tags
 actions
 action
@@ -174,7 +174,7 @@ rangeBody
 start
 end
 relative
-elementIndex
+componentIndex
 expr
 compOp
 binaryOp

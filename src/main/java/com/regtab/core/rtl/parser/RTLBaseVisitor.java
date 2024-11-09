@@ -123,21 +123,21 @@ public class RTLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements RT
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitElements(RTLParser.ElementsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitComponents(RTLParser.ComponentsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitElement(RTLParser.ElementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitComponent(RTLParser.ComponentContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitElementType(RTLParser.ElementTypeContext ctx) { return visitChildren(ctx); }
+	@Override public T visitComponentType(RTLParser.ComponentTypeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -305,7 +305,7 @@ public class RTLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements RT
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitElementIndex(RTLParser.ElementIndexContext ctx) { return visitChildren(ctx); }
+	@Override public T visitComponentIndex(RTLParser.ComponentIndexContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The Action class represents an action that can be performed on an Element.
+ * The Action class represents an action that can be performed on an Component.
  */
 public final class Action {
     @Getter
@@ -62,9 +62,9 @@ public final class Action {
             this.string = string;
     }
 
-    private void performFactor(Element caller) {
+    private void performFactor(Component caller) {
         if (lookup != null) {
-            final Element found = lookup.findFirst(caller);
+            final Component found = lookup.findFirst(caller);
             if (found != null) {
                 String text = found.getText();
                 caller.setText(text);
@@ -88,9 +88,9 @@ public final class Action {
     @Setter
     private String avSeparator = DEFAULT_AV_SEPARATOR;
 
-    private void performPrefix(Element caller) {
+    private void performPrefix(Component caller) {
         if (lookup != null) {
-            final Element found = lookup.findFirst(caller);
+            final Component found = lookup.findFirst(caller);
             if (found != null) {
                 final String prefix = found.getText();
                 if (!prefix.isEmpty()) {
@@ -105,9 +105,9 @@ public final class Action {
             caller.setText(string);
     }
 
-    private void performSuffix(Element caller) {
+    private void performSuffix(Component caller) {
         if (lookup != null) {
-            final Element found = lookup.findFirst(caller);
+            final Component found = lookup.findFirst(caller);
             if (found != null) {
                 final String suffix = found.getText();
                 if (!suffix.isEmpty()) {
@@ -122,16 +122,16 @@ public final class Action {
             caller.setText(string);
     }
 
-    private void performRecord(Element caller, final Recordset recordset) {
+    private void performRecord(Component caller, final Recordset recordset) {
         if (lookups.isEmpty() && strings.isEmpty()) return;
 
         final Recordset.Record record = recordset.createRecord(caller);
 
         for (Lookup lookup : lookups) {
-            final List<Element> elements = lookup.findAll(Element.Type.VALUE, caller);
-            if (elements != null) {
-                for (Element element : elements)
-                    recordset.updateRecord(record, element);
+            final List<Component> components = lookup.findAll(Component.Type.VALUE, caller);
+            if (components != null) {
+                for (Component component : components)
+                    recordset.updateRecord(record, component);
             }
         }
 
@@ -159,22 +159,22 @@ public final class Action {
         }
     }
 
-    private void performJoin(Element caller, final Recordset recordset) {
+    private void performJoin(Component caller, final Recordset recordset) {
         if (lookup != null) {
-            final Element e = lookup.findFirst(Element.Type.VALUE, caller);
+            final Component e = lookup.findFirst(Component.Type.VALUE, caller);
             if (e != null) {
                 recordset.joinRecords(e, caller);
             }
             return;
         }
         if (string != null) {
-            // TODO recordset.joinRecords(element, string);
+            // TODO recordset.joinRecords(component, string);
         }
     }
 
-    private void performSchema(Element caller, final Recordset recordset) {
+    private void performSchema(Component caller, final Recordset recordset) {
         if (lookup != null) {
-            final Element e = lookup.findFirst(Element.Type.ATTRIBUTE, caller);
+            final Component e = lookup.findFirst(Component.Type.ATTRIBUTE, caller);
             if (e != null) {
                 recordset.updateSchema(caller, e);
             }
@@ -186,12 +186,12 @@ public final class Action {
     }
 
     /**
-     * Performs the action on the specified element and recordset.
+     * Performs the action on the specified component and recordset.
      *
-     * @param caller the element to perform the action on
+     * @param caller the component to perform the action on
      * @param recordset the recordset to use
      */
-    void perform(@NonNull Element caller, @NonNull Recordset recordset) {
+    void perform(@NonNull Component caller, @NonNull Recordset recordset) {
         switch (type) {
             case FACTOR -> performFactor(caller);
             case PREFIX -> performPrefix(caller);
