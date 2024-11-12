@@ -336,13 +336,15 @@ public final class XlReader {
                 cell.setMerged(true);
             }
 
-            // TODO учесть скрытые строки и скрытые столбцы, можно добавить поле hidden в ICell
             final boolean zeroHeight = xlCell.getRow().getZeroHeight();
-            if (zeroHeight) {
-                cell.setHidden(true);
-            }
-        }
+            cell.setHidden(zeroHeight);
 
+            final boolean bordered = cellStyle.getBorder() == null ? false : true;
+            cell.setBordered(bordered);
+
+            final boolean colored = cellStyle.getBgColor() == null ? false : true;
+            cell.setColored(colored);
+        }
     }
 
     private int getIndent(String text) {

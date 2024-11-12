@@ -173,6 +173,10 @@ public final class ICell {
 
     @Getter
     @Setter
+    private boolean colored;
+
+    @Getter
+    @Setter
     private HtmlTag htmlTag;
 
     @Getter
