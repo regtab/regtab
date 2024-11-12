@@ -3,10 +3,12 @@ package com.regtab.core.model;
 import lombok.NonNull;
 import lombok.Getter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,7 +25,7 @@ public final class Component {
     private String text;
 
     public void setText(String text) {
-        this.text = text.trim().replaceAll("\\s+", " ");
+        this.text = StringUtils.normalizeSpace(text);
     }
 
     /**
