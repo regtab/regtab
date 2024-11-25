@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.regtab.core.rtl.parser.*;
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import static com.regtab.core.rtl.interpreter.RTLPattern.*;
 import static com.regtab.core.rtl.parser.RTLParser.*;
 
@@ -521,7 +523,8 @@ final class Interpreter {
                 final List<String> separators = new ArrayList<>(separatorContexts.size());
                 for (SeparatorContext separatorContext : separatorContexts) {
                     String separator = unquote(separatorContext.STRING().getText());
-                    separators.add(separator);
+                    String unescapedSeparator = StringEscapeUtils.unescapeJava(separator);
+                    separators.add(unescapedSeparator);
                 }
                 structPattern.setSeparators(separators);
             }
@@ -1093,9 +1096,10 @@ final class Interpreter {
         @Override
         public Expr visitStrLiteral(StrLiteralContext ctx) {
             final String str = unquote(ctx.STRING().getText());
-
+            final String unescapedStr = StringEscapeUtils.unescapeJava(str);
             final String text = ctx.getText();
-            return Expr.builder().asString(text).string(str).build();
+
+            return Expr.builder().asString(text).string(unescapedStr).build();
         }
 
         @Override

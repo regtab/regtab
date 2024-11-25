@@ -550,9 +550,7 @@ public class RTLPattern {
                 final ComponentPattern componentPattern = componentPatterns.get(i);
 
                 if (i < componentPatterns.size() - 1) {
-                    String separator = separators.get(i);
-                    //end = subText.indexOf(separator, start);
-                    String unescapedSeparator = StringEscapeUtils.unescapeJava(separator);
+                    String unescapedSeparator = separators.get(i);
                     end = subText.indexOf(unescapedSeparator, start);
                     if (end == -1) {
                         throw new IllegalStateException("Invalid separator");
