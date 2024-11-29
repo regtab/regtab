@@ -302,21 +302,17 @@ public final class XlReader {
     }
 
     private void createCell(ITable table, int r, int c, CellPos cellPos, String text, Cell xlCell) {
-        final boolean blank;
         final int indent;
 
         if (text == null || text.isBlank()) {
             text = "";
-            blank = true;
             indent = 0;
         } else {
-            blank = false;
             indent = getIndent(text);
         }
 
         final ICell cell = table.createCell(r, c, cellPos, text);
 
-        cell.setBlank(blank);
         cell.setIndent(indent);
 
         if (xlCell != null) {

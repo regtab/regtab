@@ -150,9 +150,9 @@ public final class ICell {
     @Setter
     private int indent;
 
-    @Getter
-    @Setter
-    private boolean blank;
+    public boolean isBlank() {
+        return text.isBlank();
+    }
 
     // Проверить все ли символы напечатаны в верхнем регистре
     public boolean isCaps() {
