@@ -23,13 +23,16 @@ public class CSVReader {
     /**
      * Reads the CSV file specified by the path and converts it into an ITable object.
      *
+     * In this CSV format all values are wrapped in double quotes,
+     * comma is used as the value delimiter, and newline as the row delimiter.
+     *
      * @return The ITable object representing the CSV file.
      * @throws IOException If an I/O error occurs while reading the file.
      */
     public ITable read() throws IOException {
         final Reader reader = new FileReader(path);
 
-        final CSVFormat csvFormat = CSVFormat.DEFAULT
+        final CSVFormat csvFormat = CSVFormat.POSTGRESQL_CSV
                 .builder()
                 .setSkipHeaderRecord(true)
                 .build();
