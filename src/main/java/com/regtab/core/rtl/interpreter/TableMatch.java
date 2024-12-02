@@ -10,31 +10,31 @@ import java.util.List;
 import static com.regtab.core.rtl.interpreter.RTLPattern.CellPattern;
 
 /**
- * Represents the mapping between a table and a compiled RTL pattern.
+ * Represents the matching result between a table and a compiled RTL pattern.
  * This class is final and its constructor is package-private to prevent instantiation from outside the package.
  */
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public final class TableMap {
+public final class TableMatch {
     @Getter
-    private final List<SubtableMap> subtableMaps = new ArrayList<>();
+    private final List<SubtableMatch> subtableMatches = new ArrayList<>();
 
     /**
-     * Adds a subtable map to this table map.
+     * Adds a subtable match to this table match.
      *
-     * @param map The subtable map to add.
+     * @param match The subtable match to add.
      */
-    void add(@NonNull SubtableMap map) {
-        subtableMaps.add(map);
+    void add(@NonNull TableMatch.SubtableMatch match) {
+        subtableMatches.add(match);
     }
 
     /**
      * Applies the pattern to the table.
      *
-     * @return True if the pattern was successfully applied to all subtable maps, false otherwise.
+     * @return True if the pattern was successfully applied to all subtable matches, false otherwise.
      */
     public boolean apply() {
-        for (SubtableMap map : subtableMaps) {
-            boolean result = map.apply();
+        for (SubtableMatch match : subtableMatches) {
+            boolean result = match.apply();
             if (!result)
                 return false;
         }
@@ -42,31 +42,31 @@ public final class TableMap {
     }
 
     /**
-     * Represents the mapping for a subtable within a table.
+     * Represents the matching result for a subtable within a table.
      * This class is static and final, and its constructor is package-private.
      */
     @NoArgsConstructor(access = AccessLevel.PACKAGE)
-    public static final class SubtableMap {
+    public static final class SubtableMatch {
         @Getter
-        private final List<RowMap> rowMaps = new ArrayList<>();
+        private final List<RowMatch> rowMatches = new ArrayList<>();
 
         /**
-         * Adds a row map to this subtable map.
+         * Adds a row match to this subtable match.
          *
-         * @param map The row map to add.
+         * @param match The row match to add.
          */
-        void add(@NonNull RowMap map) {
-            rowMaps.add(map);
+        void add(@NonNull TableMatch.RowMatch match) {
+            rowMatches.add(match);
         }
 
         /**
          * Applies the pattern to the subtable.
          *
-         * @return True if the pattern was successfully applied to all row maps, false otherwise.
+         * @return True if the pattern was successfully applied to all row matches, false otherwise.
          */
         public boolean apply() {
-            for (RowMap map : rowMaps) {
-                boolean result = map.apply();
+            for (RowMatch match : rowMatches) {
+                boolean result = match.apply();
                 if (!result)
                     return false;
             }
@@ -75,31 +75,31 @@ public final class TableMap {
     }
 
     /**
-     * Represents the mapping for a row within a subtable.
+     * Represents the matching result for a row within a subtable.
      * This class is static and final, and its constructor is package-private.
      */
     @NoArgsConstructor(access = AccessLevel.PACKAGE)
-    public static final class RowMap {
+    public static final class RowMatch {
         @Getter
-        private final List<SubrowMap> subrowMaps = new ArrayList<>();
+        private final List<SubrowMatch> subrowMatches = new ArrayList<>();
 
         /**
-         * Adds a subrow map to this row map.
+         * Adds a subrow match to this row match.
          *
-         * @param map The subrow map to add.
+         * @param match The subrow match to add.
          */
-        void add(@NonNull SubrowMap map) {
-            subrowMaps.add(map);
+        void add(@NonNull TableMatch.SubrowMatch match) {
+            subrowMatches.add(match);
         }
 
         /**
          * Applies the pattern to the row.
          *
-         * @return True if the pattern was successfully applied to all subrow maps, false otherwise.
+         * @return True if the pattern was successfully applied to all subrow matches, false otherwise.
          */
         public boolean apply() {
-            for (SubrowMap map : subrowMaps) {
-                boolean result = map.apply();
+            for (SubrowMatch match : subrowMatches) {
+                boolean result = match.apply();
                 if (!result)
                     return false;
             }
@@ -108,31 +108,31 @@ public final class TableMap {
     }
 
     /**
-     * Represents the mapping for a subrow within a row.
+     * Represents the matching result for a subrow within a row.
      * This class is static and final, and its constructor is package-private.
      */
     @NoArgsConstructor(access = AccessLevel.PACKAGE)
-    public static final class SubrowMap {
+    public static final class SubrowMatch {
         @Getter
-        private final List<CellMap> cellMaps = new ArrayList<>();
+        private final List<CellMatch> cellMatches = new ArrayList<>();
 
         /**
-         * Adds a cell map to this subrow map.
+         * Adds a cell match to this subrow match.
          *
-         * @param map The cell map to add.
+         * @param match The cell match to add.
          */
-        void add(@NonNull CellMap map) {
-            cellMaps.add(map);
+        void add(@NonNull TableMatch.CellMatch match) {
+            cellMatches.add(match);
         }
 
         /**
          * Applies the pattern to the subrow.
          *
-         * @return True if the pattern was successfully applied to all cell maps, false otherwise.
+         * @return True if the pattern was successfully applied to all cell matches, false otherwise.
          */
         public boolean apply() {
-            for (CellMap map : cellMaps) {
-                boolean result = map.apply();
+            for (CellMatch match : cellMatches) {
+                boolean result = match.apply();
                 if (!result)
                     return false;
             }
@@ -141,11 +141,11 @@ public final class TableMap {
     }
 
     /**
-     * Represents the mapping for a cell within a subrow.
+     * Represents the matching result for a cell within a subrow.
      * This class is static and final, and its constructor is package-private.
      */
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-    public static final class CellMap {
+    public static final class CellMatch {
         @NonNull
         @Getter
         private final ICell cell;

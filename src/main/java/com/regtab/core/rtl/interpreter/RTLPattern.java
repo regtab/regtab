@@ -13,7 +13,6 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -77,7 +76,7 @@ public class RTLPattern {
      * @param table The table to match against.
      * @return The `TableMap` representing the match result, or null if the pattern could not be compiled.
      */
-    public static TableMap match(@NonNull String rtl, @NonNull ITable table) {
+    public static TableMatch match(@NonNull String rtl, @NonNull ITable table) {
         final RTLPattern t = compile(rtl);
         if  (t == null)
             return null;
@@ -94,11 +93,11 @@ public class RTLPattern {
      * @return True if the pattern was applied successfully, false otherwise.
      */
     public static boolean apply(@NonNull String rtl, @NonNull ITable table) {
-        final TableMap map = match(rtl, table);
-        if  (map == null)
+        final TableMatch match = match(rtl, table);
+        if  (match == null)
             return false;
 
-        return map.apply();
+        return match.apply();
     }
 
     /**
@@ -367,7 +366,7 @@ public class RTLPattern {
     }
 
     /**
-     * Represents a pattern for an component.
+     * Represents a pattern for a component.
      */
     @Slf4j
     static final class ComponentPattern extends ComponentsPattern {
