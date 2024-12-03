@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.regtab.core.rtl.parser.*;
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import static com.regtab.core.rtl.interpreter.RTLPattern.*;
 import static com.regtab.core.rtl.parser.RTLParser.*;
 
@@ -41,7 +43,7 @@ final class Interpreter {
     private static final SubrowVisitor subrowVisitor = new SubrowVisitor();
     private static final CellVisitor cellVisitor = new CellVisitor();
 
-    private static final ElementVisitor elementVisitor = new ElementVisitor();
+    private static final ComponentVisitor componentVisitor = new ComponentVisitor();
     private static final StructVisitor structVisitor = new StructVisitor();
     private static final ChoiceVisitor choiceVisitor = new ChoiceVisitor();
 
@@ -336,36 +338,36 @@ final class Interpreter {
      * The CellVisitor is responsible for visiting the CellContext and generating a CellPattern.
      */
     final static class CellVisitor extends RTLBaseVisitor<CellPattern> {
-        private static final HashMap<String, ElementsContext> store = new HashMap<>();
+        private static final HashMap<String, ComponentsContext> store = new HashMap<>();
 
         @Override
         public CellPattern visitCell(CellContext ctx) {
             final CellPattern cellPattern = new CellPattern(ctx);
 
-            final ElementsContext elementsContext;
+            final ComponentsContext componentsContext;
             final CopyContext copyContext = ctx.copy();
             if (copyContext != null) {
                 String label = copyContext.TAG().getText();
-                elementsContext = store.get(label);
-                if (elementsContext == null) {
+                componentsContext = store.get(label);
+                if (componentsContext == null) {
                     final String msg = String.format("undefined label \"%s\"", label);
                     throw new RTLSyntaxException(msg, ctx);
                 }
             } else {
-                elementsContext = ctx.elements();
+                componentsContext = ctx.components();
             }
 
             final LabelContext labelContext = ctx.label();
             if (labelContext != null) {
                 String label = labelContext.TAG().getText();
-                store.put(label, elementsContext);
+                store.put(label, componentsContext);
             }
 
-            final boolean result = apply(cellPattern, elementsContext);
+            final boolean result = apply(cellPattern, componentsContext);
             if (!result)
                 return null; // Impossible
 
-            final CondContext condContext = elementsContext.cond();
+            final CondContext condContext = componentsContext.cond();
             if (condContext != null) {
                 final Condition condition = condVisitor.visit(condContext);
                 cellPattern.setCondition(condition);
@@ -380,7 +382,7 @@ final class Interpreter {
 
             cellPattern.setQuantifier(quantifier);
 
-            final ActionsContext actionsCtx = elementsContext.actions();
+            final ActionsContext actionsCtx = componentsContext.actions();
             if (actionsCtx != null) {
                 List<ActionContext> actionCtxList = actionsCtx.action();
                 if (actionCtxList != null) {
@@ -396,14 +398,14 @@ final class Interpreter {
             return cellPattern;
         }
 
-        private boolean apply(CellPattern pattern, ElementsContext ctx) {
-            final ElementContext elementContext = ctx.element();
-            if (elementContext != null) {
-                final ElementPattern elementPattern = elementVisitor.visit(elementContext);
-                if (elementPattern == null)
+        private boolean apply(CellPattern pattern, ComponentsContext ctx) {
+            final ComponentContext componentContext = ctx.component();
+            if (componentContext != null) {
+                final ComponentPattern componentPattern = componentVisitor.visit(componentContext);
+                if (componentPattern == null)
                     return false; // Impossible
 
-                pattern.setElementsPattern(elementPattern);
+                pattern.setComponentsPattern(componentPattern);
                 return true;
             }
 
@@ -413,7 +415,7 @@ final class Interpreter {
                 if (structPattern == null)
                     return false; // Impossible
 
-                pattern.setElementsPattern(structPattern);
+                pattern.setComponentsPattern(structPattern);
                 return true;
             }
 
@@ -423,7 +425,7 @@ final class Interpreter {
                 if (choicePattern == null)
                     return false; // Impossible
 
-                pattern.setElementsPattern(choicePattern);
+                pattern.setComponentsPattern(choicePattern);
             }
 
             return true;
@@ -432,32 +434,32 @@ final class Interpreter {
     }
 
     /**
-     * The ElementVisitor is responsible for visiting the ElementContext and generating an ElementPattern.
+     * The ComponentVisitor is responsible for visiting the ComponentContext and generating an ComponentPattern.
      */
-    final static class ElementVisitor extends RTLBaseVisitor<ElementPattern> {
+    final static class ComponentVisitor extends RTLBaseVisitor<ComponentPattern> {
         @Override
-        public ElementPattern visitElement(ElementContext ctx) {
-            final ElementTypeContext etCtx = ctx.elementType();
+        public ComponentPattern visitComponent(ComponentContext ctx) {
+            final ComponentTypeContext etCtx = ctx.componentType();
 
-            final Element.Type elementType;
+            final Component.Type componentType;
             if (etCtx.VALUE() != null)
-                elementType = Element.Type.VALUE;
+                componentType = Component.Type.VALUE;
             else if (etCtx.ATTRIBUTE() != null)
-                elementType = Element.Type.ATTRIBUTE;
+                componentType = Component.Type.ATTRIBUTE;
             else if (etCtx.SKIPPED() != null)
-                elementType = Element.Type.SKIPPED;
+                componentType = Component.Type.SKIPPED;
             else
-                elementType = null; // Impossible
+                componentType = null; // Impossible
 
-            final ElementPattern elementPattern = new ElementPattern(ctx);
-            elementPattern.setElementType(elementType);
+            final ComponentPattern componentPattern = new ComponentPattern(ctx);
+            componentPattern.setComponentType(componentType);
 
             final ExprContext exprContext = ctx.expr();
             if (exprContext != null) {
                 final Expr expr = exprVisitor.visit(exprContext);
                 if (expr == null)
                     return null; // Impossible
-                elementPattern.setExpr(expr);
+                componentPattern.setExpr(expr);
             }
 
             final TagsContext tagsCtx = ctx.tags();
@@ -465,7 +467,7 @@ final class Interpreter {
                 final List<TerminalNode> tns = tagsCtx.TAG();
                 for (TerminalNode tn : tns) {
                     String tag = tn.getText();
-                    elementPattern.add(tag);
+                    componentPattern.add(tag);
                 }
             }
 
@@ -477,12 +479,12 @@ final class Interpreter {
                         final Action action = actionVisitor.visit(actionCtx);
                         if (action == null)
                             return null; // Impossible
-                        elementPattern.add(action);
+                        componentPattern.add(action);
                     }
                 }
             }
 
-            return elementPattern;
+            return componentPattern;
 
         }
     }
@@ -495,13 +497,13 @@ final class Interpreter {
         public StructPattern visitStruct(StructContext ctx) {
             final StructPattern structPattern = new StructPattern(ctx);
 
-            final List<ElementContext> elementContexts = ctx.element();
-            for (ElementContext elemCtx : elementContexts) {
-                final ElementPattern elementPattern = elementVisitor.visit(elemCtx);
-                if (elementPattern == null)
+            final List<ComponentContext> componentContexts = ctx.component();
+            for (ComponentContext compCtx : componentContexts) {
+                final ComponentPattern componentPattern = componentVisitor.visit(compCtx);
+                if (componentPattern == null)
                     return null; // Impossible
 
-                structPattern.add(elementPattern);
+                structPattern.add(componentPattern);
             }
 
             final StartTextContext stCtx = ctx.startText();
@@ -521,7 +523,8 @@ final class Interpreter {
                 final List<String> separators = new ArrayList<>(separatorContexts.size());
                 for (SeparatorContext separatorContext : separatorContexts) {
                     String separator = unquote(separatorContext.STRING().getText());
-                    separators.add(separator);
+                    String unescapedSeparator = StringEscapeUtils.unescapeJava(separator);
+                    separators.add(unescapedSeparator);
                 }
                 structPattern.setSeparators(separators);
             }
@@ -542,13 +545,13 @@ final class Interpreter {
             ChoiceBodyContext choiceBodyContext;
 
             choiceBodyContext = ctx.choiceBody(0);
-            final ElementsPattern left = createVariant(choiceBodyContext);
+            final ComponentsPattern left = createVariant(choiceBodyContext);
             if (left == null)
                 return null; // Impossible
             choicePattern.setLeft(left);
 
             choiceBodyContext = ctx.choiceBody(1);
-            final ElementsPattern right = createVariant(choiceBodyContext);
+            final ComponentsPattern right = createVariant(choiceBodyContext);
             if (right == null)
                 return null; // Impossible
             choicePattern.setRight(right);
@@ -564,10 +567,10 @@ final class Interpreter {
             return choicePattern;
         }
 
-        private ElementsPattern createVariant(ChoiceBodyContext ctx) {
-            final ElementContext elementContext = ctx.element();
-            if (elementContext != null) {
-                return elementVisitor.visit(elementContext);
+        private ComponentsPattern createVariant(ChoiceBodyContext ctx) {
+            final ComponentContext componentContext = ctx.component();
+            if (componentContext != null) {
+                return componentVisitor.visit(componentContext);
             }
 
             final StructContext structuredContext = ctx.struct();
@@ -762,11 +765,11 @@ final class Interpreter {
                     }
                 }
 
-                final ElementIndexContext elementIndexContext = whereCtx.elementIndex();
-                if (elementIndexContext != null) {
-                    final TerminalNode tn = elementIndexContext.INT();
+                final ComponentIndexContext componentIndexContext = whereCtx.componentIndex();
+                if (componentIndexContext != null) {
+                    final TerminalNode tn = componentIndexContext.INT();
                     final int index = Integer.parseInt(tn.getText());
-                    lookup.setElementIndex(index);
+                    lookup.setComponentIndex(index);
                 }
 
                 final TagsContext tagsCtx = whereCtx.tags();
@@ -1093,9 +1096,10 @@ final class Interpreter {
         @Override
         public Expr visitStrLiteral(StrLiteralContext ctx) {
             final String str = unquote(ctx.STRING().getText());
-
+            final String unescapedStr = StringEscapeUtils.unescapeJava(str);
             final String text = ctx.getText();
-            return Expr.builder().asString(text).string(str).build();
+
+            return Expr.builder().asString(text).string(unescapedStr).build();
         }
 
         @Override

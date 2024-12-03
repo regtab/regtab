@@ -1,23 +1,18 @@
 package com.regtab.core.rtl.interpreter;
 
+import com.regtab.core.model.*;
 import lombok.extern.slf4j.Slf4j;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-import com.regtab.core.model.ICell;
-import com.regtab.core.model.Action;
-import com.regtab.core.model.Condition;
-import com.regtab.core.model.Element;
-import com.regtab.core.model.Expr;
-import com.regtab.core.model.ITable;
+import com.regtab.core.model.Component;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -81,7 +76,7 @@ public class RTLPattern {
      * @param table The table to match against.
      * @return The `TableMap` representing the match result, or null if the pattern could not be compiled.
      */
-    public static TableMap match(@NonNull String rtl, @NonNull ITable table) {
+    public static TableMatch match(@NonNull String rtl, @NonNull ITable table) {
         final RTLPattern t = compile(rtl);
         if  (t == null)
             return null;
@@ -98,11 +93,11 @@ public class RTLPattern {
      * @return True if the pattern was applied successfully, false otherwise.
      */
     public static boolean apply(@NonNull String rtl, @NonNull ITable table) {
-        final TableMap map = match(rtl, table);
-        if  (map == null)
+        final TableMatch match = match(rtl, table);
+        if  (match == null)
             return false;
 
-        return map.apply();
+        return match.apply();
     }
 
     /**
@@ -336,7 +331,7 @@ public class RTLPattern {
 
         @Getter
         @Setter
-        private ElementsPattern elementsPattern;
+        private ComponentsPattern componentsPattern;
 
         @Override
         void setCondition(@NonNull Condition condition) {
@@ -349,21 +344,21 @@ public class RTLPattern {
 
         void add(@NonNull Action action) {
             getActions().add(action);
-            if (elementsPattern != null)
-                elementsPattern.add(action);
+            if (componentsPattern != null)
+                componentsPattern.add(action);
         }
 
         boolean apply(@NonNull ICell cell) {
-            return elementsPattern.apply(cell);
+            return componentsPattern.apply(cell);
         }
     }
 
 
     /**
-     * Represents a pattern for a set of elements.
+     * Represents a pattern for a set of components.
      */
-    abstract static class ElementsPattern extends ActionablePattern {
-        ElementsPattern(ParseTree tree) {
+    abstract static class ComponentsPattern extends ActionablePattern {
+        ComponentsPattern(ParseTree tree) {
             super(tree);
         }
 
@@ -371,17 +366,17 @@ public class RTLPattern {
     }
 
     /**
-     * Represents a pattern for an element.
+     * Represents a pattern for a component.
      */
     @Slf4j
-    static final class ElementPattern extends ElementsPattern {
-        ElementPattern(@NonNull ElementContext context) {
+    static final class ComponentPattern extends ComponentsPattern {
+        ComponentPattern(@NonNull ComponentContext context) {
             super(context);
         }
 
         @Getter
         @Setter
-        private Element.Type elementType;
+        private Component.Type componentType;
 
         @Getter
         @Setter
@@ -414,14 +409,14 @@ public class RTLPattern {
                 val = result.toString();
             }
 
-            final Element element = cell.createElement(elementType, val);
+            final Component component = cell.createComponent(componentType, val);
 
             for (String tag : tags)
-                element.addTag(tag);
+                component.addTag(tag);
 
             final List<Action> actions = getActions();
             for (Action action : actions)
-                element.addAction(action);
+                component.addAction(action);
 
             return true;
         }
@@ -431,7 +426,7 @@ public class RTLPattern {
     /**
      * Represents a pattern for a choice.
      */
-    static final class ChoicePattern extends ElementsPattern {
+    static final class ChoicePattern extends ComponentsPattern {
         ChoicePattern(ChoiceContext context) {
             super(context);
         }
@@ -444,12 +439,12 @@ public class RTLPattern {
         @NonNull
         @Getter
         @Setter
-        private ElementsPattern left;
+        private ComponentsPattern left;
 
         @NonNull
         @Getter
         @Setter
-        private ElementsPattern right;
+        private ComponentsPattern right;
 
         void add(@NonNull Action action) {
             left.add(action);
@@ -468,16 +463,16 @@ public class RTLPattern {
      * Represents a pattern for a struct.
      */
     @Slf4j
-    static final class StructPattern extends ElementsPattern {
+    static final class StructPattern extends ComponentsPattern {
         StructPattern(@NonNull StructContext context) {
             super(context);
         }
 
         @Getter
-        private final List<ElementPattern> elementPatterns = new ArrayList<>();
+        private final List<ComponentPattern> componentPatterns = new ArrayList<>();
 
-        void add(@NonNull RTLPattern.ElementPattern pattern) {
-            elementPatterns.add(pattern);
+        void add(@NonNull RTLPattern.ComponentPattern pattern) {
+            componentPatterns.add(pattern);
         }
 
         @Getter
@@ -493,8 +488,8 @@ public class RTLPattern {
         private List<String> separators;
 
         void add(@NonNull Action action) {
-            for (ElementPattern elementPattern : elementPatterns) {
-                elementPattern.add(action);
+            for (ComponentPattern componentPattern : componentPatterns) {
+                componentPattern.add(action);
             }
         }
 
@@ -528,12 +523,12 @@ public class RTLPattern {
 
             // Если нет разделителей, то есть только один элемент
             if (separators == null) {
-                if (elementPatterns.size() != 1) {
+                if (componentPatterns.size() != 1) {
                     log.debug("Pattern {} could not be applied to the cell {}", this, cell);
                     return false;
                 }
-                final ElementPattern elementPattern = elementPatterns.getFirst();
-                result = elementPattern.apply(cell, subText);
+                final ComponentPattern componentPattern = componentPatterns.getFirst();
+                result = componentPattern.apply(cell, subText);
                 if (!result) {
                     log.debug("Pattern {} could not be applied to the cell {}", this, cell);
                     return false;
@@ -543,20 +538,18 @@ public class RTLPattern {
             }
 
             // Если есть n разделителей, то есть n-1 элементов
-            if (elementPatterns.size() != separators.size() + 1) {
+            if (componentPatterns.size() != separators.size() + 1) {
                 log.debug("Pattern {} could not be applied to the cell {}", this, cell);
                 return false;
             }
 
             start = 0;
             int shift = 0;
-            for (int i = 0; i < elementPatterns.size(); i++) {
-                final ElementPattern elementPattern = elementPatterns.get(i);
+            for (int i = 0; i < componentPatterns.size(); i++) {
+                final ComponentPattern componentPattern = componentPatterns.get(i);
 
-                if (i < elementPatterns.size() - 1) {
-                    String separator = separators.get(i);
-                    //end = subText.indexOf(separator, start);
-                    String unescapedSeparator = StringEscapeUtils.unescapeJava(separator);
+                if (i < componentPatterns.size() - 1) {
+                    String unescapedSeparator = separators.get(i);
                     end = subText.indexOf(unescapedSeparator, start);
                     if (end == -1) {
                         throw new IllegalStateException("Invalid separator");
@@ -567,7 +560,7 @@ public class RTLPattern {
                 }
 
                 String val = subText.substring(start, end);
-                result = elementPattern.apply(cell, val);
+                result = componentPattern.apply(cell, val);
                 if (!result) {
                     log.debug("Pattern {} could not be applied to the cell {}", this, cell);
                     return false;

@@ -59,11 +59,11 @@ public final class Recordset {
 
     private final Map<String, Attribute> attrMap = new HashMap<>();
 
-    private final Map<Element, Value> elemValMap = new HashMap<>();
+    private final Map<Component, Value> elemValMap = new HashMap<>();
 
-    void updateSchema(@NonNull Element valElement, @NonNull String attrName) {
+    void updateSchema(@NonNull Component valComponent, @NonNull String attrName) {
         Attribute attribute = attrMap.get(attrName);
-        final Value value = elemValMap.get(valElement);
+        final Value value = elemValMap.get(valComponent);
 
         if (value != null) {
             if (attribute == null) {
@@ -74,12 +74,12 @@ public final class Recordset {
         }
     }
 
-    void updateSchema(@NonNull Element valElement, @NonNull Element attrElement) {
-        if (valElement == attrElement)
+    void updateSchema(@NonNull Component valComponent, @NonNull Component attrComponent) {
+        if (valComponent == attrComponent)
             throw new IllegalArgumentException("Недопустимая операция: элементы совпадают");
 
-        final String text = attrElement.getText();
-        updateSchema(valElement, text);
+        final String text = attrComponent.getText();
+        updateSchema(valComponent, text);
     }
 
     void updateSchema(Value value, String attrName) {
@@ -93,19 +93,18 @@ public final class Recordset {
         attribute.addValue(value);
     }
 
-    private final List<Element> recordedElements = new ArrayList<>();
+    private final List<Component> recordedComponents = new ArrayList<>();
 
-    Record createRecord(@NonNull Element element) {
+    Record createRecord(@NonNull Component component) {
         final Record record = new Record();
-        final String text = element.getText();
-        final Value value = new Value(text, element);
+        final String text = component.getText();
+        final Value value = new Value(text, component);
         record.getValues().add(value);
-        elemValMap.put(element, value);
-        recordedElements.add(element);
+        elemValMap.put(component, value);
+        recordedComponents.add(component);
         records.add(record);
 
-        //recordMap.put(element, record);
-        recordMultiMap.put(element, record);
+        recordMultiMap.put(component, record);
 
         return record;
     }
@@ -122,53 +121,23 @@ public final class Recordset {
         record.getValues().add(value);
     }
 
-    void updateRecord(@NonNull Record record, @NonNull Element element) {
-        final boolean result = recordedElements.contains(element);
+    void updateRecord(@NonNull Record record, @NonNull Component component) {
+        final boolean result = recordedComponents.contains(component);
         if (result)
             throw new IllegalArgumentException("Элемент уже принадлежит записи");
 
-        Value value = elemValMap.get(element);
+        Value value = elemValMap.get(component);
         if (value == null) {
-            final String text = element.getText();
-            value = new Value(text, element);
-            elemValMap.put(element, value);
+            final String text = component.getText();
+            value = new Value(text, component);
+            elemValMap.put(component, value);
         }
         record.getValues().add(value);
     }
 
-    //private final HashMap<Element, Record> recordMap = new HashMap<>();
-    private final MultiValuedMap<Element, Record> recordMultiMap = new ArrayListValuedHashMap<>();
+    private final MultiValuedMap<Component, Record> recordMultiMap = new ArrayListValuedHashMap<>();
 
-//    void joinRecords(@NonNull Element leftElem, @NonNull Element joinedElem) {
-//        // Найти запись, связанную с элементом leftElem
-//
-//
-//        final Record leftRecord = recordMap.get(leftElem);
-//        if (leftRecord == null)
-//            return;
-//
-//        // Найти запись, связанную с элементом joinedElem
-//        final Record joinedRecord = recordMap.remove(joinedElem);
-//        if (joinedRecord == null)
-//            return;
-//
-//        recordMap.put(joinedElem, leftRecord);
-//
-//        // Изъять найденные записи
-//        records.remove(joinedRecord);
-//
-//        // Добавить объединенную запись
-//        final List<Recordset.Value> leftValues = leftRecord.getValues();
-//
-//        final List<Recordset.Value> joinedValues = joinedRecord.getValues();
-//        for (Recordset.Value value : joinedValues) {
-//            if (value.provenance == joinedElem)
-//                continue;
-//            leftValues.add(value);
-//        }
-//    }
-
-    void joinRecords(@NonNull Element leftElem, @NonNull Element joinedElem) {
+    void joinRecords(@NonNull Component leftElem, @NonNull Component joinedElem) {
         // Найти все записи, связанные с элементом leftElem
         final Collection<Record> leftRecs = recordMultiMap.get(leftElem);
         if (leftRecs == null)
@@ -276,12 +245,12 @@ public final class Recordset {
         private final String string;
 
         @Getter
-        private final Element provenance;
+        private final Component provenance;
 
-        private Value(@NonNull String string, Element provenance) {
+        private Value(@NonNull String string, Component provenance) {
             this.string = string;
-            if (provenance != null && provenance.getType() != Element.Type.VALUE)
-                throw new IllegalArgumentException("Invalid element type");
+            if (provenance != null && provenance.getType() != Component.Type.VALUE)
+                throw new IllegalArgumentException("Invalid component type");
             this.provenance = provenance;
         }
 
@@ -303,12 +272,12 @@ public final class Recordset {
         private final String name;
 
         @Getter
-        private final Element provenance;
+        private final Component provenance;
 
-        private Attribute(@NonNull String name, Element provenance) {
+        private Attribute(@NonNull String name, Component provenance) {
             this.name = name;
-            if (provenance != null && provenance.getType() != Element.Type.ATTRIBUTE)
-                throw new IllegalArgumentException("Invalid element type");
+            if (provenance != null && provenance.getType() != Component.Type.ATTRIBUTE)
+                throw new IllegalArgumentException("Invalid component type");
             this.provenance = provenance;
         }
 

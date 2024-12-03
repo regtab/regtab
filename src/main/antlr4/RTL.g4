@@ -34,19 +34,19 @@ subrow : (cell+) | cells ;
 // Может дополняться набором действий (actions) и условий (cond).
 cells : LCURLY (cond ARROW)? (actions)? cell+ RCURLY quantifier? ;
 
-// Паттерн ячейки (cell) включает либо паттерн группы элементов (elements), либо замену (replacement).
-cell : label? LSQUARE (elements | copy) RSQUARE quantifier? ;
+// Паттерн ячейки (cell) включает либо паттерн группы компонентов (components), либо замену (replacement).
+cell : label? LSQUARE (components | copy) RSQUARE quantifier? ;
 
-// Паттерн группы элементов (elements) включает элемент (element), структуру (structured) или выбор (choice).
+// Паттерн группы компонентов (components) включает компонент (component), структуру (structured) или выбор (choice).
 // Может дополняться набором условий (cond).
-elements : (cond ARROW)? actions? (element | struct | choice) ;
+components : (cond ARROW)? actions? (component | struct | choice) ;
 
-// Элемент (element) включает тип (elementType).
+// Элемент (component) включает тип (componentType).
 // Может дополняться набором тегов (tags) и набором действий (actions).
-element : elementType (ASSIGN expr)? tags? (COLON actions)? ;
+component : componentType (ASSIGN expr)? tags? (COLON actions)? ;
 
-// Тип элемента (elementType) может быть атрибутом (ATTRIBUTE), значением (VALUE), или пропускаемым (SKIPPED).
-elementType : ATTRIBUTE | VALUE | SKIPPED ;
+// Тип компонента (componentType) может быть атрибутом (ATTRIBUTE), значением (VALUE), или пропускаемым (SKIPPED).
+componentType : ATTRIBUTE | VALUE | SKIPPED ;
 ATTRIBUTE : 'A' | 'ATTR' ;
 VALUE     : 'V' | 'VAL' ;
 SKIPPED   : 'S' | 'SKIP' ;
@@ -60,8 +60,8 @@ actions : action (SEMICOLON action)* ;
 action : actionType ASSIGN (actionBody | (LPAREN actionBody (SEMICOLON actionBody)* RPAREN)) ;
 
 // Тип действия:
-// FACTOR -- заимствовать значение элемента из другого элемента или литерала.
-// CONCAT -- соединить значение дочернего элемента со значением родительского элемента или литерала.
+// FACTOR -- заимствовать значение компонента из другого компонента или литерала.
+// CONCAT -- соединить значение дочернего компонента со значением родительского компонента или литерала.
 // RECORD -- связать значения с записью.
 // SCHEMA -- связать значение с атрибутом.
 actionType : FACTOR | PREFIX | SUFFIX | RECORD | JOIN | SCHEMA ;
@@ -70,13 +70,13 @@ FACTOR : 'FACTOR' ;
 PREFIX : 'PREFIX' ;
 SUFFIX : 'SUFFIX' ;
 RECORD : 'RECORD' ;
-JOIN : 'JOIN' ;
+JOIN   : 'JOIN' ;
 SCHEMA : 'SCHEMA' ;
 
 actionBody : STRING | lookup ;
 
 // Cтруктура (structured) включает паттерн строки текста (line),
-struct : LPAREN startText? element (separator element)* endText? RPAREN ;
+struct : LPAREN startText? component (separator component)* endText? RPAREN ;
 startText : STRING ;
 separator : STRING ;
 endText   : STRING ;
@@ -84,12 +84,12 @@ endText   : STRING ;
 // Выбор (choice) из двух тел (choiceBody) по условию (cond):
 // если условие (cond) истино, то выбирается левое тело, иначе --- правое.
 choice : cond QUESTION (choiceBody VBAR choiceBody) ;
-choiceBody : element | struct ;
+choiceBody : component | struct ;
 
 // Условие (cond) включает одно или несколько логических выражений (ограничений) (expr).
 cond : expr (SEMICOLON expr)* ;
 
-// Поиск элементов (lookup).
+// Поиск компонентов (lookup).
 lookup : (direction limit?) | (LPAREN direction limit? (COLON ((where cond?) | (where? cond)))? RPAREN);
 
 limit : LCURLY INT RCURLY ;
@@ -118,12 +118,12 @@ IN_CELL : 'CELL' ;
 
 // Область поиска (where).
 where
-: (range elementIndex? tags?)
-| (range elementIndex tags?)
-| (range elementIndex? tags)
-| (range? elementIndex tags?)
-| (range? elementIndex tags)
-| (range? elementIndex? tags)
+: (range componentIndex? tags?)
+| (range componentIndex tags?)
+| (range componentIndex? tags)
+| (range? componentIndex tags?)
+| (range? componentIndex tags)
+| (range? componentIndex? tags)
 ;
 
 // Диапазон ячеек.
@@ -139,8 +139,8 @@ relative   : PLUS | MINUS ;
 ROW : 'R';
 COL : 'C';
 
-// Индекс элемента внутри структурированной ячейки.
-elementIndex : 'E' INT ;
+// Индекс компонента внутри структурированной ячейки.
+componentIndex : 'E' INT ;
 
 expr
  : LPAREN expr RPAREN                                 #parenExpr
@@ -258,3 +258,7 @@ fragment ESC
     ;
 
 WS : [ \r\t\u000C\n]+ -> channel(HIDDEN) ;
+
+LineComment
+    : '//' ~[\r\n]* -> channel(HIDDEN)
+    ;

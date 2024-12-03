@@ -208,6 +208,10 @@ public final class Prop<T> {
 
     private static final Evaluator<Boolean> hidden = ICell::isHidden;
 
+    private static final Evaluator<Boolean> bordered = ICell::isBordered;
+
+    private static final Evaluator<Boolean> colored = ICell::isColored;
+
     private static final Evaluator<Boolean> htmlTagTH = cell -> {
         HtmlTag htmlTag = cell.getHtmlTag();
         if (htmlTag == null) return false;
@@ -275,6 +279,10 @@ public final class Prop<T> {
     private static final Prop<Boolean> CAPS = new Prop<>("@caps", caps);
     private static final Prop<Boolean> MERGED = new Prop<>("@merged", merged);
     private static final Prop<Boolean> HIDDEN = new Prop<>("@hidden", hidden);
+
+    private static final Prop<Boolean> BORDERED = new Prop<>("@bordered", bordered);
+    private static final Prop<Boolean> COLORED = new Prop<>("@colored", colored);
+
     private static final Prop<Boolean> HTML_TAG_TH = new Prop<>("@th", htmlTagTH);
     private static final Prop<Boolean> HTML_TAG_TD = new Prop<>("@td", htmlTagTD);
     private static final Prop<Boolean> SS_DATATYPE_NUMERIC = new Prop<>("@numeric", ssDTNumeric);
@@ -316,6 +324,8 @@ public final class Prop<T> {
         props.put(CAPS.name, CAPS);
         props.put(MERGED.name, MERGED);
         props.put(HIDDEN.name, HIDDEN);
+        props.put(BORDERED.name, BORDERED);
+        props.put(COLORED.name, COLORED);
         props.put(HTML_TAG_TH.name, HTML_TAG_TH);
         props.put(HTML_TAG_TD.name, HTML_TAG_TD);
         props.put(SS_DATATYPE_NUMERIC.name, SS_DATATYPE_NUMERIC);

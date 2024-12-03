@@ -89,40 +89,40 @@ public final class ICell {
     public int cr() { return cellPos.cr(); }
 
     @Getter(AccessLevel.PACKAGE)
-    private final List<Element> elements = new ArrayList<>();
+    private final List<Component> components = new ArrayList<>();
 
     /**
-     * Returns a list of elements associated with the cell.
+     * Returns a list of components associated with the cell.
      *
-     * @return The list of elements, or null if the cell has no elements.
+     * @return The list of components, or null if the cell has no components.
      */
-    public List<Element> elements() {
-        return elements.isEmpty() ? null : new ArrayList<>(elements);
+    public List<Component> components() {
+        return components.isEmpty() ? null : new ArrayList<>(components);
     }
 
     /**
-     * Performs an action on all elements associated with the cell.
+     * Performs an action on all components associated with the cell.
      *
      * @param type The type of action to perform.
      * @param recordset The recordset to use for the action.
      */
     void perform(@NonNull Action.Type type, @NonNull Recordset recordset) {
-        for (Element element : elements)
-            element.perform(type, recordset);
+        for (Component component : components)
+            component.perform(type, recordset);
     }
 
     /**
-     * Creates a new element associated with the cell.
+     * Creates a new component associated with the cell.
      *
-     * @param type The type of the element.
-     * @param text The text content of the element.
-     * @return The created element.
+     * @param type The type of the component.
+     * @param text The text content of the component.
+     * @return The created component.
      */
-    public Element createElement(@NonNull Element.Type type, @NonNull String text) {
-        Element element = new Element(this, type, text.trim());
-        elements.add(element);
+    public Component createComponent(@NonNull Component.Type type, @NonNull String text) {
+        Component component = new Component(this, type, text.trim());
+        components.add(component);
 
-        return element;
+        return component;
     }
 
     /**
@@ -150,9 +150,9 @@ public final class ICell {
     @Setter
     private int indent;
 
-    @Getter
-    @Setter
-    private boolean blank;
+    public boolean isBlank() {
+        return text.isBlank();
+    }
 
     // Проверить все ли символы напечатаны в верхнем регистре
     public boolean isCaps() {
@@ -170,6 +170,10 @@ public final class ICell {
     @Getter
     @Setter
     private boolean bordered;
+
+    @Getter
+    @Setter
+    private boolean colored;
 
     @Getter
     @Setter
@@ -194,10 +198,10 @@ public final class ICell {
     }
 
     /**
-     * Clears all elements associated with the cell.
+     * Clears all components associated with the cell.
      */
     void clear() {
-        elements.clear();
+        components.clear();
     }
 
 }

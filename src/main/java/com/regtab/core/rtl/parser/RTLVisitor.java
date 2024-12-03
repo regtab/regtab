@@ -101,23 +101,23 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCell(RTLParser.CellContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link RTLParser#elements}.
+	 * Visit a parse tree produced by {@link RTLParser#components}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitElements(RTLParser.ElementsContext ctx);
+	T visitComponents(RTLParser.ComponentsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link RTLParser#element}.
+	 * Visit a parse tree produced by {@link RTLParser#component}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitElement(RTLParser.ElementContext ctx);
+	T visitComponent(RTLParser.ComponentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link RTLParser#elementType}.
+	 * Visit a parse tree produced by {@link RTLParser#componentType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitElementType(RTLParser.ElementTypeContext ctx);
+	T visitComponentType(RTLParser.ComponentTypeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RTLParser#tags}.
 	 * @param ctx the parse tree
@@ -257,11 +257,11 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRelative(RTLParser.RelativeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link RTLParser#elementIndex}.
+	 * Visit a parse tree produced by {@link RTLParser#componentIndex}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitElementIndex(RTLParser.ElementIndexContext ctx);
+	T visitComponentIndex(RTLParser.ComponentIndexContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code strLiteral}
 	 * labeled alternative in {@link RTLParser#expr}.

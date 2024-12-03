@@ -27,7 +27,8 @@ public final class CSVWriter {
      * @throws IOException if an I/O error occurs while writing to the file
      */
     public void write(Recordset recordset) throws IOException {
-        final CSVFormat format = CSVFormat.DEFAULT;
+        final CSVFormat format = CSVFormat.POSTGRESQL_CSV;
+
         final BufferedWriter writer = Files.newBufferedWriter(Paths.get(path), StandardCharsets.UTF_8);
 
         final CSVPrinter printer = new CSVPrinter(writer, format);

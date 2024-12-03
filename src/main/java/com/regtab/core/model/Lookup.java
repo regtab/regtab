@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * The Lookup class is used to find elements in a table based on certain criteria.
+ * The Lookup class is used to find components in a table based on certain criteria.
  * It can search in different directions and apply conditions to filter the results.
  */
 @RequiredArgsConstructor
 public final class Lookup {
-    private Element caller;
+    private Component caller;
 
     @Getter(AccessLevel.PACKAGE)
     @Setter(AccessLevel.PACKAGE)
@@ -38,7 +38,7 @@ public final class Lookup {
 
     @Getter
     @Setter
-    private Integer elementIndex;
+    private Integer componentIndex;
 
     private final List<String> tags = new ArrayList<>();
 
@@ -75,59 +75,59 @@ public final class Lookup {
     }
 
     /**
-     * Finds the first element that matches the lookup criteria.
+     * Finds the first component that matches the lookup criteria.
      *
-     * @param caller The element from which the lookup is initiated.
-     * @return The first matching element, or null if no match is found.
+     * @param caller The component from which the lookup is initiated.
+     * @return The first matching component, or null if no match is found.
      */
-    Element findFirst(Element caller) {
+    Component findFirst(Component caller) {
         return findFirst(null, caller);
     }
 
     /**
-     * Finds the first element of a specific type that matches the lookup criteria.
+     * Finds the first component of a specific type that matches the lookup criteria.
      *
-     * @param type The type of the element to find.
-     * @param caller The element from which the lookup is initiated.
-     * @return The first matching element of the specified type, or null if no match is found.
+     * @param type The type of the component to find.
+     * @param caller The component from which the lookup is initiated.
+     * @return The first matching component of the specified type, or null if no match is found.
      */
-    Element findFirst(Element.Type type, Element caller) {
-        final List<Element> elements = findElements(type, caller);
-        if (elements == null) return null;
-        return elements.size() > 0 ? elements.getFirst() : null;
+    Component findFirst(Component.Type type, Component caller) {
+        final List<Component> components = findComponents(type, caller);
+        if (components == null) return null;
+        return components.size() > 0 ? components.getFirst() : null;
     }
 
     /**
-     * Finds all elements that match the lookup criteria.
+     * Finds all components that match the lookup criteria.
      *
-     * @param type The type of the elements to find.
-     * @param caller The element from which the lookup is initiated.
-     * @return A list of matching elements, or null if no match is found.
+     * @param type The type of the components to find.
+     * @param caller The component from which the lookup is initiated.
+     * @return A list of matching components, or null if no match is found.
      */
-    List<Element> findAll(Element.Type type, Element caller) {
-        return findElements(type, caller);
+    List<Component> findAll(Component.Type type, Component caller) {
+        return findComponents(type, caller);
     }
 
-    private List<Element> findElements(Element.Type type, Element caller) {
+    private List<Component> findComponents(Component.Type type, Component caller) {
         final List<ICell> cells = collectCells(caller);
-        List<Element> elements = new ArrayList<>();
+        List<Component> components = new ArrayList<>();
 
         if (cells != null) {
-            collectElements(cells, type, elements);
+            collectComponents(cells, type, components);
             if (direction == Direction.IN_CELL)
-                elements.remove(caller);
+                components.remove(caller);
         }
 
-        return elements.isEmpty() ? null : elements;
+        return components.isEmpty() ? null : components;
     }
 
     /**
      * Private helper method to collect cells based on the lookup criteria.
      *
-     * @param caller The element from which the lookup is initiated.
+     * @param caller The component from which the lookup is initiated.
      * @return A list of cells that match the lookup criteria.
      */
-    private List<ICell> collectCells(Element caller) {
+    private List<ICell> collectCells(Component caller) {
         this.caller = caller;
 
         final ICell cell = caller.getCell();
@@ -240,15 +240,15 @@ public final class Lookup {
     }
 
     /**
-     * Private helper method to collect elements from a list of cells.
+     * Private helper method to collect components from a list of cells.
      *
-     * @param cells The list of cells to search for elements.
-     * @param type The type of the elements to collect.
-     * @param result The list to which the collected elements will be added.
+     * @param cells The list of cells to search for components.
+     * @param type The type of the components to collect.
+     * @param result The list to which the collected components will be added.
      */
-    private void collectElements(List<ICell> cells, Element.Type type, List<Element> result) {
+    private void collectComponents(List<ICell> cells, Component.Type type, List<Component> result) {
         for (ICell c : cells) {
-            collectElements(c, type, result);
+            collectComponents(c, type, result);
             if (!all) {
                 if (!result.isEmpty())
                     return;
@@ -256,7 +256,7 @@ public final class Lookup {
         }
     }
 
-    private void collectElement(Element elem, Element.Type type, List<Element> result) {
+    private void collectComponent(Component elem, Component.Type type, List<Component> result) {
         if (elem.getType() == type || null == type) {
             if (tags.isEmpty()) {
                 result.add(elem);
@@ -271,22 +271,22 @@ public final class Lookup {
         }
     }
 
-    private void collectElements(ICell cell, Element.Type type, List<Element> result) {
-        final List<Element> elements = cell.getElements();
-        if (elements != null) {
-            if (elementIndex != null && elementIndex < elements.size()) {
-                Element elem = elements.get(elementIndex);
+    private void collectComponents(ICell cell, Component.Type type, List<Component> result) {
+        final List<Component> components = cell.getComponents();
+        if (components != null) {
+            if (componentIndex != null && componentIndex < components.size()) {
+                Component elem = components.get(componentIndex);
                 if (elem != caller)
-                    collectElement(elem, type, result);
+                    collectComponent(elem, type, result);
             } else {
-                for (Element elem : elements) {
+                for (Component elem : components) {
                     if (limit != null && result.size() == limit)
                         return;
 
                     if (elem == caller)
                         continue;
 
-                    collectElement(elem, type, result);
+                    collectComponent(elem, type, result);
 
                     if (!all && !result.isEmpty())
                         return;

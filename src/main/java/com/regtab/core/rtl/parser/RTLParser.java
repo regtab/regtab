@@ -25,31 +25,31 @@ public class RTLParser extends Parser {
 		LCURLY=40, RCURLY=41, LSQUARE=42, RSQUARE=43, ARROW=44, COLON=45, SEMICOLON=46, 
 		COMMA=47, DOLLAR=48, QUESTION=49, VBAR=50, EXCLAMATION=51, DOUBLE_AMPERSAND=52, 
 		DOUBLE_VBAR=53, DOUBLE_PERIOD=54, ASSIGN=55, PERIOD=56, TAG=57, ID=58, 
-		INT=59, DOUBLE=60, HEX=61, STRING=62, WS=63;
+		INT=59, DOUBLE=60, HEX=61, STRING=62, WS=63, LineComment=64;
 	public static final int
 		RULE_table = 0, RULE_subtable = 1, RULE_rows = 2, RULE_label = 3, RULE_copy = 4, 
 		RULE_quantifier = 5, RULE_zeroOrOne = 6, RULE_zeroOrMore = 7, RULE_oneOrMore = 8, 
 		RULE_exactly = 9, RULE_row = 10, RULE_subrows = 11, RULE_subrow = 12, 
-		RULE_cells = 13, RULE_cell = 14, RULE_elements = 15, RULE_element = 16, 
-		RULE_elementType = 17, RULE_tags = 18, RULE_actions = 19, RULE_action = 20, 
+		RULE_cells = 13, RULE_cell = 14, RULE_components = 15, RULE_component = 16, 
+		RULE_componentType = 17, RULE_tags = 18, RULE_actions = 19, RULE_action = 20, 
 		RULE_actionType = 21, RULE_actionBody = 22, RULE_struct = 23, RULE_startText = 24, 
 		RULE_separator = 25, RULE_endText = 26, RULE_choice = 27, RULE_choiceBody = 28, 
 		RULE_cond = 29, RULE_lookup = 30, RULE_limit = 31, RULE_direction = 32, 
 		RULE_where = 33, RULE_range = 34, RULE_rowRange = 35, RULE_colRange = 36, 
 		RULE_rangeBody = 37, RULE_start = 38, RULE_end = 39, RULE_relative = 40, 
-		RULE_elementIndex = 41, RULE_expr = 42, RULE_compOp = 43, RULE_binaryOp = 44, 
+		RULE_componentIndex = 41, RULE_expr = 42, RULE_compOp = 43, RULE_binaryOp = 44, 
 		RULE_func = 45, RULE_arg = 46, RULE_prop = 47, RULE_bool = 48, RULE_arithmOp = 49, 
 		RULE_strOp = 50;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"table", "subtable", "rows", "label", "copy", "quantifier", "zeroOrOne", 
 			"zeroOrMore", "oneOrMore", "exactly", "row", "subrows", "subrow", "cells", 
-			"cell", "elements", "element", "elementType", "tags", "actions", "action", 
-			"actionType", "actionBody", "struct", "startText", "separator", "endText", 
-			"choice", "choiceBody", "cond", "lookup", "limit", "direction", "where", 
-			"range", "rowRange", "colRange", "rangeBody", "start", "end", "relative", 
-			"elementIndex", "expr", "compOp", "binaryOp", "func", "arg", "prop", 
-			"bool", "arithmOp", "strOp"
+			"cell", "components", "component", "componentType", "tags", "actions", 
+			"action", "actionType", "actionBody", "struct", "startText", "separator", 
+			"endText", "choice", "choiceBody", "cond", "lookup", "limit", "direction", 
+			"where", "range", "rowRange", "colRange", "rangeBody", "start", "end", 
+			"relative", "componentIndex", "expr", "compOp", "binaryOp", "func", "arg", 
+			"prop", "bool", "arithmOp", "strOp"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -76,7 +76,7 @@ public class RTLParser extends Parser {
 			"LSQUARE", "RSQUARE", "ARROW", "COLON", "SEMICOLON", "COMMA", "DOLLAR", 
 			"QUESTION", "VBAR", "EXCLAMATION", "DOUBLE_AMPERSAND", "DOUBLE_VBAR", 
 			"DOUBLE_PERIOD", "ASSIGN", "PERIOD", "TAG", "ID", "INT", "DOUBLE", "HEX", 
-			"STRING", "WS"
+			"STRING", "WS", "LineComment"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -1121,8 +1121,8 @@ public class RTLParser extends Parser {
 	public static class CellContext extends ParserRuleContext {
 		public TerminalNode LSQUARE() { return getToken(RTLParser.LSQUARE, 0); }
 		public TerminalNode RSQUARE() { return getToken(RTLParser.RSQUARE, 0); }
-		public ElementsContext elements() {
-			return getRuleContext(ElementsContext.class,0);
+		public ComponentsContext components() {
+			return getRuleContext(ComponentsContext.class,0);
 		}
 		public CopyContext copy() {
 			return getRuleContext(CopyContext.class,0);
@@ -1195,7 +1195,7 @@ public class RTLParser extends Parser {
 			case STRING:
 				{
 				setState(208);
-				elements();
+				components();
 				}
 				break;
 			case TAG:
@@ -1233,9 +1233,9 @@ public class RTLParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ElementsContext extends ParserRuleContext {
-		public ElementContext element() {
-			return getRuleContext(ElementContext.class,0);
+	public static class ComponentsContext extends ParserRuleContext {
+		public ComponentContext component() {
+			return getRuleContext(ComponentContext.class,0);
 		}
 		public StructContext struct() {
 			return getRuleContext(StructContext.class,0);
@@ -1250,28 +1250,28 @@ public class RTLParser extends Parser {
 		public ActionsContext actions() {
 			return getRuleContext(ActionsContext.class,0);
 		}
-		public ElementsContext(ParserRuleContext parent, int invokingState) {
+		public ComponentsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_elements; }
+		@Override public int getRuleIndex() { return RULE_components; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterElements(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterComponents(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitElements(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitComponents(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitElements(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitComponents(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final ElementsContext elements() throws RecognitionException {
-		ElementsContext _localctx = new ElementsContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_elements);
+	public final ComponentsContext components() throws RecognitionException {
+		ComponentsContext _localctx = new ComponentsContext(_ctx, getState());
+		enterRule(_localctx, 30, RULE_components);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -1304,7 +1304,7 @@ public class RTLParser extends Parser {
 			case 1:
 				{
 				setState(224);
-				element();
+				component();
 				}
 				break;
 			case 2:
@@ -1334,9 +1334,9 @@ public class RTLParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ElementContext extends ParserRuleContext {
-		public ElementTypeContext elementType() {
-			return getRuleContext(ElementTypeContext.class,0);
+	public static class ComponentContext extends ParserRuleContext {
+		public ComponentTypeContext componentType() {
+			return getRuleContext(ComponentTypeContext.class,0);
 		}
 		public TerminalNode ASSIGN() { return getToken(RTLParser.ASSIGN, 0); }
 		public ExprContext expr() {
@@ -1349,34 +1349,34 @@ public class RTLParser extends Parser {
 		public ActionsContext actions() {
 			return getRuleContext(ActionsContext.class,0);
 		}
-		public ElementContext(ParserRuleContext parent, int invokingState) {
+		public ComponentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_element; }
+		@Override public int getRuleIndex() { return RULE_component; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterElement(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterComponent(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitElement(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitComponent(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitElement(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitComponent(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final ElementContext element() throws RecognitionException {
-		ElementContext _localctx = new ElementContext(_ctx, getState());
-		enterRule(_localctx, 32, RULE_element);
+	public final ComponentContext component() throws RecognitionException {
+		ComponentContext _localctx = new ComponentContext(_ctx, getState());
+		enterRule(_localctx, 32, RULE_component);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(229);
-			elementType();
+			componentType();
 			setState(232);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -1425,32 +1425,32 @@ public class RTLParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ElementTypeContext extends ParserRuleContext {
+	public static class ComponentTypeContext extends ParserRuleContext {
 		public TerminalNode ATTRIBUTE() { return getToken(RTLParser.ATTRIBUTE, 0); }
 		public TerminalNode VALUE() { return getToken(RTLParser.VALUE, 0); }
 		public TerminalNode SKIPPED() { return getToken(RTLParser.SKIPPED, 0); }
-		public ElementTypeContext(ParserRuleContext parent, int invokingState) {
+		public ComponentTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_elementType; }
+		@Override public int getRuleIndex() { return RULE_componentType; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterElementType(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterComponentType(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitElementType(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitComponentType(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitElementType(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitComponentType(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final ElementTypeContext elementType() throws RecognitionException {
-		ElementTypeContext _localctx = new ElementTypeContext(_ctx, getState());
-		enterRule(_localctx, 34, RULE_elementType);
+	public final ComponentTypeContext componentType() throws RecognitionException {
+		ComponentTypeContext _localctx = new ComponentTypeContext(_ctx, getState());
+		enterRule(_localctx, 34, RULE_componentType);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -1833,11 +1833,11 @@ public class RTLParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class StructContext extends ParserRuleContext {
 		public TerminalNode LPAREN() { return getToken(RTLParser.LPAREN, 0); }
-		public List<ElementContext> element() {
-			return getRuleContexts(ElementContext.class);
+		public List<ComponentContext> component() {
+			return getRuleContexts(ComponentContext.class);
 		}
-		public ElementContext element(int i) {
-			return getRuleContext(ElementContext.class,i);
+		public ComponentContext component(int i) {
+			return getRuleContext(ComponentContext.class,i);
 		}
 		public TerminalNode RPAREN() { return getToken(RTLParser.RPAREN, 0); }
 		public StartTextContext startText() {
@@ -1892,7 +1892,7 @@ public class RTLParser extends Parser {
 			}
 
 			setState(282);
-			element();
+			component();
 			setState(288);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,35,_ctx);
@@ -1903,7 +1903,7 @@ public class RTLParser extends Parser {
 					setState(283);
 					separator();
 					setState(284);
-					element();
+					component();
 					}
 					} 
 				}
@@ -2130,8 +2130,8 @@ public class RTLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ChoiceBodyContext extends ParserRuleContext {
-		public ElementContext element() {
-			return getRuleContext(ElementContext.class,0);
+		public ComponentContext component() {
+			return getRuleContext(ComponentContext.class,0);
 		}
 		public StructContext struct() {
 			return getRuleContext(StructContext.class,0);
@@ -2168,7 +2168,7 @@ public class RTLParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(308);
-				element();
+				component();
 				}
 				break;
 			case LPAREN:
@@ -2531,8 +2531,8 @@ public class RTLParser extends Parser {
 		public RangeContext range() {
 			return getRuleContext(RangeContext.class,0);
 		}
-		public ElementIndexContext elementIndex() {
-			return getRuleContext(ElementIndexContext.class,0);
+		public ComponentIndexContext componentIndex() {
+			return getRuleContext(ComponentIndexContext.class,0);
 		}
 		public TagsContext tags() {
 			return getRuleContext(TagsContext.class,0);
@@ -2576,7 +2576,7 @@ public class RTLParser extends Parser {
 				if (_la==T__0) {
 					{
 					setState(353);
-					elementIndex();
+					componentIndex();
 					}
 				}
 
@@ -2600,7 +2600,7 @@ public class RTLParser extends Parser {
 				setState(359);
 				range();
 				setState(360);
-				elementIndex();
+				componentIndex();
 				setState(362);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
@@ -2626,7 +2626,7 @@ public class RTLParser extends Parser {
 				if (_la==T__0) {
 					{
 					setState(365);
-					elementIndex();
+					componentIndex();
 					}
 				}
 
@@ -2650,7 +2650,7 @@ public class RTLParser extends Parser {
 				}
 
 				setState(373);
-				elementIndex();
+				componentIndex();
 				setState(375);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
@@ -2679,7 +2679,7 @@ public class RTLParser extends Parser {
 				}
 
 				setState(380);
-				elementIndex();
+				componentIndex();
 				setState(381);
 				tags();
 				}
@@ -2705,7 +2705,7 @@ public class RTLParser extends Parser {
 				if (_la==T__0) {
 					{
 					setState(386);
-					elementIndex();
+					componentIndex();
 					}
 				}
 
@@ -3155,30 +3155,30 @@ public class RTLParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ElementIndexContext extends ParserRuleContext {
+	public static class ComponentIndexContext extends ParserRuleContext {
 		public TerminalNode INT() { return getToken(RTLParser.INT, 0); }
-		public ElementIndexContext(ParserRuleContext parent, int invokingState) {
+		public ComponentIndexContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_elementIndex; }
+		@Override public int getRuleIndex() { return RULE_componentIndex; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterElementIndex(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).enterComponentIndex(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitElementIndex(this);
+			if ( listener instanceof RTLListener ) ((RTLListener)listener).exitComponentIndex(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitElementIndex(this);
+			if ( visitor instanceof RTLVisitor ) return ((RTLVisitor<? extends T>)visitor).visitComponentIndex(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final ElementIndexContext elementIndex() throws RecognitionException {
-		ElementIndexContext _localctx = new ElementIndexContext(_ctx, getState());
-		enterRule(_localctx, 82, RULE_elementIndex);
+	public final ComponentIndexContext componentIndex() throws RecognitionException {
+		ComponentIndexContext _localctx = new ComponentIndexContext(_ctx, getState());
+		enterRule(_localctx, 82, RULE_componentIndex);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
@@ -4210,7 +4210,7 @@ public class RTLParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001?\u01f8\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001@\u01f8\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+

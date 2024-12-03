@@ -197,37 +197,37 @@ public class RTLBaseListener implements RTLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterElements(RTLParser.ElementsContext ctx) { }
+	@Override public void enterComponents(RTLParser.ComponentsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitElements(RTLParser.ElementsContext ctx) { }
+	@Override public void exitComponents(RTLParser.ComponentsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterElement(RTLParser.ElementContext ctx) { }
+	@Override public void enterComponent(RTLParser.ComponentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitElement(RTLParser.ElementContext ctx) { }
+	@Override public void exitComponent(RTLParser.ComponentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterElementType(RTLParser.ElementTypeContext ctx) { }
+	@Override public void enterComponentType(RTLParser.ComponentTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitElementType(RTLParser.ElementTypeContext ctx) { }
+	@Override public void exitComponentType(RTLParser.ComponentTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -509,13 +509,13 @@ public class RTLBaseListener implements RTLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterElementIndex(RTLParser.ElementIndexContext ctx) { }
+	@Override public void enterComponentIndex(RTLParser.ComponentIndexContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitElementIndex(RTLParser.ElementIndexContext ctx) { }
+	@Override public void exitComponentIndex(RTLParser.ComponentIndexContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
