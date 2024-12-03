@@ -165,9 +165,20 @@ It is possible to use the shorter way:
 Recordset recordset = itm.extract();  
 ```
 
-_Print the extracted recordset_
+The recordset can accessed as follows:
+```java
+// Print the header of the recordset  
+final String[] header = recordset.header();  
+System.out.println(Arrays.toString(header));  
+  
+// Print the header of the recordset  
+final String[][] data = recordset.data();  
+for (String[] record: data) {  
+	System.out.println(Arrays.toString(record));  
+}
+```
 
-**Step 6: Inference the recordset from the instance of ITM enriched by semantics**
+**Step 6: Store the extracted recordset**
 
 Store the extracted recordset to the CSV file
 ```java
