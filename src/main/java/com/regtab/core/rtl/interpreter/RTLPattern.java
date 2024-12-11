@@ -13,6 +13,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -549,10 +550,12 @@ public class RTLPattern {
                 final ComponentPattern componentPattern = componentPatterns.get(i);
 
                 if (i < componentPatterns.size() - 1) {
-                    String unescapedSeparator = separators.get(i);
+                    final String unescapedSeparator = separators.get(i);
                     end = subText.indexOf(unescapedSeparator, start);
                     if (end == -1) {
-                        throw new IllegalStateException("Invalid separator");
+                        final String separator = StringEscapeUtils.escapeJava(unescapedSeparator);
+                        final String msg = String.format("Invalid separator: \"%s\" in \"%s\"", separator, cell);
+                        throw new IllegalStateException(msg);
                     }
                     shift = unescapedSeparator.length();
                 } else {

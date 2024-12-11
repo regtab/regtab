@@ -89,37 +89,55 @@ public final class Action {
     private String avSeparator = DEFAULT_AV_SEPARATOR;
 
     private void performPrefix(Component caller) {
+        final String prefix;
+        final String prefixedText;
+
         if (lookup != null) {
             final Component found = lookup.findFirst(caller);
             if (found != null) {
-                final String prefix = found.getText();
+                prefix = found.getText();
                 if (!prefix.isEmpty()) {
-                    String text = caller.getText();
-                    text = prefix + concatSeparator + text;
-                    caller.setText(text);
+                    final String text = caller.getText();
+                    prefixedText = String.join(concatSeparator, prefix, text);
+                    caller.setText(prefixedText);
                 }
             }
             return;
         }
-        if (string != null)
-            caller.setText(string);
+        if (string != null) {
+            prefix = string;
+            if (!prefix.isEmpty()) {
+                final String text = caller.getText();
+                prefixedText = String.join(concatSeparator, prefix, text);
+                caller.setText(prefixedText);
+            }
+        }
     }
 
     private void performSuffix(Component caller) {
+        final String suffix;
+        final String suffixedText;
+
         if (lookup != null) {
             final Component found = lookup.findFirst(caller);
             if (found != null) {
-                final String suffix = found.getText();
+                suffix = found.getText();
                 if (!suffix.isEmpty()) {
-                    String text = caller.getText();
-                    text = text + concatSeparator + suffix;
-                    caller.setText(text);
+                    final String text = caller.getText();
+                    suffixedText = String.join(concatSeparator, text, suffix);
+                    caller.setText(suffixedText);
                 }
             }
             return;
         }
-        if (string != null)
-            caller.setText(string);
+        if (string != null) {
+            suffix = string;
+            if (!suffix.isEmpty()) {
+                final String text = caller.getText();
+                suffixedText = String.join(concatSeparator, text, suffix);
+                caller.setText(suffixedText);
+            }
+        }
     }
 
     private void performRecord(Component caller, final Recordset recordset) {

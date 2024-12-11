@@ -420,3 +420,7 @@ Alexey O. Shigarov
 
 ## License
 Apache License, Version 2.0
+
+## Notice
+RegTab API
+Copyright 2024-2025 Alexey O. Shigarov (shigarov@gmail.com)
