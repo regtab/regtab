@@ -103,6 +103,13 @@ direction
     | IN_ROW
     | IN_COL
     | IN_CELL
+
+    | SUBLEFT
+    | SUBRIGHT
+    | SUBUP
+    | SUBDOWN
+    | IN_SUBROW
+    | IN_SUBCOL
     ;
 
 // UP -- вверх, DOWN -- вниз, LEFT -- влево, RIGHT -- вправо (по данным направлениям от ячейки);
@@ -115,6 +122,13 @@ DOWN    : 'DOWN' ;
 IN_ROW  : 'ROW' ;
 IN_COL  : 'COL' ;
 IN_CELL : 'CELL' ;
+
+SUBLEFT    : 'SUBLEFT' ;
+SUBRIGHT   : 'SUBRIGHT' ;
+SUBUP      : 'SUBUP' ;
+SUBDOWN    : 'SUBDOWN' ;
+IN_SUBROW  : 'SUBROW' ;
+IN_SUBCOL  : 'SUBCOL' ;
 
 // Область поиска (where).
 where

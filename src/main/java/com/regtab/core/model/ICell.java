@@ -36,6 +36,14 @@ public final class ICell {
     @Getter
     private final CellPos cellPos;
 
+    @Getter
+    @Setter
+    private SubtablePos subtablePos;
+
+    @Getter
+    @Setter
+    private SubrowPos subrowPos;
+
     /**
      * Attempts to parse the text content of the cell as an integer.
      *

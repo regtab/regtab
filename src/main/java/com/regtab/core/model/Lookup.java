@@ -15,6 +15,10 @@ import java.util.stream.Collectors;
 public final class Lookup {
     private Component caller;
 
+//    @Getter(AccessLevel.PACKAGE)
+//    @Setter(AccessLevel.PACKAGE)
+//    private boolean sub;
+
     @Getter(AccessLevel.PACKAGE)
     @Setter(AccessLevel.PACKAGE)
     private boolean all;
