@@ -14,8 +14,11 @@ import java.util.*;
  * The Recordset class represents a set of records. It provides methods to manage the schema and data of the records.
  */
 @Slf4j
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public final class Recordset {
+
+    private final boolean useComponentSplitting;
+
     @Getter
     private final List<Attribute> attributes = new ArrayList<>();
 
@@ -61,18 +64,20 @@ public final class Recordset {
 
     private final Map<String, Attribute> attrMap = new HashMap<>();
 
-    private final Map<Component, Value> elemValMap = new HashMap<>();
+    private final MultiValuedMap<Component, Value> componentValues = new ArrayListValuedHashMap<>();
 
     void updateSchema(@NonNull Component valComponent, @NonNull String attrName) {
         Attribute attribute = attrMap.get(attrName);
-        final Value value = elemValMap.get(valComponent);
 
-        if (value != null) {
-            if (attribute == null) {
-                attribute = new Attribute(attrName, null);
-                attrMap.put(attribute.getName(), attribute);
+        final Collection<Value> values = componentValues.get(valComponent);
+        for (Value value: values) {
+            if (value != null) {
+                if (attribute == null) {
+                    attribute = new Attribute(attrName, null);
+                    attrMap.put(attribute.getName(), attribute);
+                }
+                attribute.addValue(value);
             }
-            attribute.addValue(value);
         }
     }
 
@@ -99,20 +104,23 @@ public final class Recordset {
 
     Record createRecord(@NonNull Component component) {
         final Record record = new Record();
-        // final String text = component.getText();
-        // final Value value = new Value(text, component);
-        // record.getValues().add(value);
-        // elemValMap.put(component, value);
 
-        final List<String> textParts = component.copyTextParts();
-        if (!textParts.isEmpty()) {
-            for (String text : textParts) {
-                final Value value = new Value(text, component);
-                record.getValues().add(value);
-                elemValMap.put(component, value);
+        if (useComponentSplitting) {
+            final List<String> textParts = component.copyTextParts();
+            if (!textParts.isEmpty()) {
+                for (String text : textParts) {
+                    final Value value = new Value(text, component);
+                    record.getValues().add(value);
+                    componentValues.put(component, value);
+                }
+            } else {
+                throw new RuntimeException("Try to create record by an empty component");
             }
         } else {
-            throw new RuntimeException("Try to create record by an empty component");
+            final String text = component.getText();
+            final Value value = new Value(text, component);
+            record.getValues().add(value);
+            componentValues.put(component, value);
         }
 
         recordedComponents.add(component);
@@ -140,13 +148,31 @@ public final class Recordset {
         if (result)
             throw new IllegalArgumentException("Элемент уже принадлежит записи");
 
-        Value value = elemValMap.get(component);
-        if (value == null) {
-            final String text = component.getText();
-            value = new Value(text, component);
-            elemValMap.put(component, value);
+        // При отсутствии ключа мультимап возвращает пустую коллекцию.
+        Collection<Value> values = componentValues.get(component);
+
+        if (values == null || values.isEmpty()) {
+            if (useComponentSplitting) {
+                final List<String> textParts = component.copyTextParts();
+                if (!textParts.isEmpty()) {
+                    for (String text : textParts) {
+                        Value value = new Value(text, component);
+                        componentValues.put(component, value);
+                        record.getValues().add(value);
+                    }
+                } else {
+                    throw new RuntimeException("Try to create record by an empty component");
+                }
+            } else {
+                final String text = component.getText();
+                Value value = new Value(text, component);
+                componentValues.put(component, value);
+                record.getValues().add(value);
+            }
+        } else {
+            for (Value value: values)
+                record.getValues().add(value);
         }
-        record.getValues().add(value);
     }
 
     private final MultiValuedMap<Component, Record> recordMultiMap = new ArrayListValuedHashMap<>();
@@ -187,15 +213,11 @@ public final class Recordset {
     void complete() {
         if (records.size() == 0) return;
 
-        //Record record = records.get(0);
-
         int maxRecordSize = 0;
         for (Record record : records) {
             int recordSize = record.getValues().size();
             maxRecordSize = Math.max(maxRecordSize, recordSize);
         }
-
-        //final int numOfCols = record.getValues().size();
 
         for (int i = 0; i < records.size(); i++) {
             Record record = records.get(i);

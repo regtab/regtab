@@ -1,6 +1,8 @@
 package com.regtab.core.model;
 
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -137,13 +139,22 @@ public final class ITable {
         return cell;
     }
 
+    @Getter
+    @Setter
+    private boolean useComponentSplitting;
+
+    @NonNull
+    @Getter
+    @Setter
+    private String componentTextSeparator = "";
+
     /**
      * Extracts data from the table and returns it as a Recordset.
      *
      * @return The extracted data as a Recordset.
      */
     public Recordset extract() {
-        final Recordset recordset = new Recordset();
+        final Recordset recordset = new Recordset(useComponentSplitting);
 
         for (ICell cell: cells)
             cell.perform(Action.Type.FACTOR, recordset);

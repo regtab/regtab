@@ -15,17 +15,22 @@ import java.util.*;
  * The Component class represents a part of a record or schema with a specific type and associated actions.
  */
 public final class Component {
-    @Getter
-    private static final Configurator configurator = Configurator.DEFAULT_CONFIGURATOR;
+//    @Getter
+//    private static final Configurator configurator = Configurator.DEFAULT_CONFIGURATOR;
+//
+//    private static final String DEFAULT_CONCAT_SEPARATOR = "|";
+//
+//    private static String concatSeparator = DEFAULT_CONCAT_SEPARATOR;
+//
+//    static {
+//        if (configurator != null)
+//            concatSeparator = configurator.getConcatSeparator();
+//    }
 
-    private static final String DEFAULT_CONCAT_SEPARATOR = "|";
-
-    private static String concatSeparator = DEFAULT_CONCAT_SEPARATOR;
-
-    static {
-        if (configurator != null)
-            concatSeparator = configurator.getConcatSeparator();
-    }
+//    @NonNull
+//    @Getter
+//    @Setter
+//    private String componentTextSeparator = "";
 
     @Getter
     private final Type type;
@@ -36,7 +41,8 @@ public final class Component {
     private List<String> textParts = new LinkedList<>();
 
     public String getText() {
-        return String.join(concatSeparator, textParts);
+        final String componentTextSeparator = cell.getTable().getComponentTextSeparator();
+        return String.join(componentTextSeparator, textParts);
     }
 
     public List<String> copyTextParts() {
@@ -86,7 +92,6 @@ public final class Component {
     Component(@NonNull ICell cell, @NonNull Type type, @NonNull String text) {
         this.cell = cell;
         this.type = type;
-        //setText(text);
         addText(text);
     }
 
