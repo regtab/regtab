@@ -104,12 +104,12 @@ direction
     | IN_COL
     | IN_CELL
 
-    | SUBLEFT
-    | SUBRIGHT
-    | SUBUP
-    | SUBDOWN
-    | IN_SUBROW
-    | IN_SUBCOL
+    | SUB_LEFT
+    | SUB_RIGHT
+    | SUB_UP
+    | SUB_DOWN
+    | IN_SUB_ROW
+    | IN_SUB_COL
     ;
 
 // UP -- вверх, DOWN -- вниз, LEFT -- влево, RIGHT -- вправо (по данным направлениям от ячейки);
@@ -123,12 +123,12 @@ IN_ROW  : 'ROW' ;
 IN_COL  : 'COL' ;
 IN_CELL : 'CELL' ;
 
-SUBLEFT    : 'SUBLEFT' ;
-SUBRIGHT   : 'SUBRIGHT' ;
-SUBUP      : 'SUBUP' ;
-SUBDOWN    : 'SUBDOWN' ;
-IN_SUBROW  : 'SUBROW' ;
-IN_SUBCOL  : 'SUBCOL' ;
+SUB_LEFT    : '$LEFT' ;
+SUB_RIGHT   : '$RIGHT' ;
+SUB_UP      : '$UP' ;
+SUB_DOWN    : '$DOWN' ;
+IN_SUB_ROW  : '$ROW' ;
+IN_SUB_COL  : '$COL' ;
 
 // Область поиска (where).
 where
@@ -146,12 +146,14 @@ range : rowRange | colRange | rowRange colRange | colRange rowRange ;
 rowRange   : ROW rangeBody ;
 colRange   : COL rangeBody ;
 rangeBody  : (relative? INT) | (start DOUBLE_PERIOD end) ;
-start      : relative? INT ;
-end        : relative? INT ;
+start      : (relative? INT) | MIN ;
+end        : (relative? INT) | MAX ;
 relative   : PLUS | MINUS ;
 
-ROW : 'R';
-COL : 'C';
+ROW : 'R' ;
+COL : 'C' ;
+MIN : 'MIN' ;
+MAX : 'MAX' ;
 
 // Индекс компонента внутри структурированной ячейки.
 componentIndex : 'E' INT ;

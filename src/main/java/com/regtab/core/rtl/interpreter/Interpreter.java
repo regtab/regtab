@@ -729,6 +729,20 @@ final class Interpreter {
                 direction = Lookup.Direction.IN_COL;
             else if (directionCtx.IN_CELL() != null)
                 direction = Lookup.Direction.IN_CELL;
+
+            else if (directionCtx.SUB_LEFT() != null)
+                direction = Lookup.Direction.SUB_LEFT;
+            else if (directionCtx.SUB_RIGHT() != null)
+                direction = Lookup.Direction.SUB_RIGHT;
+            else if (directionCtx.SUB_UP() != null)
+                direction = Lookup.Direction.SUB_UP;
+            else if (directionCtx.SUB_DOWN() != null)
+                direction = Lookup.Direction.SUB_DOWN;
+            else if (directionCtx.IN_SUB_ROW() != null)
+                direction = Lookup.Direction.IN_SUB_ROW;
+            else if (directionCtx.IN_SUB_COL() != null)
+                direction = Lookup.Direction.IN_SUB_COL;
+
             else
                 return null; // Impossible
 
@@ -738,7 +752,7 @@ final class Interpreter {
             if (limitCtx != null) {
                 final String str = limitCtx.INT().getText();
                 final int limit = Integer.parseInt(str);
-                if (limit <  1)
+                if (limit < 1)
                     throw new RTLSyntaxException("Limit should be more than 1", ctx);
                 lookup.setLimit(limit);
             }
@@ -794,10 +808,13 @@ final class Interpreter {
         }
 
         private void apply(final Range.Desc rangeDesc, RangeBodyContext ctx) {
-            int start;
-            int end;
+            Integer start = null;
+            Integer end = null;
             boolean useRelativeStart = false;
             boolean useRelativeEnd = false;
+
+            boolean useMinStart = false;
+            boolean useMaxEnd = false;
 
             String literal;
             RelativeContext relativeContext;
@@ -817,26 +834,44 @@ final class Interpreter {
                 }
             } else {
                 final StartContext startCtx = ctx.start();
-                literal = startCtx.INT().getText();
-                start = Integer.parseInt(literal);
-                relativeContext = startCtx.relative();
-                if (relativeContext != null) {
-                    useRelativeStart = true;
-                    final TerminalNode minus = relativeContext.MINUS();
-                    if (minus != null) {
-                        start = -start;
+                final TerminalNode startNumberTN = startCtx.INT();
+
+                if (startNumberTN != null) {
+                    literal = startNumberTN.getText();
+                    start = Integer.parseInt(literal);
+                    relativeContext = startCtx.relative();
+                    if (relativeContext != null) {
+                        useRelativeStart = true;
+                        final TerminalNode minus = relativeContext.MINUS();
+                        if (minus != null) {
+                            start = -start;
+                        }
+                    }
+                } else {
+                    final TerminalNode startMinTN = startCtx.MIN();
+                    if (startMinTN != null) {
+                        useMinStart = true;
                     }
                 }
 
                 final EndContext endCtx = ctx.end();
-                literal = endCtx.INT().getText();
-                end = Integer.parseInt(literal);
-                relativeContext = startCtx.relative();
-                if (relativeContext != null) {
-                    useRelativeEnd = true;
-                    final TerminalNode minus = relativeContext.MINUS();
-                    if (minus != null) {
-                        end = -end;
+                final TerminalNode endNumberTN = endCtx.INT();
+
+                if (endNumberTN != null) {
+                    literal = endNumberTN.getText();
+                    end = Integer.parseInt(literal);
+                    relativeContext = startCtx.relative();
+                    if (relativeContext != null) {
+                        useRelativeEnd = true;
+                        final TerminalNode minus = relativeContext.MINUS();
+                        if (minus != null) {
+                            end = -end;
+                        }
+                    }
+                } else {
+                    final TerminalNode ensMaxTN = endCtx.MAX();
+                    if (ensMaxTN != null) {
+                        useMaxEnd = true;
                     }
                 }
             }
@@ -845,6 +880,9 @@ final class Interpreter {
             rangeDesc.setUseRelativeStart(useRelativeStart);
             rangeDesc.setEnd(end);
             rangeDesc.setUseRelativeEnd(useRelativeEnd);
+
+            rangeDesc.setUseMinStart(useMinStart);
+            rangeDesc.setUseMaxEnd(useMaxEnd);
         }
 
     }

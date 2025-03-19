@@ -15,10 +15,6 @@ import java.util.stream.Collectors;
 public final class Lookup {
     private Component caller;
 
-//    @Getter(AccessLevel.PACKAGE)
-//    @Setter(AccessLevel.PACKAGE)
-//    private boolean sub;
-
     @Getter(AccessLevel.PACKAGE)
     @Setter(AccessLevel.PACKAGE)
     private boolean all;
@@ -69,7 +65,14 @@ public final class Lookup {
         DOWN(false),
         IN_ROW(false),
         IN_COL(false),
-        IN_CELL(false);
+        IN_CELL(false),
+
+        SUB_LEFT(true),
+        SUB_RIGHT(false),
+        SUB_UP(true),
+        SUB_DOWN(false),
+        IN_SUB_ROW(false),
+        IN_SUB_COL(false);
 
         public final boolean reversed;
 
@@ -151,6 +154,17 @@ public final class Lookup {
         Range cellRRange = new Range(cell.r(), cell.r());
         Range cellCRange = new Range(cell.c(), cell.c());
 
+        final SubtablePos subtablePos = cell.getSubtablePos();
+        final SubrowPos subrowPos = cell.getSubrowPos();
+
+        Range subRowRange = new Range(subrowPos.leftCol(), subrowPos.rightCol());
+        Range subColRange = new Range(subtablePos.topRow(), subtablePos.bottomRow());
+        Range subLeftRange = new Range(subrowPos.leftCol(), cell.c() - 1);
+        Range subRightRange = new Range(cell.c() + 1, subrowPos.rightCol());
+        Range subUpRange = new Range(subtablePos.topRow(), cell.r() - 1);
+        Range subDownRange = new Range(cell.r() + 1, subtablePos.bottomRow());
+
+
         Range rRange = null;
         if (rowRangeDesc != null)
             rRange = rowRangeDesc.createRange(cell);
@@ -164,6 +178,11 @@ public final class Lookup {
             leftRange = Range.intersection(cRange, leftRange);
             rightRange = Range.intersection(cRange, rightRange);
             cellCRange = cRange;
+
+            // TODO: необходимо учесть сдвиг cRange относительно позиций подстроки cell.subrowPosition()
+            subRowRange = Range.intersection(cRange, subRowRange);
+            subLeftRange = Range.intersection(cRange, subLeftRange);
+            subRightRange = Range.intersection(cRange, subRightRange);
         } else {
             int pos = col.getPosition();
             cRange = new Range(pos, pos);
@@ -174,6 +193,11 @@ public final class Lookup {
             upRange = Range.intersection(rRange, upRange);
             downRange = Range.intersection(rRange, downRange);
             cellRRange = rRange;
+
+            // TODO: необходимо учесть сдвиг rRange относительно позиций подтаблицы cell.subtablePosition()
+            subColRange = Range.intersection(rRange, subColRange);
+            subUpRange = Range.intersection(rRange, subUpRange);
+            subDownRange = Range.intersection(rRange, subDownRange);
         } else {
             int pos = row.getPosition();
             rRange = new Range(pos, pos);
@@ -191,6 +215,13 @@ public final class Lookup {
             case UP -> collectCells(cols, cRange, upRange);
             case DOWN -> collectCells(cols, cRange, downRange);
             case IN_CELL -> collectCells(rows, cellRRange, cellCRange);
+
+            case IN_SUB_ROW -> collectCells(rows, rRange, subRowRange);
+            case IN_SUB_COL -> collectCells(cols, cRange, subColRange);
+            case SUB_LEFT -> collectCells(rows, rRange, subLeftRange);
+            case SUB_RIGHT -> collectCells(rows, rRange, subRightRange);
+            case SUB_UP -> collectCells(cols, cRange, subUpRange);
+            case SUB_DOWN -> collectCells(cols, cRange, subDownRange);
         };
 
         if (direction != Direction.IN_CELL)

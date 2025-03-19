@@ -14,6 +14,14 @@ public final class ITable {
     private final ICol[] cols;
     private final ICell[] cells;
 
+    public int rowsSize() {
+        return rows.length;
+    }
+
+    public int colsSize() {
+        return cols.length;
+    }
+
     /**
      * Copies the rows of the table.
      *

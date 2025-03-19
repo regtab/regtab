@@ -2,6 +2,7 @@ package com.regtab.core.model;
 
 import lombok.*;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,6 +13,7 @@ import java.util.*;
 /**
  * The Recordset class represents a set of records. It provides methods to manage the schema and data of the records.
  */
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public final class Recordset {
     @Getter
@@ -173,20 +175,33 @@ public final class Recordset {
     void complete() {
         if (records.size() == 0) return;
 
-        Record record = records.get(0);
-        final int numOfCols = record.getValues().size();
+        //Record record = records.get(0);
+
+        int maxRecordSize = 0;
+        for (Record record : records) {
+            int recordSize = record.getValues().size();
+            maxRecordSize = Math.max(maxRecordSize, recordSize);
+        }
+
+        //final int numOfCols = record.getValues().size();
 
         for (int i = 0; i < records.size(); i++) {
-            record = records.get(i);
-            if (numOfCols != record.getValues().size()) {
-                throw new IllegalStateException("Записи различаются количеством значений");
+            Record record = records.get(i);
+            int recordSize = record.getValues().size();
+            if (recordSize < maxRecordSize) {
+                //throw new IllegalStateException("Записи различаются количеством значений");
+                log.debug("Записи различаются количеством значений: {} < {}", recordSize, maxRecordSize);
+                for (int j = 0; j < maxRecordSize - recordSize; j++) {
+                    Value emptyValue = new Value("", null);
+                    record.getValues().add(emptyValue);
+                }
             }
         }
 
-        for (int i = 0; i < numOfCols; i++) {
+        for (int i = 0; i < maxRecordSize; i++) {
             Attribute previousAttr = null, currentAttr = null;
             for (Record item : records) {
-                record = item;
+                Record record = item;
                 Value value = record.getValues().get(i);
                 currentAttr = value.getAttribute();
                 if (previousAttr == null || previousAttr == currentAttr) {
@@ -198,7 +213,7 @@ public final class Recordset {
 
             if (currentAttr != null) {
                 for (int j = 0; j < records.size(); j++) {
-                    record = records.get(j);
+                    Record record = records.get(j);
                     Value value = record.getValues().get(i);
                     Attribute attr = value.getAttribute();
                     if (attr == null)
@@ -209,7 +224,7 @@ public final class Recordset {
                 currentAttr = new Attribute(attrName, null);
                 attrMap.put(attrName, currentAttr);
                 for (Record item : records) {
-                    record = item;
+                    Record record = item;
                     Value value = record.getValues().get(i);
                     currentAttr.addValue(value);
                 }

@@ -33,7 +33,7 @@ public record Range(int start, int end) {
 
         @Getter
         @Setter
-        private int start;
+        private Integer start;
 
         @Getter
         @Setter
@@ -41,11 +41,19 @@ public record Range(int start, int end) {
 
         @Getter
         @Setter
-        private int end;
+        private Integer end;
 
         @Getter
         @Setter
         private boolean useRelativeEnd;
+
+        @Getter
+        @Setter
+        private boolean useMinStart;
+
+        @Getter
+        @Setter
+        private boolean useMaxEnd;
 
         /**
          * Creates a range based on the cell's position.
@@ -54,14 +62,51 @@ public record Range(int start, int end) {
          * @return The created range.
          */
         Range createRange(@NonNull ICell cell) {
-            final int position = rowwise ? cell.r() : cell.c();
-            return createRange(position);
-        }
 
-        private Range createRange(int position) {
-            final int start = useRelativeStart ? position + this.start : this.start;
-            final int end = useRelativeEnd ? position + this.end : this.end;
+            final int start;
+            final int end;
+
+            if (useMinStart) {
+                start = 0; // TODO необходимо учесть позиции подтаблицы/подстроки
+            } else if (useRelativeStart) {
+                final int position = rowwise ? cell.r() : cell.c();
+                start = position + this.start;
+            }
+            else {
+                start = this.start;
+            }
+
+            if (useMaxEnd) {
+                final int size = rowwise ? cell.getTable().rowsSize() : cell.getTable().colsSize();
+                end = size - 1; // TODO необходимо учесть позиции подтаблицы/подстроки
+            } else if (useRelativeEnd) {
+                final int position = rowwise ? cell.r() : cell.c();
+                end = position + this.end;
+            } else {
+                end = this.end;
+            }
+
             return new Range(start, end);
         }
+
+//        private Range createRange(int position) {
+//            final int start;
+//            final int end;
+//
+//            if (useMinStart) {
+//                start = 0;
+//            }
+//
+//            if (useMaxEnd) {
+//                start = ;
+//            }
+//
+//            start = useMinStart ? 0 : this.start;
+//            end = useMaxEnd ?  : this.end;
+//
+//            start = useRelativeStart ? position + this.start : this.start;
+//            end = useRelativeEnd ? position + this.end : this.end;
+//            return new Range(start, end);
+//        }
     }
 }
