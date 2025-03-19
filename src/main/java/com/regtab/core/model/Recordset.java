@@ -99,10 +99,22 @@ public final class Recordset {
 
     Record createRecord(@NonNull Component component) {
         final Record record = new Record();
-        final String text = component.getText();
-        final Value value = new Value(text, component);
-        record.getValues().add(value);
-        elemValMap.put(component, value);
+        // final String text = component.getText();
+        // final Value value = new Value(text, component);
+        // record.getValues().add(value);
+        // elemValMap.put(component, value);
+
+        final List<String> textParts = component.copyTextParts();
+        if (!textParts.isEmpty()) {
+            for (String text : textParts) {
+                final Value value = new Value(text, component);
+                record.getValues().add(value);
+                elemValMap.put(component, value);
+            }
+        } else {
+            throw new RuntimeException("Try to create record by an empty component");
+        }
+
         recordedComponents.add(component);
         records.add(record);
 

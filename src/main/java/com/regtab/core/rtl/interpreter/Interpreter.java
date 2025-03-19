@@ -677,8 +677,8 @@ final class Interpreter {
 
             final Configurator configurator = getConfigurator();
             if (configurator != null) {
-                final String concatSeparator = configurator.getConcatSeparator();
-                action.setConcatSeparator(concatSeparator);
+                //final String concatSeparator = configurator.getConcatSeparator();
+                //action.setConcatSeparator(concatSeparator);
 
                 final String avSeparator = configurator.getAvSeparator();
                 action.setAvSeparator(avSeparator);
