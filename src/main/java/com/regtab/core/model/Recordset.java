@@ -2,18 +2,24 @@ package com.regtab.core.model;
 
 import lombok.*;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * The Recordset class represents a set of records. It provides methods to manage the schema and data of the records.
  */
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@Slf4j
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public final class Recordset {
+
+    private final boolean useComponentSplitting;
+
     @Getter
     private final List<Attribute> attributes = new ArrayList<>();
 
@@ -47,10 +53,11 @@ public final class Recordset {
 
         for (int i = 0; i < records.size(); i++) {
             Record record = records.get(i);
-            size = record.values.size();
+            size = record.getValues().size();
+
             data[i] = new String[size];
             for (int j = 0; j < size; j++) {
-                data[i][j] = record.values.get(j).getString();
+                data[i][j] = record.getValues().get(j).getString();
             }
         }
 
@@ -59,18 +66,20 @@ public final class Recordset {
 
     private final Map<String, Attribute> attrMap = new HashMap<>();
 
-    private final Map<Component, Value> elemValMap = new HashMap<>();
+    private final MultiValuedMap<Component, Value> componentValues = new ArrayListValuedHashMap<>();
 
     void updateSchema(@NonNull Component valComponent, @NonNull String attrName) {
         Attribute attribute = attrMap.get(attrName);
-        final Value value = elemValMap.get(valComponent);
 
-        if (value != null) {
-            if (attribute == null) {
-                attribute = new Attribute(attrName, null);
-                attrMap.put(attribute.getName(), attribute);
+        final Collection<Value> values = componentValues.get(valComponent);
+        for (Value value: values) {
+            if (value != null) {
+                if (attribute == null) {
+                    attribute = new Attribute(attrName, null);
+                    attrMap.put(attribute.getName(), attribute);
+                }
+                attribute.addValue(value);
             }
-            attribute.addValue(value);
         }
     }
 
@@ -97,10 +106,25 @@ public final class Recordset {
 
     Record createRecord(@NonNull Component component) {
         final Record record = new Record();
-        final String text = component.getText();
-        final Value value = new Value(text, component);
-        record.getValues().add(value);
-        elemValMap.put(component, value);
+
+        if (useComponentSplitting) {
+            final List<String> textParts = component.copyTextParts();
+            if (!textParts.isEmpty()) {
+                for (String text : textParts) {
+                    final Value value = new Value(text, component);
+                    record.getValues().add(value);
+                    componentValues.put(component, value);
+                }
+            } else {
+                throw new RuntimeException("Try to create record by an empty component");
+            }
+        } else {
+            final String text = component.getText();
+            final Value value = new Value(text, component);
+            record.getValues().add(value);
+            componentValues.put(component, value);
+        }
+
         recordedComponents.add(component);
         records.add(record);
 
@@ -126,13 +150,31 @@ public final class Recordset {
         if (result)
             throw new IllegalArgumentException("Элемент уже принадлежит записи");
 
-        Value value = elemValMap.get(component);
-        if (value == null) {
-            final String text = component.getText();
-            value = new Value(text, component);
-            elemValMap.put(component, value);
+        // При отсутствии ключа мультимап возвращает пустую коллекцию.
+        Collection<Value> values = componentValues.get(component);
+
+        if (values == null || values.isEmpty()) {
+            if (useComponentSplitting) {
+                final List<String> textParts = component.copyTextParts();
+                if (!textParts.isEmpty()) {
+                    for (String text : textParts) {
+                        Value value = new Value(text, component);
+                        componentValues.put(component, value);
+                        record.getValues().add(value);
+                    }
+                } else {
+                    throw new RuntimeException("Try to create record by an empty component");
+                }
+            } else {
+                final String text = component.getText();
+                Value value = new Value(text, component);
+                componentValues.put(component, value);
+                record.getValues().add(value);
+            }
+        } else {
+            for (Value value: values)
+                record.getValues().add(value);
         }
-        record.getValues().add(value);
     }
 
     private final MultiValuedMap<Component, Record> recordMultiMap = new ArrayListValuedHashMap<>();
@@ -170,23 +212,54 @@ public final class Recordset {
 
     }
 
+    void align() {
+        if (records.size() == 0) return;
+
+        int anonymousAttributesSize = 0; // Количество анонимных атрибутов в наборе записей
+        for (Record record : records) {
+            int count = 0;
+            List<Value> values = record.getValues();
+
+            for (Value value: values) {
+                Attribute attribute = value.getAttribute();
+                if (attribute == null)
+                    count ++;
+            }
+
+            anonymousAttributesSize = Math.max(anonymousAttributesSize, count);
+        }
+
+        Collection<Attribute> namedAttributes = attrMap.values();
+        for (Record record: records)
+            record.align(anonymousAttributesSize, attrMap.values().stream().toList());
+    }
+
     void complete() {
         if (records.size() == 0) return;
 
-        Record record = records.get(0);
-        final int numOfCols = record.getValues().size();
+        int maxRecordSize = 0;
+        for (Record record : records) {
+            int recordSize = record.getValues().size();
+            maxRecordSize = Math.max(maxRecordSize, recordSize);
+        }
 
         for (int i = 0; i < records.size(); i++) {
-            record = records.get(i);
-            if (numOfCols != record.getValues().size()) {
+            Record record = records.get(i);
+            int recordSize = record.getValues().size();
+            if (recordSize < maxRecordSize) {
                 throw new IllegalStateException("Записи различаются количеством значений");
+                //log.debug("Записи различаются количеством значений: {} < {}", recordSize, maxRecordSize);
+                //for (int j = 0; j < maxRecordSize - recordSize; j++) {
+                //    Value emptyValue = new Value("", null);
+                //    record.getValues().add(emptyValue);
+                //}
             }
         }
 
-        for (int i = 0; i < numOfCols; i++) {
+        for (int i = 0; i < maxRecordSize; i++) {
             Attribute previousAttr = null, currentAttr = null;
             for (Record item : records) {
-                record = item;
+                Record record = item;
                 Value value = record.getValues().get(i);
                 currentAttr = value.getAttribute();
                 if (previousAttr == null || previousAttr == currentAttr) {
@@ -198,7 +271,7 @@ public final class Recordset {
 
             if (currentAttr != null) {
                 for (int j = 0; j < records.size(); j++) {
-                    record = records.get(j);
+                    Record record = records.get(j);
                     Value value = record.getValues().get(i);
                     Attribute attr = value.getAttribute();
                     if (attr == null)
@@ -209,7 +282,7 @@ public final class Recordset {
                 currentAttr = new Attribute(attrName, null);
                 attrMap.put(attrName, currentAttr);
                 for (Record item : records) {
-                    record = item;
+                    Record record = item;
                     Value value = record.getValues().get(i);
                     currentAttr.addValue(value);
                 }
@@ -229,7 +302,73 @@ public final class Recordset {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class Record {
         @Getter
-        private final List<Value> values = new ArrayList<>();
+        private final List<Value> values = new LinkedList<>();
+
+        private void align(int anonymousAttributesSize, List<Attribute> namedAttributes) {
+            final List<Value> nonAttributedValues = new LinkedList<>();
+            final List<Value> attributedValues = new LinkedList<>();
+            final Map<Attribute, Value> avMap = new HashMap<>();
+
+            for (Value value: values) {
+                Attribute attribute = value.attribute;
+                if (attribute == null)
+                    nonAttributedValues.add(value);
+                else {
+                    attributedValues.add(value);
+                    avMap.put(attribute, value);
+                }
+            }
+
+            if (anonymousAttributesSize + namedAttributes.size() <= 0) {
+                throw new IllegalStateException("Invalid sum of anonymous and named attributes sizes");
+            }
+
+            values.clear();
+
+            if (anonymousAttributesSize > 0) {
+                int diff = anonymousAttributesSize - nonAttributedValues.size();
+
+                if (diff < 0) {
+                    throw new IllegalStateException("Invalid anonymous attributes size");
+                }
+
+                for (int i = 0; i < diff; i++) {
+                    Value emptyValue = new Value("", null);
+                    nonAttributedValues.add(emptyValue);
+                }
+
+                values.addAll(nonAttributedValues);
+            }
+
+            if (namedAttributes.size() > 0) {
+
+                if (namedAttributes.size() - attributedValues.size() < 0) {
+                    throw new IllegalStateException("Invalid named attributes size");
+                }
+
+                final Value[] tempValues = new Value[namedAttributes.size()];
+
+                for (int i = 0; i < namedAttributes.size(); i++) {
+                    Attribute namedAttribute = namedAttributes.get(i);
+
+                    Value attributedValue = avMap.get(namedAttribute);
+
+                    if (attributedValue == null) {
+                        Value emptyValue = new Value("", null);
+                        emptyValue.setAttribute(namedAttribute);
+                        tempValues[i] = emptyValue;
+                    } else {
+                        tempValues[i] = attributedValue;
+                    }
+                }
+
+                values.addAll(List.of(tempValues));
+            }
+        }
+
+        @Getter
+        private final List<Value> attributedValues = new LinkedList<>();
+
     }
 
     /**

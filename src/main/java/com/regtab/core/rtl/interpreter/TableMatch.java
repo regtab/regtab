@@ -1,5 +1,8 @@
 package com.regtab.core.rtl.interpreter;
 
+import com.regtab.core.model.IRow;
+import com.regtab.core.model.SubrowPos;
+import com.regtab.core.model.SubtablePos;
 import lombok.*;
 
 import com.regtab.core.model.ICell;
@@ -47,6 +50,10 @@ public final class TableMatch {
      */
     @NoArgsConstructor(access = AccessLevel.PACKAGE)
     public static final class SubtableMatch {
+
+        private int topRowPosition = Integer.MAX_VALUE;
+        private int bottomRowPosition = Integer.MIN_VALUE;
+
         @Getter
         private final List<RowMatch> rowMatches = new ArrayList<>();
 
@@ -56,6 +63,12 @@ public final class TableMatch {
          * @param match The row match to add.
          */
         void add(@NonNull TableMatch.RowMatch match) {
+            final IRow row = match.getRow();
+            final int rowPosition = row.getPosition();
+
+            topRowPosition = Math.min(topRowPosition, rowPosition);
+            bottomRowPosition = Math.max(bottomRowPosition, rowPosition);
+
             rowMatches.add(match);
         }
 
@@ -66,7 +79,8 @@ public final class TableMatch {
          */
         public boolean apply() {
             for (RowMatch match : rowMatches) {
-                boolean result = match.apply();
+                final SubtablePos subtablePos = new SubtablePos(topRowPosition, bottomRowPosition);
+                final boolean result = match.apply(subtablePos);
                 if (!result)
                     return false;
             }
@@ -78,8 +92,12 @@ public final class TableMatch {
      * Represents the matching result for a row within a subtable.
      * This class is static and final, and its constructor is package-private.
      */
-    @NoArgsConstructor(access = AccessLevel.PACKAGE)
+    @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     public static final class RowMatch {
+        @NonNull
+        @Getter
+        private final IRow row;
+
         @Getter
         private final List<SubrowMatch> subrowMatches = new ArrayList<>();
 
@@ -92,14 +110,17 @@ public final class TableMatch {
             subrowMatches.add(match);
         }
 
+        @Setter(AccessLevel.PRIVATE)
+        private SubtablePos subtablePos;
+
         /**
          * Applies the pattern to the row.
          *
          * @return True if the pattern was successfully applied to all subrow matches, false otherwise.
          */
-        public boolean apply() {
+        public boolean apply(@NonNull final SubtablePos subtablePos) {
             for (SubrowMatch match : subrowMatches) {
-                boolean result = match.apply();
+                final boolean result = match.apply(subtablePos);
                 if (!result)
                     return false;
             }
@@ -113,6 +134,10 @@ public final class TableMatch {
      */
     @NoArgsConstructor(access = AccessLevel.PACKAGE)
     public static final class SubrowMatch {
+
+        private int leftColPosition = Integer.MAX_VALUE;
+        private int rightColPosition = Integer.MIN_VALUE;
+
         @Getter
         private final List<CellMatch> cellMatches = new ArrayList<>();
 
@@ -122,6 +147,12 @@ public final class TableMatch {
          * @param match The cell match to add.
          */
         void add(@NonNull TableMatch.CellMatch match) {
+            final ICell cell = match.getCell();
+            final int cellColPosition = cell.getCol().getPosition();
+
+            leftColPosition = Math.min(leftColPosition, cellColPosition);
+            rightColPosition = Math.max(rightColPosition, cellColPosition);
+
             cellMatches.add(match);
         }
 
@@ -130,9 +161,10 @@ public final class TableMatch {
          *
          * @return True if the pattern was successfully applied to all cell matches, false otherwise.
          */
-        public boolean apply() {
+        public boolean apply(@NonNull final SubtablePos subtablePos) {
             for (CellMatch match : cellMatches) {
-                boolean result = match.apply();
+                final SubrowPos subrowPos = new SubrowPos(leftColPosition, rightColPosition);
+                final boolean result = match.apply(subtablePos, subrowPos);
                 if (!result)
                     return false;
             }
@@ -146,6 +178,7 @@ public final class TableMatch {
      */
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     public static final class CellMatch {
+
         @NonNull
         @Getter
         private final ICell cell;
@@ -159,8 +192,15 @@ public final class TableMatch {
          *
          * @return True if the pattern was successfully applied to the cell, false otherwise.
          */
-        public boolean apply() {
-            return pattern.apply(cell);
+        public boolean apply(@NonNull final SubtablePos subtablePos, @NonNull final SubrowPos subrowPos) {
+            final boolean result = pattern.apply(cell);
+
+            if (result) {
+                cell.setSubtablePos(subtablePos);
+                cell.setSubrowPos(subrowPos);
+            }
+
+            return result;
         }
     }
 

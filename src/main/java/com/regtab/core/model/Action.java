@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  * The Action class represents an action that can be performed on an Component.
  */
+@Slf4j
 public final class Action {
     @Getter
     private final Action.Type type;
@@ -63,25 +65,23 @@ public final class Action {
     }
 
     private void performFactor(Component caller) {
+
         if (lookup != null) {
             final Component found = lookup.findFirst(caller);
-            if (found != null) {
-                String text = found.getText();
-                caller.setText(text);
-            }
-            return;
+            if (found != null)
+                caller.factor(found);
+        } else if (string != null) {
+            caller.factor(string);
         }
-        if (string != null)
-            caller.setText(string);
     }
 
-    private static final String DEFAULT_CONCAT_SEPARATOR = "/";
+    //    private static final String DEFAULT_CONCAT_SEPARATOR = "/";
     private static final String DEFAULT_AV_SEPARATOR = ":";
 
-    @NonNull
-    @Getter
-    @Setter
-    private String concatSeparator = DEFAULT_CONCAT_SEPARATOR;
+//    @NonNull
+//    @Getter
+//    @Setter
+//    private String concatSeparator = DEFAULT_CONCAT_SEPARATOR;
 
     @NonNull
     @Getter
@@ -89,54 +89,24 @@ public final class Action {
     private String avSeparator = DEFAULT_AV_SEPARATOR;
 
     private void performPrefix(Component caller) {
-        final String prefix;
-        final String prefixedText;
 
         if (lookup != null) {
             final Component found = lookup.findFirst(caller);
-            if (found != null) {
-                prefix = found.getText();
-                if (!prefix.isEmpty()) {
-                    final String text = caller.getText();
-                    prefixedText = String.join(concatSeparator, prefix, text);
-                    caller.setText(prefixedText);
-                }
-            }
-            return;
-        }
-        if (string != null) {
-            prefix = string;
-            if (!prefix.isEmpty()) {
-                final String text = caller.getText();
-                prefixedText = String.join(concatSeparator, prefix, text);
-                caller.setText(prefixedText);
-            }
+            if (found != null)
+                caller.prefix(found);
+        } else if (string != null) {
+            caller.prefix(string);
         }
     }
 
     private void performSuffix(Component caller) {
-        final String suffix;
-        final String suffixedText;
 
         if (lookup != null) {
             final Component found = lookup.findFirst(caller);
-            if (found != null) {
-                suffix = found.getText();
-                if (!suffix.isEmpty()) {
-                    final String text = caller.getText();
-                    suffixedText = String.join(concatSeparator, text, suffix);
-                    caller.setText(suffixedText);
-                }
-            }
-            return;
-        }
-        if (string != null) {
-            suffix = string;
-            if (!suffix.isEmpty()) {
-                final String text = caller.getText();
-                suffixedText = String.join(concatSeparator, text, suffix);
-                caller.setText(suffixedText);
-            }
+            if (found != null)
+                caller.suffix(found);
+        } else if (string != null) {
+            caller.suffix(string);
         }
     }
 
@@ -169,8 +139,10 @@ public final class Action {
             } else {
                 valStr = string;
 
-                if (valStr.isBlank())
-                    throw new IllegalArgumentException("Invalid parameter in action " + this);
+                if (valStr.isBlank()) {
+                    //throw new IllegalArgumentException("Invalid parameter in action " + this);
+                    log.debug("Blank string parameter in action {}", this);
+                }
 
                 recordset.updateRecord(record, valStr);
             }
@@ -206,7 +178,7 @@ public final class Action {
     /**
      * Performs the action on the specified component and recordset.
      *
-     * @param caller the component to perform the action on
+     * @param caller    the component to perform the action on
      * @param recordset the recordset to use
      */
     void perform(@NonNull Component caller, @NonNull Recordset recordset) {

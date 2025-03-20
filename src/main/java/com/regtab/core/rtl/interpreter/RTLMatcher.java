@@ -279,7 +279,7 @@ public class RTLMatcher {
     private RowMatch match(@NonNull IRow row, RowPattern pattern) {
         log.debug("Next row: {}", row);
 
-        final RowMatch rowMatch = new RowMatch();
+        final RowMatch rowMatch = new RowMatch(row);
 
         final Queue<ICell> cells = new LinkedList<>(row.cellsAsList());
         final List<SubrowPattern> subrowPatterns = pattern.getSubrowPatterns();
