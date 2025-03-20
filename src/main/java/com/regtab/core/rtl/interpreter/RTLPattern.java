@@ -231,6 +231,7 @@ public class RTLPattern {
             rowPatterns.add(pattern);
         }
 
+        @Override
         void add(@NonNull Action action) {
             getActions().add(action);
 
@@ -272,6 +273,7 @@ public class RTLPattern {
             subrowPatterns.add(pattern);
         }
 
+        @Override
         void add(@NonNull Action action) {
             getActions().add(action);
 
@@ -313,6 +315,7 @@ public class RTLPattern {
             cellPatterns.add(pattern);
         }
 
+        @Override
         void add(@NonNull Action action) {
             getActions().add(action);
 
@@ -343,6 +346,7 @@ public class RTLPattern {
         @Setter(AccessLevel.PACKAGE)
         private SubrowPattern subrowPattern;
 
+        @Override
         void add(@NonNull Action action) {
             getActions().add(action);
             if (componentsPattern != null)
@@ -390,6 +394,7 @@ public class RTLPattern {
             tags.add(tag);
         }
 
+        @Override
         void add(@NonNull Action action) {
             getActions().add(action);
         }
@@ -447,6 +452,7 @@ public class RTLPattern {
         @Setter
         private ComponentsPattern right;
 
+        @Override
         void add(@NonNull Action action) {
             left.add(action);
             right.add(action);
@@ -488,12 +494,14 @@ public class RTLPattern {
         @Setter
         private List<String> separators;
 
+        @Override
         void add(@NonNull Action action) {
             for (ComponentPattern componentPattern : componentPatterns) {
                 componentPattern.add(action);
             }
         }
 
+        @Override
         boolean apply(@NonNull ICell cell) {
             final String text = cell.getText();
 

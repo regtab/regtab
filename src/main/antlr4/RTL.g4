@@ -39,7 +39,8 @@ cell : label? LSQUARE (components | copy) RSQUARE quantifier? ;
 
 // Паттерн группы компонентов (components) включает компонент (component), структуру (structured) или выбор (choice).
 // Может дополняться набором условий (cond).
-components : (cond ARROW)? actions? (component | struct | choice) ;
+//components : (cond ARROW)? actions? (component | struct | choice) ;
+components : (cond ARROW)? actions? (component | struct | structx | choice) ;
 
 // Элемент (component) включает тип (componentType).
 // Может дополняться набором тегов (tags) и набором действий (actions).
@@ -77,6 +78,12 @@ actionBody : STRING | lookup ;
 
 // Cтруктура (structured) включает паттерн строки текста (line),
 struct : LPAREN startText? component (separator component)* endText? RPAREN ;
+
+structx : (substructx | (LPAREN substructx RPAREN quantifier?)) (substructx | (LPAREN substructx RPAREN quantifier?))* ;
+
+//substructx : LPAREN startText? component (separator component)* endText? RPAREN quantifier?
+substructx : startText? component (separator component)* endText? ;
+
 startText : STRING ;
 separator : STRING ;
 endText   : STRING ;

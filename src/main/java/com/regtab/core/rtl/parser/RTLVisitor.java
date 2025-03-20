@@ -155,6 +155,18 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStruct(RTLParser.StructContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link RTLParser#structx}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStructx(RTLParser.StructxContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RTLParser#substructx}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSubstructx(RTLParser.SubstructxContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link RTLParser#startText}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -248,6 +248,26 @@ public interface RTLListener extends ParseTreeListener {
 	 */
 	void exitStruct(RTLParser.StructContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link RTLParser#structx}.
+	 * @param ctx the parse tree
+	 */
+	void enterStructx(RTLParser.StructxContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RTLParser#structx}.
+	 * @param ctx the parse tree
+	 */
+	void exitStructx(RTLParser.StructxContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RTLParser#substructx}.
+	 * @param ctx the parse tree
+	 */
+	void enterSubstructx(RTLParser.SubstructxContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RTLParser#substructx}.
+	 * @param ctx the parse tree
+	 */
+	void exitSubstructx(RTLParser.SubstructxContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link RTLParser#startText}.
 	 * @param ctx the parse tree
 	 */
