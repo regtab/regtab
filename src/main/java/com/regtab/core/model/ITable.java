@@ -174,6 +174,7 @@ public final class ITable {
         for (ICell cell: cells)
             cell.perform(Action.Type.SCHEMA, recordset);
 
+        recordset.align();
         recordset.complete();
 
         return recordset;

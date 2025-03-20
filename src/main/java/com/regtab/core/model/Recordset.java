@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * The Recordset class represents a set of records. It provides methods to manage the schema and data of the records.
@@ -52,10 +53,11 @@ public final class Recordset {
 
         for (int i = 0; i < records.size(); i++) {
             Record record = records.get(i);
-            size = record.values.size();
+            size = record.getValues().size();
+
             data[i] = new String[size];
             for (int j = 0; j < size; j++) {
-                data[i][j] = record.values.get(j).getString();
+                data[i][j] = record.getValues().get(j).getString();
             }
         }
 
@@ -210,6 +212,28 @@ public final class Recordset {
 
     }
 
+    void align() {
+        if (records.size() == 0) return;
+
+        int anonymousAttributesSize = 0; // Количество анонимных атрибутов в наборе записей
+        for (Record record : records) {
+            int count = 0;
+            List<Value> values = record.getValues();
+
+            for (Value value: values) {
+                Attribute attribute = value.getAttribute();
+                if (attribute == null)
+                    count ++;
+            }
+
+            anonymousAttributesSize = Math.max(anonymousAttributesSize, count);
+        }
+
+        Collection<Attribute> namedAttributes = attrMap.values();
+        for (Record record: records)
+            record.align(anonymousAttributesSize, attrMap.values().stream().toList());
+    }
+
     void complete() {
         if (records.size() == 0) return;
 
@@ -223,12 +247,12 @@ public final class Recordset {
             Record record = records.get(i);
             int recordSize = record.getValues().size();
             if (recordSize < maxRecordSize) {
-                //throw new IllegalStateException("Записи различаются количеством значений");
-                log.debug("Записи различаются количеством значений: {} < {}", recordSize, maxRecordSize);
-                for (int j = 0; j < maxRecordSize - recordSize; j++) {
-                    Value emptyValue = new Value("", null);
-                    record.getValues().add(emptyValue);
-                }
+                throw new IllegalStateException("Записи различаются количеством значений");
+                //log.debug("Записи различаются количеством значений: {} < {}", recordSize, maxRecordSize);
+                //for (int j = 0; j < maxRecordSize - recordSize; j++) {
+                //    Value emptyValue = new Value("", null);
+                //    record.getValues().add(emptyValue);
+                //}
             }
         }
 
@@ -278,7 +302,73 @@ public final class Recordset {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class Record {
         @Getter
-        private final List<Value> values = new ArrayList<>();
+        private final List<Value> values = new LinkedList<>();
+
+        private void align(int anonymousAttributesSize, List<Attribute> namedAttributes) {
+            final List<Value> nonAttributedValues = new LinkedList<>();
+            final List<Value> attributedValues = new LinkedList<>();
+            final Map<Attribute, Value> avMap = new HashMap<>();
+
+            for (Value value: values) {
+                Attribute attribute = value.attribute;
+                if (attribute == null)
+                    nonAttributedValues.add(value);
+                else {
+                    attributedValues.add(value);
+                    avMap.put(attribute, value);
+                }
+            }
+
+            if (anonymousAttributesSize + namedAttributes.size() <= 0) {
+                throw new IllegalStateException("Invalid sum of anonymous and named attributes sizes");
+            }
+
+            values.clear();
+
+            if (anonymousAttributesSize > 0) {
+                int diff = anonymousAttributesSize - nonAttributedValues.size();
+
+                if (diff < 0) {
+                    throw new IllegalStateException("Invalid anonymous attributes size");
+                }
+
+                for (int i = 0; i < diff; i++) {
+                    Value emptyValue = new Value("", null);
+                    nonAttributedValues.add(emptyValue);
+                }
+
+                values.addAll(nonAttributedValues);
+            }
+
+            if (namedAttributes.size() > 0) {
+
+                if (namedAttributes.size() - attributedValues.size() < 0) {
+                    throw new IllegalStateException("Invalid named attributes size");
+                }
+
+                final Value[] tempValues = new Value[namedAttributes.size()];
+
+                for (int i = 0; i < namedAttributes.size(); i++) {
+                    Attribute namedAttribute = namedAttributes.get(i);
+
+                    Value attributedValue = avMap.get(namedAttribute);
+
+                    if (attributedValue == null) {
+                        Value emptyValue = new Value("", null);
+                        emptyValue.setAttribute(namedAttribute);
+                        tempValues[i] = emptyValue;
+                    } else {
+                        tempValues[i] = attributedValue;
+                    }
+                }
+
+                values.addAll(List.of(tempValues));
+            }
+        }
+
+        @Getter
+        private final List<Value> attributedValues = new LinkedList<>();
+
     }
 
     /**
