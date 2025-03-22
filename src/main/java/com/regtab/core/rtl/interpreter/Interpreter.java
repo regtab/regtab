@@ -46,6 +46,8 @@ final class Interpreter {
     private static final ComponentVisitor componentVisitor = new ComponentVisitor();
     private static final StructVisitor structVisitor = new StructVisitor();
     private static final ChoiceVisitor choiceVisitor = new ChoiceVisitor();
+    private static final StructxVisitor structxVisitor = new StructxVisitor();
+    private static final SubstructxVisitor substructxVisitor = new SubstructxVisitor();
 
     private static final CondVisitor condVisitor = new CondVisitor();
     private static final QuantifierVisitor quantifierVisitor = new QuantifierVisitor();
@@ -428,6 +430,16 @@ final class Interpreter {
                 pattern.setComponentsPattern(choicePattern);
             }
 
+            final StructxContext structxContext = ctx.structx();
+            if (structxContext != null) {
+                final StructxPattern structxPattern = structxVisitor.visit(structxContext);
+                if (structxPattern == null)
+                    return false; // Impossible
+
+                pattern.setComponentsPattern(structxPattern);
+                return true;
+            }
+
             return true;
         }
 
@@ -579,6 +591,78 @@ final class Interpreter {
             }
 
             return null; // Impossible
+        }
+
+    }
+
+    final static class StructxVisitor extends RTLBaseVisitor<StructxPattern> {
+        @Override
+        public StructxPattern visitStructx(StructxContext ctx) {
+            final StructxPattern structxPattern = new StructxPattern(ctx);
+
+            List<SubstructxContext> substructxContexts = ctx.substructx();
+
+            if (substructxContexts == null) {
+                throw new IllegalStateException("Impossible");
+            }
+
+            for (SubstructxContext substructxContext: substructxContexts) {
+                SubstructxPattern substructxPattern = substructxVisitor.visitSubstructx(substructxContext);
+                structxPattern.add(substructxPattern);
+            }
+
+            return structxPattern;
+        }
+
+    }
+
+    final static class SubstructxVisitor extends RTLBaseVisitor<SubstructxPattern> {
+        @Override
+        public SubstructxPattern visitSubstructx(SubstructxContext ctx) {
+            final SubstructxPattern substructxPattern = new SubstructxPattern(ctx);
+
+            final List<ComponentContext> componentContexts = ctx.substruct_().component();
+            for (ComponentContext compCtx : componentContexts) {
+                final ComponentPattern componentPattern = componentVisitor.visit(compCtx);
+                if (componentPattern == null)
+                    return null; // Impossible
+
+                substructxPattern.add(componentPattern);
+            }
+
+            final StartTextContext stCtx = ctx.substruct_().startText();
+            if (stCtx != null) {
+                final String startText = unquote(stCtx.STRING().getText());
+                substructxPattern.setStartText(startText);
+            }
+
+            final EndTextContext etCtx = ctx.substruct_().endText();
+            if (etCtx != null) {
+                final String endText = unquote(etCtx.STRING().getText());
+                substructxPattern.setEndText(endText);
+            }
+
+            final List<SeparatorContext> separatorContexts = ctx.substruct_().separator();
+            if (separatorContexts != null && !separatorContexts.isEmpty()) {
+                final List<String> separators = new ArrayList<>(separatorContexts.size());
+                for (SeparatorContext separatorContext : separatorContexts) {
+                    String separator = unquote(separatorContext.STRING().getText());
+                    String unescapedSeparator = StringEscapeUtils.unescapeJava(separator);
+                    separators.add(unescapedSeparator);
+                }
+                substructxPattern.setSeparators(separators);
+            }
+
+            final QuantifierContext quantifierContext = ctx.quantifier();
+            final Quantifier quantifier;
+            if (quantifierContext != null)
+                quantifier = quantifierVisitor.visit(quantifierContext);
+            else
+                quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
+
+            substructxPattern.setQuantifier(quantifier);
+
+            return substructxPattern;
         }
 
     }

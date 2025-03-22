@@ -79,10 +79,11 @@ actionBody : STRING | lookup ;
 // Cтруктура (structured) включает паттерн строки текста (line),
 struct : LPAREN startText? component (separator component)* endText? RPAREN ;
 
-structx : (substructx | (LPAREN substructx RPAREN quantifier?)) (substructx | (LPAREN substructx RPAREN quantifier?))* ;
+structx : substructx* ;
 
-//substructx : LPAREN startText? component (separator component)* endText? RPAREN quantifier?
-substructx : startText? component (separator component)* endText? ;
+substructx : substruct_ | (LPAREN substruct_ RPAREN quantifier?) ;
+
+substruct_ : startText? component (separator component)* endText? ;
 
 startText : STRING ;
 separator : STRING ;

@@ -18,9 +18,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.regtab.core.rtl.parser.*;
+
 import static com.regtab.core.rtl.parser.RTLParser.*;
 
 /**
@@ -79,7 +81,7 @@ public class RTLPattern {
      */
     public static TableMatch match(@NonNull String rtl, @NonNull ITable table) {
         final RTLPattern t = compile(rtl);
-        if  (t == null)
+        if (t == null)
             return null;
         final RTLMatcher m = t.matcher();
 
@@ -95,7 +97,7 @@ public class RTLPattern {
      */
     public static boolean apply(@NonNull String rtl, @NonNull ITable table) {
         final TableMatch match = match(rtl, table);
-        if  (match == null)
+        if (match == null)
             return false;
 
         return match.apply();
@@ -478,7 +480,7 @@ public class RTLPattern {
         @Getter
         private final List<ComponentPattern> componentPatterns = new ArrayList<>();
 
-        void add(@NonNull RTLPattern.ComponentPattern pattern) {
+        void add(@NonNull ComponentPattern pattern) {
             componentPatterns.add(pattern);
         }
 
@@ -581,6 +583,244 @@ public class RTLPattern {
             }
 
             return true;
+        }
+
+    }
+
+    @Slf4j
+    static final class StructxPattern extends ComponentsPattern {
+        StructxPattern(@NonNull StructxContext context) {
+            super(context);
+        }
+
+        @Getter
+        private final List<SubstructxPattern> substructxPatterns = new LinkedList<>();
+
+        void add(@NonNull SubstructxPattern pattern) {
+            substructxPatterns.add(pattern);
+        }
+
+        @Override
+        void add(@NonNull Action action) {
+            for (SubstructxPattern substructxPattern : substructxPatterns) {
+                substructxPattern.add(action);
+            }
+        }
+
+        @Override
+        boolean apply(@NonNull ICell cell) {
+            // TODO применить паттерн к ячейке
+            String text = cell.getText();
+
+            int textShift = 0;
+            for (SubstructxPattern substructxPattern : substructxPatterns) {
+                textShift = substructxPattern.apply(cell, textShift);
+            }
+
+            return true;
+        }
+
+    }
+
+    @Slf4j
+    static final class SubstructxPattern extends RepeatablePattern {
+        SubstructxPattern(@NonNull SubstructxContext context) {
+            super(context);
+        }
+
+        @Getter
+        private final List<ComponentPattern> componentPatterns = new ArrayList<>();
+
+        void add(@NonNull ComponentPattern pattern) {
+            componentPatterns.add(pattern);
+        }
+
+        @Getter
+        @Setter
+        private String startText;
+
+        @Getter
+        @Setter
+        private String endText;
+
+        @Getter
+        @Setter
+        private List<String> separators;
+
+//        @Getter
+//        @Setter
+//        private Quantifier quantifier;
+
+        @Override
+        void add(@NonNull Action action) {
+            for (ComponentPattern componentPattern : componentPatterns) {
+                componentPattern.add(action);
+            }
+        }
+
+        int apply(@NonNull ICell cell, int textShift) {
+            final Quantifier.Times times = getQuantifier().times();
+
+            if (times == Quantifier.Times.EXACTLY) {
+                // Repeat exactly n times
+                int count = getRepetitionCount();
+                try {
+                    while (count > 0) {
+                        textShift = apply_(cell, textShift);
+                        count --;
+                    }
+                } catch (CellApplicationException e) {
+                    throw new RuntimeException(e);
+                }
+                return textShift;
+            } else if (times == Quantifier.Times.UNDEFINED) {
+                // Repeat exactly one time
+                try {
+                    return apply_(cell, textShift);
+                } catch (CellApplicationException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if (times == Quantifier.Times.ONE_OR_MORE) {
+                // Repeat at least one time
+                try {
+                    apply_(cell, textShift);
+                } catch (CellApplicationException e) {
+                    throw new RuntimeException(e);
+                }
+                // Repeat more times if possible
+                try {
+                    while (true) {
+                        textShift = apply_(cell, textShift);
+                    }
+                } catch (CellApplicationException e) {
+                    return textShift;
+                }
+            } else if (times == Quantifier.Times.ZERO_OR_MORE) {
+                // Repeat zero or more times
+                try {
+                    while (true) {
+                        textShift = apply_(cell, textShift);
+                    }
+                } catch (CellApplicationException e) {
+                    return textShift;
+                }
+            } else if (times == Quantifier.Times.ZERO_OR_ONE) {
+                // Repeat zero or one time
+                try {
+                    textShift = apply_(cell, textShift);
+                } catch (CellApplicationException e) {
+                    return textShift;
+                }
+            }
+
+            throw new RuntimeException("Impossible");
+        }
+
+        private int apply_(@NonNull ICell cell, int textShift) throws CellApplicationException {
+            final String text = cell.getText();
+            final int length = text.length();
+
+            if (length - textShift <= 0) {
+                //return textShift;
+                throw new CellApplicationException(cell, textShift);
+            }
+
+            final String substr = text.substring(textShift, length);
+
+            int start = 0;
+            int end = substr.length();
+
+            boolean result;
+
+            if (startText != null) {
+                result = substr.startsWith(startText);
+                if (!result) {
+                    log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                    //final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
+                    //throw new RuntimeException(msg);
+                    throw new CellApplicationException(cell, textShift);
+                }
+                start = startText.length();
+            }
+
+            if (endText != null) {
+                //result = substr.endsWith(endText);
+                result = substr.indexOf(endText) > 0;
+                if (!result) {
+                    log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                    //final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
+                    //throw new RuntimeException(msg);
+                    throw new CellApplicationException(cell, textShift);
+                }
+                //end = substr.length() - endText.length();
+                end = substr.length() - endText.length();
+            }
+
+            final String subText = substr.substring(start, end);
+
+            // Если нет разделителей, то есть только один элемент
+            if (separators == null) {
+                if (componentPatterns.size() != 1) {
+                    log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                    //final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
+                    //throw new RuntimeException(msg);
+                    throw new CellApplicationException(cell, textShift);
+                }
+                final ComponentPattern componentPattern = componentPatterns.getFirst();
+                result = componentPattern.apply(cell, subText);
+                if (!result) {
+                    log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                    //final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
+                    //throw new RuntimeException(msg);
+                    throw new CellApplicationException(cell, textShift);
+                }
+
+                // Вычислить и вернуть новый сдвиг
+                //int inc = (endText == null ? 0 : endText.length());
+                return end + (endText == null ? 0 : endText.length());
+            }
+
+            // Если есть n разделителей, то есть n-1 элементов
+            if (componentPatterns.size() != separators.size() + 1) {
+                log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                //final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
+                //throw new RuntimeException(msg);
+                throw new CellApplicationException(cell, textShift);
+            }
+
+            start = 0;
+            int shift = 0;
+            for (int i = 0; i < componentPatterns.size(); i++) {
+                final ComponentPattern componentPattern = componentPatterns.get(i);
+
+                if (i < componentPatterns.size() - 1) {
+                    final String unescapedSeparator = separators.get(i);
+                    end = subText.indexOf(unescapedSeparator, start);
+                    if (end == -1) {
+                        final String separator = StringEscapeUtils.escapeJava(unescapedSeparator);
+                        final String msg = String.format("Invalid separator: \"%s\" in \"%s\"", separator, cell);
+                        throw new IllegalStateException(msg);
+                        //throw new CellMatchException(cell, textShift);
+                    }
+                    shift = unescapedSeparator.length();
+                } else {
+                    end = subText.length();
+                }
+
+                String val = subText.substring(start, end);
+                result = componentPattern.apply(cell, val);
+                if (!result) {
+                    log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                    final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
+                    //throw new RuntimeException(msg);
+                    throw new CellApplicationException(cell, textShift);
+                }
+
+                start = end + shift;
+            }
+
+            // Вычислить и вернуть новый сдвиг
+            return end + endText == null ? 0 : endText.length();
         }
 
     }

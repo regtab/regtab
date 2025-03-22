@@ -329,6 +329,18 @@ public class RTLBaseListener implements RTLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterSubstruct_(RTLParser.Substruct_Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSubstruct_(RTLParser.Substruct_Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterStartText(RTLParser.StartTextContext ctx) { }
 	/**
 	 * {@inheritDoc}
