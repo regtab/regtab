@@ -670,7 +670,9 @@ public class RTLPattern {
                         count --;
                     }
                 } catch (CellApplicationException e) {
-                    throw new RuntimeException(e);
+                    log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                    final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
+                    throw new RuntimeException(msg);
                 }
                 return textShift;
             } else if (times == Quantifier.Times.UNDEFINED) {
@@ -678,14 +680,18 @@ public class RTLPattern {
                 try {
                     return apply_(cell, textShift);
                 } catch (CellApplicationException e) {
-                    throw new RuntimeException(e);
+                    log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                    final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
+                    throw new RuntimeException(msg);
                 }
             } else if (times == Quantifier.Times.ONE_OR_MORE) {
                 // Repeat at least one time
                 try {
                     apply_(cell, textShift);
                 } catch (CellApplicationException e) {
-                    throw new RuntimeException(e);
+                    log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                    final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
+                    throw new RuntimeException(msg);
                 }
                 // Repeat more times if possible
                 try {
@@ -721,7 +727,6 @@ public class RTLPattern {
             final int length = text.length();
 
             if (length - textShift <= 0) {
-                //return textShift;
                 throw new CellApplicationException(cell, textShift);
             }
 
@@ -731,29 +736,24 @@ public class RTLPattern {
             int end = substr.length();
 
             boolean result;
+            int position;
 
             if (startText != null) {
                 result = substr.startsWith(startText);
                 if (!result) {
-                    log.debug("Pattern {} could not be applied to the cell {}", this, cell);
-                    //final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
-                    //throw new RuntimeException(msg);
                     throw new CellApplicationException(cell, textShift);
                 }
                 start = startText.length();
             }
 
             if (endText != null) {
-                //result = substr.endsWith(endText);
                 result = substr.indexOf(endText) > 0;
-                if (!result) {
-                    log.debug("Pattern {} could not be applied to the cell {}", this, cell);
-                    //final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
-                    //throw new RuntimeException(msg);
+                position = substr.indexOf(endText);
+                if (position < 1) { //if (!result) {
                     throw new CellApplicationException(cell, textShift);
                 }
                 //end = substr.length() - endText.length();
-                end = substr.length() - endText.length();
+                end = position;
             }
 
             final String subText = substr.substring(start, end);
@@ -762,29 +762,21 @@ public class RTLPattern {
             if (separators == null) {
                 if (componentPatterns.size() != 1) {
                     log.debug("Pattern {} could not be applied to the cell {}", this, cell);
-                    //final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
-                    //throw new RuntimeException(msg);
                     throw new CellApplicationException(cell, textShift);
                 }
                 final ComponentPattern componentPattern = componentPatterns.getFirst();
                 result = componentPattern.apply(cell, subText);
                 if (!result) {
                     log.debug("Pattern {} could not be applied to the cell {}", this, cell);
-                    //final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
-                    //throw new RuntimeException(msg);
                     throw new CellApplicationException(cell, textShift);
                 }
 
                 // Вычислить и вернуть новый сдвиг
-                //int inc = (endText == null ? 0 : endText.length());
                 return end + (endText == null ? 0 : endText.length());
             }
 
             // Если есть n разделителей, то есть n-1 элементов
             if (componentPatterns.size() != separators.size() + 1) {
-                log.debug("Pattern {} could not be applied to the cell {}", this, cell);
-                //final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
-                //throw new RuntimeException(msg);
                 throw new CellApplicationException(cell, textShift);
             }
 
@@ -800,7 +792,6 @@ public class RTLPattern {
                         final String separator = StringEscapeUtils.escapeJava(unescapedSeparator);
                         final String msg = String.format("Invalid separator: \"%s\" in \"%s\"", separator, cell);
                         throw new IllegalStateException(msg);
-                        //throw new CellMatchException(cell, textShift);
                     }
                     shift = unescapedSeparator.length();
                 } else {
@@ -810,9 +801,6 @@ public class RTLPattern {
                 String val = subText.substring(start, end);
                 result = componentPattern.apply(cell, val);
                 if (!result) {
-                    log.debug("Pattern {} could not be applied to the cell {}", this, cell);
-                    final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
-                    //throw new RuntimeException(msg);
                     throw new CellApplicationException(cell, textShift);
                 }
 
@@ -820,7 +808,7 @@ public class RTLPattern {
             }
 
             // Вычислить и вернуть новый сдвиг
-            return end + endText == null ? 0 : endText.length();
+            return end + (endText == null ? 0 : endText.length());
         }
 
     }
