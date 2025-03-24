@@ -643,9 +643,6 @@ public class RTLPattern {
 
         @Override
         boolean apply(@NonNull ICell cell) {
-            // TODO применить паттерн к ячейке
-            String text = cell.getText();
-
             int textShift = 0;
             for (SubstructxPattern substructxPattern : substructxPatterns) {
                 textShift = substructxPattern.apply(cell, textShift);
@@ -683,14 +680,6 @@ public class RTLPattern {
 
         @Getter
         @Setter
-        private String nextStartText;
-
-        @Getter
-        @Setter
-        private boolean atLeastOneNextStartText;
-
-        @Getter
-        @Setter
         private String closeEndSeparator;
 
         @Getter
@@ -700,14 +689,6 @@ public class RTLPattern {
         @Getter
         @Setter
         private List<String> separators = new LinkedList<>();
-
-
-
-        //private Set<String> endTextVariants = new LinkedHashSet<>();
-
-//        void addEndTextVariant(@NonNull String endTextVariant) {
-//            endTextVariants.add(endTextVariant);
-//        }
 
         @Override
         void add(@NonNull Action action) {
@@ -780,6 +761,71 @@ public class RTLPattern {
             throw new RuntimeException("Impossible");
         }
 
+        private int findStartPos(@NonNull ICell cell, int textShift) throws CellApplicationException {
+
+            if (startText != null) {
+                final String text = cell.getText();
+                final String substr = text.substring(textShift, text.length());
+                boolean result = substr.startsWith(startText);
+
+                if (!result) {
+                    throw new CellApplicationException(cell, textShift);
+                }
+
+                return startText.length();
+            }
+
+            return 0;
+        }
+
+        private int findEndPos(@NonNull ICell cell, int textShift) throws CellApplicationException {
+            final String text = cell.getText();
+            final String substr = text.substring(textShift, text.length());
+
+            int position;
+            int startTextLength = startText == null ? 0 : startText.length();
+
+            if (endText != null) {
+                position = substr.indexOf(endText, startTextLength);
+
+                if (position < 1) {
+                    throw new CellApplicationException(cell, textShift);
+                }
+
+                return position + startTextLength;
+            }
+
+            if (loopStartText != null) {
+                position = substr.indexOf(loopStartText, startTextLength);
+
+                if (position > 0) {
+                    return position + startTextLength;
+                }
+            }
+
+            if (!openEndSeparators.isEmpty()) {
+                for (String openEndSeparator : openEndSeparators) {
+                    position = substr.indexOf(openEndSeparator, startTextLength);
+
+                    if (position > 0) {
+                        return position + startTextLength;
+                    }
+                }
+            }
+
+            if (closeEndSeparator != null) {
+                position = substr.indexOf(closeEndSeparator, startTextLength);
+
+                if (position < 1) {
+                    throw new IllegalStateException("Invalid close end separator");
+                }
+
+                return position + startTextLength;
+            }
+
+            return substr.length();
+        }
+
         private int apply_(@NonNull ICell cell, int textShift) throws CellApplicationException {
             final String text = cell.getText();
             final int length = text.length();
@@ -790,92 +836,8 @@ public class RTLPattern {
 
             final String substr = text.substring(textShift, length);
 
-            int start = 0;
-            int end = text.length();
-
-            boolean result;
-            int position;
-            int startTextLength = 0;
-
-            if (startText != null) {
-                result = substr.startsWith(startText);
-
-                if (!result) {
-                    throw new CellApplicationException(cell, textShift);
-                }
-
-                start = startText.length();
-                startTextLength = startText.length();
-            }
-
-            if (endText != null) {
-                position = substr.indexOf(endText, startTextLength);
-
-                if (position < 1) {
-                    throw new CellApplicationException(cell, textShift);
-                }
-
-                end = position + startTextLength;
-            } else {
-                if (loopStartText != null) {
-                    position = substr.indexOf(loopStartText, startTextLength);
-
-                    if (position < 1) {
-                        if (nextStartText != null) {
-                            position = substr.indexOf(nextStartText, startTextLength);
-                            if (position < 1) {
-                                throw new IllegalStateException("Invalid next start text");
-                            }
-                            end = position + startTextLength;
-                        } else {
-                            end = substr.length();
-                        }
-                    } else {
-                        end = position + startTextLength;
-                    }
-                }
-//                else if (nextStartText != null) {
-//                    position = substr.indexOf(nextStartText, startTextLength);
-//
-//                    if (position < 1) {
-//                        if (atLeastOneNextStartText) {
-//                            throw new CellApplicationException(cell, textShift);
-//                        } else {
-//                            end = substr.length();
-//                        }
-//                    } else {
-//                        end = position + startTextLength;
-//                    }
-//                }
-                else if (!openEndSeparators.isEmpty()) {
-                    for (String openEndSeparator : openEndSeparators) {
-                        position = substr.indexOf(openEndSeparator, startTextLength);
-
-                        if (position > 0) {
-                            end = position + startTextLength;
-                            break;
-                        }
-                    }
-                }
-
-                else if (closeEndSeparator != null) {
-                    position = substr.indexOf(closeEndSeparator, startTextLength);
-
-                    if (position < 1) {
-                        //if (atLeastOneNextStartText) {
-                            throw new IllegalStateException("Invalid close end separator");
-                        //} else {
-                        //    end = substr.length();
-                        //}
-                    } else {
-                        end = position + startTextLength;
-                    }
-                }
-
-                else {
-                    end = substr.length();
-                }
-            }
+            int start = findStartPos(cell, textShift);
+            int end = findEndPos(cell, textShift);
 
             final String subText = substr.substring(start, end);
 
@@ -886,7 +848,7 @@ public class RTLPattern {
                     throw new CellApplicationException(cell, textShift);
                 }
                 final ComponentPattern componentPattern = componentPatterns.getFirst();
-                result = componentPattern.apply(cell, subText);
+                boolean result = componentPattern.apply(cell, subText);
                 if (!result) {
                     log.debug("Pattern {} could not be applied to the cell {}", this, cell);
                     throw new CellApplicationException(cell, textShift);
@@ -920,7 +882,7 @@ public class RTLPattern {
                 }
 
                 String val = subText.substring(start, end);
-                result = componentPattern.apply(cell, val);
+                boolean result = componentPattern.apply(cell, val);
                 if (!result) {
                     throw new CellApplicationException(cell, textShift);
                 }

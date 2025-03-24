@@ -608,33 +608,9 @@ final class Interpreter {
                 throw new IllegalStateException("Impossible");
             }
 
-            SubstructxPattern lastAddedSubstructxPattern = null;
-            //List<SubstructxPattern> tempSubstructxPatterns = new LinkedList<>();
-
             for (SubstructxContext substructxContext: substructxContexts) {
                 SubstructxPattern substructxPattern = substructxVisitor.visitSubstructx(substructxContext);
                 structxPattern.add(substructxPattern);
-
-                if (lastAddedSubstructxPattern != null) {
-                    String et = lastAddedSubstructxPattern.getEndText();
-                    String st = substructxPattern.getStartText();
-
-                    if (et == null) {
-                        if (st != null) {
-                            lastAddedSubstructxPattern.setNextStartText(st);
-                            Quantifier.Times times = substructxPattern.getQuantifier().times();
-
-                            if (times == ONE_OR_MORE || times == UNDEFINED || times == EXACTLY)
-                                lastAddedSubstructxPattern.setAtLeastOneNextStartText(true);
-                            else
-                                lastAddedSubstructxPattern.setAtLeastOneNextStartText(false);
-                        } else {
-                            throw new IllegalStateException("Invalid start separator");
-                        }
-                    }
-                }
-
-                lastAddedSubstructxPattern = substructxPattern;
             }
 
             return structxPattern;
