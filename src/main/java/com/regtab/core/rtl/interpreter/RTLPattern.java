@@ -1,6 +1,7 @@
 package com.regtab.core.rtl.interpreter;
 
 import com.regtab.core.model.*;
+import com.regtab.core.model.Action;
 import lombok.extern.slf4j.Slf4j;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,11 +18,11 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import com.regtab.core.rtl.parser.*;
+
+import javax.swing.*;
 
 import static com.regtab.core.rtl.parser.RTLParser.*;
 
@@ -596,8 +597,23 @@ public class RTLPattern {
         @Getter
         private final List<SubstructxPattern> substructxPatterns = new LinkedList<>();
 
+        //private final Set<String> uniqueSeparators = new LinkedHashSet<>();
+
+
         void add(@NonNull SubstructxPattern pattern) {
             substructxPatterns.add(pattern);
+
+
+//            if (pattern.startText != null)
+//                uniqueSeparators.add(pattern.startText);
+//
+//            for (String separator : pattern.separators) {
+//                if (separator != null)
+//                    uniqueSeparators.add(separator);
+//            }
+//
+//            if (pattern.endText != null)
+//                uniqueSeparators.add(pattern.endText);
         }
 
         @Override
@@ -645,11 +661,25 @@ public class RTLPattern {
 
         @Getter
         @Setter
-        private List<String> separators;
+        private String nextStartText;
 
-//        @Getter
-//        @Setter
-//        private Quantifier quantifier;
+        @Getter
+        @Setter
+        private boolean atLeastOneNextStartText;
+
+        @Getter
+        @Setter
+        private String loopStartText;
+
+        @Getter
+        @Setter
+        private List<String> separators = new LinkedList<>();
+
+        //private Set<String> endTextVariants = new LinkedHashSet<>();
+
+//        void addEndTextVariant(@NonNull String endTextVariant) {
+//            endTextVariants.add(endTextVariant);
+//        }
 
         @Override
         void add(@NonNull Action action) {
@@ -667,7 +697,7 @@ public class RTLPattern {
                 try {
                     while (count > 0) {
                         textShift = apply_(cell, textShift);
-                        count --;
+                        count--;
                     }
                 } catch (CellApplicationException e) {
                     log.debug("Pattern {} could not be applied to the cell {}", this, cell);
@@ -733,27 +763,63 @@ public class RTLPattern {
             final String substr = text.substring(textShift, length);
 
             int start = 0;
-            int end = substr.length();
+            int end;
 
             boolean result;
             int position;
+            int startTextLength = 0;
 
             if (startText != null) {
                 result = substr.startsWith(startText);
+
                 if (!result) {
                     throw new CellApplicationException(cell, textShift);
                 }
+
                 start = startText.length();
+                startTextLength = startText.length();
             }
 
             if (endText != null) {
-                result = substr.indexOf(endText) > 0;
-                position = substr.indexOf(endText);
-                if (position < 1) { //if (!result) {
+                position = substr.indexOf(endText, startTextLength);
+
+                if (position < 1) {
                     throw new CellApplicationException(cell, textShift);
                 }
-                //end = substr.length() - endText.length();
-                end = position;
+
+                end = position + startTextLength;
+            } else {
+                if (loopStartText != null) {
+                    position = substr.indexOf(loopStartText, startTextLength);
+
+                    if (position < 1) {
+                        if (nextStartText != null) {
+                            position = substr.indexOf(nextStartText, startTextLength);
+                            if (position < 1) {
+                                throw new IllegalStateException("Invalid next start text");
+                            }
+                            end = position + startTextLength;
+                        } else {
+                            end = substr.length();
+                        }
+                    } else {
+                        end = position + startTextLength;
+                    }
+                } else if (nextStartText != null) {
+                    position = substr.indexOf(nextStartText, startTextLength);
+
+                    if (position < 1) {
+                        if (atLeastOneNextStartText) {
+                            throw new CellApplicationException(cell, textShift);
+                        } else {
+                            end = substr.length();
+                        }
+                    } else {
+                        end = position + startTextLength;
+                    }
+                } else {
+                    end = substr.length();
+                }
             }
 
             final String subText = substr.substring(start, end);
@@ -808,7 +874,7 @@ public class RTLPattern {
             }
 
             // Вычислить и вернуть новый сдвиг
-            return end + (endText == null ? 0 : endText.length());
+            return textShift + end + (endText == null ? 0 : endText.length());
         }
 
     }

@@ -14,6 +14,7 @@ import java.util.List;
 import com.regtab.core.rtl.parser.*;
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import static com.regtab.core.rtl.interpreter.Quantifier.Times.*;
 import static com.regtab.core.rtl.interpreter.RTLPattern.*;
 import static com.regtab.core.rtl.parser.RTLParser.*;
 
@@ -606,9 +607,32 @@ final class Interpreter {
                 throw new IllegalStateException("Impossible");
             }
 
+            SubstructxPattern lastAddedSubstructxPattern = null;
+
             for (SubstructxContext substructxContext: substructxContexts) {
                 SubstructxPattern substructxPattern = substructxVisitor.visitSubstructx(substructxContext);
                 structxPattern.add(substructxPattern);
+
+                if (lastAddedSubstructxPattern != null) {
+                    String et = lastAddedSubstructxPattern.getEndText();
+                    String st = substructxPattern.getStartText();
+
+                    if (et == null) {
+                        if (st != null) {
+                            lastAddedSubstructxPattern.setNextStartText(st);
+                            Quantifier.Times times = substructxPattern.getQuantifier().times();
+
+                            if (times == ONE_OR_MORE || times == UNDEFINED || times == EXACTLY)
+                                lastAddedSubstructxPattern.setAtLeastOneNextStartText(true);
+                            else
+                                lastAddedSubstructxPattern.setAtLeastOneNextStartText(false);
+                        } else {
+                            throw new IllegalStateException("Invalid start separator");
+                        }
+                    }
+                }
+
+                lastAddedSubstructxPattern = substructxPattern;
             }
 
             return structxPattern;
@@ -620,6 +644,15 @@ final class Interpreter {
         @Override
         public SubstructxPattern visitSubstructx(SubstructxContext ctx) {
             final SubstructxPattern substructxPattern = new SubstructxPattern(ctx);
+
+            final QuantifierContext quantifierContext = ctx.quantifier();
+            final Quantifier quantifier;
+            if (quantifierContext != null)
+                quantifier = quantifierVisitor.visit(quantifierContext);
+            else
+                quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
+
+            substructxPattern.setQuantifier(quantifier);
 
             final List<ComponentContext> componentContexts = ctx.substruct_().component();
             for (ComponentContext compCtx : componentContexts) {
@@ -640,6 +673,14 @@ final class Interpreter {
             if (etCtx != null) {
                 final String endText = unquote(etCtx.STRING().getText());
                 substructxPattern.setEndText(endText);
+            } else {
+                if (stCtx != null) {
+                    Quantifier.Times times = quantifier.times();
+                    if (times == ZERO_OR_MORE || times == ONE_OR_MORE) {
+                        final String startText = unquote(stCtx.STRING().getText());
+                        substructxPattern.setLoopStartText(startText);
+                    }
+                }
             }
 
             final List<SeparatorContext> separatorContexts = ctx.substruct_().separator();
@@ -653,14 +694,6 @@ final class Interpreter {
                 substructxPattern.setSeparators(separators);
             }
 
-            final QuantifierContext quantifierContext = ctx.quantifier();
-            final Quantifier quantifier;
-            if (quantifierContext != null)
-                quantifier = quantifierVisitor.visit(quantifierContext);
-            else
-                quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
-
-            substructxPattern.setQuantifier(quantifier);
 
             return substructxPattern;
         }
@@ -715,9 +748,9 @@ final class Interpreter {
                     }
                 } else {
                     if (ctx.oneOrMore() != null)
-                        times = Quantifier.Times.ONE_OR_MORE;
+                        times = ONE_OR_MORE;
                     if (ctx.zeroOrMore() != null)
-                        times = Quantifier.Times.ZERO_OR_MORE;
+                        times = ZERO_OR_MORE;
                     if (ctx.zeroOrOne() != null)
                         times = Quantifier.Times.ZERO_OR_ONE;
                 }
