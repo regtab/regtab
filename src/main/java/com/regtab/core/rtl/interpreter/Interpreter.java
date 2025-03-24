@@ -9,7 +9,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.regtab.core.rtl.parser.*;
@@ -654,9 +653,9 @@ final class Interpreter {
             } else {
                 if (stCtx != null) {
                     Quantifier.Times times = quantifier.times();
-                    if (times == ZERO_OR_MORE || times == ONE_OR_MORE) {
-                        final String startText = unquote(stCtx.STRING().getText());
-                        substructxPattern.setLoopStartText(startText);
+                    if (times == ZERO_OR_MORE || times == ONE_OR_MORE
+                            || (times == EXACTLY && (quantifier.exactly() > 1))) {
+                        substructxPattern.setLooped(true);
                     }
                 }
             }

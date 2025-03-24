@@ -601,9 +601,11 @@ public class RTLPattern {
         void add(@NonNull SubstructxPattern pattern) {
             if (pattern.startText != null) {
                 if (!tempSubstructxPatterns.isEmpty()) {
-                    Quantifier.Times times = pattern.getQuantifier().times();
+                    Quantifier quantifier = pattern.getQuantifier();
+                    Quantifier.Times times = quantifier.times();
 
-                    if (times == ONE_OR_MORE || times == UNDEFINED || times == EXACTLY) {
+                    if (times == ONE_OR_MORE || times == UNDEFINED
+                            || (times == EXACTLY && (quantifier.exactly() > 0))) {
                         for (SubstructxPattern tempSubstructxPattern : tempSubstructxPatterns) {
                             tempSubstructxPattern.closeEndSeparator = pattern.startText;
                         }
@@ -621,17 +623,6 @@ public class RTLPattern {
             }
 
             substructxPatterns.add(pattern);
-
-//            if (pattern.startText != null)
-//                uniqueSeparators.add(pattern.startText);
-//
-//            for (String separator : pattern.separators) {
-//                if (separator != null)
-//                    uniqueSeparators.add(separator);
-//            }
-//
-//            if (pattern.endText != null)
-//                uniqueSeparators.add(pattern.endText);
         }
 
         @Override
@@ -676,7 +667,7 @@ public class RTLPattern {
 
         @Getter
         @Setter
-        private String loopStartText;
+        private boolean looped;
 
         @Getter
         @Setter
@@ -795,8 +786,8 @@ public class RTLPattern {
                 return position + startTextLength;
             }
 
-            if (loopStartText != null) {
-                position = substr.indexOf(loopStartText, startTextLength);
+            if (looped && startText != null) {//if (loopStartText != null) {
+                position = substr.indexOf(startText, startTextLength);
 
                 if (position > 0) {
                     return position + startTextLength;
