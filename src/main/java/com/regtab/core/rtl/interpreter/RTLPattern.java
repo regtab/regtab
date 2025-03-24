@@ -22,8 +22,7 @@ import java.util.*;
 
 import com.regtab.core.rtl.parser.*;
 
-import javax.swing.*;
-
+import static com.regtab.core.rtl.interpreter.Quantifier.Times.*;
 import static com.regtab.core.rtl.parser.RTLParser.*;
 
 /**
@@ -597,12 +596,31 @@ public class RTLPattern {
         @Getter
         private final List<SubstructxPattern> substructxPatterns = new LinkedList<>();
 
-        //private final Set<String> uniqueSeparators = new LinkedHashSet<>();
-
+        private final List<SubstructxPattern> tempSubstructxPatterns = new LinkedList<>();
 
         void add(@NonNull SubstructxPattern pattern) {
-            substructxPatterns.add(pattern);
+            if (pattern.startText != null) {
+                if (!tempSubstructxPatterns.isEmpty()) {
+                    Quantifier.Times times = pattern.getQuantifier().times();
 
+                    if (times == ONE_OR_MORE || times == UNDEFINED || times == EXACTLY) {
+                        for (SubstructxPattern tempSubstructxPattern : tempSubstructxPatterns) {
+                            tempSubstructxPattern.closeEndSeparator = pattern.startText;
+                        }
+                        tempSubstructxPatterns.clear();
+                    } else {
+                        for (SubstructxPattern tempSubstructxPattern : tempSubstructxPatterns) {
+                            tempSubstructxPattern.openEndSeparators.add(pattern.startText);
+                        }
+                    }
+                }
+            }
+
+            if (pattern.endText == null) {
+                tempSubstructxPatterns.add(pattern);
+            }
+
+            substructxPatterns.add(pattern);
 
 //            if (pattern.startText != null)
 //                uniqueSeparators.add(pattern.startText);
@@ -661,6 +679,10 @@ public class RTLPattern {
 
         @Getter
         @Setter
+        private String loopStartText;
+
+        @Getter
+        @Setter
         private String nextStartText;
 
         @Getter
@@ -669,11 +691,17 @@ public class RTLPattern {
 
         @Getter
         @Setter
-        private String loopStartText;
+        private String closeEndSeparator;
+
+        @Getter
+        @Setter
+        private List<String> openEndSeparators = new LinkedList<>();
 
         @Getter
         @Setter
         private List<String> separators = new LinkedList<>();
+
+
 
         //private Set<String> endTextVariants = new LinkedHashSet<>();
 
@@ -714,7 +742,7 @@ public class RTLPattern {
                     final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
                     throw new RuntimeException(msg);
                 }
-            } else if (times == Quantifier.Times.ONE_OR_MORE) {
+            } else if (times == ONE_OR_MORE) {
                 // Repeat at least one time
                 try {
                     apply_(cell, textShift);
@@ -763,7 +791,7 @@ public class RTLPattern {
             final String substr = text.substring(textShift, length);
 
             int start = 0;
-            int end;
+            int end = text.length();
 
             boolean result;
             int position;
@@ -805,19 +833,46 @@ public class RTLPattern {
                     } else {
                         end = position + startTextLength;
                     }
-                } else if (nextStartText != null) {
-                    position = substr.indexOf(nextStartText, startTextLength);
+                }
+//                else if (nextStartText != null) {
+//                    position = substr.indexOf(nextStartText, startTextLength);
+//
+//                    if (position < 1) {
+//                        if (atLeastOneNextStartText) {
+//                            throw new CellApplicationException(cell, textShift);
+//                        } else {
+//                            end = substr.length();
+//                        }
+//                    } else {
+//                        end = position + startTextLength;
+//                    }
+//                }
+                else if (!openEndSeparators.isEmpty()) {
+                    for (String openEndSeparator : openEndSeparators) {
+                        position = substr.indexOf(openEndSeparator, startTextLength);
+
+                        if (position > 0) {
+                            end = position + startTextLength;
+                            break;
+                        }
+                    }
+                }
+
+                else if (closeEndSeparator != null) {
+                    position = substr.indexOf(closeEndSeparator, startTextLength);
 
                     if (position < 1) {
-                        if (atLeastOneNextStartText) {
-                            throw new CellApplicationException(cell, textShift);
-                        } else {
-                            end = substr.length();
-                        }
+                        //if (atLeastOneNextStartText) {
+                            throw new IllegalStateException("Invalid close end separator");
+                        //} else {
+                        //    end = substr.length();
+                        //}
                     } else {
                         end = position + startTextLength;
                     }
-                } else {
+                }
+
+                else {
                     end = substr.length();
                 }
             }
