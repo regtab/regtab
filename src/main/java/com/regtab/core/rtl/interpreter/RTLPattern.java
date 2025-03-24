@@ -687,6 +687,7 @@ public class RTLPattern {
                 componentPattern.add(action);
             }
         }
+        
 
         int apply(@NonNull ICell cell, int textShift) {
             final Quantifier.Times times = getQuantifier().times();
@@ -752,15 +753,12 @@ public class RTLPattern {
             throw new RuntimeException("Impossible");
         }
 
-        private int findStartPos(@NonNull ICell cell, int textShift) throws CellApplicationException {
-
+        private int findStartPos(ICell cell, String remainder) throws CellApplicationException {
             if (startText != null) {
-                final String text = cell.getText();
-                final String substr = text.substring(textShift, text.length());
-                boolean result = substr.startsWith(startText);
+                boolean result = remainder.startsWith(startText);
 
                 if (!result) {
-                    throw new CellApplicationException(cell, textShift);
+                    throw new CellApplicationException(cell, this);
                 }
 
                 return startText.length();
@@ -769,25 +767,22 @@ public class RTLPattern {
             return 0;
         }
 
-        private int findEndPos(@NonNull ICell cell, int textShift) throws CellApplicationException {
-            final String text = cell.getText();
-            final String substr = text.substring(textShift, text.length());
-
+        private int findEndPos(ICell cell, String remainder) throws CellApplicationException {
             int position;
             int startTextLength = startText == null ? 0 : startText.length();
 
             if (endText != null) {
-                position = substr.indexOf(endText, startTextLength);
+                position = remainder.indexOf(endText, startTextLength);
 
                 if (position < 1) {
-                    throw new CellApplicationException(cell, textShift);
+                    throw new CellApplicationException(cell, this);
                 }
 
                 return position + startTextLength;
             }
 
-            if (looped && startText != null) {//if (loopStartText != null) {
-                position = substr.indexOf(startText, startTextLength);
+            if (looped && startText != null) {
+                position = remainder.indexOf(startText, startTextLength);
 
                 if (position > 0) {
                     return position + startTextLength;
@@ -796,7 +791,7 @@ public class RTLPattern {
 
             if (!openEndSeparators.isEmpty()) {
                 for (String openEndSeparator : openEndSeparators) {
-                    position = substr.indexOf(openEndSeparator, startTextLength);
+                    position = remainder.indexOf(openEndSeparator, startTextLength);
 
                     if (position > 0) {
                         return position + startTextLength;
@@ -805,7 +800,7 @@ public class RTLPattern {
             }
 
             if (closeEndSeparator != null) {
-                position = substr.indexOf(closeEndSeparator, startTextLength);
+                position = remainder.indexOf(closeEndSeparator, startTextLength);
 
                 if (position < 1) {
                     throw new IllegalStateException("Invalid close end separator");
@@ -814,44 +809,44 @@ public class RTLPattern {
                 return position + startTextLength;
             }
 
-            return substr.length();
+            return remainder.length();
         }
 
-        private int apply_(@NonNull ICell cell, int textShift) throws CellApplicationException {
+        private int apply_(ICell cell, int textShift) throws CellApplicationException {
             final String text = cell.getText();
             final int length = text.length();
 
             if (length - textShift <= 0) {
-                throw new CellApplicationException(cell, textShift);
+                throw new CellApplicationException(cell, this);
             }
 
-            final String substr = text.substring(textShift, length);
+            final String remainder = text.substring(textShift, length);
 
-            int start = findStartPos(cell, textShift);
-            int end = findEndPos(cell, textShift);
+            int start = findStartPos(cell, remainder);
+            int end = findEndPos(cell, remainder);
 
-            final String subText = substr.substring(start, end);
+            final String extractedText = remainder.substring(start, end);
 
-            // Если нет разделителей, то есть только один элемент
+            // Когда нет разделителей, тогда есть только один компонент
             if (separators == null) {
                 if (componentPatterns.size() != 1) {
                     log.debug("Pattern {} could not be applied to the cell {}", this, cell);
-                    throw new CellApplicationException(cell, textShift);
+                    throw new CellApplicationException(cell, this);
                 }
                 final ComponentPattern componentPattern = componentPatterns.getFirst();
-                boolean result = componentPattern.apply(cell, subText);
+                boolean result = componentPattern.apply(cell, extractedText);
                 if (!result) {
                     log.debug("Pattern {} could not be applied to the cell {}", this, cell);
-                    throw new CellApplicationException(cell, textShift);
+                    throw new CellApplicationException(cell, this);
                 }
 
                 // Вычислить и вернуть новый сдвиг
                 return end + (endText == null ? 0 : endText.length());
             }
 
-            // Если есть n разделителей, то есть n-1 элементов
+            // Когда есть n разделителей, тогда есть n-1 компонентов
             if (componentPatterns.size() != separators.size() + 1) {
-                throw new CellApplicationException(cell, textShift);
+                throw new CellApplicationException(cell, this);
             }
 
             start = 0;
@@ -861,7 +856,7 @@ public class RTLPattern {
 
                 if (i < componentPatterns.size() - 1) {
                     final String unescapedSeparator = separators.get(i);
-                    end = subText.indexOf(unescapedSeparator, start);
+                    end = extractedText.indexOf(unescapedSeparator, start);
                     if (end == -1) {
                         final String separator = StringEscapeUtils.escapeJava(unescapedSeparator);
                         final String msg = String.format("Invalid separator: \"%s\" in \"%s\"", separator, cell);
@@ -869,13 +864,13 @@ public class RTLPattern {
                     }
                     shift = unescapedSeparator.length();
                 } else {
-                    end = subText.length();
+                    end = extractedText.length();
                 }
 
-                String val = subText.substring(start, end);
+                String val = extractedText.substring(start, end);
                 boolean result = componentPattern.apply(cell, val);
                 if (!result) {
-                    throw new CellApplicationException(cell, textShift);
+                    throw new CellApplicationException(cell, this);
                 }
 
                 start = end + shift;

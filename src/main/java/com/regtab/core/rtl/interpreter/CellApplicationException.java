@@ -8,15 +8,16 @@ public class CellApplicationException extends Exception {
     private final ICell cell;
 
     @Getter
-    private final int textShift;
+    private final RTLPattern.BasePattern pattern;
 
-    public CellApplicationException(ICell cell, int textShift) {
+
+    public CellApplicationException(ICell cell, RTLPattern.BasePattern pattern) {
         this.cell = cell;
-        this.textShift = textShift;
+        this.pattern = pattern;
     }
 
     public String getMessage() {
-        final String msg = "%s could not be matched starting from the position: %d";
-        return String.format(msg, cell, textShift);
+        final String msg = "%s could not be matched to %s";
+        return String.format(msg, pattern, cell);
     }
 }
