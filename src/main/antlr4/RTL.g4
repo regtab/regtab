@@ -9,7 +9,7 @@ table : subtable+ ;
 // Паттерн подтаблицы включает либо однин или несколько паттернов строк (row),
 // либо одного паттерна группы строк (rows).
 subtable : (row+) | rows ;
-rows : LCURLY (cond ARROW)? (actions)? row+ RCURLY quantifier? ;
+rows : LCURLY (cond QUESTION)? (actions)? row+ RCURLY quantifier? ;
 
 label : TAG ;
 copy : TAG ;
@@ -24,7 +24,7 @@ row : label? LSQUARE ( subrows | copy) RSQUARE quantifier? ;
 
 // Паттерн группы подстрок (subrows) включает однин или несколько паттернов подстрок (subrow).
 // Может дополняться набором действий (actions) и условий (cond).
-subrows : (cond ARROW)? (actions)? subrow+ ;
+subrows : (cond QUESTION)? (actions)? subrow+ ;
 
 // Паттерн подстроки (subrow) включает либо однин или несколько паттернов ячеек (cell),
 // либо паттерн группы ячеек (cells).
@@ -32,15 +32,15 @@ subrow : (cell+) | cells ;
 
 // Паттерн группы ячеек (cells) включает однин или несколько паттернов ячеек (cell).
 // Может дополняться набором действий (actions) и условий (cond).
-cells : LCURLY (cond ARROW)? (actions)? cell+ RCURLY quantifier? ;
+cells : LCURLY (cond QUESTION)? (actions)? cell+ RCURLY quantifier? ;
 
 // Паттерн ячейки (cell) включает либо паттерн группы компонентов (components), либо замену (replacement).
 cell : label? LSQUARE (components | copy) RSQUARE quantifier? ;
 
 // Паттерн группы компонентов (components) включает компонент (component), структуру (structured) или выбор (choice).
 // Может дополняться набором условий (cond).
-//components : (cond ARROW)? actions? (component | struct | choice) ;
-components : (cond ARROW)? actions? (component | struct | structx | choice) ;
+//components : (cond QUESTION)? actions? (component | struct | choice) ;
+components : (cond QUESTION)? actions? (component | struct | structx | choice) ;
 
 // Элемент (component) включает тип (componentType).
 // Может дополняться набором тегов (tags) и набором действий (actions).
@@ -48,9 +48,9 @@ component : componentType (ASSIGN expr)? tags? (COLON actions)? ;
 
 // Тип компонента (componentType) может быть атрибутом (ATTRIBUTE), значением (VALUE), или пропускаемым (SKIPPED).
 componentType : ATTRIBUTE | VALUE | SKIPPED ;
-ATTRIBUTE : 'A' | 'ATTR' ;
-VALUE     : 'V' | 'VAL' ;
-SKIPPED   : 'S' | 'SKIP' ;
+ATTRIBUTE : 'ATTRIBUTE' | 'ATTR' ;
+VALUE     : 'VALUE' | 'VAL' ;
+SKIPPED   : 'SKIPPED' | 'SKIP' ;
 
 tags : TAG+ ;
 
@@ -244,7 +244,8 @@ RCURLY  : '}' ;
 LSQUARE : '[' ;
 RSQUARE : ']' ;
 
-ARROW       : '->' ;
+//ARROW       : '->' ;
+//ELVIS       : '?:' ;
 COLON       : ':' ;
 SEMICOLON   : ';' ;
 COMMA       : ',' ;

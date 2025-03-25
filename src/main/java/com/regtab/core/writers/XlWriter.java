@@ -20,34 +20,46 @@ public final class XlWriter extends Writer {
      * @param recordset the `Recordset` object to be written to the Excel workbook
      * @return the created Excel workbook
      */
-    private Workbook createWorkbook(Recordset recordset) {
+    private Workbook createWorkbook(Recordset recordset, boolean useHeader) {
         Workbook workbook = new XSSFWorkbook();
 
         Sheet sheet = workbook.createSheet();
 
-        // Write header
-        String[] header = recordset.header();
-        Row excelRow = sheet.createRow(0);
+        int rowShift = 0;
 
-        for (int i = 0; i < header.length; i++) {
-            excelRow.createCell(i).setCellValue(header[i]);
+        // Write header if applicable
+        if (useHeader) {
+            String[] header = recordset.header();
+
+            if (header.length > 0) {
+                Row excelRow = sheet.createRow(0);
+
+                for (int i = 0; i < header.length; i++) {
+                    excelRow.createCell(i).setCellValue(header[i]);
+                }
+
+                rowShift = 1;
+            }
         }
 
         // Write records
         String[][] data = recordset.data();
 
-        for (int i = 0; i < data.length; i++) {
-            String[] record = data[i];
-            excelRow = sheet.createRow(i + 1);
-            for (int j = 0; j < record.length; j++) {
-                excelRow.createCell(j).setCellValue(record[j]);
+        if (data.length > 0) {
+            for (int i = 0; i < data.length; i++) {
+                String[] record = data[i];
+                Row excelRow = sheet.createRow(i + rowShift);
+                for (int j = 0; j < record.length; j++) {
+                    excelRow.createCell(j).setCellValue(record[j]);
+                }
             }
-        }
 
-        int i = 1;
+            // Set auto sizes for the workbook columns
+            final int numOfColumns = data[0].length;
 
-        for (i = 0; i < header.length; i++) {
-            sheet.autoSizeColumn(i);
+            for (int i = 0; i < numOfColumns; i++) {
+                sheet.autoSizeColumn(i);
+            }
         }
 
         return workbook;
@@ -61,7 +73,15 @@ public final class XlWriter extends Writer {
      */
     @Override
     public void write(Recordset recordset) throws IOException {
-        Workbook workbook = createWorkbook(recordset);
+//        Workbook workbook = createWorkbook(recordset, false);
+//        FileOutputStream out = new FileOutputStream(getOutputFile());
+//        workbook.write(out);
+//        out.close();
+        write(recordset, true);
+    }
+
+    public void write(Recordset recordset, boolean useHeader) throws IOException {
+        Workbook workbook = createWorkbook(recordset, useHeader);
         FileOutputStream out = new FileOutputStream(getOutputFile());
         workbook.write(out);
         out.close();

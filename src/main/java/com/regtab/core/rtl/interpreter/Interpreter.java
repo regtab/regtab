@@ -360,6 +360,42 @@ final class Interpreter {
                 componentsContext = ctx.components();
             }
 
+//            if (componentsContext == null) {
+//                // Паттерн ячейки [SKIP] может быть представлен в следующем виде: []
+//                final ComponentPattern componentPattern = new ComponentPattern(null);
+//                componentPattern.setComponentType(Component.Type.SKIPPED);
+//                cellPattern.setComponentsPattern(componentPattern);
+//            } else {
+//                final LabelContext labelContext = ctx.label();
+//                if (labelContext != null) {
+//                    String label = labelContext.TAG().getText();
+//                    store.put(label, componentsContext);
+//                }
+//
+//                final boolean result = apply(cellPattern, componentsContext);
+//                if (!result)
+//                    return null; // Impossible
+//
+//                final CondContext condContext = componentsContext.cond();
+//                if (condContext != null) {
+//                    final Condition condition = condVisitor.visit(condContext);
+//                    cellPattern.setCondition(condition);
+//                }
+//
+//                final ActionsContext actionsCtx = componentsContext.actions();
+//                if (actionsCtx != null) {
+//                    List<ActionContext> actionCtxList = actionsCtx.action();
+//                    if (actionCtxList != null) {
+//                        for (ActionContext actionCtx : actionCtxList) {
+//                            Action action = actionVisitor.visit(actionCtx);
+//                            if (action == null)
+//                                return null; // Impossible
+//                            cellPattern.add(action);
+//                        }
+//                    }
+//                }
+//            }
+
             final LabelContext labelContext = ctx.label();
             if (labelContext != null) {
                 String label = labelContext.TAG().getText();
@@ -376,15 +412,6 @@ final class Interpreter {
                 cellPattern.setCondition(condition);
             }
 
-            final QuantifierContext quantifierContext = ctx.quantifier();
-            final Quantifier quantifier;
-            if (quantifierContext != null)
-                quantifier = quantifierVisitor.visit(quantifierContext);
-            else
-                quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
-
-            cellPattern.setQuantifier(quantifier);
-
             final ActionsContext actionsCtx = componentsContext.actions();
             if (actionsCtx != null) {
                 List<ActionContext> actionCtxList = actionsCtx.action();
@@ -397,6 +424,17 @@ final class Interpreter {
                     }
                 }
             }
+
+            final QuantifierContext quantifierContext = ctx.quantifier();
+            final Quantifier quantifier;
+            if (quantifierContext != null)
+                quantifier = quantifierVisitor.visit(quantifierContext);
+            else
+                quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
+
+            cellPattern.setQuantifier(quantifier);
+
+
 
             return cellPattern;
         }
