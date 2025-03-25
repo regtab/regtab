@@ -244,8 +244,6 @@ RCURLY  : '}' ;
 LSQUARE : '[' ;
 RSQUARE : ']' ;
 
-//ARROW       : '->' ;
-//ELVIS       : '?:' ;
 COLON       : ':' ;
 SEMICOLON   : ';' ;
 COMMA       : ',' ;
