@@ -3,8 +3,16 @@ grammar RTL ;
 
 options { caseInsensitive = true ; }
 
+//pattern : (settingParams)? table;
+
 // Паттерн таблицы (table) включает однин или несколько паттернов подтаблиц (subtable).
-table : subtable+ ;
+table : (settings)? subtable+ ;
+
+settings: LT setting (SEMICOLON setting)* GT;
+
+setting : settingName ASSIGN settingValue ;
+settingName : ID;
+settingValue : INT | STRING | TRUE | FALSE;
 
 // Паттерн подтаблицы включает либо однин или несколько паттернов строк (row),
 // либо одного паттерна группы строк (rows).
@@ -70,7 +78,7 @@ actionType : FACTOR | PREFIX | SUFFIX | RECORD | JOIN | SCHEMA ;
 FACTOR : 'FACTOR' ;
 PREFIX : 'PREFIX' ;
 SUFFIX : 'SUFFIX' ;
-RECORD : 'RECORD' ;
+RECORD : 'RECORD' ;//(LPAREN INT RPAREN);
 JOIN   : 'JOIN' ;
 SCHEMA : 'SCHEMA' ;
 

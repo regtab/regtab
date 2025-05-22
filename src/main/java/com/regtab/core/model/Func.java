@@ -34,15 +34,31 @@ public final class Func<T> {
         this.evaluator = evaluator;
     }
 
+//    /**
+//     * Retrieves a function by its name.
+//     *
+//     * @param name The name of the function.
+//     * @return The function with the given name, or null if not found.
+//     */
+//    public static Func<?> get(@NonNull String name) {
+//        final String cannonic = name.toLowerCase().replaceAll("_", "");
+//        return funcs.get(cannonic);
+//    }
+
     /**
      * Retrieves a function by its name.
      *
      * @param name The name of the function.
      * @return The function with the given name, or null if not found.
      */
-    public static Func<?> get(@NonNull String name) {
+    public static Func<?> create(@NonNull String name) {
         final String cannonic = name.toLowerCase().replaceAll("_", "");
-        return funcs.get(cannonic);
+        Evaluator<?> evaluator = evaluators.get(cannonic);
+        if (evaluator != null) {
+            return new Func(name, evaluator);
+        }
+
+        return null;
     }
 
     /**
@@ -164,23 +180,41 @@ public final class Func<T> {
         return text.toLowerCase();
     };
 
-    private static final Func<String> SUBSTR = new Func<>("@substr", substr);
-    private static final Func<String> TOKEN = new Func<>("@token", token);
-    private static final Func<String> REPLACE = new Func<>("@replace", replace);
-    private static final Func<String> REPLACE_ALL = new Func<>("@replaceAll", replaceAll);
-    private static final Func<String> UPPER_CASE = new Func<>("@upperCase", upperCase);
-    private static final Func<String> LOWER_CASE = new Func<>("@lowerCase", lowerCase);
+    private static final String SUBSTR = "@substr";
+    private static final String TOKEN = "@token";
+    private static final String REPLACE = "@replace";
+    private static final String REPLACE_ALL = "@replaceAll";
+    private static final String UPPER_CASE = "@upperCase";
+    private static final String LOWER_CASE = "@lowerCase";
 
-    private static final HashMap<String, Func<?>> funcs = new HashMap<>();
+    private static final HashMap<String, Evaluator<?>> evaluators = new HashMap<>();
 
     static {
-        funcs.put(SUBSTR.name, SUBSTR);
-        funcs.put(TOKEN.name, TOKEN);
-        funcs.put(REPLACE.name, REPLACE);
-        funcs.put(REPLACE_ALL.name, REPLACE_ALL);
-        funcs.put(UPPER_CASE.name, UPPER_CASE);
-        funcs.put(LOWER_CASE.name, LOWER_CASE);
+        evaluators.put(SUBSTR.toLowerCase(), substr);
+        evaluators.put(TOKEN.toLowerCase(), token);
+        evaluators.put(REPLACE.toLowerCase(), replace);
+        evaluators.put(REPLACE_ALL.toLowerCase(), replaceAll);
+        evaluators.put(UPPER_CASE.toLowerCase(), upperCase);
+        evaluators.put(LOWER_CASE.toLowerCase(), lowerCase);
     }
+
+//    private static final Func<String> SUBSTR = new Func<>("@substr", substr);
+//    private static final Func<String> TOKEN = new Func<>("@token", token);
+//    private static final Func<String> REPLACE = new Func<>("@replace", replace);
+//    private static final Func<String> REPLACE_ALL = new Func<>("@replaceAll", replaceAll);
+//    private static final Func<String> UPPER_CASE = new Func<>("@upperCase", upperCase);
+//    private static final Func<String> LOWER_CASE = new Func<>("@lowerCase", lowerCase);
+
+//    private static final HashMap<String, Func<?>> funcs = new HashMap<>();
+//
+//    static {
+//        funcs.put(SUBSTR.name, SUBSTR);
+//        funcs.put(TOKEN.name, TOKEN);
+//        funcs.put(REPLACE.name, REPLACE);
+//        funcs.put(REPLACE_ALL.name, REPLACE_ALL);
+//        funcs.put(UPPER_CASE.name, UPPER_CASE);
+//        funcs.put(LOWER_CASE.name, LOWER_CASE);
+//    }
 
     /**
      * The Evaluator interface defines a method for evaluating a function on a cell.

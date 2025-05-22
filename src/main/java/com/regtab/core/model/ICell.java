@@ -127,7 +127,7 @@ public final class ICell {
      * @return The created component.
      */
     public Component createComponent(@NonNull Component.Type type, @NonNull String text) {
-        Component component = new Component(this, type, text.trim());
+        Component component = new Component(this, type, text);
         components.add(component);
 
         return component;

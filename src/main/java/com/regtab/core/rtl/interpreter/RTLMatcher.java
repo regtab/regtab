@@ -6,10 +6,7 @@ import lombok.NonNull;
 import com.regtab.core.model.Condition;
 import com.regtab.core.model.*;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 import static com.regtab.core.rtl.interpreter.TableMatch.*;
 import static com.regtab.core.rtl.interpreter.RTLPattern.*;
@@ -43,6 +40,27 @@ public class RTLMatcher {
     public TableMatch match(@NonNull ITable table) {
         table.clear();
         final TablePattern tablePattern = pattern.getTablePattern();
+
+        // Настройка ITM
+        SettingParams settingParams = tablePattern.getSettingParams();
+        if (settingParams != null) {
+            Optional<Integer> basicFieldIndexOpt = settingParams.getInt("@basicFieldIndex");
+            if (basicFieldIndexOpt.isPresent())
+                table.setBasicFiledIndex(basicFieldIndexOpt.get());
+            Optional<Boolean> splitComponentsOpt = settingParams.getBoolean("@splitComponents");
+            if (splitComponentsOpt.isPresent())
+                table.setSplitComponents(splitComponentsOpt.get());
+            Optional<String> compSeparatorOpt = settingParams.getString("@compSeparator");
+            if (compSeparatorOpt.isPresent())
+                table.setCompSeparator(compSeparatorOpt.get());
+            Optional<Boolean> alignedNamedAttrsOpt = settingParams.getBoolean("@alignedNamedAttrs");
+            if (alignedNamedAttrsOpt.isPresent())
+                table.setAlignedNamedAttrs(alignedNamedAttrsOpt.get());
+            Optional<Boolean> normalizedSpacesOpt = settingParams.getBoolean("@normalizedSpaces");
+            if (normalizedSpacesOpt.isPresent())
+                table.setNormalizedSpaces(normalizedSpacesOpt.get());
+        }
+
         return match(table, tablePattern);
     }
 

@@ -39,6 +39,7 @@ final class Interpreter {
 
     // Visitors
     private static final TableVisitor tableVisitor = new TableVisitor();
+    private static final SettingsVisitor settingsVisitor = new SettingsVisitor();
     private final static SubtableVisitor subtableVisitor = new SubtableVisitor();
     private static final RowVisitor rowVisitor = new RowVisitor();
     private static final SubrowVisitor subrowVisitor = new SubrowVisitor();
@@ -55,18 +56,30 @@ final class Interpreter {
     private static final ActionVisitor actionVisitor = new ActionVisitor();
     private static final ExprVisitor exprVisitor = new ExprVisitor();
 
+    // private static final SettingVisitor
+
     /**
      * The TableVisitor is responsible for visiting the TableContext and generating a TablePattern.
      */
     final static class TableVisitor extends RTLBaseVisitor<TablePattern> {
+
+
         @Override
         public TablePattern visitTable(TableContext ctx) {
+            final TablePattern pattern = new TablePattern(ctx);
+
+            SettingsContext settingsCtx = ctx.settings();
+            if (settingsCtx != null) {
+                final SettingParams settingParams = settingsVisitor.visitSettings(settingsCtx);
+                if (settingParams != null)
+                    pattern.setSettingParams(settingParams);
+            }
+
             final List<SubtableContext> subtableCtxList = ctx.subtable();
 
             if (subtableCtxList == null || subtableCtxList.isEmpty())
                 return null; // Impossible
 
-            final TablePattern pattern = new TablePattern(ctx);
             for (SubtableContext subtableCtx : subtableCtxList) {
                 final SubtablePattern subtablePattern = subtableVisitor.visit(subtableCtx);
                 if (subtablePattern == null)
@@ -75,6 +88,25 @@ final class Interpreter {
             }
             final List<SubtablePattern> subtablePatterns = pattern.getSubtablePatterns();
             return subtablePatterns.isEmpty() ? null : pattern;
+        }
+    }
+
+    final static class SettingsVisitor extends RTLBaseVisitor<SettingParams> {
+        @Override
+        public SettingParams visitSettings(SettingsContext ctx) {
+            List<SettingContext> settingCtxList = ctx.setting();
+            if (settingCtxList == null || settingCtxList.isEmpty())
+                return null; // Impossible
+
+            final SettingParams settingParams = new SettingParams();
+
+            for (SettingContext settingCtx : settingCtxList) {
+                String name = settingCtx.settingName().getText();
+                String value = settingCtx.settingValue().getText();
+                settingParams.add(name, value);
+            }
+
+            return settingParams;
         }
     }
 
@@ -1063,7 +1095,8 @@ final class Interpreter {
         @Override
         public Expr visitFunc(FuncContext ctx) {
             final String id = ctx.ID().getText();
-            final Func<?> func = Func.get(id);
+            //final Func<?> func = Func.get(id);
+            final Func<?> func = Func.create(id);
             if (func == null) {
                 final String msg = String.format("undefined function \"%s\"", id);
                 throw new RTLSyntaxException(msg, ctx);

@@ -141,12 +141,24 @@ public final class ITable {
 
     @Getter
     @Setter
-    private boolean useComponentSplitting;
+    private boolean splitComponents = false;
 
     @NonNull
     @Getter
     @Setter
-    private String componentTextSeparator = "";
+    private String compSeparator = "";
+
+    @Getter
+    @Setter
+    private int basicFiledIndex = 0;
+
+    @Getter
+    @Setter
+    private boolean alignedNamedAttrs = false;
+
+    @Getter
+    @Setter
+    private boolean normalizedSpaces = true;
 
     /**
      * Extracts data from the table and returns it as a Recordset.
@@ -154,7 +166,7 @@ public final class ITable {
      * @return The extracted data as a Recordset.
      */
     public Recordset extract() {
-        final Recordset recordset = new Recordset(useComponentSplitting);
+        final Recordset recordset = new Recordset(splitComponents, basicFiledIndex);
 
         for (ICell cell: cells)
             cell.perform(Action.Type.FACTOR, recordset);
@@ -174,7 +186,9 @@ public final class ITable {
         for (ICell cell: cells)
             cell.perform(Action.Type.SCHEMA, recordset);
 
-        recordset.align();
+        if (alignedNamedAttrs) {
+            recordset.align();
+        }
         recordset.complete();
 
         return recordset;

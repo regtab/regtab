@@ -22,6 +22,10 @@ public final class Recordset {
     // т. е. собранных из нескольких компонентов посредством PREFIX/SUFFIX.
     private final boolean useComponentSplitting;
 
+    // Настройка позиции базового поля набора записей,
+    // т. е. поля значений компонентов, которым сопоставлено действие RECORD.
+    private final int basicFieldIndex;
+
     @Getter
     private final List<Attribute> attributes = new ArrayList<>();
 
@@ -72,6 +76,16 @@ public final class Recordset {
             }
         }
 
+        // Rearrange this header if the basic field index > 0
+        if (basicFieldIndex > 0) {
+            int correctedBasicFieldIndex = Math.min(basicFieldIndex, header.length - 1);
+            String basicFieldHeader = header[0];
+            for (int i = 0; i < correctedBasicFieldIndex; i++) {
+                header[i] = header[i + 1];
+            }
+            header[correctedBasicFieldIndex] = basicFieldHeader;
+        }
+
         return header;
     }
 
@@ -94,10 +108,23 @@ public final class Recordset {
             }
         }
 
+        // Rearrange this header if the basic field index > 0
+        if (basicFieldIndex > 0) {
+
+            int correctedBasicFieldIndex = Math.min(basicFieldIndex, data[0].length - 1);
+            for (int i = 0; i < data.length; i++) {
+                String basicFieldData = data[i][0];
+                for (int j = 0; j < correctedBasicFieldIndex; j++) {
+                    data[i][j] = data[i][j + 1];
+                }
+                data[i][correctedBasicFieldIndex] = basicFieldData;
+            }
+        }
+
         return data;
     }
 
-    private final Map<String, Attribute> attrMap = new HashMap<>();
+    private final Map<String, Attribute> attrMap = new LinkedHashMap<>();
 
     private final MultiValuedMap<Component, Value> componentValues = new ArrayListValuedHashMap<>();
 
@@ -105,7 +132,7 @@ public final class Recordset {
         Attribute attribute = attrMap.get(attrName);
 
         final Collection<Value> values = componentValues.get(valComponent);
-        for (Value value: values) {
+        for (Value value : values) {
             if (value != null) {
                 if (attribute == null) {
                     attribute = new Attribute(attrName, null, false);
@@ -205,7 +232,7 @@ public final class Recordset {
                 record.getValues().add(value);
             }
         } else {
-            for (Value value: values)
+            for (Value value : values)
                 record.getValues().add(value);
         }
     }
@@ -253,17 +280,16 @@ public final class Recordset {
             int count = 0;
             List<Value> values = record.getValues();
 
-            for (Value value: values) {
+            for (Value value : values) {
                 Attribute attribute = value.getAttribute();
                 if (attribute == null)
-                    count ++;
+                    count++;
             }
 
             anonymousAttributesSize = Math.max(anonymousAttributesSize, count);
         }
 
-        Collection<Attribute> namedAttributes = attrMap.values();
-        for (Record record: records)
+        for (Record record : records)
             record.align(anonymousAttributesSize, attrMap.values().stream().toList());
     }
 
@@ -280,12 +306,13 @@ public final class Recordset {
             Record record = records.get(i);
             int recordSize = record.getValues().size();
             if (recordSize < maxRecordSize) {
-                throw new IllegalStateException("Записи различаются количеством значений");
-                //log.debug("Записи различаются количеством значений: {} < {}", recordSize, maxRecordSize);
-                //for (int j = 0; j < maxRecordSize - recordSize; j++) {
-                //    Value emptyValue = new Value("", null);
-                //    record.getValues().add(emptyValue);
-                //}
+                //throw new IllegalStateException("Записи различаются количеством значений");
+                // см. сценарий exp0_34
+                log.debug("Записи различаются количеством значений: {} < {}", recordSize, maxRecordSize);
+                for (int j = 0; j < maxRecordSize - recordSize; j++) {
+                    Value emptyValue = new Value("", null);
+                    record.getValues().add(emptyValue);
+                }
             }
         }
 
@@ -340,9 +367,9 @@ public final class Recordset {
         private void align(int anonymousAttributesSize, List<Attribute> namedAttributes) {
             final List<Value> nonAttributedValues = new LinkedList<>();
             final List<Value> attributedValues = new LinkedList<>();
-            final Map<Attribute, Value> avMap = new HashMap<>();
+            final Map<Attribute, Value> avMap = new LinkedHashMap<>();
 
-            for (Value value: values) {
+            for (Value value : values) {
                 Attribute attribute = value.attribute;
                 if (attribute == null)
                     nonAttributedValues.add(value);

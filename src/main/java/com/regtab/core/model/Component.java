@@ -1,10 +1,8 @@
 package com.regtab.core.model;
 
-import com.regtab.core.rtl.interpreter.Configurator;
 import lombok.NonNull;
 import lombok.Getter;
 
-import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -41,7 +39,7 @@ public final class Component {
     private List<String> textParts = new LinkedList<>();
 
     public String getText() {
-        final String componentTextSeparator = cell.getTable().getComponentTextSeparator();
+        final String componentTextSeparator = cell.getTable().getCompSeparator();
         return String.join(componentTextSeparator, textParts);
     }
 
@@ -57,8 +55,13 @@ public final class Component {
     }
 
     private void addText(@NonNull String text) {
-        final String normalizedText = StringUtils.normalizeSpace(text);
-        textParts.add(normalizedText);
+        boolean withWhitespaceNormalizing = getCell().getTable().isNormalizedSpaces();
+        if (withWhitespaceNormalizing) {
+            final String normalizedText = StringUtils.normalizeSpace(text);
+            textParts.add(normalizedText);
+        } else {
+            textParts.add(text);
+        }
     }
 
     public void prefix(@NonNull String text) {

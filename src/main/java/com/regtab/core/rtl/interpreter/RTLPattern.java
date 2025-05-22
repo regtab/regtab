@@ -184,6 +184,51 @@ public class RTLPattern {
         private Integer repetitionCount;
     }
 
+    static final class SettingParams {
+        private Map<Setting, String> params = new HashMap<>();
+        public void add(String name, String value) {
+            Setting setting = Setting.get(name);
+            if (setting != null) {
+                params.put(setting, value);
+            }
+        }
+
+        public Optional<Boolean> getBoolean(String settingName) {
+            final Setting<?> setting = Setting.get(settingName);
+            if (setting == null)
+                return Optional.empty();
+
+            final String value = params.get(setting);
+            if (value == null)
+                return Optional.empty();
+
+            return Optional.of(Boolean.parseBoolean(value));
+        }
+
+        public Optional<Integer> getInt(String settingName) {
+            final Setting<?> setting = Setting.get(settingName);
+            if (setting == null)
+                return Optional.empty();
+
+            final String value = params.get(setting);
+            if (value == null)
+                return Optional.empty();
+
+            return Optional.of(Integer.parseInt(value));
+        }
+
+        public Optional<String> getString(String settingName) {
+            final Setting<?> setting = Setting.get(settingName);
+            if (setting == null)
+                return Optional.empty();
+
+            final String value = params.get(setting);
+
+            return Optional.ofNullable(value);
+        }
+
+    }
+
     /**
      * Represents the root of the pattern structure for a table.
      */
@@ -191,6 +236,10 @@ public class RTLPattern {
         TablePattern(@NonNull TableContext context) {
             super(context);
         }
+
+        @Setter
+        @Getter
+        private SettingParams settingParams;
 
         @Getter
         private final List<SubtablePattern> subtablePatterns = new ArrayList<>(1);

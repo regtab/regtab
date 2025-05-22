@@ -17,6 +17,30 @@ public interface RTLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTable(RTLParser.TableContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link RTLParser#settings}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSettings(RTLParser.SettingsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RTLParser#setting}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSetting(RTLParser.SettingContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RTLParser#settingName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSettingName(RTLParser.SettingNameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RTLParser#settingValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSettingValue(RTLParser.SettingValueContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link RTLParser#subtable}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
