@@ -1095,7 +1095,6 @@ final class Interpreter {
         @Override
         public Expr visitFunc(FuncContext ctx) {
             final String id = ctx.ID().getText();
-            //final Func<?> func = Func.get(id);
             final Func<?> func = Func.create(id);
             if (func == null) {
                 final String msg = String.format("undefined function \"%s\"", id);
