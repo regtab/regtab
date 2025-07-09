@@ -36,6 +36,14 @@ public final class ICell {
     @Getter
     private final CellPos cellPos;
 
+    @Getter
+    @Setter
+    private SubtablePos subtablePos;
+
+    @Getter
+    @Setter
+    private SubrowPos subrowPos;
+
     /**
      * Attempts to parse the text content of the cell as an integer.
      *
@@ -119,7 +127,7 @@ public final class ICell {
      * @return The created component.
      */
     public Component createComponent(@NonNull Component.Type type, @NonNull String text) {
-        Component component = new Component(this, type, text.trim());
+        Component component = new Component(this, type, text);
         components.add(component);
 
         return component;

@@ -27,14 +27,36 @@ public final class CSVWriter {
      * @throws IOException if an I/O error occurs while writing to the file
      */
     public void write(Recordset recordset) throws IOException {
+//        final CSVFormat format = CSVFormat.POSTGRESQL_CSV;
+//
+//        final BufferedWriter writer = Files.newBufferedWriter(Paths.get(path), StandardCharsets.UTF_8);
+//
+//        final CSVPrinter printer = new CSVPrinter(writer, format);
+//
+//        final String[] header = recordset.header();
+//        printer.printRecord(header);
+//
+//        final String[][] data = recordset.data();
+//        printer.printRecords(data);
+//
+//        writer.flush();
+//        writer.close();
+//        printer.close();
+
+        write(recordset, true);
+    }
+
+    public void write(Recordset recordset, boolean useHeader) throws IOException {
         final CSVFormat format = CSVFormat.POSTGRESQL_CSV;
 
         final BufferedWriter writer = Files.newBufferedWriter(Paths.get(path), StandardCharsets.UTF_8);
 
         final CSVPrinter printer = new CSVPrinter(writer, format);
 
-        final String[] header = recordset.header();
-        printer.printRecord(header);
+        if (useHeader) {
+            final String[] header = recordset.header();
+            printer.printRecord(header);
+        }
 
         final String[][] data = recordset.data();
         printer.printRecords(data);

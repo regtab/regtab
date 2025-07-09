@@ -3,13 +3,21 @@ grammar RTL ;
 
 options { caseInsensitive = true ; }
 
+//pattern : (settingParams)? table;
+
 // Паттерн таблицы (table) включает однин или несколько паттернов подтаблиц (subtable).
-table : subtable+ ;
+table : (settings)? subtable+ ;
+
+settings: LT setting (SEMICOLON setting)* GT;
+
+setting : settingName ASSIGN settingValue ;
+settingName : ID;
+settingValue : INT | STRING | TRUE | FALSE;
 
 // Паттерн подтаблицы включает либо однин или несколько паттернов строк (row),
 // либо одного паттерна группы строк (rows).
 subtable : (row+) | rows ;
-rows : LCURLY (cond ARROW)? (actions)? row+ RCURLY quantifier? ;
+rows : LCURLY (cond QUESTION)? (actions)? row+ RCURLY quantifier? ;
 
 label : TAG ;
 copy : TAG ;
@@ -24,7 +32,7 @@ row : label? LSQUARE ( subrows | copy) RSQUARE quantifier? ;
 
 // Паттерн группы подстрок (subrows) включает однин или несколько паттернов подстрок (subrow).
 // Может дополняться набором действий (actions) и условий (cond).
-subrows : (cond ARROW)? (actions)? subrow+ ;
+subrows : (cond QUESTION)? (actions)? subrow+ ;
 
 // Паттерн подстроки (subrow) включает либо однин или несколько паттернов ячеек (cell),
 // либо паттерн группы ячеек (cells).
@@ -32,14 +40,15 @@ subrow : (cell+) | cells ;
 
 // Паттерн группы ячеек (cells) включает однин или несколько паттернов ячеек (cell).
 // Может дополняться набором действий (actions) и условий (cond).
-cells : LCURLY (cond ARROW)? (actions)? cell+ RCURLY quantifier? ;
+cells : LCURLY (cond QUESTION)? (actions)? cell+ RCURLY quantifier? ;
 
 // Паттерн ячейки (cell) включает либо паттерн группы компонентов (components), либо замену (replacement).
 cell : label? LSQUARE (components | copy) RSQUARE quantifier? ;
 
 // Паттерн группы компонентов (components) включает компонент (component), структуру (structured) или выбор (choice).
 // Может дополняться набором условий (cond).
-components : (cond ARROW)? actions? (component | struct | choice) ;
+//components : (cond QUESTION)? actions? (component | struct | choice) ;
+components : (cond QUESTION)? actions? (component | struct | structx | choice) ;
 
 // Элемент (component) включает тип (componentType).
 // Может дополняться набором тегов (tags) и набором действий (actions).
@@ -47,9 +56,9 @@ component : componentType (ASSIGN expr)? tags? (COLON actions)? ;
 
 // Тип компонента (componentType) может быть атрибутом (ATTRIBUTE), значением (VALUE), или пропускаемым (SKIPPED).
 componentType : ATTRIBUTE | VALUE | SKIPPED ;
-ATTRIBUTE : 'A' | 'ATTR' ;
-VALUE     : 'V' | 'VAL' ;
-SKIPPED   : 'S' | 'SKIP' ;
+ATTRIBUTE : 'ATTRIBUTE' | 'ATTR' ;
+VALUE     : 'VALUE' | 'VAL' ;
+SKIPPED   : 'SKIPPED' | 'SKIP' ;
 
 tags : TAG+ ;
 
@@ -69,7 +78,7 @@ actionType : FACTOR | PREFIX | SUFFIX | RECORD | JOIN | SCHEMA ;
 FACTOR : 'FACTOR' ;
 PREFIX : 'PREFIX' ;
 SUFFIX : 'SUFFIX' ;
-RECORD : 'RECORD' ;
+RECORD : 'RECORD' ;//(LPAREN INT RPAREN);
 JOIN   : 'JOIN' ;
 SCHEMA : 'SCHEMA' ;
 
@@ -77,6 +86,13 @@ actionBody : STRING | lookup ;
 
 // Cтруктура (structured) включает паттерн строки текста (line),
 struct : LPAREN startText? component (separator component)* endText? RPAREN ;
+
+structx : substructx* ;
+
+substructx : substruct_ | (LPAREN substruct_ RPAREN quantifier?) ;
+
+substruct_ : startText? component (separator component)* endText? ;
+
 startText : STRING ;
 separator : STRING ;
 endText   : STRING ;
@@ -103,6 +119,13 @@ direction
     | IN_ROW
     | IN_COL
     | IN_CELL
+
+    | SUB_LEFT
+    | SUB_RIGHT
+    | SUB_UP
+    | SUB_DOWN
+    | IN_SUB_ROW
+    | IN_SUB_COL
     ;
 
 // UP -- вверх, DOWN -- вниз, LEFT -- влево, RIGHT -- вправо (по данным направлениям от ячейки);
@@ -115,6 +138,13 @@ DOWN    : 'DOWN' ;
 IN_ROW  : 'ROW' ;
 IN_COL  : 'COL' ;
 IN_CELL : 'CELL' ;
+
+SUB_LEFT    : '$LEFT' ;
+SUB_RIGHT   : '$RIGHT' ;
+SUB_UP      : '$UP' ;
+SUB_DOWN    : '$DOWN' ;
+IN_SUB_ROW  : '$ROW' ;
+IN_SUB_COL  : '$COL' ;
 
 // Область поиска (where).
 where
@@ -132,12 +162,14 @@ range : rowRange | colRange | rowRange colRange | colRange rowRange ;
 rowRange   : ROW rangeBody ;
 colRange   : COL rangeBody ;
 rangeBody  : (relative? INT) | (start DOUBLE_PERIOD end) ;
-start      : relative? INT ;
-end        : relative? INT ;
+start      : (relative? INT) | MIN ;
+end        : (relative? INT) | MAX ;
 relative   : PLUS | MINUS ;
 
-ROW : 'R';
-COL : 'C';
+ROW : 'R' ;
+COL : 'C' ;
+MIN : 'MIN' ;
+MAX : 'MAX' ;
 
 // Индекс компонента внутри структурированной ячейки.
 componentIndex : 'E' INT ;
@@ -220,7 +252,6 @@ RCURLY  : '}' ;
 LSQUARE : '[' ;
 RSQUARE : ']' ;
 
-ARROW       : '->' ;
 COLON       : ':' ;
 SEMICOLON   : ';' ;
 COMMA       : ',' ;

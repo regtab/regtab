@@ -1,6 +1,8 @@
 package com.regtab.core.model;
 
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +15,14 @@ public final class ITable {
     private final IRow[] rows;
     private final ICol[] cols;
     private final ICell[] cells;
+
+    public int rowsSize() {
+        return rows.length;
+    }
+
+    public int colsSize() {
+        return cols.length;
+    }
 
     /**
      * Copies the rows of the table.
@@ -129,13 +139,34 @@ public final class ITable {
         return cell;
     }
 
+    @Getter
+    @Setter
+    private boolean splitComponents = false;
+
+    @NonNull
+    @Getter
+    @Setter
+    private String compSeparator = "";
+
+    @Getter
+    @Setter
+    private int basicFiledIndex = 0;
+
+    @Getter
+    @Setter
+    private boolean alignedNamedAttrs = false;
+
+    @Getter
+    @Setter
+    private boolean normalizedSpaces = true;
+
     /**
      * Extracts data from the table and returns it as a Recordset.
      *
      * @return The extracted data as a Recordset.
      */
     public Recordset extract() {
-        final Recordset recordset = new Recordset();
+        final Recordset recordset = new Recordset(splitComponents, basicFiledIndex);
 
         for (ICell cell: cells)
             cell.perform(Action.Type.FACTOR, recordset);
@@ -155,6 +186,9 @@ public final class ITable {
         for (ICell cell: cells)
             cell.perform(Action.Type.SCHEMA, recordset);
 
+        if (alignedNamedAttrs) {
+            recordset.align();
+        }
         recordset.complete();
 
         return recordset;

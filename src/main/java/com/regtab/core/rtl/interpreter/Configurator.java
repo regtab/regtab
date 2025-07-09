@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public final class Configurator {
     @Getter
-    private static final String DEFAULT_CONCAT_SEPARATOR = "/";
+    private static final String DEFAULT_CONCAT_SEPARATOR = "|";
 
     @Getter
     private static final String DEFAULT_AV_SEPARATOR = ":";

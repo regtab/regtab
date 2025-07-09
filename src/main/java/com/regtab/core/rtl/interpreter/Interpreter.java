@@ -14,6 +14,7 @@ import java.util.List;
 import com.regtab.core.rtl.parser.*;
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import static com.regtab.core.rtl.interpreter.Quantifier.Times.*;
 import static com.regtab.core.rtl.interpreter.RTLPattern.*;
 import static com.regtab.core.rtl.parser.RTLParser.*;
 
@@ -38,6 +39,7 @@ final class Interpreter {
 
     // Visitors
     private static final TableVisitor tableVisitor = new TableVisitor();
+    private static final SettingsVisitor settingsVisitor = new SettingsVisitor();
     private final static SubtableVisitor subtableVisitor = new SubtableVisitor();
     private static final RowVisitor rowVisitor = new RowVisitor();
     private static final SubrowVisitor subrowVisitor = new SubrowVisitor();
@@ -46,24 +48,38 @@ final class Interpreter {
     private static final ComponentVisitor componentVisitor = new ComponentVisitor();
     private static final StructVisitor structVisitor = new StructVisitor();
     private static final ChoiceVisitor choiceVisitor = new ChoiceVisitor();
+    private static final StructxVisitor structxVisitor = new StructxVisitor();
+    private static final SubstructxVisitor substructxVisitor = new SubstructxVisitor();
 
     private static final CondVisitor condVisitor = new CondVisitor();
     private static final QuantifierVisitor quantifierVisitor = new QuantifierVisitor();
     private static final ActionVisitor actionVisitor = new ActionVisitor();
     private static final ExprVisitor exprVisitor = new ExprVisitor();
 
+    // private static final SettingVisitor
+
     /**
      * The TableVisitor is responsible for visiting the TableContext and generating a TablePattern.
      */
     final static class TableVisitor extends RTLBaseVisitor<TablePattern> {
+
+
         @Override
         public TablePattern visitTable(TableContext ctx) {
+            final TablePattern pattern = new TablePattern(ctx);
+
+            SettingsContext settingsCtx = ctx.settings();
+            if (settingsCtx != null) {
+                final SettingParams settingParams = settingsVisitor.visitSettings(settingsCtx);
+                if (settingParams != null)
+                    pattern.setSettingParams(settingParams);
+            }
+
             final List<SubtableContext> subtableCtxList = ctx.subtable();
 
             if (subtableCtxList == null || subtableCtxList.isEmpty())
                 return null; // Impossible
 
-            final TablePattern pattern = new TablePattern(ctx);
             for (SubtableContext subtableCtx : subtableCtxList) {
                 final SubtablePattern subtablePattern = subtableVisitor.visit(subtableCtx);
                 if (subtablePattern == null)
@@ -72,6 +88,25 @@ final class Interpreter {
             }
             final List<SubtablePattern> subtablePatterns = pattern.getSubtablePatterns();
             return subtablePatterns.isEmpty() ? null : pattern;
+        }
+    }
+
+    final static class SettingsVisitor extends RTLBaseVisitor<SettingParams> {
+        @Override
+        public SettingParams visitSettings(SettingsContext ctx) {
+            List<SettingContext> settingCtxList = ctx.setting();
+            if (settingCtxList == null || settingCtxList.isEmpty())
+                return null; // Impossible
+
+            final SettingParams settingParams = new SettingParams();
+
+            for (SettingContext settingCtx : settingCtxList) {
+                String name = settingCtx.settingName().getText();
+                String value = settingCtx.settingValue().getText();
+                settingParams.add(name, value);
+            }
+
+            return settingParams;
         }
     }
 
@@ -357,6 +392,42 @@ final class Interpreter {
                 componentsContext = ctx.components();
             }
 
+//            if (componentsContext == null) {
+//                // Паттерн ячейки [SKIP] может быть представлен в следующем виде: []
+//                final ComponentPattern componentPattern = new ComponentPattern(null);
+//                componentPattern.setComponentType(Component.Type.SKIPPED);
+//                cellPattern.setComponentsPattern(componentPattern);
+//            } else {
+//                final LabelContext labelContext = ctx.label();
+//                if (labelContext != null) {
+//                    String label = labelContext.TAG().getText();
+//                    store.put(label, componentsContext);
+//                }
+//
+//                final boolean result = apply(cellPattern, componentsContext);
+//                if (!result)
+//                    return null; // Impossible
+//
+//                final CondContext condContext = componentsContext.cond();
+//                if (condContext != null) {
+//                    final Condition condition = condVisitor.visit(condContext);
+//                    cellPattern.setCondition(condition);
+//                }
+//
+//                final ActionsContext actionsCtx = componentsContext.actions();
+//                if (actionsCtx != null) {
+//                    List<ActionContext> actionCtxList = actionsCtx.action();
+//                    if (actionCtxList != null) {
+//                        for (ActionContext actionCtx : actionCtxList) {
+//                            Action action = actionVisitor.visit(actionCtx);
+//                            if (action == null)
+//                                return null; // Impossible
+//                            cellPattern.add(action);
+//                        }
+//                    }
+//                }
+//            }
+
             final LabelContext labelContext = ctx.label();
             if (labelContext != null) {
                 String label = labelContext.TAG().getText();
@@ -373,15 +444,6 @@ final class Interpreter {
                 cellPattern.setCondition(condition);
             }
 
-            final QuantifierContext quantifierContext = ctx.quantifier();
-            final Quantifier quantifier;
-            if (quantifierContext != null)
-                quantifier = quantifierVisitor.visit(quantifierContext);
-            else
-                quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
-
-            cellPattern.setQuantifier(quantifier);
-
             final ActionsContext actionsCtx = componentsContext.actions();
             if (actionsCtx != null) {
                 List<ActionContext> actionCtxList = actionsCtx.action();
@@ -394,6 +456,17 @@ final class Interpreter {
                     }
                 }
             }
+
+            final QuantifierContext quantifierContext = ctx.quantifier();
+            final Quantifier quantifier;
+            if (quantifierContext != null)
+                quantifier = quantifierVisitor.visit(quantifierContext);
+            else
+                quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
+
+            cellPattern.setQuantifier(quantifier);
+
+
 
             return cellPattern;
         }
@@ -426,6 +499,16 @@ final class Interpreter {
                     return false; // Impossible
 
                 pattern.setComponentsPattern(choicePattern);
+            }
+
+            final StructxContext structxContext = ctx.structx();
+            if (structxContext != null) {
+                final StructxPattern structxPattern = structxVisitor.visit(structxContext);
+                if (structxPattern == null)
+                    return false; // Impossible
+
+                pattern.setComponentsPattern(structxPattern);
+                return true;
             }
 
             return true;
@@ -583,6 +666,87 @@ final class Interpreter {
 
     }
 
+    final static class StructxVisitor extends RTLBaseVisitor<StructxPattern> {
+        @Override
+        public StructxPattern visitStructx(StructxContext ctx) {
+            final StructxPattern structxPattern = new StructxPattern(ctx);
+
+            List<SubstructxContext> substructxContexts = ctx.substructx();
+
+            if (substructxContexts == null) {
+                throw new IllegalStateException("Impossible");
+            }
+
+            for (SubstructxContext substructxContext: substructxContexts) {
+                SubstructxPattern substructxPattern = substructxVisitor.visitSubstructx(substructxContext);
+                structxPattern.add(substructxPattern);
+            }
+
+            return structxPattern;
+        }
+
+    }
+
+    final static class SubstructxVisitor extends RTLBaseVisitor<SubstructxPattern> {
+        @Override
+        public SubstructxPattern visitSubstructx(SubstructxContext ctx) {
+            final SubstructxPattern substructxPattern = new SubstructxPattern(ctx);
+
+            final QuantifierContext quantifierContext = ctx.quantifier();
+            final Quantifier quantifier;
+            if (quantifierContext != null)
+                quantifier = quantifierVisitor.visit(quantifierContext);
+            else
+                quantifier = new Quantifier(Quantifier.Times.UNDEFINED, null);
+
+            substructxPattern.setQuantifier(quantifier);
+
+            final List<ComponentContext> componentContexts = ctx.substruct_().component();
+            for (ComponentContext compCtx : componentContexts) {
+                final ComponentPattern componentPattern = componentVisitor.visit(compCtx);
+                if (componentPattern == null)
+                    return null; // Impossible
+
+                substructxPattern.add(componentPattern);
+            }
+
+            final StartTextContext stCtx = ctx.substruct_().startText();
+            if (stCtx != null) {
+                final String startText = unquote(stCtx.STRING().getText());
+                substructxPattern.setStartText(startText);
+            }
+
+            final EndTextContext etCtx = ctx.substruct_().endText();
+            if (etCtx != null) {
+                final String endText = unquote(etCtx.STRING().getText());
+                substructxPattern.setEndText(endText);
+            } else {
+                if (stCtx != null) {
+                    Quantifier.Times times = quantifier.times();
+                    if (times == ZERO_OR_MORE || times == ONE_OR_MORE
+                            || (times == EXACTLY && (quantifier.exactly() > 1))) {
+                        substructxPattern.setLooped(true);
+                    }
+                }
+            }
+
+            final List<SeparatorContext> separatorContexts = ctx.substruct_().separator();
+            if (separatorContexts != null && !separatorContexts.isEmpty()) {
+                final List<String> separators = new ArrayList<>(separatorContexts.size());
+                for (SeparatorContext separatorContext : separatorContexts) {
+                    String separator = unquote(separatorContext.STRING().getText());
+                    String unescapedSeparator = StringEscapeUtils.unescapeJava(separator);
+                    separators.add(unescapedSeparator);
+                }
+                substructxPattern.setSeparators(separators);
+            }
+
+
+            return substructxPattern;
+        }
+
+    }
+
     /**
      * The CondVisitor is responsible for visiting the CondContext and generating a Condition.
      */
@@ -631,9 +795,9 @@ final class Interpreter {
                     }
                 } else {
                     if (ctx.oneOrMore() != null)
-                        times = Quantifier.Times.ONE_OR_MORE;
+                        times = ONE_OR_MORE;
                     if (ctx.zeroOrMore() != null)
-                        times = Quantifier.Times.ZERO_OR_MORE;
+                        times = ZERO_OR_MORE;
                     if (ctx.zeroOrOne() != null)
                         times = Quantifier.Times.ZERO_OR_ONE;
                 }
@@ -677,8 +841,8 @@ final class Interpreter {
 
             final Configurator configurator = getConfigurator();
             if (configurator != null) {
-                final String concatSeparator = configurator.getConcatSeparator();
-                action.setConcatSeparator(concatSeparator);
+                //final String concatSeparator = configurator.getConcatSeparator();
+                //action.setConcatSeparator(concatSeparator);
 
                 final String avSeparator = configurator.getAvSeparator();
                 action.setAvSeparator(avSeparator);
@@ -729,6 +893,20 @@ final class Interpreter {
                 direction = Lookup.Direction.IN_COL;
             else if (directionCtx.IN_CELL() != null)
                 direction = Lookup.Direction.IN_CELL;
+
+            else if (directionCtx.SUB_LEFT() != null)
+                direction = Lookup.Direction.SUB_LEFT;
+            else if (directionCtx.SUB_RIGHT() != null)
+                direction = Lookup.Direction.SUB_RIGHT;
+            else if (directionCtx.SUB_UP() != null)
+                direction = Lookup.Direction.SUB_UP;
+            else if (directionCtx.SUB_DOWN() != null)
+                direction = Lookup.Direction.SUB_DOWN;
+            else if (directionCtx.IN_SUB_ROW() != null)
+                direction = Lookup.Direction.IN_SUB_ROW;
+            else if (directionCtx.IN_SUB_COL() != null)
+                direction = Lookup.Direction.IN_SUB_COL;
+
             else
                 return null; // Impossible
 
@@ -738,7 +916,7 @@ final class Interpreter {
             if (limitCtx != null) {
                 final String str = limitCtx.INT().getText();
                 final int limit = Integer.parseInt(str);
-                if (limit <  1)
+                if (limit < 1)
                     throw new RTLSyntaxException("Limit should be more than 1", ctx);
                 lookup.setLimit(limit);
             }
@@ -794,10 +972,13 @@ final class Interpreter {
         }
 
         private void apply(final Range.Desc rangeDesc, RangeBodyContext ctx) {
-            int start;
-            int end;
+            Integer start = null;
+            Integer end = null;
             boolean useRelativeStart = false;
             boolean useRelativeEnd = false;
+
+            boolean useMinStart = false;
+            boolean useMaxEnd = false;
 
             String literal;
             RelativeContext relativeContext;
@@ -817,26 +998,44 @@ final class Interpreter {
                 }
             } else {
                 final StartContext startCtx = ctx.start();
-                literal = startCtx.INT().getText();
-                start = Integer.parseInt(literal);
-                relativeContext = startCtx.relative();
-                if (relativeContext != null) {
-                    useRelativeStart = true;
-                    final TerminalNode minus = relativeContext.MINUS();
-                    if (minus != null) {
-                        start = -start;
+                final TerminalNode startNumberTN = startCtx.INT();
+
+                if (startNumberTN != null) {
+                    literal = startNumberTN.getText();
+                    start = Integer.parseInt(literal);
+                    relativeContext = startCtx.relative();
+                    if (relativeContext != null) {
+                        useRelativeStart = true;
+                        final TerminalNode minus = relativeContext.MINUS();
+                        if (minus != null) {
+                            start = -start;
+                        }
+                    }
+                } else {
+                    final TerminalNode startMinTN = startCtx.MIN();
+                    if (startMinTN != null) {
+                        useMinStart = true;
                     }
                 }
 
                 final EndContext endCtx = ctx.end();
-                literal = endCtx.INT().getText();
-                end = Integer.parseInt(literal);
-                relativeContext = startCtx.relative();
-                if (relativeContext != null) {
-                    useRelativeEnd = true;
-                    final TerminalNode minus = relativeContext.MINUS();
-                    if (minus != null) {
-                        end = -end;
+                final TerminalNode endNumberTN = endCtx.INT();
+
+                if (endNumberTN != null) {
+                    literal = endNumberTN.getText();
+                    end = Integer.parseInt(literal);
+                    relativeContext = startCtx.relative();
+                    if (relativeContext != null) {
+                        useRelativeEnd = true;
+                        final TerminalNode minus = relativeContext.MINUS();
+                        if (minus != null) {
+                            end = -end;
+                        }
+                    }
+                } else {
+                    final TerminalNode ensMaxTN = endCtx.MAX();
+                    if (ensMaxTN != null) {
+                        useMaxEnd = true;
                     }
                 }
             }
@@ -845,6 +1044,9 @@ final class Interpreter {
             rangeDesc.setUseRelativeStart(useRelativeStart);
             rangeDesc.setEnd(end);
             rangeDesc.setUseRelativeEnd(useRelativeEnd);
+
+            rangeDesc.setUseMinStart(useMinStart);
+            rangeDesc.setUseMaxEnd(useMaxEnd);
         }
 
     }
@@ -893,7 +1095,7 @@ final class Interpreter {
         @Override
         public Expr visitFunc(FuncContext ctx) {
             final String id = ctx.ID().getText();
-            final Func<?> func = Func.get(id);
+            final Func<?> func = Func.create(id);
             if (func == null) {
                 final String msg = String.format("undefined function \"%s\"", id);
                 throw new RTLSyntaxException(msg, ctx);

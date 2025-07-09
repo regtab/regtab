@@ -30,4 +30,7 @@ abstract class Writer {
      * @throws IOException if an I/O error occurs during the write operation
      */
     public abstract void write(Recordset recordset) throws IOException;
+
+    public abstract void write(Recordset recordset, boolean useHeader) throws IOException;
+
 }

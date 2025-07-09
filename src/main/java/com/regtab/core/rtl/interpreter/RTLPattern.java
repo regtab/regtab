@@ -1,6 +1,7 @@
 package com.regtab.core.rtl.interpreter;
 
 import com.regtab.core.model.*;
+import com.regtab.core.model.Action;
 import lombok.extern.slf4j.Slf4j;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,13 +14,15 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.regtab.core.rtl.parser.*;
+
+import static com.regtab.core.rtl.interpreter.Quantifier.Times.*;
 import static com.regtab.core.rtl.parser.RTLParser.*;
 
 /**
@@ -78,7 +81,7 @@ public class RTLPattern {
      */
     public static TableMatch match(@NonNull String rtl, @NonNull ITable table) {
         final RTLPattern t = compile(rtl);
-        if  (t == null)
+        if (t == null)
             return null;
         final RTLMatcher m = t.matcher();
 
@@ -94,7 +97,7 @@ public class RTLPattern {
      */
     public static boolean apply(@NonNull String rtl, @NonNull ITable table) {
         final TableMatch match = match(rtl, table);
-        if  (match == null)
+        if (match == null)
             return false;
 
         return match.apply();
@@ -181,6 +184,51 @@ public class RTLPattern {
         private Integer repetitionCount;
     }
 
+    static final class SettingParams {
+        private Map<Setting, String> params = new HashMap<>();
+        public void add(String name, String value) {
+            Setting setting = Setting.get(name);
+            if (setting != null) {
+                params.put(setting, value);
+            }
+        }
+
+        public Optional<Boolean> getBoolean(String settingName) {
+            final Setting<?> setting = Setting.get(settingName);
+            if (setting == null)
+                return Optional.empty();
+
+            final String value = params.get(setting);
+            if (value == null)
+                return Optional.empty();
+
+            return Optional.of(Boolean.parseBoolean(value));
+        }
+
+        public Optional<Integer> getInt(String settingName) {
+            final Setting<?> setting = Setting.get(settingName);
+            if (setting == null)
+                return Optional.empty();
+
+            final String value = params.get(setting);
+            if (value == null)
+                return Optional.empty();
+
+            return Optional.of(Integer.parseInt(value));
+        }
+
+        public Optional<String> getString(String settingName) {
+            final Setting<?> setting = Setting.get(settingName);
+            if (setting == null)
+                return Optional.empty();
+
+            final String value = params.get(setting);
+
+            return Optional.ofNullable(value);
+        }
+
+    }
+
     /**
      * Represents the root of the pattern structure for a table.
      */
@@ -188,6 +236,10 @@ public class RTLPattern {
         TablePattern(@NonNull TableContext context) {
             super(context);
         }
+
+        @Setter
+        @Getter
+        private SettingParams settingParams;
 
         @Getter
         private final List<SubtablePattern> subtablePatterns = new ArrayList<>(1);
@@ -230,6 +282,7 @@ public class RTLPattern {
             rowPatterns.add(pattern);
         }
 
+        @Override
         void add(@NonNull Action action) {
             getActions().add(action);
 
@@ -271,6 +324,7 @@ public class RTLPattern {
             subrowPatterns.add(pattern);
         }
 
+        @Override
         void add(@NonNull Action action) {
             getActions().add(action);
 
@@ -312,6 +366,7 @@ public class RTLPattern {
             cellPatterns.add(pattern);
         }
 
+        @Override
         void add(@NonNull Action action) {
             getActions().add(action);
 
@@ -342,6 +397,7 @@ public class RTLPattern {
         @Setter(AccessLevel.PACKAGE)
         private SubrowPattern subrowPattern;
 
+        @Override
         void add(@NonNull Action action) {
             getActions().add(action);
             if (componentsPattern != null)
@@ -389,6 +445,7 @@ public class RTLPattern {
             tags.add(tag);
         }
 
+        @Override
         void add(@NonNull Action action) {
             getActions().add(action);
         }
@@ -446,6 +503,7 @@ public class RTLPattern {
         @Setter
         private ComponentsPattern right;
 
+        @Override
         void add(@NonNull Action action) {
             left.add(action);
             right.add(action);
@@ -471,7 +529,7 @@ public class RTLPattern {
         @Getter
         private final List<ComponentPattern> componentPatterns = new ArrayList<>();
 
-        void add(@NonNull RTLPattern.ComponentPattern pattern) {
+        void add(@NonNull ComponentPattern pattern) {
             componentPatterns.add(pattern);
         }
 
@@ -487,12 +545,14 @@ public class RTLPattern {
         @Setter
         private List<String> separators;
 
+        @Override
         void add(@NonNull Action action) {
             for (ComponentPattern componentPattern : componentPatterns) {
                 componentPattern.add(action);
             }
         }
 
+        @Override
         boolean apply(@NonNull ICell cell) {
             final String text = cell.getText();
 
@@ -549,10 +609,12 @@ public class RTLPattern {
                 final ComponentPattern componentPattern = componentPatterns.get(i);
 
                 if (i < componentPatterns.size() - 1) {
-                    String unescapedSeparator = separators.get(i);
+                    final String unescapedSeparator = separators.get(i);
                     end = subText.indexOf(unescapedSeparator, start);
                     if (end == -1) {
-                        throw new IllegalStateException("Invalid separator");
+                        final String separator = StringEscapeUtils.escapeJava(unescapedSeparator);
+                        final String msg = String.format("Invalid separator: \"%s\" in \"%s\"", separator, cell);
+                        throw new IllegalStateException(msg);
                     }
                     shift = unescapedSeparator.length();
                 } else {
@@ -570,6 +632,304 @@ public class RTLPattern {
             }
 
             return true;
+        }
+
+    }
+
+    @Slf4j
+    static final class StructxPattern extends ComponentsPattern {
+        StructxPattern(@NonNull StructxContext context) {
+            super(context);
+        }
+
+        @Getter
+        private final List<SubstructxPattern> substructxPatterns = new LinkedList<>();
+
+        private final List<SubstructxPattern> tempSubstructxPatterns = new LinkedList<>();
+
+        void add(@NonNull SubstructxPattern pattern) {
+            if (pattern.startText != null) {
+                if (!tempSubstructxPatterns.isEmpty()) {
+                    Quantifier quantifier = pattern.getQuantifier();
+                    Quantifier.Times times = quantifier.times();
+
+                    if (times == ONE_OR_MORE || times == UNDEFINED
+                            || (times == EXACTLY && (quantifier.exactly() > 0))) {
+                        for (SubstructxPattern tempSubstructxPattern : tempSubstructxPatterns) {
+                            tempSubstructxPattern.closeEndSeparator = pattern.startText;
+                        }
+                        tempSubstructxPatterns.clear();
+                    } else {
+                        for (SubstructxPattern tempSubstructxPattern : tempSubstructxPatterns) {
+                            tempSubstructxPattern.openEndSeparators.add(pattern.startText);
+                        }
+                    }
+                }
+            }
+
+            if (pattern.endText == null) {
+                tempSubstructxPatterns.add(pattern);
+            }
+
+            substructxPatterns.add(pattern);
+        }
+
+        @Override
+        void add(@NonNull Action action) {
+            for (SubstructxPattern substructxPattern : substructxPatterns) {
+                substructxPattern.add(action);
+            }
+        }
+
+        @Override
+        boolean apply(@NonNull ICell cell) {
+            int textShift = 0;
+            for (SubstructxPattern substructxPattern : substructxPatterns) {
+                textShift = substructxPattern.apply(cell, textShift);
+            }
+
+            return true;
+        }
+
+    }
+
+    @Slf4j
+    static final class SubstructxPattern extends RepeatablePattern {
+        SubstructxPattern(@NonNull SubstructxContext context) {
+            super(context);
+        }
+
+        @Getter
+        private final List<ComponentPattern> componentPatterns = new ArrayList<>();
+
+        void add(@NonNull ComponentPattern pattern) {
+            componentPatterns.add(pattern);
+        }
+
+        @Getter
+        @Setter
+        private String startText;
+
+        @Getter
+        @Setter
+        private String endText;
+
+        @Getter
+        @Setter
+        private boolean looped;
+
+        @Getter
+        @Setter
+        private String closeEndSeparator;
+
+        @Getter
+        @Setter
+        private List<String> openEndSeparators = new LinkedList<>();
+
+        @Getter
+        @Setter
+        private List<String> separators = new LinkedList<>();
+
+        @Override
+        void add(@NonNull Action action) {
+            for (ComponentPattern componentPattern : componentPatterns) {
+                componentPattern.add(action);
+            }
+        }
+
+        private ICell currentCell;
+
+        int apply(@NonNull ICell cell, int textShift) {
+            currentCell = cell;
+
+            final Quantifier.Times times = getQuantifier().times();
+
+            if (times == Quantifier.Times.EXACTLY) {
+                // Repeat exactly n times
+                int count = getRepetitionCount();
+                try {
+                    while (count > 0) {
+                        textShift = attemptPatternApplication(textShift);
+                        count--;
+                    }
+                } catch (PatternApplicationException e) {
+                    log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                    final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
+                    throw new RuntimeException(msg);
+                }
+                return textShift;
+            } else if (times == Quantifier.Times.UNDEFINED) {
+                // Repeat exactly one time
+                try {
+                    return attemptPatternApplication(textShift);
+                } catch (PatternApplicationException e) {
+                    log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                    final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
+                    throw new RuntimeException(msg);
+                }
+            } else if (times == ONE_OR_MORE) {
+                // Repeat at least one time
+                try {
+                    attemptPatternApplication(textShift);
+                } catch (PatternApplicationException e) {
+                    log.debug("Pattern {} could not be applied to the cell {}", this, cell);
+                    final String msg = String.format("Pattern %s could not be applied to the cell %s", this, cell);
+                    throw new RuntimeException(msg);
+                }
+                // Repeat more times if possible
+                try {
+                    while (true) {
+                        textShift = attemptPatternApplication(textShift);
+                    }
+                } catch (PatternApplicationException e) {
+                    return textShift;
+                }
+            } else if (times == Quantifier.Times.ZERO_OR_MORE) {
+                // Repeat zero or more times
+                try {
+                    while (true) {
+                        textShift = attemptPatternApplication(textShift);
+                    }
+                } catch (PatternApplicationException e) {
+                    return textShift;
+                }
+            } else if (times == Quantifier.Times.ZERO_OR_ONE) {
+                // Repeat zero or one time
+                try {
+                    textShift = attemptPatternApplication(textShift);
+                } catch (PatternApplicationException e) {
+                    return textShift;
+                }
+            }
+
+            throw new RuntimeException("Impossible");
+        }
+
+        private int findStartPos(String remainder) throws PatternApplicationException {
+            if (startText != null) {
+                boolean result = remainder.startsWith(startText);
+
+                if (!result) {
+                    throw new PatternApplicationException(currentCell, this);
+                }
+
+                return startText.length();
+            }
+
+            return 0;
+        }
+
+        private int findEndPos(String remainder) throws PatternApplicationException {
+            int position;
+            int startTextLength = startText == null ? 0 : startText.length();
+
+            if (endText != null) {
+                position = remainder.indexOf(endText, startTextLength);
+
+                if (position < 1) {
+                    throw new PatternApplicationException(currentCell, this);
+                }
+
+                return position + startTextLength;
+            }
+
+            if (looped && startText != null) {
+                position = remainder.indexOf(startText, startTextLength);
+
+                if (position > 0) {
+                    return position + startTextLength;
+                }
+            }
+
+            if (!openEndSeparators.isEmpty()) {
+                for (String openEndSeparator : openEndSeparators) {
+                    position = remainder.indexOf(openEndSeparator, startTextLength);
+
+                    if (position > 0) {
+                        return position + startTextLength;
+                    }
+                }
+            }
+
+            if (closeEndSeparator != null) {
+                position = remainder.indexOf(closeEndSeparator, startTextLength);
+
+                if (position < 1) {
+                    throw new IllegalStateException("Invalid close end separator");
+                }
+
+                return position + startTextLength;
+            }
+
+            return remainder.length();
+        }
+
+        private int attemptPatternApplication(int textShift) throws PatternApplicationException {
+            final String text = currentCell.getText();
+            final int length = text.length();
+
+            if (length - textShift <= 0) {
+                throw new PatternApplicationException(currentCell, this);
+            }
+
+            final String remainder = text.substring(textShift, length);
+
+            int start = findStartPos(remainder);
+            int end = findEndPos(remainder);
+
+            final String extractedText = remainder.substring(start, end);
+
+            // Когда нет разделителей, тогда есть только один компонент
+            if (separators == null) {
+                if (componentPatterns.size() != 1) {
+                    log.debug("Pattern {} could not be applied to the cell {}", this, currentCell);
+                    throw new PatternApplicationException(currentCell, this);
+                }
+                final ComponentPattern componentPattern = componentPatterns.getFirst();
+                boolean result = componentPattern.apply(currentCell, extractedText);
+                if (!result) {
+                    log.debug("Pattern {} could not be applied to the cell {}", this, currentCell);
+                    throw new PatternApplicationException(currentCell, this);
+                }
+
+                // Вычислить и вернуть новый сдвиг
+                return end + (endText == null ? 0 : endText.length());
+            }
+
+            // Когда есть n разделителей, тогда есть n-1 компонентов
+            if (componentPatterns.size() != separators.size() + 1) {
+                throw new PatternApplicationException(currentCell, this);
+            }
+
+            start = 0;
+            int shift = 0;
+            for (int i = 0; i < componentPatterns.size(); i++) {
+                final ComponentPattern componentPattern = componentPatterns.get(i);
+
+                if (i < componentPatterns.size() - 1) {
+                    final String unescapedSeparator = separators.get(i);
+                    end = extractedText.indexOf(unescapedSeparator, start);
+                    if (end == -1) {
+                        final String separator = StringEscapeUtils.escapeJava(unescapedSeparator);
+                        final String msg = String.format("Invalid separator: \"%s\" in \"%s\"", separator, currentCell);
+                        throw new IllegalStateException(msg);
+                    }
+                    shift = unescapedSeparator.length();
+                } else {
+                    end = extractedText.length();
+                }
+
+                String val = extractedText.substring(start, end);
+                boolean result = componentPattern.apply(currentCell, val);
+                if (!result) {
+                    throw new PatternApplicationException(currentCell, this);
+                }
+
+                start = end + shift;
+            }
+
+            // Вычислить и вернуть новый сдвиг
+            return textShift + end + (endText == null ? 0 : endText.length());
         }
 
     }

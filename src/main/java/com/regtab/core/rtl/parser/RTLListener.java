@@ -18,6 +18,46 @@ public interface RTLListener extends ParseTreeListener {
 	 */
 	void exitTable(RTLParser.TableContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link RTLParser#settings}.
+	 * @param ctx the parse tree
+	 */
+	void enterSettings(RTLParser.SettingsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RTLParser#settings}.
+	 * @param ctx the parse tree
+	 */
+	void exitSettings(RTLParser.SettingsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RTLParser#setting}.
+	 * @param ctx the parse tree
+	 */
+	void enterSetting(RTLParser.SettingContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RTLParser#setting}.
+	 * @param ctx the parse tree
+	 */
+	void exitSetting(RTLParser.SettingContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RTLParser#settingName}.
+	 * @param ctx the parse tree
+	 */
+	void enterSettingName(RTLParser.SettingNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RTLParser#settingName}.
+	 * @param ctx the parse tree
+	 */
+	void exitSettingName(RTLParser.SettingNameContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RTLParser#settingValue}.
+	 * @param ctx the parse tree
+	 */
+	void enterSettingValue(RTLParser.SettingValueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RTLParser#settingValue}.
+	 * @param ctx the parse tree
+	 */
+	void exitSettingValue(RTLParser.SettingValueContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link RTLParser#subtable}.
 	 * @param ctx the parse tree
 	 */
@@ -247,6 +287,36 @@ public interface RTLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStruct(RTLParser.StructContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RTLParser#structx}.
+	 * @param ctx the parse tree
+	 */
+	void enterStructx(RTLParser.StructxContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RTLParser#structx}.
+	 * @param ctx the parse tree
+	 */
+	void exitStructx(RTLParser.StructxContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RTLParser#substructx}.
+	 * @param ctx the parse tree
+	 */
+	void enterSubstructx(RTLParser.SubstructxContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RTLParser#substructx}.
+	 * @param ctx the parse tree
+	 */
+	void exitSubstructx(RTLParser.SubstructxContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RTLParser#substruct_}.
+	 * @param ctx the parse tree
+	 */
+	void enterSubstruct_(RTLParser.Substruct_Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link RTLParser#substruct_}.
+	 * @param ctx the parse tree
+	 */
+	void exitSubstruct_(RTLParser.Substruct_Context ctx);
 	/**
 	 * Enter a parse tree produced by {@link RTLParser#startText}.
 	 * @param ctx the parse tree

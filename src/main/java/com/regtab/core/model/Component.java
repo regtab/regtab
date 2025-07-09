@@ -7,25 +7,82 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * The Component class represents a part of a record or schema with a specific type and associated actions.
  */
 public final class Component {
+//    @Getter
+//    private static final Configurator configurator = Configurator.DEFAULT_CONFIGURATOR;
+//
+//    private static final String DEFAULT_CONCAT_SEPARATOR = "|";
+//
+//    private static String concatSeparator = DEFAULT_CONCAT_SEPARATOR;
+//
+//    static {
+//        if (configurator != null)
+//            concatSeparator = configurator.getConcatSeparator();
+//    }
+
+//    @NonNull
+//    @Getter
+//    @Setter
+//    private String componentTextSeparator = "";
+
     @Getter
     private final Type type;
 
     @Getter
     private final ICell cell;
 
-    @Getter
-    private String text;
+    private List<String> textParts = new LinkedList<>();
 
-    public void setText(String text) {
-        this.text = StringUtils.normalizeSpace(text);
+    public String getText() {
+        final String componentTextSeparator = cell.getTable().getCompSeparator();
+        return String.join(componentTextSeparator, textParts);
+    }
+
+    public List<String> copyTextParts() {
+        return List.copyOf(textParts);
+    }
+    public void prefix(@NonNull Component component) {
+        textParts.addAll(0, component.textParts);
+    }
+
+    public void suffix(@NonNull Component component) {
+        textParts.addAll(component.textParts);
+    }
+
+    private void addText(@NonNull String text) {
+        boolean withWhitespaceNormalizing = getCell().getTable().isNormalizedSpaces();
+        if (withWhitespaceNormalizing) {
+            final String normalizedText = StringUtils.normalizeSpace(text);
+            textParts.add(normalizedText);
+        } else {
+            textParts.add(text);
+        }
+    }
+
+    public void prefix(@NonNull String text) {
+        final String normalizedText = StringUtils.normalizeSpace(text);
+        textParts.addFirst(normalizedText);
+    }
+
+    public void suffix(@NonNull String text) {
+        final String normalizedText = StringUtils.normalizeSpace(text);
+        textParts.addLast(normalizedText);
+    }
+
+    public void factor(@NonNull Component component) {
+        textParts.clear();
+        textParts.addAll(component.textParts);
+    }
+
+    public void factor(@NonNull String text) {
+        final String normalizedText = StringUtils.normalizeSpace(text);
+        textParts.clear();
+        textParts.add(normalizedText);
     }
 
     /**
@@ -38,7 +95,7 @@ public final class Component {
     Component(@NonNull ICell cell, @NonNull Type type, @NonNull String text) {
         this.cell = cell;
         this.type = type;
-        setText(text);
+        addText(text);
     }
 
     private final List<String> tags = new ArrayList<>();
@@ -135,7 +192,7 @@ public final class Component {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
                 .append("type", type)
-                .append("text", text)
+                .append("textParts", Arrays.toString(textParts.toArray()))
                 .toString();
     }
 }
