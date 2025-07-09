@@ -19,6 +19,7 @@
     <!-- Для того чтобы разместить артефакт в Maven Central Repository:
         1. Раскомментировать эти секции
         2. Выполнить команду gpg-connect-agent -v
+           (если не получается запустить, читай инструкцию https://central.sonatype.org/publish/requirements/gpg)
         3. Выполнить команду mvn clean deploy
         4. Зависимость будет опубликованна здесь:
             https://central.sonatype.com/artifact/com.regtab.core/regtab-core
