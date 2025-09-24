@@ -38,7 +38,7 @@ For example, if the Maven format is used then the following dependency should be
 <dependency>
     <groupId>com.regtab.core</groupId>
     <artifactId>regtab-core</artifactId>
-    <version>0.1.3</version>
+    <version>0.1.5</version>
 </dependency>
 ```
 

@@ -121,7 +121,7 @@ public class RTLPattern {
     /**
      * The abstract base class for all pattern classes.
      */
-    abstract static class BasePattern {
+    public abstract static class BasePattern {
         @Getter
         private final ParseTree tree;
 
@@ -145,7 +145,7 @@ public class RTLPattern {
     /**
      * The abstract class for patterns that can have actions associated with them.
      */
-    abstract static class ActionablePattern extends BasePattern {
+    public abstract static class ActionablePattern extends BasePattern {
         ActionablePattern(ParseTree tree) {
             super(tree);
         }
@@ -160,7 +160,7 @@ public class RTLPattern {
     /**
      * The abstract class for patterns that can be repeated according to a quantifier and condition.
      */
-    abstract static class RepeatablePattern extends ActionablePattern {
+    public abstract static class RepeatablePattern extends ActionablePattern {
         RepeatablePattern(ParseTree tree) {
             super(tree);
         }
@@ -184,7 +184,7 @@ public class RTLPattern {
         private Integer repetitionCount;
     }
 
-    static final class SettingParams {
+    public static final class SettingParams {
         private Map<Setting, String> params = new HashMap<>();
         public void add(String name, String value) {
             Setting setting = Setting.get(name);
@@ -232,7 +232,7 @@ public class RTLPattern {
     /**
      * Represents the root of the pattern structure for a table.
      */
-    static final class TablePattern extends BasePattern {
+    public static final class TablePattern extends BasePattern {
         TablePattern(@NonNull TableContext context) {
             super(context);
         }
@@ -254,7 +254,7 @@ public class RTLPattern {
     /**
      * Represents a pattern for a subtable within a table.
      */
-    static final class SubtablePattern extends RepeatablePattern {
+    public static final class SubtablePattern extends RepeatablePattern {
         SubtablePattern(@NonNull SubtableContext context) {
             super(context);
         }
@@ -296,7 +296,7 @@ public class RTLPattern {
     /**
      * Represents a pattern for a row within a subtable.
      */
-    static final class RowPattern extends RepeatablePattern {
+    public static final class RowPattern extends RepeatablePattern {
         SubrowsContext subrowsContext;
 
         RowPattern(@NonNull RowContext context) {
@@ -338,7 +338,7 @@ public class RTLPattern {
     /**
      * Represents a pattern for a subrow within a row.
      */
-    static final class SubrowPattern extends RepeatablePattern {
+    public static final class SubrowPattern extends RepeatablePattern {
         SubrowPattern(@NonNull SubrowContext context) {
             super(context);
         }
@@ -379,7 +379,7 @@ public class RTLPattern {
     /**
      * Represents a pattern for a cell within a subrow.
      */
-    static final class CellPattern extends RepeatablePattern {
+    public static final class CellPattern extends RepeatablePattern {
         CellPattern(CellContext context) {
             super(context);
         }
@@ -413,7 +413,7 @@ public class RTLPattern {
     /**
      * Represents a pattern for a set of components.
      */
-    abstract static class ComponentsPattern extends ActionablePattern {
+    public abstract static class ComponentsPattern extends ActionablePattern {
         ComponentsPattern(ParseTree tree) {
             super(tree);
         }
@@ -425,7 +425,7 @@ public class RTLPattern {
      * Represents a pattern for a component.
      */
     @Slf4j
-    static final class ComponentPattern extends ComponentsPattern {
+    public static final class ComponentPattern extends ComponentsPattern {
         ComponentPattern(@NonNull ComponentContext context) {
             super(context);
         }
@@ -483,7 +483,7 @@ public class RTLPattern {
     /**
      * Represents a pattern for a choice.
      */
-    static final class ChoicePattern extends ComponentsPattern {
+    public static final class ChoicePattern extends ComponentsPattern {
         ChoicePattern(ChoiceContext context) {
             super(context);
         }
@@ -521,7 +521,7 @@ public class RTLPattern {
      * Represents a pattern for a struct.
      */
     @Slf4j
-    static final class StructPattern extends ComponentsPattern {
+    public static final class StructPattern extends ComponentsPattern {
         StructPattern(@NonNull StructContext context) {
             super(context);
         }
@@ -637,7 +637,7 @@ public class RTLPattern {
     }
 
     @Slf4j
-    static final class StructxPattern extends ComponentsPattern {
+    public static final class StructxPattern extends ComponentsPattern {
         StructxPattern(@NonNull StructxContext context) {
             super(context);
         }
@@ -694,7 +694,7 @@ public class RTLPattern {
     }
 
     @Slf4j
-    static final class SubstructxPattern extends RepeatablePattern {
+    public static final class SubstructxPattern extends RepeatablePattern {
         SubstructxPattern(@NonNull SubstructxContext context) {
             super(context);
         }
