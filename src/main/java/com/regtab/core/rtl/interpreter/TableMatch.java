@@ -198,6 +198,9 @@ public final class TableMatch {
             if (result) {
                 cell.setSubtablePos(subtablePos);
                 cell.setSubrowPos(subrowPos);
+
+                // Add the provenance
+                cell.setPattern(pattern);
             }
 
             return result;

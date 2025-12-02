@@ -125,8 +125,14 @@ public class RTLPattern {
         @Getter
         private final ParseTree tree;
 
+        @Getter
+        private final Long id;
+
+        private static Long count = 0L;
+
         BasePattern(ParseTree tree) {
             this.tree = tree;
+            id = count ++;
         }
 
         /**
@@ -474,6 +480,9 @@ public class RTLPattern {
             final List<Action> actions = getActions();
             for (Action action : actions)
                 component.addAction(action);
+
+            // Add the provenance
+            component.setPattern(this);
 
             return true;
         }

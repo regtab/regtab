@@ -4,6 +4,7 @@ import com.regtab.core.model.format.HtmlTag;
 import com.regtab.core.model.format.SSDatatype;
 import com.regtab.core.model.style.Style;
 
+import com.regtab.core.rtl.interpreter.RTLPattern.CellPattern;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -43,6 +44,10 @@ public final class ICell {
     @Getter
     @Setter
     private SubrowPos subrowPos;
+
+    @Getter
+    @Setter
+    CellPattern pattern;
 
     /**
      * Attempts to parse the text content of the cell as an integer.

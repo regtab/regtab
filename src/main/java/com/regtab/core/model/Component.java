@@ -1,8 +1,10 @@
 package com.regtab.core.model;
 
+import com.regtab.core.rtl.interpreter.RTLPattern.ComponentPattern;
 import lombok.NonNull;
 import lombok.Getter;
 
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -37,6 +39,10 @@ public final class Component {
     private final ICell cell;
 
     private List<String> textParts = new LinkedList<>();
+
+    @Getter
+    @Setter
+    private ComponentPattern pattern;
 
     public String getText() {
         final String componentTextSeparator = cell.getTable().getCompSeparator();
