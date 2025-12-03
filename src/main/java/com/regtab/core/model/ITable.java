@@ -43,6 +43,15 @@ public final class ITable {
     }
 
     /**
+     * Returns the cells of the table as a list.
+     *
+     * @return The cells of the table as a list.
+     */
+    public List<ICell> cells() {
+        return Arrays.asList(cells);
+    }
+
+    /**
      * Returns the rows of the table as a list.
      *
      * @return The rows of the table as a list.
