@@ -31,7 +31,7 @@ import static com.regtab.core.rtl.parser.RTLParser.*;
  * that can be used to match and apply actions to tables.
  */
 public class RTLPattern {
-    @Getter(AccessLevel.PACKAGE)
+    @Getter
     private final TablePattern tablePattern;
 
     private RTLPattern(TablePattern tablePattern) {
