@@ -290,6 +290,8 @@ fragment ESC
 
 WS : [ \r\t\u000C\n]+ -> channel(HIDDEN) ;
 
+ZWNBSP : [\uFEFF]+ -> channel(HIDDEN) ; // Remove UTF8 BOM character (ZWNBSP error)
+
 LineComment
     : '//' ~[\r\n]* -> channel(HIDDEN)
     ;
