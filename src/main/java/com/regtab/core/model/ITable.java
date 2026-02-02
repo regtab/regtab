@@ -130,7 +130,7 @@ public final class ITable {
      * @return The created cell.
      * @throws IllegalArgumentException If the row or column index is out of bounds.
      */
-    public ICell createCell(int rowIndex, int colIndex, CellPos cellPos, @NonNull String text) {
+    public ICell createCell(int rowIndex, int colIndex, CellPos cellPos, String text) {
         if (rowIndex < 0 || rowIndex >= rows.length)
             throw new IllegalArgumentException("Row index is out of bounds");
 
@@ -139,6 +139,10 @@ public final class ITable {
 
         final IRow row = rows[rowIndex];
         final ICol col = cols[colIndex];
+
+        if (text == null)
+            text = "";
+
         final ICell cell = new ICell(this, row, col, cellPos, text);
 
         row.add(cell);

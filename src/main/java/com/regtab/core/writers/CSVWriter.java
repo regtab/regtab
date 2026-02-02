@@ -47,7 +47,7 @@ public final class CSVWriter {
     }
 
     public void write(Recordset recordset, boolean useHeader) throws IOException {
-        final CSVFormat format = CSVFormat.POSTGRESQL_CSV;
+        final CSVFormat format = CSVFormat.DEFAULT;//.POSTGRESQL_CSV;
 
         final BufferedWriter writer = Files.newBufferedWriter(Paths.get(path), StandardCharsets.UTF_8);
 
