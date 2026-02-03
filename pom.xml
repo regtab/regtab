@@ -6,7 +6,7 @@
 
     <groupId>com.regtab.core</groupId>
     <artifactId>regtab-core</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
     <packaging>jar</packaging>
 
     <name>regtab</name>
@@ -16,18 +16,6 @@
     </description>
     <url>https://github.com/regtab/regtab</url>
 
-    <!-- Для того чтобы разместить артефакт в Maven Central Repository:
-        1. Раскомментировать эти секции
-        2. Выполнить команду gpg-connect-agent -v (запустить CMD от имени администратора, через FAR не работает)
-           (если не получается запустить, читай инструкцию https://central.sonatype.org/publish/requirements/gpg)
-        3. Выполнить команду mvn clean deploy
-        4. Зависимость будет опубликованна здесь:
-            https://central.sonatype.com/artifact/com.regtab.core/regtab-core
-        5. Зависимость также публикуется здесь:
-            https://mvnrepository.com/artifact/com.regtab.core/regtab-core
-            (Может потребоваться несколько дней)
-    -->
-    <!--
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -53,82 +41,20 @@
         </developer>
     </developers>
 
-    <scm>
-        <connection>scm:git:git://github.com/regtab/regtab.git</connection>
-        <developerConnection>scm:git:git://github.com/regtab/regtab.git</developerConnection>
-        <url>https://github.com/regtab/regtab</url>
-    </scm>
-    -->
-
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <scm>
+        <connection>scm:git:git://github.com/regtab/regtab.git</connection>
+        <developerConnection>scm:git:git://github.com/regtab/regtab.git</developerConnection>
+        <url>https://github.com/regtab/regtab</url>
+    </scm>
+
     <build>
         <plugins>
-            <!-- Раскомментировать эти секции для того, чтобы разместить артефакт в Maven Central Repository -->
-            <!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.6.3</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
-                    <excludePackageNames>
-                        com.regtab.core.rtl.parser
-                    </excludePackageNames>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>3.2.4</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.4.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <publishingServerId>central</publishingServerId>
-                    <tokenAuth>true</tokenAuth>
-                    <autoPublish>true</autoPublish>
-                    <waitUntil>published</waitUntil>
-                </configuration>
-            </plugin>
-            -->
             <plugin>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-maven-plugin</artifactId>
@@ -180,12 +106,12 @@
     </build>
 
     <dependencies>
+        <!-- ... ваши зависимости без изменений ... -->
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
             <version>4.13.1</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
@@ -196,25 +122,21 @@
             <artifactId>poi-ooxml</artifactId>
             <version>5.2.5</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.14.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>1.10.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>4.4</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-to-slf4j</artifactId>
@@ -231,14 +153,111 @@
             <artifactId>logback-classic</artifactId>
             <version>1.5.3</version>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.42</version>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
 
+    <!-- Как загрузить артефакт в Maven Central -->
+    <!--
+        1. Выполнить команду "gpg-connect-agent -v" (запустить CMD от имени администратора, через FAR не работает!)
+           (если не получается запустить, читай инструкцию https://central.sonatype.org/publish/requirements/gpg)
+        2. Выполнить команду "mvn clean deploy -Pcentral-deploy"
+            (Чтобы активировать профиль в IntelliJ IDEA,
+            можно поставить галочку в меню Maven -> Profiles -> central-deploy)
+        4. Зависимость будет доступна здесь:
+            https://central.sonatype.com/artifact/com.regtab.core/regtab-core
+        5. Зависимость также публикуется здесь:
+            https://mvnrepository.com/artifact/com.regtab.core/regtab-core
+            (Будет доступно через пару часов, но иногда пару дней)
+    -->
+
+    <!-- Profile для публикации в Maven Central -->
+    <profiles>
+        <profile>
+            <id>central-deploy</id>
+
+            <!-- Активируется только при явном указании -Pcentral-deploy или при выполнении deploy -->
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+
+            <!-- Альтернативный вариант (автоактивация при deploy) -->
+            <!-- Автоматически активируется при выполнении цели deploy -->
+            <!--
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            -->
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.3.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.6.3</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                            <excludePackageNames>
+                                com.regtab.core.rtl.parser
+                            </excludePackageNames>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.2.4</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.4.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <tokenAuth>true</tokenAuth>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
