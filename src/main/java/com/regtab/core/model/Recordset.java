@@ -26,6 +26,10 @@ public final class Recordset {
     // т. е. поля значений компонентов, которым сопоставлено действие RECORD.
     private final int basicFieldIndex;
 
+    // Настройка вывода заголовка
+    @Getter
+    private final boolean noHeader;
+
     @Getter
     private final List<Attribute> attributes = new ArrayList<>();
 
@@ -38,6 +42,10 @@ public final class Recordset {
      * @return An array of attribute names.
      */
     public String[] header() {
+//        if (noHeader) {
+//            return null;
+//        }
+
         final int size = attributes.size();
         final String[] header = new String[size];
 

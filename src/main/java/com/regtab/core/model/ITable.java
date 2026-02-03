@@ -171,7 +171,11 @@ public final class ITable {
 
     @Getter
     @Setter
-    private boolean normalizedSpaces = true;
+    private boolean normalizedSpaces = false;
+
+    @Getter
+    @Setter
+    private boolean noHeader = false;
 
     /**
      * Extracts data from the table and returns it as a Recordset.
@@ -179,7 +183,7 @@ public final class ITable {
      * @return The extracted data as a Recordset.
      */
     public Recordset extract() {
-        final Recordset recordset = new Recordset(splitComponents, basicFiledIndex);
+        final Recordset recordset = new Recordset(splitComponents, basicFiledIndex, noHeader);
 
         for (ICell cell: cells)
             cell.perform(Action.Type.FACTOR, recordset);

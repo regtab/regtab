@@ -59,6 +59,9 @@ public class RTLMatcher {
             Optional<Boolean> normalizedSpacesOpt = settingParams.getBoolean("@normalizedSpaces");
             if (normalizedSpacesOpt.isPresent())
                 table.setNormalizedSpaces(normalizedSpacesOpt.get());
+            Optional<Boolean> noHeaderOpt = settingParams.getBoolean("@noHeader");
+            if (noHeaderOpt.isPresent())
+                table.setNoHeader(noHeaderOpt.get());
         }
 
         return match(table, tablePattern);
