@@ -1,15 +1,7 @@
 # ⚠️ DEPRECATED / УСТАРЕЛО
 
-> **English**  
 > **Important Notice:** This project is no longer maintained and has been archived.  
 > Development has moved to a new repository. Please use the updated version here:  
-> 👉 **[://github.com](https://://github.com)**
-
----
-
-> **Русский**  
-> **Важное уведомление:** Этот проект больше не поддерживается и переведен в режим «только для чтения».  
-> Развитие проекта продолжается в новом репозитории. Пожалуйста, используйте актуальную версию:  
 > 👉 **[://github.com](https://://github.com)**
 
 ---
