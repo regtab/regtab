@@ -1,8 +1,8 @@
-# ⚠️ DEPRECATED / УСТАРЕЛО
+# ⚠️ DEPRECATED
 
 > **Important Notice:** This project is no longer maintained and has been archived.  
 > Development has moved to a new repository. Please use the updated version here:  
-> 👉 **[://github.com](https://://github.com)**
+> 👉 **[https://github.com/regtab/jregtab](https://github.com/regtab/jregtab)**
 
 ---
 
